@@ -11,12 +11,13 @@ project (mainapp C CXX)
 
 #set(CMAKE_CXX_STANDARD 14)
 #set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -pthread")
+    
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(warnings "-Wall -Wextra")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(warnings "-Wall -Wextra -Wno-missing-braces -Wmissing-field-initializers")
+    set(warnings "-Wall -Wextra -Wno-missing-braces -Wmissing-field-initializers -Wno-unused-parameter -Wno-error=unused-variable -Wno-error=sign-compare")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(warnings "/W4 /WX /EHsc")
 endif()
@@ -102,7 +103,7 @@ endif()
 target_link_libraries(${PROJECT_NAME}_benchmark ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${BENCHMARK_PATH})
 
-
+target_link_libraries (${PROJECT_NAME}_benchmark ${CMAKE_THREAD_LIBS_INIT})
 
 ###
 ## Tools

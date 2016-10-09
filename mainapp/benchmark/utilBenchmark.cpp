@@ -48,6 +48,20 @@ BENCHMARK("util::randomRate 50", [](benchpress::context* ctx) {
 })
 
 
+BENCHMARK("util::randomRate 50 multi-thread", [](benchpress::context* ctx) {
+    int rate = 50;
+
+    ctx->reset_timer();
+    ctx->run_parallel([rate](benchpress::parallel_context* pctx) {
+        while (pctx->next()) {
+            auto ret_randomRate = util::randomRate(rate);
+            benchpress::escape(&ret_randomRate);
+        }
+    });
+})
+
+
+
 BENCHMARK("util::randomOdds 1:1000", [](benchpress::context* ctx) {
     int wins = 1;
     int losses = 1000;
