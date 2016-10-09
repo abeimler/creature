@@ -4,51 +4,29 @@
 
 
 
-TEST_CASE("Not leap year 1800") {
-    REQUIRE_FALSE(dateutil::is_leap_year(1800));
-}
+TEST_CASE("Not leap year 1800") { REQUIRE_FALSE(dateutil::is_leap_year(1800)); }
 
-TEST_CASE("Not leap year 1900") {
-    REQUIRE_FALSE(dateutil::is_leap_year(1900));
-}
+TEST_CASE("Not leap year 1900") { REQUIRE_FALSE(dateutil::is_leap_year(1900)); }
 
-TEST_CASE("Not leap year 2011") {
-    REQUIRE_FALSE(dateutil::is_leap_year(2011));
-}
+TEST_CASE("Not leap year 2011") { REQUIRE_FALSE(dateutil::is_leap_year(2011)); }
 
-TEST_CASE("Not leap year 2100") {
-    REQUIRE_FALSE(dateutil::is_leap_year(2100));
-}
+TEST_CASE("Not leap year 2100") { REQUIRE_FALSE(dateutil::is_leap_year(2100)); }
 
 
 
-TEST_CASE("leap year 2000") {
-    REQUIRE(dateutil::is_leap_year(2000));
-}
+TEST_CASE("leap year 2000") { REQUIRE(dateutil::is_leap_year(2000)); }
 
-TEST_CASE("leap year 2012") {
-    REQUIRE(dateutil::is_leap_year(2012));
-}
+TEST_CASE("leap year 2012") { REQUIRE(dateutil::is_leap_year(2012)); }
 
-TEST_CASE("leap year 2016") {
-    REQUIRE(dateutil::is_leap_year(2016));
-}
+TEST_CASE("leap year 2016") { REQUIRE(dateutil::is_leap_year(2016)); }
 
-TEST_CASE("leap year 2020") {
-    REQUIRE(dateutil::is_leap_year(2020));
-}
+TEST_CASE("leap year 2020") { REQUIRE(dateutil::is_leap_year(2020)); }
 
-TEST_CASE("leap year 2024") {
-    REQUIRE(dateutil::is_leap_year(2024));
-}
+TEST_CASE("leap year 2024") { REQUIRE(dateutil::is_leap_year(2024)); }
 
-TEST_CASE("leap year 2076") {
-    REQUIRE(dateutil::is_leap_year(2076));
-}
+TEST_CASE("leap year 2076") { REQUIRE(dateutil::is_leap_year(2076)); }
 
-TEST_CASE("leap year 2400") {
-    REQUIRE(dateutil::is_leap_year(2400));
-}
+TEST_CASE("leap year 2400") { REQUIRE(dateutil::is_leap_year(2400)); }
 
 
 
@@ -92,9 +70,7 @@ TEST_CASE("datetime to ticks") {
     auto ticks_ms = dateutil::datetime_to_ticks<std::chrono::milliseconds>(
         year, month, day, hour, minute, second);
 
-    SUBCASE("Is ticks right") { 
-        REQUIRE(ticks_ms == ticks); 
-    }
+    SUBCASE("Is ticks right") { REQUIRE(ticks_ms == ticks); }
 }
 
 TEST_CASE("ticks to datetime") {
@@ -108,29 +84,17 @@ TEST_CASE("ticks to datetime") {
 
     auto datetime = dateutil::ticks_to_datetime(ticks);
 
-    SUBCASE("Is year right") { 
-        REQUIRE(datetime.year == year); 
-    }
+    SUBCASE("Is year right") { REQUIRE(datetime.year == year); }
 
-    SUBCASE("Is month right") { 
-        REQUIRE(datetime.month == month); 
-    }
+    SUBCASE("Is month right") { REQUIRE(datetime.month == month); }
 
-    SUBCASE("Is day right") { 
-        REQUIRE(datetime.day == day); 
-    }
+    SUBCASE("Is day right") { REQUIRE(datetime.day == day); }
 
-    SUBCASE("Is hour right") { 
-        REQUIRE(datetime.hour == hour); 
-    }
+    SUBCASE("Is hour right") { REQUIRE(datetime.hour == hour); }
 
-    SUBCASE("Is minute right") { 
-        REQUIRE(datetime.minute == minute); 
-    }
+    SUBCASE("Is minute right") { REQUIRE(datetime.minute == minute); }
 
-    SUBCASE("Is second right") { 
-        REQUIRE(datetime.second == second); 
-    }
+    SUBCASE("Is second right") { REQUIRE(datetime.second == second); }
 }
 
 TEST_CASE("DateTime to ticks and ticks to datetime") {
@@ -144,7 +108,7 @@ TEST_CASE("DateTime to ticks and ticks to datetime") {
 
     auto ticks_ms = dateutil::datetime_to_ticks<std::chrono::milliseconds>(
         year, month, day, hour, minute, second);
-    
+
     auto datetime = dateutil::ticks_to_datetime(ticks_ms);
 
     SUBCASE("Is ticks right") { REQUIRE(ticks_ms == ticks); }
@@ -174,7 +138,7 @@ TEST_CASE("DateTime to ticks and ticks to datetime. year 2038-problem") {
 
     auto ticks_ms = dateutil::datetime_to_ticks<std::chrono::milliseconds>(
         year, month, day, hour, minute, second);
-    
+
     auto datetime = dateutil::ticks_to_datetime(ticks_ms);
 
     SUBCASE("Is year right") { REQUIRE(datetime.year == year); }

@@ -3,15 +3,14 @@
 
 #include <ctime>
 
-#include <limits>
 #include <algorithm>
-#include <chrono>
-#include <tuple>
 #include <array>
+#include <chrono>
+#include <limits>
+#include <tuple>
 
 class dateutil {
     public:
-        
     struct DateTimeResult {
         int year;
         int month;
@@ -23,11 +22,14 @@ class dateutil {
 
     enum class DatePart { Year, Month, Day };
 
-    static bool is_leap_year(int year) {
+    using days = std::chrono::duration<
+        int, std::ratio_multiply<std::ratio<24>, std::chrono::hours::period>>;
+
+    static constexpr bool is_leap_year(int year) {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
-    static int64_t days_in_month(int year, int month) {
+    static constexpr int64_t days_in_month(int year, int month) {
         const auto& DIM = !is_leap_year(year) ? MONTH_DAYS : MONTH_DAYS_LEAP;
 
         return (month > 0 && static_cast<size_t>(month) < DIM.size())
@@ -36,8 +38,8 @@ class dateutil {
     }
 
     template <class Duration = std::chrono::milliseconds>
-    static Duration datetime_to_ticks(int year, int month, int day, int hour, int minute,
-                               int second) {
+    static Duration datetime_to_ticks(int year, int month, int day, int hour,
+                                      int minute, int second) {
 
         const auto& DIM = (!is_leap_year(year)) ? MONTH_DAYS : MONTH_DAYS_LEAP;
 
@@ -65,43 +67,45 @@ class dateutil {
 
         if (year > 0) {
             year--;
-    }
+        }
 
         int64_t leap_days =
             (year > 0) ? (year / 4) - (year / 100) + (year / 400) : 0;
 
-        int64_t monthdays = (month > 0 && static_cast<size_t>(month) < DIM.size())
-                                ? DIM[month - 1]
-                                : 0;
+        int64_t monthdays =
+            (month > 0 && static_cast<size_t>(month) < DIM.size())
+                ? DIM[month - 1]
+                : 0;
 
         int64_t yeardays = year * 365;
 
-        std::chrono::seconds ret(yeardays * SECONDS_PER_DAY);
-        ret += std::chrono::seconds(leap_days * SECONDS_PER_DAY);
-        ret += std::chrono::seconds(monthdays * SECONDS_PER_DAY);
-        ret += std::chrono::seconds(((day > 0) ? day - 1 : 0) * SECONDS_PER_DAY);
-        ret += std::chrono::hours(hour);
-        ret += std::chrono::minutes(minute);
-        ret += std::chrono::seconds(second);
+        std::chrono::seconds ret =
+            std::chrono::seconds(yeardays * SECONDS_PER_DAY) +
+            std::chrono::seconds(leap_days * SECONDS_PER_DAY) +
+            std::chrono::seconds(monthdays * SECONDS_PER_DAY) +
+            std::chrono::seconds(((day > 0) ? day - 1 : 0) * SECONDS_PER_DAY) +
+            std::chrono::hours(hour) + std::chrono::minutes(minute) +
+            std::chrono::seconds(second);
 
         return std::chrono::duration_cast<Duration>(ret);
     }
 
-    template <class Duration = std::chrono::milliseconds>
-    static int64_t date_part(Duration ticks, DatePart part) {
+    template <class Duration = std::chrono::milliseconds,
+              typename Rep = typename Duration::rep>
+    static Rep date_part(const Duration& ticks, DatePart part) {
 
-        int64_t result = 1; // Default to MIN_DATE parts
+        Rep result = 1; // Default to MIN_DATE parts
 
         if (ticks != Duration::zero()) {
             std::chrono::seconds ticks_sec =
                 std::chrono::duration_cast<std::chrono::seconds>(ticks);
 
-            //const auto& DIM = MONTH_DAYS;
-            int64_t total_days = ticks_sec.count() / SECONDS_PER_DAY;
-            int64_t span_400 = 0; // # of 400 year spans
-            int64_t span_100 = 0; // # of 100 year spans
-            int64_t span_4 = 0;   // # of 4 year spans
-            int64_t span = 0;     // # of years in the current span
+            // const auto& DIM = MONTH_DAYS;
+            Rep total_days = ticks_sec.count() / SECONDS_PER_DAY;
+            Rep span_400 = 0; // # of 400 year spans
+            Rep span_100 = 0; // # of 100 year spans
+            Rep span_4 = 0;   // # of 4 year spans
+            Rep span = 0;     // # of years in the current span
 
             span_400 = total_days / DAYS_IN_400;
 
@@ -125,11 +129,12 @@ class dateutil {
                 span = 3;
             }
 
-            total_days -= span * 365; // Remove elapsed years in the current span
+            // Remove elapsed years in the current span
+            total_days -= span * 365;
 
             // Sum up all of the span years including the current one to get the
             // final year
-            int64_t year =
+            Rep year =
                 (span_400 * 400) + (span_100 * 100) + (span_4 * 4) + span + 1;
 
             if (part == DatePart::Year) {
@@ -139,14 +144,15 @@ class dateutil {
                 const auto& DIML =
                     (!is_leap_year(year)) ? MONTH_DAYS : MONTH_DAYS_LEAP;
 
-                // dim has 13 elements; dim[0] will never be a match in this loop
+                // dim has 13 elements; dim[0] will never be a match in this
+                // loop
                 for (size_t m = 1; m <= 12 && m < DIML.size(); m++) {
                     if (total_days < DIML[m]) {
                         if (part == DatePart::Month) {
                             return m;
                         } else {
                             return total_days - DIML[m - 1] + 1;
-    }
+                        }
                     }
                 }
             }
@@ -156,7 +162,7 @@ class dateutil {
     }
 
     template <class Duration = std::chrono::milliseconds>
-    static DateTimeResult ticks_to_datetime(Duration ticks) {
+    static DateTimeResult ticks_to_datetime(const Duration& ticks) {
         std::chrono::seconds ticks_sec =
             std::chrono::duration_cast<std::chrono::seconds>(ticks);
 
@@ -176,48 +182,44 @@ class dateutil {
 
         return ret;
     }
-    
-    private:
-        
-        static constexpr int64_t SECONDS_PER_DAY = 86400L;
-        static constexpr int64_t SECONDS_PER_HOUR = 3600L;
-        static constexpr int64_t SECONDS_PER_MINUTE = 60L;
-        static constexpr int64_t DAYS_IN_400 = 146097L;
-        static constexpr int64_t DAYS_IN_100 = 36524L;
-        static constexpr int64_t DAYS_IN_4 = 1461L;
-        
-        static constexpr std::array<int, 13> MONTH_DAYS= {
-            0,
-            31,
-            31 + 28,
-            31 + 28 + 30,
-            31 + 28 + 31 + 30,
-            31 + 28 + 31 + 30 + 31,
-            31 + 28 + 31 + 30 + 31 + 30,
-            31 + 28 + 31 + 30 + 31 + 30 + 31,
-            31 + 28 + 31 + 30 + 31 + 30 + 31 + 31,
-            31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
-            31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
-            31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30,
-            31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31
-        };
-        
-        static constexpr std::array<int, 13> MONTH_DAYS_LEAP = {
-            0,
-            31,
-            31 + 29,
-            31 + 29 + 30,
-            31 + 29 + 31 + 30,
-            31 + 29 + 31 + 30 + 31,
-            31 + 29 + 31 + 30 + 31 + 30,
-            31 + 29 + 31 + 30 + 31 + 30 + 31,
-            31 + 29 + 31 + 30 + 31 + 30 + 31 + 31,
-            31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
-            31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
-            31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30,
-            31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31
-        };
 
+    private:
+    static constexpr int64_t SECONDS_PER_DAY = 86400L;
+    static constexpr int64_t SECONDS_PER_HOUR = 3600L;
+    static constexpr int64_t SECONDS_PER_MINUTE = 60L;
+    static constexpr int64_t DAYS_IN_400 = 146097L;
+    static constexpr int64_t DAYS_IN_100 = 36524L;
+    static constexpr int64_t DAYS_IN_4 = 1461L;
+
+    static constexpr std::array<int, 13> MONTH_DAYS = {
+        0,
+        31,
+        31 + 28,
+        31 + 28 + 30,
+        31 + 28 + 31 + 30,
+        31 + 28 + 31 + 30 + 31,
+        31 + 28 + 31 + 30 + 31 + 30,
+        31 + 28 + 31 + 30 + 31 + 30 + 31,
+        31 + 28 + 31 + 30 + 31 + 30 + 31 + 31,
+        31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
+        31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
+        31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30,
+        31 + 28 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31};
+
+    static constexpr std::array<int, 13> MONTH_DAYS_LEAP = {
+        0,
+        31,
+        31 + 29,
+        31 + 29 + 30,
+        31 + 29 + 31 + 30,
+        31 + 29 + 31 + 30 + 31,
+        31 + 29 + 31 + 30 + 31 + 30,
+        31 + 29 + 31 + 30 + 31 + 30 + 31,
+        31 + 29 + 31 + 30 + 31 + 30 + 31 + 31,
+        31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30,
+        31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31,
+        31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30,
+        31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31};
 };
 
 #endif // DATE_HPP_

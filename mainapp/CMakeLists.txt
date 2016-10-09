@@ -29,20 +29,23 @@ endif()
 
 
 
-
-
 ###
 ## Source/Header Files
 ###
 set(SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
+set(BENCHMARK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/benchmark)
 
 file(GLOB_RECURSE SRC ${SRC_PATH}/*.cpp ${SRC_PATH}/*.cxx ${SRC_PATH}/*.cc)
 file(GLOB_RECURSE HEADERS ${SRC_PATH}/*.h ${SRC_PATH}/*.hpp ${SRC_PATH}/*.hxx)
 
 file(GLOB_RECURSE TEST_SRC ${TEST_PATH}/*.cpp ${TEST_PATH}/*.cxx ${TEST_PATH}/*.cc)
 file(GLOB_RECURSE TEST_HEADERS ${TEST_PATH}/*.h ${TEST_PATH}/*.hpp ${TEST_PATH}/*.hxx)
+
+file(GLOB_RECURSE BENCHMARK_SRC ${BENCHMARK_PATH}/*.cpp ${BENCHMARK_PATH}/*.cxx ${BENCHMARK_PATH}/*.cc)
+file(GLOB_RECURSE BENCHMARK_HEADERS ${BENCHMARK_PATH}/*.h ${BENCHMARK_PATH}/*.hpp ${BENCHMARK_PATH}/*.hxx)
+
 
 include_directories(${INCLUDE_PATH})
 include_directories(${SRC_PATH})
@@ -85,3 +88,49 @@ target_include_directories(${PROJECT_NAME}_test PRIVATE ${TEST_PATH})
 
 enable_testing ()
 add_test (NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_NAME}_test)
+
+
+###
+## Benchmark Application build
+###
+
+add_executable(${PROJECT_NAME}_benchmark ${BENCHMARK_SRC})
+if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
+    target_link_libraries(${PROJECT_NAME}_benchmark c++abi)
+endif()
+
+target_link_libraries(${PROJECT_NAME}_benchmark ${PROJECT_NAME})
+target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${BENCHMARK_PATH})
+
+
+
+###
+## Tools
+###
+
+
+# Adding clang-format target if executable is found
+find_program(CLANG_FORMAT "clang-format")
+if(CLANG_FORMAT)
+  add_custom_target(
+    clang-format
+    COMMAND ${CLANG_FORMAT}
+    -i
+    -style=file
+    ${SRC} ${TEST_SRC}
+    )
+endif()
+
+# Adding clang-tidy target if executable is found
+find_program(CLANG_TIDY "clang-tidy")
+if(CLANG_TIDY)
+  add_custom_target(
+    clang-tidy
+    COMMAND ${CLANG_TIDY}
+    ${SRC} ${TEST_SRC}
+    -config=''
+    --
+    ${CMAKE_CXX_FLAGS}
+    ${INCLUDE_DIRECTORIES}
+    )
+endif()

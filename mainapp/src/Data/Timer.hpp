@@ -1,30 +1,20 @@
-#ifndef MODEL_TIMER_HPP_
-#define MODEL_TIMER_HPP_
+#ifndef DATA_TIMER_HPP_
+#define DATA_TIMER_HPP_
 
 #include "basic.hpp"
 
-#include "Model/BaseModel.hpp"
+#include "Data/BaseModel.hpp"
 
-namespace model {
+namespace data {
 
 /// Simple Timer
-#pragma db value table("model_timer")
 class Timer {
-    ODB_ACCESS
 
     private:
     bool isstart_ = false;
     bool ispause_ = false;
 
-    std::chrono::nanoseconds get_starttime() const;      // By-value accessor.
-    void set_starttime(std::chrono::nanoseconds const&); // By-value modifier.
-    std::chrono::nanoseconds get_pausetime() const;      // By-value accessor.
-    void set_pausetime(std::chrono::nanoseconds const&); // By-value modifier.
-
-#pragma db get(get_starttime) set(set_starttime)
     std::chrono::nanoseconds starttime_;
-
-#pragma db get(get_pausetime) set(set_pausetime)
     std::chrono::nanoseconds pausetime_;
 
     public:
@@ -57,6 +47,6 @@ class Timer {
     /// get current Time in nanosec
     std::chrono::nanoseconds getTimeNanosec() const;
 };
-} // namespace model
+} // namespace data
 
-#endif // MODEL_TIMER_HPP_
+#endif // DATA_TIMER_HPP_

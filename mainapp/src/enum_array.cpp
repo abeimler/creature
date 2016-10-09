@@ -10,5 +10,4 @@ constexpr size_t Enum<E>::end_enum;
 
 template <class E>
 constexpr size_t Enum<E>::count;
-
 }

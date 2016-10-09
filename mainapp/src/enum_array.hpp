@@ -6,9 +6,9 @@
 #include <cstdint>
 
 // stl types/container
-#include <string>
 #include <array>
 #include <memory>
+#include <string>
 
 #include <type_traits>
 
@@ -67,9 +67,9 @@ class Enum {
         public:
         explicit EnumIterator(const underlying_type& value) : m_value(value) {}
 
-        E operator*(void) const noexcept { return static_cast<E>(m_value); }
+        E operator*(void)const noexcept { return static_cast<E>(m_value); }
 
-        void operator++(void) noexcept { ++m_value; }
+        void operator++(void)noexcept { ++m_value; }
 
         bool operator!=(const EnumIterator& rhs) noexcept {
             return m_value != rhs.m_value;
@@ -142,11 +142,15 @@ inline E index_to_enum(const enum_array<E, T>& arr, size_t index) noexcept {
 }
 */
 
+template <class E, class T>
+inline void enum_array_fill(enum_array<E, T>& arr, const T& value) {
+    std::fill(std::begin(arr), std::end(arr), value);
+}
+
 template <class T, size_t N>
 inline void enum_array_fill(std::array<T, N>& arr, const T& value) {
     std::fill(std::begin(arr), std::end(arr), value);
 }
-
 }
 
 #endif

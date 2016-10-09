@@ -1,10 +1,8 @@
 #include "Timer.hpp"
 
-namespace model {
+namespace data {
 
-Timer::Timer() {
-    this->start();
-}
+Timer::Timer() { this->start(); }
 
 void Timer::start() {
     this->isstart_ = true;
@@ -49,41 +47,16 @@ void Timer::stop() {
 std::chrono::nanoseconds Timer::getTimeNanosec() const {
     auto now = std::chrono::high_resolution_clock::now().time_since_epoch();
 
-    auto timesincestart = (now > this->starttime_) 
-                            ? now - this->starttime_
-                            : std::chrono::nanoseconds::zero();
-    
+    auto timesincestart = (now > this->starttime_)
+                              ? now - this->starttime_
+                              : std::chrono::nanoseconds::zero();
+
     auto time = (this->ispause_)
-                    ? std::chrono::duration_cast<std::chrono::nanoseconds>(this->pausetime_)
+                    ? std::chrono::duration_cast<std::chrono::nanoseconds>(
+                          this->pausetime_)
                     : timesincestart;
-    
-    return (this->isstart_)? time : std::chrono::nanoseconds::zero();
-}
 
-std::chrono::nanoseconds Timer::get_starttime() const {
-    return (this->isstart_) ? this->getTimeNanosec()
-                            : std::chrono::nanoseconds(0);
-}
-void Timer::set_starttime(std::chrono::nanoseconds const& count) {
-    if (this->isstart_) {
-        auto now = std::chrono::high_resolution_clock::now().time_since_epoch();
-        this->starttime_ = now - count;
-    }else{
-        this->starttime_ = std::chrono::nanoseconds::zero();
-    }
-}
-std::chrono::nanoseconds Timer::get_pausetime() const {
-    return (this->ispause_) ? this->getTimeNanosec()
-                            : std::chrono::nanoseconds::zero();
-}
-
-void Timer::set_pausetime(std::chrono::nanoseconds const& count) {
-    if (this->ispause_) {
-        auto now = std::chrono::high_resolution_clock::now().time_since_epoch();
-        this->pausetime_ = now - count;
-    }else{
-        this->pausetime_ = std::chrono::nanoseconds::zero();
-    }
+    return (this->isstart_) ? time : std::chrono::nanoseconds::zero();
 }
 
 } // namespace model
