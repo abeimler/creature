@@ -1,9 +1,9 @@
-#ifndef DATA_TIMER_HPP_
-#define DATA_TIMER_HPP_
+#ifndef DATA_TIMER_H_
+#define DATA_TIMER_H_
 
-#include "basic.hpp"
+#include "basic.h"
 
-#include "Data/BaseModel.hpp"
+#include "Data/BaseModel.h"
 
 namespace data {
 
@@ -49,4 +49,4 @@ class Timer {
 };
 } // namespace data
 
-#endif // DATA_TIMER_HPP_
+#endif // DATA_TIMER_H_

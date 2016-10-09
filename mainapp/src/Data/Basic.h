@@ -1,10 +1,10 @@
-#ifndef DATA_BASIC_HPP_
-#define DATA_BASIC_HPP_
+#ifndef DATA_BASIC_H_
+#define DATA_BASIC_H_
 
 // für odb den vollen Pfad mit angeben
-#include "basic.hpp"
+#include "basic.h"
 
-#include "Data/BaseModel.hpp"
+#include "Data/BaseModel.h"
 
 /// Einfache Statische Gamedaten
 namespace data {
@@ -67,4 +67,4 @@ enum class TargetOption : size_t {
 };
 } // namespace data
 
-#endif // DATA_BASIC_HPP_
+#endif // DATA_BASIC_H_

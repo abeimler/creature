@@ -1,10 +1,10 @@
-#ifndef DATA_CREATUREBATTLERSTATUS_HPP_
-#define DATA_CREATUREBATTLERSTATUS_HPP_
+#ifndef DATA_CREATUREBATTLERSTATUS_H_
+#define DATA_CREATUREBATTLERSTATUS_H_
 
-#include "Data/Basic.hpp"
+#include "Data/Basic.h"
 
-#include "Data/BattlerStatus.hpp"
-#include "Data/Creature.hpp"
+#include "Data/BattlerStatus.h"
+#include "Data/Creature.h"
 
 namespace data {
 
@@ -36,4 +36,4 @@ class CreatureBattlerStatus : public BattlerStatus {
 };
 } // namespace data
 
-#endif // DATA_CREATUREBATTLERSTATUS_HPP_
+#endif // DATA_CREATUREBATTLERSTATUS_H_

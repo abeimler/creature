@@ -1,7 +1,7 @@
-#ifndef DATA_ITEM_HPP_
-#define DATA_ITEM_HPP_
+#ifndef DATA_ITEM_H_
+#define DATA_ITEM_H_
 
-#include "Data/Basic.hpp"
+#include "Data/Basic.h"
 
 namespace data {
 
@@ -59,4 +59,4 @@ class Item {
 };
 } // namespace data
 
-#endif // DATA_ITEM_HPP_
+#endif // DATA_ITEM_H_

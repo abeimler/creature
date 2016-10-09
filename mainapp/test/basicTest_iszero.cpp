@@ -1,6 +1,6 @@
 #include "doctest.h"
 
-#include "basic.hpp"
+#include "util.h"
 
 TEST_CASE("zero value (0.0)") {
     double value = 0.0;

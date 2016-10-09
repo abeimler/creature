@@ -1,5 +1,5 @@
-#ifndef ENUM_ARRAY_HPP_
-#define ENUM_ARRAY_HPP_
+#ifndef ENUM_ARRAY_H_
+#define ENUM_ARRAY_H_
 
 
 // stl c libs
@@ -153,4 +153,4 @@ inline void enum_array_fill(std::array<T, N>& arr, const T& value) {
 }
 }
 
-#endif
+#endif // ENUM_ARRAY_H_

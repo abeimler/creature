@@ -1,9 +1,9 @@
-#ifndef DATA_BATTLERSTATUS_HPP_
-#define DATA_BATTLERSTATUS_HPP_
+#ifndef DATA_BATTLERSTATUS_H_
+#define DATA_BATTLERSTATUS_H_
 
-#include "Data/Basic.hpp"
+#include "Data/Basic.h"
 
-#include "Data/Element.hpp"
+#include "Data/Element.h"
 
 namespace data {
 
@@ -315,4 +315,4 @@ class BattlerStatus {
 };
 } // namespace data
 
-#endif // DATA_BATTLERSTATUS_HPP_
+#endif // DATA_BATTLERSTATUS_H_

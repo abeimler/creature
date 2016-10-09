@@ -1,7 +1,7 @@
-#ifndef DATA_CREATURETYPE_HPP_
-#define DATA_CREATURETYPE_HPP_
+#ifndef DATA_CREATURETYPE_H_
+#define DATA_CREATURETYPE_H_
 
-#include "Data/Basic.hpp"
+#include "Data/Basic.h"
 
 namespace data {
 
@@ -74,4 +74,4 @@ class CreatureRootType {
 
 } // namespace data
 
-#endif // DATA_CREATURETYPE_HPP_
+#endif // DATA_CREATURETYPE_H_

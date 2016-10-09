@@ -1,7 +1,7 @@
-#ifndef DATA_CREATURE_ELEMENT_HPP_
-#define DATA_CREATURE_ELEMENT_HPP_
+#ifndef DATA_CREATURE_ELEMENT_H_
+#define DATA_CREATURE_ELEMENT_H_
 
-#include "Data/Basic.hpp"
+#include "Data/Basic.h"
 
 namespace data {
 
@@ -23,4 +23,4 @@ class Element {
 
 } // namespace data
 
-#endif // DATA_CREATURE_ELEMENT_HPP_
+#endif // DATA_CREATURE_ELEMENT_H_

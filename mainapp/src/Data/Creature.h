@@ -1,9 +1,9 @@
-#ifndef DATA_CREATURE_HPP_
-#define DATA_CREATURE_HPP_
+#ifndef DATA_CREATURE_H
+#define DATA_CREATURE_H_
 
-#include "Data/Battler.hpp"
-#include "Data/CreatureType.hpp"
-#include "Data/Element.hpp"
+#include "Data/Battler.h"
+#include "Data/CreatureType.h"
+#include "Data/Element.h"
 
 namespace data {
 
@@ -463,4 +463,4 @@ class CreatureStarter {
 
 } // namespace data
 
-#endif // DATA_CREATURE_HPP_
+#endif // DATA_CREATURE_H_

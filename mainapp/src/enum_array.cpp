@@ -1,4 +1,4 @@
-#include "enum_array.hpp"
+#include "enum_array.h"
 
 namespace earr {
 

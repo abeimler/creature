@@ -1,4 +1,4 @@
-#include "CreatureImage.hpp"
+#include "CreatureImage.h"
 
 namespace model {
 

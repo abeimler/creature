@@ -1,6 +1,6 @@
 #include "doctest.h"
 
-#include "basic.hpp"
+#include "enum_array.h"
 
 enum class TestEnum : size_t {
     BEGIN = 0,

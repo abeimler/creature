@@ -1,9 +1,9 @@
-#ifndef DATA_USEITEM_HPP_
-#define DATA_USEITEM_HPP_
+#ifndef DATA_USEITEM_H_
+#define DATA_USEITEM_H_
 
-#include "Data/BattlerStatus.hpp"
-#include "Data/Creature.hpp"
-#include "Data/Item.hpp"
+#include "Data/BattlerStatus.h"
+#include "Data/Creature.h"
+#include "Data/Item.h"
 
 namespace data {
 
@@ -217,4 +217,4 @@ class UseItem : public Item {
 };
 } // namespace data
 
-#endif // DATA_USEITEM_HPP_
+#endif // DATA_USEITEM_H_

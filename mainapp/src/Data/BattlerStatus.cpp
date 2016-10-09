@@ -1,4 +1,4 @@
-#include "BattlerStatus.hpp"
+#include "BattlerStatus.h"
 
 namespace data {
 

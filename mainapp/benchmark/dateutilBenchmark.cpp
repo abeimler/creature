@@ -1,7 +1,7 @@
 #include "benchpress/benchpress.hpp"
 
-#include "date.hpp"
-#include "util.hpp"
+#include "dateutil.h"
+#include "util.h"
 
 
 BENCHMARK("dateutil::is_leap_year 4", [](benchpress::context* ctx) {

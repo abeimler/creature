@@ -1,7 +1,7 @@
 #include "benchpress/benchpress.hpp"
 
-#include "enum_array.hpp"
-#include "util.hpp"
+#include "enum_array.h"
+#include "util.h"
 
 enum class TestKeys : size_t {
     BEGIN,

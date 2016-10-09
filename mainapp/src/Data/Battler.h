@@ -1,10 +1,10 @@
-#ifndef DATA_BATTLER_HPP_
-#define DATA_BATTLER_HPP_
+#ifndef DATA_BATTLER_H_
+#define DATA_BATTLER_H_
 
-#include "Data/Basic.hpp"
+#include "Data/Basic.h"
 
-#include "Data/Element.hpp"
-#include "Data/Skill.hpp"
+#include "Data/Element.h"
+#include "Data/Skill.h"
 
 namespace data {
 
@@ -299,4 +299,4 @@ class Battler {
 };
 } // namespace data
 
-#endif // DATA_BATTLER_HPP_
+#endif // DATA_BATTLER_H_

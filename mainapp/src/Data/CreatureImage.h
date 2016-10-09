@@ -1,9 +1,9 @@
-#ifndef DATA_CREATUREIMAGE_HPP_
-#define DATA_CREATUREIMAGE_HPP_
+#ifndef DATA_CREATUREIMAGE_H_
+#define DATA_CREATUREIMAGE_H_
 
-#include "Data/Basic.hpp"
+#include "Data/Basic.h"
 
-#include "Data/Creature.hpp"
+#include "Data/Creature.h"
 
 namespace data {
 
@@ -29,4 +29,4 @@ class CreatureImage {
 
 } // namespace data
 
-#endif // DATA_CREATUREIMAGE_HPP_
+#endif // DATA_CREATUREIMAGE_H_

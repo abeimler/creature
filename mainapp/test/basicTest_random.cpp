@@ -1,6 +1,6 @@
 #include "doctest.h"
 
-#include "basic.hpp"
+#include "util.h"
 
 TEST_CASE("random value of range 0-10") {
     int min = 0;

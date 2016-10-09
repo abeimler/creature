@@ -1,3 +1,3 @@
-#include "CreatureAnimationImage.hpp"
+#include "CreatureAnimationImage.h"
 
 namespace data {} // namespace data

@@ -1,8 +1,8 @@
-#ifndef DATA_SKILL_HPP_
-#define DATA_SKILL_HPP_
+#ifndef DATA_SKILL_H_
+#define DATA_SKILL_H_
 
-#include "Data/BattlerStatus.hpp"
-#include "Data/Element.hpp"
+#include "Data/BattlerStatus.h"
+#include "Data/Element.h"
 
 namespace data {
 
@@ -153,4 +153,4 @@ class Skill {
 };
 } // namespace data
 
-#endif // DATA_SKILL_HPP_
+#endif // DATA_SKILL_H_

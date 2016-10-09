@@ -1,7 +1,7 @@
-#ifndef DATA_FOOD_HPP_
-#define DATA_FOOD_HPP_
+#ifndef DATA_FOOD_H_
+#define DATA_FOOD_H_
 
-#include "Data/UseItem.hpp"
+#include "Data/UseItem.h"
 
 namespace data {
 
@@ -65,4 +65,4 @@ class Food : public UseItem {
 };
 } // namespace data
 
-#endif // DATA_FOOD_HPP_
+#endif // DATA_FOOD_H_

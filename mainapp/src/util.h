@@ -1,5 +1,5 @@
-#ifndef UTIL_HPP_
-#define UTIL_HPP_
+#ifndef UTIL_H_
+#define UTIL_H_
 
 #include <cstdint>
 #include <ctime>
@@ -106,4 +106,4 @@ class util {
     static bool randomOdds(int wins, int losses);
 };
 
-#endif
+#endif // UTIL_HP_

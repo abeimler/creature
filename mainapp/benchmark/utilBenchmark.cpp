@@ -1,6 +1,6 @@
 #include "benchpress/benchpress.hpp"
 
-#include "util.hpp"
+#include "util.h"
 
 
 BENCHMARK("util::iszero 0", [](benchpress::context* ctx) {

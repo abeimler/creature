@@ -1,5 +1,5 @@
-#ifndef DATE_HPP_
-#define DATE_HPP_
+#ifndef DATEUTIL_H_
+#define DATEUTIL_H_
 
 #include <ctime>
 
@@ -222,4 +222,4 @@ class dateutil {
         31 + 29 + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31};
 };
 
-#endif // DATE_HPP_
+#endif // DATEUTIL_H_
