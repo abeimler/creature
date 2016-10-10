@@ -1,6 +1,8 @@
 #ifndef DATA_USEITEM_H_
 #define DATA_USEITEM_H_
 
+#include "Data/Basic.h"
+
 #include "Data/BattlerStatus.h"
 #include "Data/Creature.h"
 #include "Data/Item.h"
@@ -8,21 +10,19 @@
 namespace data {
 
 /// UseItem Option
-enum class UseItemOption : size_t {
-    BEGIN,
-    CanUseinBattle = BEGIN, ///< can use in Battle
-    CanUseinField,          ///< can use in Field/Map
+BETTER_ENUM(UseItemOption, size_t, BEGIN,
+            CanUseinBattle = BEGIN, ///< can use in Battle
+            CanUseinField,          ///< can use in Field/Map
 
-    /// only on Dead Character
-    /// (dont use OnlyOnDeadChara and OnDeadChara together)
-    OnlyOnDeadChara,
+            /// only on Dead Character
+            /// (dont use OnlyOnDeadChara and OnDeadChara together)
+            OnlyOnDeadChara,
 
-    /// on Dead Character, too
-    /// (dont use OnlyonDeadChara and OnDeadChara together)
-    OnDeadChara,
-    AllCanUseIt, ///< can use it all
-    END
-};
+            /// on Dead Character, too
+            /// (dont use OnlyonDeadChara and OnDeadChara together)
+            OnDeadChara,
+            AllCanUseIt, ///< can use it all
+            END)
 
 /// UseItem Item
 class UseItem : public Item {

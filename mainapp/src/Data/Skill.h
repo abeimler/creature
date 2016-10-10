@@ -7,23 +7,20 @@
 namespace data {
 
 /// Skill Option
-enum class SkillOption : size_t {
-    BEGIN,
-    Absorb = BEGIN,  ///< Absort
-    IgnoreDefensive, ///< Ignore Defensive
-    PhysicalAttack,  ///< Physical Attack
-    CanUseinBattle,  ///< can use in Battle
-    CanUseinField,   ///< can use in Field/Map
+BETTER_ENUM(SkillOption, size_t, BEGIN,
+            Absorb = BEGIN,  ///< Absort
+            IgnoreDefensive, ///< Ignore Defensive
+            PhysicalAttack,  ///< Physical Attack
+            CanUseinBattle,  ///< can use in Battle
+            CanUseinField,   ///< can use in Field/Map
 
-    /// only on dead Character
-    /// (dont use OnlyOnDeadChara and OnDeadChara together)
-    OnlyOnDeadChara,
+            /// only on dead Character
+            /// (dont use OnlyOnDeadChara and OnDeadChara together)
+            OnlyOnDeadChara,
 
-    /// on dead Character and alive Character
-    /// (dont use OnlyOnDeadChara and OnDeadChara together)
-    OnDeadChara,
-    END
-};
+            /// on dead Character and alive Character
+            /// (dont use OnlyOnDeadChara and OnDeadChara together)
+            OnDeadChara, END)
 
 /// Skill
 class Skill {

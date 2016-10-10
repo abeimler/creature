@@ -2,6 +2,7 @@
 #define UTIL_H_
 
 #include <cstdint>
+#include <cstdlib>
 #include <ctime>
 
 #include <random>
@@ -77,18 +78,6 @@ class util {
             return false;
         }
 
-#ifndef HAS_NO_CXX11_RANDOM_DEVICE
-        auto rdseed = []() {
-            static std::random_device rd;
-            return rd();
-        };
-#else
-        auto rdseed = []() {
-            srand(time(std::mt19937));
-            return rand();
-        };
-#endif
-
         static std::mt19937 gen(rdseed());
 
         double probability = static_cast<double>(percent) / 100.0;
@@ -104,6 +93,9 @@ class util {
     static float random(float lowest_number, float highest_number);
     static double random(double lowest_number, double highest_number);
     static bool randomOdds(int wins, int losses);
+
+    private:
+    static unsigned int rdseed();
 };
 
 #endif // UTIL_HP_

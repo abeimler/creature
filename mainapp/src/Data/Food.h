@@ -5,7 +5,7 @@
 
 namespace data {
 
-enum class FoodType : int32_t { Eat, Drink };
+BETTER_ENUM(FoodType, size_t, Eat, Drink)
 
 /// Food/Drink Item
 class Food : public UseItem {
@@ -41,10 +41,10 @@ class Food : public UseItem {
     double getWeight() const { return this->weight_; }
 
     /// true, Food-Item is Drinkable
-    bool isDrink() const { return this->foodtype_ == FoodType::Drink; }
+    bool isDrink() const { return this->foodtype_ == +FoodType::Drink; }
 
     /// true, Food-Item is Eatable
-    bool isEat() const { return this->foodtype_ == FoodType::Eat; }
+    bool isEat() const { return this->foodtype_ == +FoodType::Eat; }
 
     /// Boni for calories
     double getCalories() const { return this->calories_; }

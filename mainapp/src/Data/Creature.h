@@ -8,82 +8,78 @@
 namespace data {
 
 /// Creature Normal-Animation Frames
-enum class CreatureAnimation : size_t {
-    /// start at 12, see AnimationPose
-    BEGIN = static_cast<size_t>(AnimationPose::END),
-    Standing = BEGIN, ///< Standing
-    WalkingLeft,      ///< Walking left
-    WalkingRight,     ///< Walking right
-    Sitting,          ///< Sitting
-    Eat,              ///< Eat
-    Poop,             ///< Poop
-    Refuse,           ///< Refuse
-    LookAt,           ///< LookAt
-    END
-};
+BETTER_ENUM(CreatureAnimation, size_t,
+            /// start at 12, see AnimationPose
+            BEGIN = static_cast<size_t>(AnimationPose::END),
+            Standing = BEGIN, ///< Standing
+            WalkingLeft,      ///< Walking left
+            WalkingRight,     ///< Walking right
+            Sitting,          ///< Sitting
+            Eat,              ///< Eat
+            Poop,             ///< Poop
+            Refuse,           ///< Refuse
+            LookAt,           ///< LookAt
+            END)
 
 /// Creature Misc-Animation Frames
-enum class CreatureAnimationMisc : size_t {
-    /// start at 20, see CreatureAnimation
-    BEGIN = static_cast<size_t>(CreatureAnimation::END),
-    Born = BEGIN,  ///< Is Born
-    Happy = BEGIN, ///< Happy
-    EvolutionFrom, ///< evolution from ...
-    EvolutionTo,   ///< ... evolution to
-    END
-};
+BETTER_ENUM(CreatureAnimationMisc, size_t,
+            /// start at 20, see CreatureAnimation
+            BEGIN = static_cast<size_t>(CreatureAnimation::END),
+            Born = BEGIN,  ///< Is Born
+            Happy = BEGIN, ///< Happy
+            EvolutionFrom, ///< evolution from ...
+            EvolutionTo,   ///< ... evolution to
+            END)
 
-/// GameCreature Status (not Status-Animation Frames)
-enum class CreatureStatus : size_t {
-    /// start at 23, see CreatureAnimationMisc
-    BEGIN = static_cast<size_t>(CreatureAnimationMisc::END),
-    Normal = BEGIN, ///< Normal Status (no Statuses)
-    Dead,           ///< Dead
-    RunAway,        ///< Run Away
-    Sleep,          ///< Sleep
-    InHospital,     ///< In Hospital
-    RestInHospital, ///< Rest in Hospital
-    Rest,           ///< Rest
-    Hurt,           ///< Hurt
-    Ill,            ///< Ill
-    Training,       ///< In Training
-    Unhappy,        ///< Unhappy
-    Happy,          ///< Happy
-    Hungry,         ///< Hungry
-    Thirsty,        ///< Thirsty
-    Replete,        ///< Replete
-    Tired,          ///< Tired
-    END
-};
 
 /// Creature Status-Animation Frames
-enum class CreatureStatusAnimation : size_t {
-    BEGIN = static_cast<size_t>(CreatureStatus::END),
-    Normal = BEGIN,
-    Dead,     ///< Dead
-    RunAway,  ///< Run Away
-    Sleep,    ///< Sleep, Rest
-    Hurt,     ///< Hurt, Ill
-    Training, ///< In Training
-    END
-};
+BETTER_ENUM(CreatureStatusAnimation, size_t,
+            /// start at 23, see CreatureAnimationMisc
+            BEGIN = static_cast<size_t>(CreatureAnimationMisc::END),
+            Normal = BEGIN,
+            Dead,     ///< Dead
+            RunAway,  ///< Run Away
+            Sleep,    ///< Sleep, Rest
+            Hurt,     ///< Hurt, Ill
+            Training, ///< In Training
+            END)
+
+
+
+/// GameCreature Status
+BETTER_ENUM(CreatureStatus, size_t, BEGIN,
+            Normal = BEGIN, ///< Normal Status (no Statuses)
+            Dead,           ///< Dead
+            RunAway,        ///< Run Away
+            Sleep,          ///< Sleep
+            InHospital,     ///< In Hospital
+            RestInHospital, ///< Rest in Hospital
+            Rest,           ///< Rest
+            Hurt,           ///< Hurt
+            Ill,            ///< Ill
+            Training,       ///< In Training
+            Unhappy,        ///< Unhappy
+            Happy,          ///< Happy
+            Hungry,         ///< Hungry
+            Thirsty,        ///< Thirsty
+            Replete,        ///< Replete
+            Tired,          ///< Tired
+            END)
 
 /// Creature Level
-enum class CreatureLevel : size_t {
-    BEGIN,
-    Egg = BEGIN, ///< Egg
-    Baby,        ///< Baby
-    Baby2,       ///< Baby2
-    Child,       ///< Child
-    Adult,       ///< Adult
-    Perfect,     ///< Perfect
-    Ultimate,    ///< Ultimate
-    END
-};
+BETTER_ENUM(CreatureLevel, size_t, BEGIN,
+            Egg = BEGIN, ///< Egg
+            Baby,        ///< Baby
+            Baby2,       ///< Baby2
+            Child,       ///< Child
+            Adult,       ///< Adult
+            Perfect,     ///< Perfect
+            Ultimate,    ///< Ultimate
+            END)
 
 /// Creature Circadian Rhythm
-enum class CreatureCircadianRhythm : size_t {
-    BEGIN,
+BETTER_ENUM(
+    CreatureCircadianRhythm, size_t, BEGIN,
     None = BEGIN, ///< None
     Crepuscular,  ///< Crepuscular      during twilight (i.e., dawn and dusk).
     Diurnal,      ///< Diurnal          during the day and sleeping, or other
@@ -92,29 +88,26 @@ enum class CreatureCircadianRhythm : size_t {
                   ///                   during the day.
     Variable,     ///< Variable
     Unknown,      ///< Unknown
-    END
-};
+    END)
 
 /// Creature TrainingTime/ActiveTime
-enum class CreatureTrainTime : size_t {
-    BEGIN,
-    Morning = BEGIN, ///< Morning:      4 - 11 o'clock
-    Noon,            ///< Noon:         12 - 16 o'clock
-    AfterNoon,       ///< AfterNoon:    17 - 19 o'clock
-    Evening,         ///< Evening:      20 - 22 o'clock
-    Night,           ///< Night:        23 - 3 o'clock
-    END
-};
+BETTER_ENUM(CreatureTrainTime, size_t, BEGIN,
+            Morning = BEGIN, ///< Morning:      4 - 11 o'clock
+            Noon,            ///< Noon:         12 - 16 o'clock
+            AfterNoon,       ///< AfterNoon:    17 - 19 o'clock
+            Evening,         ///< Evening:      20 - 22 o'clock
+            Night,           ///< Night:        23 - 3 o'clock
+            END)
 
 /// Creature Gender
-enum class CreatureGender : size_t {
-    BEGIN,
-    None = BEGIN,  ///< None/Genderless
-    Male,          ///< Male
-    Female,        ///< Fermale
-    Hermaphrodite, ///< Hermaphrodite
-    END
-};
+BETTER_ENUM(CreatureGender, size_t, BEGIN,
+            None = BEGIN,  ///< None/Genderless
+            Male,          ///< Male
+            Female,        ///< Fermale
+            Hermaphrodite, ///< Hermaphrodite
+            END)
+
+
 
 /// Condition to Evolution
 class EvolutionCondition {

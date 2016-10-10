@@ -9,43 +9,38 @@
 namespace data {
 
 /// Weapon Animation: Move
-enum class ActionPrevMoveOption : size_t {
-    BEGIN,
-    None = BEGIN, ///< none
-    StepForward,  ///< 1 step forward
-    StepBackward, ///< 1 Step backward
-    JumpForward,  ///< 1 jump forward
-    JumpBackward, ///< 1 jump backward
-    MovetoTarget, ///< move to target
-    END
-};
+BETTER_ENUM(ActionPrevMoveOption, size_t, BEGIN,
+            None = BEGIN, ///< none
+            StepForward,  ///< 1 step forward
+            StepBackward, ///< 1 Step backward
+            JumpForward,  ///< 1 jump forward
+            JumpBackward, ///< 1 jump backward
+            MovetoTarget, ///< move to target
+            END)
 
 /// Batter Animation Pose
-enum class AnimationPose : size_t {
-    BEGIN,
-    Normal = BEGIN, ///< Normal/Standing
-    RightHand,      ///< Right Hand Attack
-    LeftHand,       ///< Left hand Attack
-    Skill,          ///< use Skill
-    Dead,           ///< Dead
-    BadStatus,      ///< Bad BattlerStatus (Poison, Blind, ...)
-    Defending,      ///< Defending
-    MoveLeft,       ///< move Left
-    MoveRight,      ///< move Right
-    Win,            ///< Win/Victorious
-    Item,           ///< use Item
-    Damage,         ///< Damaged/Hit
-    END
-};
+BETTER_ENUM(AnimationPose, size_t, BEGIN,
+            Normal = BEGIN, ///< Normal/Standing
+            RightHand,      ///< Right Hand Attack
+            LeftHand,       ///< Left hand Attack
+            Skill,          ///< use Skill
+            Dead,           ///< Dead
+            BadStatus,      ///< Bad BattlerStatus (Poison, Blind, ...)
+            Defending,      ///< Defending
+            MoveLeft,       ///< move Left
+            MoveRight,      ///< move Right
+            Win,            ///< Win/Victorious
+            Item,           ///< use Item
+            Damage,         ///< Damaged/Hit
+            END)
 
 /// Class Option
-enum class BattlerOption : size_t {
-    BEGIN,
-    LessDamage = BEGIN, ///< 1/4 damage less
-    HigherGuard,        ///< 1/4 damage less by defending
-    DoubleItemEffect,   ///< Double Effect of UseItem, recover HP/MP
-    END
-};
+BETTER_ENUM(BattlerOption, size_t, BEGIN,
+            LessDamage = BEGIN, ///< 1/4 damage less
+            HigherGuard,        ///< 1/4 damage less by defending
+            DoubleItemEffect,   ///< Double Effect of UseItem, recover HP/MP
+            END)
+
 
 /// Learn Skill
 class LearnSkill {
@@ -87,10 +82,10 @@ class Battler {
 
     std::vector<LearnSkill> skills_;
 
-    /// Resist of Element (index => Element Name)
+    /// Resist of Element (key => Element Name, value = Resist)
     std::unordered_map<std::string, Resist> statusresist_;
 
-    /// Resist of Element (index => Element Name)
+    /// Resist of Element (key => Element Name, value = Resist)
     std::unordered_map<std::string, Resist> elementresist_;
 
     earr::enum_array<BattlerOption, bool> option_;
@@ -175,7 +170,7 @@ class Battler {
     Resist getStatusResist(std::string battlerstatus_name) const {
         auto it = this->statusresist_.find(battlerstatus_name);
 
-        return (it != this->statusresist_.end()) ? it->second : Resist::Normal;
+        return (it != this->statusresist_.end()) ? it->second : +Resist::Normal;
     }
 
     /// Element Resist
@@ -190,7 +185,8 @@ class Battler {
     Resist getElementResist(std::string element_name) const {
         auto it = this->elementresist_.find(element_name);
 
-        return (it != this->elementresist_.end()) ? it->second : Resist::Normal;
+        return (it != this->elementresist_.end()) ? it->second
+                                                  : +Resist::Normal;
     }
 
     /// Battler Options

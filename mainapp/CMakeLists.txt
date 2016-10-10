@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (mainapp C CXX)
 
+include(CheckCXXSourceCompiles)
 
 ###
 ## Setup Compiler
@@ -9,8 +10,8 @@ project (mainapp C CXX)
 #set(CMAKE_C_COMPILER "/usr/bin/clang")
 #set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
 
-#set(CMAKE_CXX_STANDARD 14)
-#set(CMAKE_CXX_STANDARD_REQUIRED on)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -pthread")
     
 
@@ -27,6 +28,58 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${warnings}")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
+
+##
+# Testing Compiler
+##
+
+check_cxx_source_compiles(
+"
+#include <cstdint>
+#include <ctime>
+
+#include <random>
+
+int main() {
+
+    std::random_device rd {};
+    auto value = rd();
+
+    return 0;
+}
+"
+HAS_CXX11_RANDOM_DEVICE
+)
+
+check_cxx_source_compiles(
+"
+#include <cstdint>
+#include <ctime>
+
+#include <random>
+
+int main() {
+
+    std::default_random_engine generator(time(0));
+    std::uniform_int_distribution<unsigned int> dis;
+    auto value = dis(generator);
+
+    return 0;
+}
+"
+HAS_CXX11_DEFAULT_RANDOM_ENGINE
+)
+
+if(NOT HAS_CXX11_RANDOM_DEVICE)
+    add_definitions(-DHAS_NO_CXX11_RANDOM_DEVICE)
+endif()
+
+if(NOT HAS_CXX11_DEFAULT_RANDOM_ENGINE)
+    add_definitions(-DHAS_NO_CXX11_DEFAULT_RANDOM_DEVICE)
+endif()
+
+
+
 
 
 

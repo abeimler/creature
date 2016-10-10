@@ -18,6 +18,23 @@ class Timer {
     std::chrono::nanoseconds pausetime_;
 
     public:
+    template <class Archive>
+    void save(Archive& ar) const {
+        ar(cereal::make_nvp("isstart", isstart_));
+        ar(cereal::make_nvp("ispause", ispause_));
+        ar(cereal::make_nvp("starttime", starttime_));
+        ar(cereal::make_nvp("pausetime", pausetime_));
+    }
+
+    template <class Archive>
+    void load(Archive& ar) {
+        ar(cereal::make_nvp("isstart", isstart_));
+        ar(cereal::make_nvp("ispause", ispause_));
+        ar(cereal::make_nvp("starttime", starttime_));
+        ar(cereal::make_nvp("pausetime", pausetime_));
+    }
+
+    public:
     Timer();
 
     void start();   ///< start Timer

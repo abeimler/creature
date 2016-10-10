@@ -13,6 +13,19 @@
 #include <type_traits>
 
 
+
+#ifndef BETTER_ENUMS_CONSTEXPR_TO_STRING
+#define BETTER_ENUMS_CONSTEXPR_TO_STRING
+#endif
+
+#define BETTER_ENUMS_DEFAULT_CONSTRUCTOR(Enum) \
+    public:                                    \
+    Enum() = default;
+
+#include <better-enums/n4428.h>
+#include <enum.h>
+
+
 namespace earr {
 /**
  * Enum Array
@@ -20,11 +33,15 @@ namespace earr {
 template <class E>
 class Enum {
     public:
-    static_assert(std::is_enum<E>::value, "E must be anum");
+    // static_assert(std::is_enum<E>::value, "E must be anum");
 
+    /*
     using underlying_type = typename std::underlying_type<E>::type;
     static_assert(std::is_unsigned<underlying_type>::value,
                   "underlying_type of E must be unsigned");
+    */
+
+    using underlying_type = size_t;
 
     static constexpr size_t begin_enum = static_cast<size_t>(E::BEGIN);
     static constexpr size_t end_enum = static_cast<size_t>(E::END);

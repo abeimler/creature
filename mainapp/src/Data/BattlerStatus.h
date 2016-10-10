@@ -8,25 +8,21 @@
 namespace data {
 
 ///  BattlerStatus Restriction (order by smallest effect (first))
-enum class StatusRestrictionOption : size_t {
-    BEGIN,
-    None = BEGIN, ///< None
-    AtkEnemies,   ///< allways attack enemies
-    AtkAllies,    ///< allways attack allies
-    AtkAll,       ///< allways attack enemies/allies
-    NoMove,       ///< can't move
-    NoMoveEvade,  ///< can't move or evade
-    END
-};
+BETTER_ENUM(StatusRestrictionOption, size_t, BEGIN,
+            None = BEGIN, ///< None
+            AtkEnemies,   ///< allways attack enemies
+            AtkAllies,    ///< allways attack allies
+            AtkAll,       ///< allways attack enemies/allies
+            NoMove,       ///< can't move
+            NoMoveEvade,  ///< can't move or evade
+            END)
 
 /// BattlerStatus Option
-enum class StatusOption : size_t {
-    BEGIN,
-    EvadePhysical = BEGIN, ///< can't hit by physical attacks
-    ReflectSkills,         ///< Skill reflected back to the user
-    Dead,                  ///< dead/knockout
-    END
-};
+BETTER_ENUM(StatusOption, size_t, BEGIN,
+            EvadePhysical = BEGIN, ///< can't hit by physical attacks
+            ReflectSkills,         ///< Skill reflected back to the user
+            Dead,                  ///< dead/knockout
+            END)
 
 ///  BattlerStatus Extent (trigger to remove BattlerStatus)
 class StatusExtent {
@@ -163,7 +159,8 @@ class BattlerStatus {
     Resist getElementResist(std::string element_name) const {
         auto it = this->elementresist_.find(element_name);
 
-        return (it != this->elementresist_.end()) ? it->second : Resist::Normal;
+        return (it != this->elementresist_.end()) ? it->second
+                                                  : +Resist::Normal;
     }
 
     Resist getElementResist(const Element& element) const {
