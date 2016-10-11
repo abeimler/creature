@@ -12,7 +12,9 @@
 
 #include <type_traits>
 
-
+#include <cereal/cereal.hpp>
+#include <cereal/macros.hpp>
+#include <cereal/types/string.hpp>
 
 #ifndef BETTER_ENUMS_CONSTEXPR_TO_STRING
 #define BETTER_ENUMS_CONSTEXPR_TO_STRING
@@ -22,8 +24,75 @@
     public:                                    \
     Enum() = default;
 
+
+#define BETTER_ENUMS_SAVE_LOAD_ARCHIVE(Enum)                             \
+    template <class Archive,                                             \
+              cereal::traits::EnableIf<cereal::traits::is_text_archive<  \
+                  Archive>::value> = cereal::traits::sfinae>             \
+    std::string save_minimal(Archive&) const {                           \
+        return _to_string();                                             \
+    }                                                                    \
+    template <class Archive,                                             \
+              cereal::traits::EnableIf<cereal::traits::is_text_archive<  \
+                  Archive>::value> = cereal::traits::sfinae>             \
+    void load_minimal(Archive const&, std::string const& str) {          \
+        _value = _from_string(str.c_str())._to_integral();               \
+    }                                                                    \
+    template <class Archive,                                             \
+              cereal::traits::DisableIf<cereal::traits::is_text_archive< \
+                  Archive>::value> = cereal::traits::sfinae>             \
+    _integral save_minimal(Archive&) const {                             \
+        return _value;                                                   \
+    }                                                                    \
+    template <class Archive,                                             \
+              cereal::traits::DisableIf<cereal::traits::is_text_archive< \
+                  Archive>::value> = cereal::traits::sfinae>             \
+    void load_minimal(Archive const&, _integral const& xx) {             \
+        _value = xx;                                                     \
+    }
+
+
+/*
+    template <class Archive>                                                   \
+    inline                                                                     \
+        typename std::enable_if<cereal::traits::is_output_serializable<        \
+                                    cereal::BinaryData<Enum>, Archive>::value, \
+                                void>::type                                    \
+        CEREAL_SAVE_FUNCTION_NAME(Archive& ar) const {                         \
+        ar(_value);                                                            \
+    }                                                                          \
+    template <class Archive>                                                   \
+    inline                                                                     \
+        typename std::enable_if<cereal::traits::is_input_serializable<         \
+                                    cereal::BinaryData<Enum>, Archive>::value, \
+                                void>::type                                    \
+        CEREAL_LOAD_FUNCTION_NAME(Archive& ar) {                               \
+        ar(_value);                                                            \
+    }                                                                          \
+    template <class Archive>                                                   \
+    inline                                                                     \
+        typename std::enable_if<!cereal::traits::is_output_serializable<       \
+                                    cereal::BinaryData<Enum>, Archive>::value, \
+                                void>::type                                    \
+        CEREAL_SAVE_FUNCTION_NAME(Archive& ar) const {                         \
+        std::string estr = _to_string();                                       \
+        ar(estr);                                                              \
+    }                                                                          \
+    template <class Archive>                                                   \
+    inline                                                                     \
+        typename std::enable_if<!cereal::traits::is_input_serializable<        \
+                                    cereal::BinaryData<Enum>, Archive>::value, \
+                                void>::type                                    \
+        CEREAL_LOAD_FUNCTION_NAME(Archive& ar) {                               \
+        std::string estr;                                                      \
+        ar(estr);                                                              \
+        _value = _from_string(estr.c_str())._to_integral();                    \
+    }
+*/
+
 #include <better-enums/n4428.h>
 #include <enum.h>
+
 
 
 namespace earr {
