@@ -251,13 +251,14 @@
         33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17,  \
         16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1))
 
-#define BETTER_ENUMS_ITERATE(X, f, l)                                          \
-    X(f, l, 0)                                                                 \
-    X(f, l, 1)                                                                 \
-    X(f, l, 2)                                                                 \
-    X(f, l, 3) X(f, l, 4) X(f, l, 5) X(f, l, 6) X(f, l, 7) X(f, l, 8)          \
-        X(f, l, 9) X(f, l, 10) X(f, l, 11) X(f, l, 12) X(f, l, 13) X(f, l, 14) \
-            X(f, l, 15) X(f, l, 16) X(f, l, 17) X(f, l, 18) X(f, l, 19)        \
+#define BETTER_ENUMS_ITERATE(X, f, l)                                   \
+    X(f, l, 0)                                                          \
+    X(f, l, 1)                                                          \
+    X(f, l, 2)                                                          \
+    X(f, l, 3)                                                          \
+    X(f, l, 4) X(f, l, 5) X(f, l, 6) X(f, l, 7) X(f, l, 8) X(f, l, 9)   \
+        X(f, l, 10) X(f, l, 11) X(f, l, 12) X(f, l, 13) X(f, l, 14)     \
+            X(f, l, 15) X(f, l, 16) X(f, l, 17) X(f, l, 18) X(f, l, 19) \
                 X(f, l, 20) X(f, l, 21) X(f, l, 22) X(f, l, 23)
 
 #endif // #ifdef BETTER_ENUMS_MACRO_FILE else case
@@ -634,7 +635,6 @@ struct _initialize_at_program_start {
         _integral _value;                                                      \
                                                                                \
         BETTER_ENUMS_DEFAULT_CONSTRUCTOR(Enum)                                 \
-        BETTER_ENUMS_SAVE_LOAD_ARCHIVE(Enum)                                   \
                                                                                \
         private:                                                               \
         explicit BETTER_ENUMS_CONSTEXPR_ Enum(const _integral& value)          \
@@ -982,10 +982,6 @@ struct _initialize_at_program_start {
 #define BETTER_ENUMS_DEFAULT_CONSTRUCTOR(Enum) \
     private:                                   \
     Enum() : _value(0) {}
-#endif
-
-#ifndef BETTER_ENUMS_SAVE_LOAD_ARCHIVE
-#define BETTER_ENUMS_SAVE_LOAD_ARCHIVE(Enum)
 #endif
 
 

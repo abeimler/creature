@@ -20,12 +20,9 @@
 #define BETTER_ENUMS_CONSTEXPR_TO_STRING
 #endif
 
-#define BETTER_ENUMS_DEFAULT_CONSTRUCTOR(Enum) \
-    public:                                    \
-    Enum() = default;
-
-
-#define BETTER_ENUMS_SAVE_LOAD_ARCHIVE(Enum)                             \
+#define BETTER_ENUMS_DEFAULT_CONSTRUCTOR(Enum)                           \
+    public:                                                              \
+    Enum() = default;                                                    \
     template <class Archive,                                             \
               cereal::traits::EnableIf<cereal::traits::is_text_archive<  \
                   Archive>::value> = cereal::traits::sfinae>             \
