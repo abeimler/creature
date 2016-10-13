@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
-project (mainapp C CXX)
+project (backend C CXX)
 
 include(CheckCXXSourceCompiles)
 
