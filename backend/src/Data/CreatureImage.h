@@ -14,6 +14,13 @@ class CreatureImage {
     std::string filename_;
 
     public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("creature_name", creature_name_));
+        ar(cereal::make_nvp("filename", filename_));
+    }
+
+    public:
     CreatureImage() = default;
 
     std::string getCreatureName() const { return this->creature_name_; }

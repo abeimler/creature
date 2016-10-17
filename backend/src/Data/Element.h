@@ -11,6 +11,12 @@ class Element {
     std::string name_;
 
     public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("name", name_));
+    }
+
+    public:
     Element() = default;
 
     explicit Element(std::string name);

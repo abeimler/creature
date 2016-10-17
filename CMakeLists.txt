@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
-project (newproject)
+project (creature)
 
-add_subdirectory(mainapp)
+add_subdirectory(backend)
 
 

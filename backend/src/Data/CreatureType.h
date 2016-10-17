@@ -13,6 +13,15 @@ class CreatureType {
 
     std::string creatureroottype_name_;
 
+
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("name", name_));
+        ar(cereal::make_nvp("creatureroottype_name", creatureroottype_name_));
+    }
+
+
     public:
     CreatureType() = default;
 
@@ -41,6 +50,14 @@ class CreatureRootType {
     std::string name_;
 
     std::vector<CreatureType> types_;
+
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("name", name_));
+        ar(cereal::make_nvp("types", types_));
+    }
+
 
     public:
     CreatureRootType() = default;

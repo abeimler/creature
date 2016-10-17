@@ -33,6 +33,15 @@ class StatusExtent {
     int rate_ = 30;
 
     public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("afterbattle", afterbattle_));
+        ar(cereal::make_nvp("bydamage", bydamage_));
+        ar(cereal::make_nvp("turn", turn_));
+        ar(cereal::make_nvp("rate", rate_));
+    }
+
+    public:
     StatusExtent() = default;
 
     bool isAfterBattle() const { return this->afterbattle_; }
@@ -53,6 +62,15 @@ class StatusDamage {
     bool ispercent_ = 0;
 
     int damageperstep_ = false;
+
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("value", value_));
+        ar(cereal::make_nvp("ispercent", ispercent_));
+        ar(cereal::make_nvp("damageperstep", damageperstep_));
+    }
+
 
     public:
     StatusDamage() = default;
@@ -103,6 +121,32 @@ class BattlerStatus {
     StatusRestrictionOption restriction_ = StatusRestrictionOption::None;
     earr::enum_array<StatusOption, bool> option_;
     earr::enum_array<Resist, int> sensitivity_;
+
+
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("name", name_));
+        ar(cereal::make_nvp("attr", attr_));
+
+        ar(cereal::make_nvp("extent", extent_));
+
+        ar(cereal::make_nvp("elementresist", elementresist_));
+        ar(cereal::make_nvp("removestatuses", removestatuses_));
+
+        ar(cereal::make_nvp("noskillatk", noskillatk_));
+        ar(cereal::make_nvp("noskillint", noskillint_));
+
+        ar(cereal::make_nvp("priority", priority_));
+        ar(cereal::make_nvp("hitrate", hitrate_));
+        ar(cereal::make_nvp("hpdamage", hpdamage_));
+        ar(cereal::make_nvp("mpdamage", mpdamage_));
+        ar(cereal::make_nvp("restriction", restriction_));
+        ar(cereal::make_nvp("option", option_));
+        ar(cereal::make_nvp("sensitivity", sensitivity_));
+    }
+
+
 
     public:
     BattlerStatus();

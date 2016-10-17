@@ -125,6 +125,23 @@ class EvolutionCondition {
     earr::enum_array<CreatureTrainTime, bool> traintime_;
 
     public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("weight", weight_));
+        ar(cereal::make_nvp("luck", luck_));
+        ar(cereal::make_nvp("disc", disc_));
+
+        ar(cereal::make_nvp("wasnotill", wasnotill_));
+        ar(cereal::make_nvp("wasnothurt", wasnothurt_));
+
+        ar(cereal::make_nvp("mustevolveatlevel", mustevolveatlevel_));
+        ar(cereal::make_nvp("attr", attr_));
+
+        ar(cereal::make_nvp("traintime", traintime_));
+    }
+
+
+    public:
     static constexpr int MUSTEVOLVEATLEVEL_NONE = -1;
 
     EvolutionCondition();
@@ -239,6 +256,30 @@ class Creature : public Battler {
     EvolutionCondition evolcondition_;
 
     earr::enum_array<CreatureGender, double> genderdistribution_;
+
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::base_class<Battler>(this));
+
+        ar(cereal::make_nvp("weight", creaturelevel_));
+        ar(cereal::make_nvp("luck", elements_));
+        ar(cereal::make_nvp("disc", creaturerhythm_));
+
+        ar(cereal::make_nvp("wasnotill", creaturetype_));
+
+        ar(cereal::make_nvp("wasnothurt", minweight_));
+        ar(cereal::make_nvp("wasnothurt", maxweight_));
+        ar(cereal::make_nvp("wasnothurt", minbodysize_));
+        ar(cereal::make_nvp("wasnothurt", maxbodysize_));
+
+        ar(cereal::make_nvp("mustevolveatlevel", nextcreatures_));
+        ar(cereal::make_nvp("attr", prevcreatures_));
+        ar(cereal::make_nvp("attr", misscreatures_));
+
+        ar(cereal::make_nvp("traintime", evolcondition_));
+        ar(cereal::make_nvp("traintime", genderdistribution_));
+    }
 
     public:
     Creature();
@@ -438,10 +479,18 @@ class Creature : public Battler {
     void setBodySizeMax(double bodysize) { this->maxbodysize_ = bodysize; }
 };
 
+
+
 /// Starter Creature
 class CreatureStarter {
     private:
     std::string creature_name_;
+
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("creature_name", creature_name_));
+    }
 
     public:
     CreatureStarter() = default;

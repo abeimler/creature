@@ -50,6 +50,31 @@ class UseItem : public Item {
     /// @todo make it optional
     std::string useskill_;
 
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::base_class<Item>(this));
+
+        ar(cereal::make_nvp("canuse", canuse_));
+        ar(cereal::make_nvp("target", target_));
+        ar(cereal::make_nvp("atknumbers", atknumbers_));
+        ar(cereal::make_nvp("option", option_));
+        ar(cereal::make_nvp("attr", attr_));
+
+        ar(cereal::make_nvp("rehp", rehp_));
+        ar(cereal::make_nvp("rehp_inpercent", rehp_inpercent_));
+
+        ar(cereal::make_nvp("remp", remp_));
+        ar(cereal::make_nvp("remp_inpercent", remp_inpercent_));
+
+        ar(cereal::make_nvp("creatures", creatures_));
+        ar(cereal::make_nvp("addstatuses", addstatuses_));
+        ar(cereal::make_nvp("removestatuses", removestatuses_));
+
+        ar(cereal::make_nvp("learnskill", learnskill_));
+        ar(cereal::make_nvp("useskill", useskill_));
+    }
+
     protected:
     explicit UseItem(const Item& item);
 
@@ -215,6 +240,7 @@ class UseItem : public Item {
 
     void setUseSkill(const Skill& skill) { this->useskill_ = skill.getName(); }
 };
+
 } // namespace data
 
 #endif // DATA_USEITEM_H_

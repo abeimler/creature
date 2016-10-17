@@ -17,6 +17,15 @@ class CreatureAnimationImage {
     std::string plist_filename_;
 
     public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("creature_name", creature_name_));
+        ar(cereal::make_nvp("image_filename", image_filename_));
+        ar(cereal::make_nvp("plist_filename", plist_filename_));
+    }
+
+
+    public:
     CreatureAnimationImage() = default;
 
     /// Creature

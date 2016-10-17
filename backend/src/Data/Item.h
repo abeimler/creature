@@ -15,6 +15,16 @@ class Item {
 
     int price_ = 0;
 
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("name", name_));
+        ar(cereal::make_nvp("icon_filename", icon_filename_));
+        ar(cereal::make_nvp("description", description_));
+        ar(cereal::make_nvp("price", price_));
+    }
+
+
     protected:
     /// item type (UseItem, Weapon, Armor, ...)
     ItemType itype_ = ItemType::Basis;
@@ -57,6 +67,7 @@ class Item {
 
     void setPrice(int price) { this->price_ = price; }
 };
+
 } // namespace data
 
 #endif // DATA_ITEM_H_

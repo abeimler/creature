@@ -15,6 +15,17 @@ class CreatureBattlerStatus : public BattlerStatus {
     std::string filename_;
 
     public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::base_class<BattlerStatus>(this));
+
+        ar(cereal::make_nvp("creaturestatus", creaturestatus_));
+        ar(cereal::make_nvp("filename", filename_));
+    }
+
+
+
+    public:
     CreatureBattlerStatus() = default;
 
     CreatureBattlerStatus(const BattlerStatus& battlerstatus,
@@ -34,6 +45,7 @@ class CreatureBattlerStatus : public BattlerStatus {
 
     void setFilename(std::string filename) { this->filename_ = filename; }
 };
+
 } // namespace data
 
 #endif // DATA_CREATUREBATTLERSTATUS_H_

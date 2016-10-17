@@ -27,7 +27,7 @@ class Skill {
     private:
     std::string name_;
 
-    std::string descrption_;
+    std::string description_;
     earr::enum_array<SkillOption, bool> option_;
     int mpcost_ = 0;
     bool inpercent_ = false;
@@ -44,6 +44,33 @@ class Skill {
     std::vector<std::string> removestatuses_;
     std::vector<std::string> elements_;
 
+
+    public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::make_nvp("name_", name_));
+
+        ar(cereal::make_nvp("description", description_));
+        ar(cereal::make_nvp("option", option_));
+        ar(cereal::make_nvp("mpcost", mpcost_));
+        ar(cereal::make_nvp("inpercent", inpercent_));
+
+        ar(cereal::make_nvp("target", target_));
+
+        ar(cereal::make_nvp("atknumbers", atknumbers_));
+        ar(cereal::make_nvp("hitrate", hitrate_));
+        ar(cereal::make_nvp("basehpdamage", basehpdamage_));
+        ar(cereal::make_nvp("basempdamage", basempdamage_));
+        ar(cereal::make_nvp("variance", variance_));
+        ar(cereal::make_nvp("atk", atk_));
+        ar(cereal::make_nvp("inte", inte_));
+
+        ar(cereal::make_nvp("addstatuses", addstatuses_));
+        ar(cereal::make_nvp("removestatuses", removestatuses_));
+        ar(cereal::make_nvp("elements", elements_));
+    }
+
+
     public:
     Skill();
 
@@ -51,7 +78,7 @@ class Skill {
     std::string getName() const { return this->name_; }
 
     /// Descrption
-    std::string getDescrption() const { return this->descrption_; }
+    std::string getDescription() const { return this->description_; }
 
     const earr::enum_array<SkillOption, bool>& getOption() const {
         return this->option_;
@@ -85,8 +112,8 @@ class Skill {
 
     void setName(std::string name) { this->name_ = name; }
 
-    void setDescrption(std::string descrption) {
-        this->descrption_ = descrption;
+    void setDescription(std::string description) {
+        this->description_ = description;
     }
 
     void setOption(const earr::enum_array<SkillOption, bool>& option) {

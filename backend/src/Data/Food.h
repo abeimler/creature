@@ -21,6 +21,23 @@ class Food : public UseItem {
     FoodType foodtype_ = FoodType::Eat;
 
     public:
+    template <class Archive>
+    void serialize(Archive& ar) {
+        ar(cereal::base_class<UseItem>(this));
+
+        ar(cereal::make_nvp("luck", luck_));
+        ar(cereal::make_nvp("disc", disc_));
+        ar(cereal::make_nvp("hungry", hungry_));
+        ar(cereal::make_nvp("thirsty", thirsty_));
+        ar(cereal::make_nvp("weight", weight_));
+
+        ar(cereal::make_nvp("calories", calories_));
+
+        ar(cereal::make_nvp("foodtype", foodtype_));
+    }
+
+
+    public:
     Food() = default;
 
     explicit Food(const UseItem& item);
@@ -63,6 +80,7 @@ class Food : public UseItem {
 
     void setCalories(double value) { this->calories_ = value; }
 };
+
 } // namespace data
 
 #endif // DATA_FOOD_H_
