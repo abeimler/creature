@@ -15,9 +15,9 @@ TEST_CASE("start ModelTimer") {
 
     timer.start();
 
-    SUBCASE("Timer is started") { REQUIRE(timer.isStarted()); }
+    SUBCASE("Timer is started") { CHECK(timer.isStarted()); }
 
-    SUBCASE("Timer is not paused") { REQUIRE_FALSE(timer.isPaused()); }
+    SUBCASE("Timer is not paused") { CHECK_FALSE(timer.isPaused()); }
 }
 
 
@@ -28,9 +28,9 @@ TEST_CASE("pause ModelTimer") {
 
     timer.pause();
 
-    SUBCASE("Timer is started") { REQUIRE(timer.isStarted()); }
+    SUBCASE("Timer is started") { CHECK(timer.isStarted()); }
 
-    SUBCASE("Timer is paused") { REQUIRE(timer.isPaused()); }
+    SUBCASE("Timer is paused") { CHECK(timer.isPaused()); }
 }
 
 
@@ -41,9 +41,9 @@ TEST_CASE("unpause ModelTimer") {
 
     timer.unpause();
 
-    SUBCASE("Timer is started") { REQUIRE(timer.isStarted()); }
+    SUBCASE("Timer is started") { CHECK(timer.isStarted()); }
 
-    SUBCASE("Timer is not paused") { REQUIRE_FALSE(timer.isPaused()); }
+    SUBCASE("Timer is not paused") { CHECK_FALSE(timer.isPaused()); }
 }
 
 
@@ -54,9 +54,9 @@ TEST_CASE("pause and unpause ModelTimer") {
     timer.pause();
     timer.unpause();
 
-    SUBCASE("Timer is started") { REQUIRE(timer.isStarted()); }
+    SUBCASE("Timer is started") { CHECK(timer.isStarted()); }
 
-    SUBCASE("Timer is not paused") { REQUIRE_FALSE(timer.isPaused()); }
+    SUBCASE("Timer is not paused") { CHECK_FALSE(timer.isPaused()); }
 }
 
 
@@ -66,9 +66,9 @@ TEST_CASE("restart ModelTimer") {
 
     timer.restart();
 
-    SUBCASE("Timer is started") { REQUIRE(timer.isStarted()); }
+    SUBCASE("Timer is started") { CHECK(timer.isStarted()); }
 
-    SUBCASE("Timer is not paused") { REQUIRE_FALSE(timer.isPaused()); }
+    SUBCASE("Timer is not paused") { CHECK_FALSE(timer.isPaused()); }
 }
 
 
@@ -79,9 +79,9 @@ TEST_CASE("stop ModelTimer") {
 
     timer.stop();
 
-    SUBCASE("Timer is not started") { REQUIRE_FALSE(timer.isStarted()); }
+    SUBCASE("Timer is not started") { CHECK_FALSE(timer.isStarted()); }
 
-    SUBCASE("Timer is not paused") { REQUIRE_FALSE(timer.isPaused()); }
+    SUBCASE("Timer is not paused") { CHECK_FALSE(timer.isPaused()); }
 }
 
 
@@ -97,7 +97,7 @@ TEST_CASE("getTime of ModelTimer") {
     auto time = timer.getTimeNanosec();
     auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time);
 
-    REQUIRE(time_ms >= expectwaittime_ms);
+    CHECK(time_ms >= expectwaittime_ms);
 }
 
 
@@ -114,7 +114,7 @@ TEST_CASE("getTime of ModelTimer with pause") {
     auto time = timer.getTimeNanosec();
     auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time);
 
-    REQUIRE(time_ms >= expectwaittime_ms);
+    CHECK(time_ms >= expectwaittime_ms);
 }
 
 
@@ -133,7 +133,7 @@ TEST_CASE("getTime of ModelTimer with pause and unpause") {
     auto time = timer.getTimeNanosec();
     auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time);
 
-    REQUIRE(time_ms >= expectwaittime_ms);
+    CHECK(time_ms >= expectwaittime_ms);
 }
 
 
@@ -150,7 +150,7 @@ TEST_CASE("getTime of ModelTimer with restart") {
     auto time = timer.getTimeNanosec();
     auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time);
 
-    REQUIRE(time_ms >= expectwaittime_ms);
+    CHECK(time_ms >= expectwaittime_ms);
 }
 
 TEST_CASE("getTime of ModelTimer with stop") {
@@ -165,5 +165,5 @@ TEST_CASE("getTime of ModelTimer with stop") {
     auto time = timer.getTimeNanosec();
     auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time);
 
-    REQUIRE(time_ms <= expectwaittime_ms);
+    CHECK(time_ms <= expectwaittime_ms);
 }

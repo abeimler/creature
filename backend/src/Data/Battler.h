@@ -107,16 +107,21 @@ class Battler {
     public:
     template <class Archive>
     void serialize(Archive& ar) {
-        ar(cereal::make_nvp("lvl", attrbasis_));
+        ar(cereal::make_nvp("attrbasis", attrbasis_));
         ar(cereal::make_nvp("attrinflation", attrinflation_));
+
         ar(cereal::make_nvp("startlvl", startlvl_));
         ar(cereal::make_nvp("minlvl", minlvl_));
         ar(cereal::make_nvp("maxlvl", maxlvl_));
+
         ar(cereal::make_nvp("skills", skills_));
+
         ar(cereal::make_nvp("statusresist", statusresist_));
         ar(cereal::make_nvp("elementresist", elementresist_));
+
         ar(cereal::make_nvp("option", option_));
         ar(cereal::make_nvp("name", name_));
+
         ar(cereal::make_nvp("hitrate", hitrate_));
         ar(cereal::make_nvp("criticalhitrate", criticalhitrate_));
         ar(cereal::make_nvp("evarate", evarate_));

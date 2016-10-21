@@ -17,13 +17,13 @@ enum class TestEnum : size_t {
 TEST_CASE("value at Type2") {
     earr::enum_array<TestEnum, int> enumarr = {0, 1, 2, 3, 4};
 
-    REQUIRE(2 == earr::enum_array_at(enumarr, TestEnum::Type2));
+    CHECK(2 == earr::enum_array_at(enumarr, TestEnum::Type2));
 }
 
 TEST_CASE("value at Type2 (const)") {
     const earr::enum_array<TestEnum, int> enumarr = {0, 1, 2, 3, 4};
 
-    REQUIRE(2 == earr::enum_array_at(enumarr, TestEnum::Type2));
+    CHECK(2 == earr::enum_array_at(enumarr, TestEnum::Type2));
 }
 
 
@@ -31,15 +31,15 @@ TEST_CASE("value at Type2 (const)") {
 TEST_CASE("Iterator at begin (TestEnum::None)") {
     earr::enum_array<TestEnum, int> enumarr = {0, 1, 2, 3, 4};
 
-    REQUIRE(std::begin(enumarr) ==
-            earr::enum_array_at_it(enumarr, TestEnum::None));
+    CHECK(std::begin(enumarr) ==
+          earr::enum_array_at_it(enumarr, TestEnum::None));
 }
 
 TEST_CASE("Iterator at begin (TestEnum::None) (const)") {
     const earr::enum_array<TestEnum, int> enumarr = {0, 1, 2, 3, 4};
 
-    REQUIRE(std::begin(enumarr) ==
-            earr::enum_array_at_it(enumarr, TestEnum::None));
+    CHECK(std::begin(enumarr) ==
+          earr::enum_array_at_it(enumarr, TestEnum::None));
 }
 
 
@@ -52,7 +52,7 @@ TEST_CASE("Set Value at Type2 to 10") {
 
     earr::enum_array_set(enumarr, index, value);
 
-    REQUIRE(value == earr::enum_array_at(enumarr, index));
+    CHECK(value == earr::enum_array_at(enumarr, index));
 }
 
 
@@ -64,7 +64,7 @@ TEST_CASE("Iterate over all elements and set Value to 10") {
         (*it) = value;
     }
 
-    REQUIRE(value == enumarr.back());
+    CHECK(value == enumarr.back());
 }
 
 TEST_CASE("Iterate over all elements and set Value to 10 (foreach)") {
@@ -75,7 +75,7 @@ TEST_CASE("Iterate over all elements and set Value to 10 (foreach)") {
         v = value;
     }
 
-    REQUIRE(value == enumarr.back());
+    CHECK(value == enumarr.back());
 }
 
 
@@ -85,7 +85,7 @@ TEST_CASE("Set all Values to 10") {
     int value = 10;
     earr::enum_array_fill(enumarr, value);
 
-    REQUIRE(value == enumarr.back());
+    CHECK(value == enumarr.back());
 }
 
 
@@ -95,5 +95,5 @@ TEST_CASE("Get array-Index of Type1") {
     size_t index = 1;
     TestEnum enum_index = TestEnum::Type1;
 
-    REQUIRE(index == earr::enum_to_index(enumarr, enum_index));
+    CHECK(index == earr::enum_to_index(enumarr, enum_index));
 }

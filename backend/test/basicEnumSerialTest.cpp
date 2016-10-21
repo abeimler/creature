@@ -1,15 +1,20 @@
+#include <fstream>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 
 #include "doctest.h"
 
-
-#include "enum_array.h"
+#include <json.hpp>
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
+#include <cereal/types/array.hpp>
 #include <cereal/types/string.hpp>
+#include <cereal/types/unordered_map.hpp>
+
+#include "enum_array.h"
 
 
 BETTER_ENUM(TestEnum, size_t, BEGIN = 0, None = BEGIN, Type1 = 1, Type2 = 2,
@@ -25,7 +30,7 @@ TEST_CASE("save better-enum serial binary") {
         ar(e);
     }
 
-    REQUIRE(!ss.str().empty());
+    CHECK(!ss.str().empty());
 }
 
 TEST_CASE("load better-enum serial binary") {
@@ -41,7 +46,7 @@ TEST_CASE("load better-enum serial binary") {
         ar(e);
     }
 
-    REQUIRE(+TestEnum::Type2 == e);
+    CHECK(+TestEnum::Type2 == e);
 }
 
 
@@ -58,7 +63,7 @@ TEST_CASE("save better-enum serial json") {
     }
 
     std::string expected = "{\n\"e\": \"Type2\"\n}";
-    REQUIRE(expected == ss.str());
+    CHECK(expected == ss.str());
 }
 
 TEST_CASE("load better-enum serial json") {
@@ -72,5 +77,22 @@ TEST_CASE("load better-enum serial json") {
         ar(CEREAL_NVP(e));
     }
 
-    REQUIRE(e == +TestEnum::Type2);
+    CHECK(e == +TestEnum::Type2);
+}
+
+
+
+TEST_CASE("enum_array serial json as file") {
+    earr::enum_array<TestEnum, bool> arr;
+
+    earr::enum_array_fill(arr, false);
+
+    SUBCASE("serial json") {
+        std::ofstream os("enum_array.json");
+        {
+            cereal::JSONOutputArchive outar(os);
+
+            CHECK_NOTHROW(outar(cereal::make_nvp("arr", arr)));
+        }
+    }
 }

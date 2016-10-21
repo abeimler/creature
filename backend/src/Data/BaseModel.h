@@ -3,9 +3,6 @@
 
 #include "basic.h"
 
-#include <json.hpp>
-
-#include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
 
 #include <cereal/types/array.hpp>
