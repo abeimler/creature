@@ -1,9 +1,9 @@
 #include <fstream>
 #include <thread>
 
+#include <cereal/archives/json.hpp>
 #include <json.hpp>
 
-#include <cereal/archives/json.hpp>
 
 #include "doctest.h"
 
@@ -11,14 +11,15 @@
 
 
 
-static void init_Timer(data::Timer& timer) { timer.start(); }
+static void init_start_Timer(data::Timer& timer) { timer.start(); }
 
+static void init_stop_Timer(data::Timer& timer) { timer.stop(); }
 
 
 TEST_CASE("data::Timer serial json") {
     data::Timer data;
 
-    init_Timer(data);
+    init_start_Timer(data);
 
     SUBCASE("serial json") {
         std::stringstream ss;
@@ -46,10 +47,25 @@ TEST_CASE("data::Timer serial json") {
 TEST_CASE("data::Timer serial json as file") {
     data::Timer data;
 
-    init_Timer(data);
+    init_start_Timer(data);
 
     SUBCASE("serial json") {
-        std::ofstream os("timer.json");
+        std::ofstream os("timer.start.json");
+        {
+            cereal::JSONOutputArchive outar(os);
+
+            CHECK_NOTHROW(outar(cereal::make_nvp("data", data)));
+        }
+    }
+}
+
+TEST_CASE("data::Timer serial json as file") {
+    data::Timer data;
+
+    init_stop_Timer(data);
+
+    SUBCASE("serial json") {
+        std::ofstream os("timer.stop.json");
         {
             cereal::JSONOutputArchive outar(os);
 

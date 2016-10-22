@@ -6,8 +6,10 @@
 
 
 
-static void init_Timer(data::Timer& timer) { timer.start(); }
+static void init_start_Timer(data::Timer& timer) { timer.start(); }
 
+
+static void init_stop_Timer(data::Timer& timer) { timer.stop(); }
 
 
 TEST_CASE("start ModelTimer") {
@@ -24,7 +26,7 @@ TEST_CASE("start ModelTimer") {
 
 TEST_CASE("pause ModelTimer") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     timer.pause();
 
@@ -37,7 +39,7 @@ TEST_CASE("pause ModelTimer") {
 
 TEST_CASE("unpause ModelTimer") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     timer.unpause();
 
@@ -49,7 +51,7 @@ TEST_CASE("unpause ModelTimer") {
 
 TEST_CASE("pause and unpause ModelTimer") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     timer.pause();
     timer.unpause();
@@ -62,7 +64,7 @@ TEST_CASE("pause and unpause ModelTimer") {
 
 TEST_CASE("restart ModelTimer") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     timer.restart();
 
@@ -75,9 +77,7 @@ TEST_CASE("restart ModelTimer") {
 
 TEST_CASE("stop ModelTimer") {
     data::Timer timer;
-    init_Timer(timer);
-
-    timer.stop();
+    init_stop_Timer(timer);
 
     SUBCASE("Timer is not started") { CHECK_FALSE(timer.isStarted()); }
 
@@ -88,7 +88,7 @@ TEST_CASE("stop ModelTimer") {
 
 TEST_CASE("getTime of ModelTimer") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
     std::chrono::milliseconds expectwaittime_ms(10);
@@ -103,7 +103,7 @@ TEST_CASE("getTime of ModelTimer") {
 
 TEST_CASE("getTime of ModelTimer with pause") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
     std::chrono::milliseconds expectwaittime_ms(10);
@@ -120,7 +120,7 @@ TEST_CASE("getTime of ModelTimer with pause") {
 
 TEST_CASE("getTime of ModelTimer with pause and unpause") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
     std::chrono::milliseconds expectwaittime_ms(20);
@@ -139,7 +139,7 @@ TEST_CASE("getTime of ModelTimer with pause and unpause") {
 
 TEST_CASE("getTime of ModelTimer with restart") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
     std::chrono::milliseconds expectwaittime_ms(10);
@@ -155,7 +155,7 @@ TEST_CASE("getTime of ModelTimer with restart") {
 
 TEST_CASE("getTime of ModelTimer with stop") {
     data::Timer timer;
-    init_Timer(timer);
+    init_start_Timer(timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
     std::chrono::milliseconds expectwaittime_ms(0);

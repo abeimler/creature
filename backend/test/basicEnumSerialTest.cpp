@@ -1,18 +1,19 @@
+#include <cereal/archives/json.hpp>
 #include <fstream>
-#include <sstream>
-#include <string>
+#include <json.hpp>
 #include <unordered_map>
-
-#include "doctest.h"
 
 #include <json.hpp>
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/json.hpp>
 #include <cereal/cereal.hpp>
-#include <cereal/types/array.hpp>
+#include <cereal/types/array_fixed.hpp>
 #include <cereal/types/string.hpp>
 #include <cereal/types/unordered_map.hpp>
+#include <cereal/types/unordered_map_string.hpp>
+
+#include "doctest.h"
 
 #include "enum_array.h"
 

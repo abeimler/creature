@@ -14,6 +14,7 @@
 
 #include <cereal/cereal.hpp>
 #include <cereal/macros.hpp>
+#include <cereal/types/array_fixed.hpp>
 #include <cereal/types/string.hpp>
 
 #ifndef BETTER_ENUMS_CONSTEXPR_TO_STRING
