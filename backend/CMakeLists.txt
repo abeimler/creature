@@ -1,5 +1,5 @@
-cmake_minimum_required (VERSION 2.6)
-project (backend C CXX)
+cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
+project (creature_backend VERSION 0.1.0 LANGUAGES CXX)
 
 include(CheckCXXSourceCompiles)
 
@@ -9,18 +9,19 @@ include(CheckCXXSourceCompiles)
 
 #set(CMAKE_C_COMPILER "/usr/bin/clang")
 #set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
-
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -pthread")
     
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+## best practice by Jason Turner
+## More Flags: https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
+
+if (CMAKE_COMPILER_IS_GNUCXX)
     set(warnings "-Wall -Wextra")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(warnings "-Wall -Wextra -Wno-missing-braces -Wmissing-field-initializers -Wno-unused-parameter")
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        set(warnings "${warnings} -Weverything")
+    endif()
+    set(warnings "${warnings} -pedantic")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    set(warnings "/W4 /WX /EHsc")
+    set(warnings "/W4 /W44640 /WX /EHsc")
 endif()
 set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} ${warnings}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${warnings}")
@@ -29,6 +30,9 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
+
+find_package (Threads)
 
 ##
 # Testing Compiler
@@ -102,9 +106,6 @@ file(GLOB_RECURSE BENCHMARK_SRC ${BENCHMARK_PATH}/*.cpp ${BENCHMARK_PATH}/*.cxx 
 file(GLOB_RECURSE BENCHMARK_HEADERS ${BENCHMARK_PATH}/*.h ${BENCHMARK_PATH}/*.hpp ${BENCHMARK_PATH}/*.hxx)
 
 
-include_directories(${INCLUDE_PATH})
-include_directories(${SRC_PATH})
-
 
 ###
 ## 3rd libs
@@ -114,9 +115,16 @@ set(LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(ENTITYX_BUILD_SHARED 0)
 add_subdirectory(${LIB_PATH}/entityx)
 
-include_directories(${LIB_PATH}/entityx)
+add_subdirectory(${LIB_PATH}/benchpress)
+add_subdirectory(${LIB_PATH}/doctest)
 
+add_subdirectory(${LIB_PATH}/cereal)
+add_subdirectory(${LIB_PATH}/GSL)
+add_subdirectory(${LIB_PATH}/json)
 
+# no cmake support
+#add_subdirectory(${LIB_PATH}/better-enums)
+#add_subdirectory(${LIB_PATH}/clamp)
 
 
 ###
@@ -127,7 +135,28 @@ if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
     target_link_libraries(${PROJECT_NAME} c++abi)
 endif()
 
-target_link_libraries(${PROJECT_NAME} entityx)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_constexpr 
+                                                cxx_aggregate_default_initializers
+                                                cxx_auto_type 
+                                                cxx_range_for 
+                                                cxx_decltype_auto 
+                                                cxx_nullptr)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambdas)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE entityx)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/entityx)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/better-enums)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/better-enums/extra)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/cereal/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/clamp)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/GSL)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/json/src)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_PATH})
+target_include_directories(${PROJECT_NAME} PUBLIC ${SRC_PATH})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -fno-exceptions)
 
@@ -141,8 +170,12 @@ if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
     target_link_libraries(${PROJECT_NAME}_test c++abi)
 endif()
 
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
+set_property(TARGET ${PROJECT_NAME}_test PROPERTY CXX_STANDARD 14)
+set_property(TARGET ${PROJECT_NAME}_test PROPERTY CXX_STANDARD_REQUIRED ON)
+
+target_link_libraries(${PROJECT_NAME}_test PRIVATE ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}_test PRIVATE ${TEST_PATH})
+target_include_directories(${PROJECT_NAME}_test PRIVATE ${LIB_PATH}/doctest/doctest)
 target_compile_options(${PROJECT_NAME}_test PRIVATE -fexceptions)
 
 enable_testing ()
@@ -152,17 +185,21 @@ add_test (NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_NAME}_test)
 ###
 ## Benchmark Application build
 ###
-
 add_executable(${PROJECT_NAME}_benchmark ${BENCHMARK_SRC})
 if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
     target_link_libraries(${PROJECT_NAME}_benchmark c++abi)
 endif()
 
-target_link_libraries(${PROJECT_NAME}_benchmark ${PROJECT_NAME})
+set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD 14)
+set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD_REQUIRED ON)
+
+target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${BENCHMARK_PATH})
+target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${LIB_PATH}/benchpress/src)
 target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
 
-target_link_libraries (${PROJECT_NAME}_benchmark ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries (${PROJECT_NAME}_benchmark PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -pthread)
 
 ###
 ## Tools
