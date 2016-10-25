@@ -16,6 +16,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <clamp.hpp>
+
 // custom basic libs
 #include "dateutil.h"
 #include "enum_array.h"

@@ -21,6 +21,66 @@
 #define BETTER_ENUMS_CONSTEXPR_TO_STRING
 #endif
 
+
+
+// Feature detection.
+
+#ifdef __GNUC__
+#ifdef __clang__
+#if __has_feature(cxx_constexpr)
+#define HAVE_CONSTEXPR
+#endif
+#if !defined(__EXCEPTIONS) || !__has_feature(cxx_exceptions)
+#define NO_EXCEPTIONS
+#endif
+#else
+#if defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L
+#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 6))
+#define HAVE_CONSTEXPR
+#endif
+#endif
+#ifndef __EXCEPTIONS
+#define NO_EXCEPTIONS
+#endif
+#endif
+#endif
+
+#ifdef _MSC_VER
+#ifdef __clang__
+#if __has_feature(cxx_constexpr)
+#define HAVE_CONSTEXPR
+#endif
+#endif
+#ifndef _CPPUNWIND
+#define NO_EXCEPTIONS
+#endif
+#if _MSC_VER < 1600
+#define VC2008_WORKAROUNDS
+#endif
+#endif
+
+#ifdef CONSTEXPR
+#define HAVE_CONSTEXPR
+#endif
+
+#ifdef NO_CONSTEXPR
+#ifdef HAVE_CONSTEXPR
+#undef HAVE_CONSTEXPR
+#endif
+#endif
+
+#ifndef NO_EXCEPTIONS
+#define BETTER_ENUMS_DEFAULT_CONSTRUCTOR_LOAD_MINIMAL \
+    _value = _from_string(str.c_str())._to_integral();
+#else
+#define BETTER_ENUMS_DEFAULT_CONSTRUCTOR_LOAD_MINIMAL   \
+    auto res_value = _from_string_nothrow(str.c_str()); \
+    if (res_value) {                                    \
+        _value = (*res_value)._to_integral();           \
+    }
+#endif
+
+
 #define BETTER_ENUMS_DEFAULT_CONSTRUCTOR(Enum)                           \
     public:                                                              \
     Enum() = default;                                                    \
@@ -34,7 +94,7 @@
               cereal::traits::EnableIf<cereal::traits::is_text_archive<  \
                   Archive>::value> = cereal::traits::sfinae>             \
     void load_minimal(Archive const&, std::string const& str) {          \
-        _value = _from_string(str.c_str())._to_integral();               \
+        BETTER_ENUMS_DEFAULT_CONSTRUCTOR_LOAD_MINIMAL                    \
     }                                                                    \
     template <class Archive,                                             \
               cereal::traits::DisableIf<cereal::traits::is_text_archive< \
@@ -48,45 +108,6 @@
     void load_minimal(Archive const&, _integral const& xx) {             \
         _value = xx;                                                     \
     }
-
-
-/*
-    template <class Archive>                                                   \
-    inline                                                                     \
-        typename std::enable_if<cereal::traits::is_output_serializable<        \
-                                    cereal::BinaryData<Enum>, Archive>::value, \
-                                void>::type                                    \
-        CEREAL_SAVE_FUNCTION_NAME(Archive& ar) const {                         \
-        ar(_value);                                                            \
-    }                                                                          \
-    template <class Archive>                                                   \
-    inline                                                                     \
-        typename std::enable_if<cereal::traits::is_input_serializable<         \
-                                    cereal::BinaryData<Enum>, Archive>::value, \
-                                void>::type                                    \
-        CEREAL_LOAD_FUNCTION_NAME(Archive& ar) {                               \
-        ar(_value);                                                            \
-    }                                                                          \
-    template <class Archive>                                                   \
-    inline                                                                     \
-        typename std::enable_if<!cereal::traits::is_output_serializable<       \
-                                    cereal::BinaryData<Enum>, Archive>::value, \
-                                void>::type                                    \
-        CEREAL_SAVE_FUNCTION_NAME(Archive& ar) const {                         \
-        std::string estr = _to_string();                                       \
-        ar(estr);                                                              \
-    }                                                                          \
-    template <class Archive>                                                   \
-    inline                                                                     \
-        typename std::enable_if<!cereal::traits::is_input_serializable<        \
-                                    cereal::BinaryData<Enum>, Archive>::value, \
-                                void>::type                                    \
-        CEREAL_LOAD_FUNCTION_NAME(Archive& ar) {                               \
-        std::string estr;                                                      \
-        ar(estr);                                                              \
-        _value = _from_string(estr.c_str())._to_integral();                    \
-    }
-*/
 
 #include <better-enums/n4428.h>
 #include <enum.h>
@@ -108,7 +129,9 @@ class Enum {
                   "underlying_type of E must be unsigned");
     */
 
-    using underlying_type = size_t;
+    using underlying_type = typename E::_integral;
+    static_assert(std::is_unsigned<underlying_type>::value,
+                  "underlying_type of E must be unsigned");
 
     static constexpr size_t begin_enum = static_cast<size_t>(E::BEGIN);
     static constexpr size_t end_enum = static_cast<size_t>(E::END);
@@ -118,11 +141,9 @@ class Enum {
     template <class T>
     using array = std::array<T, count>;
 
-    static size_t to_index(E index) noexcept {
-        return static_cast<size_t>(index);
-    }
+    static size_t to_index(E index) noexcept { return index._to_integral(); }
     static E to_enum(underlying_type index) noexcept {
-        return static_cast<E>(index);
+        return E::_from_integral_unchecked(index);
     }
 
     template <class T>
@@ -137,11 +158,11 @@ class Enum {
     template <class T>
     static typename array<T>::const_iterator array_at_it(const array<T>& arr,
                                                          E index) {
-        return arr.cbegin() + to_index(index);
+        return std::next(std::begin(arr), to_index(index));
     }
     template <class T>
     static typename array<T>::iterator array_at_it(array<T>& arr, E index) {
-        return arr.begin() + to_index(index);
+        return std::next(std::begin(arr), to_index(index));
     }
 
     class EnumIterator {
@@ -150,10 +171,28 @@ class Enum {
 
         public:
         explicit EnumIterator(const underlying_type& value) : m_value(value) {}
+        explicit EnumIterator(const E& e) : m_value(e._to_integral()) {}
 
-        E operator*(void)const noexcept { return static_cast<E>(m_value); }
+        E operator*(void)const noexcept {
+            return E::_from_integral_unchecked(m_value);
+        }
 
-        void operator++(void)noexcept { ++m_value; }
+        // prefix ++
+        EnumIterator& operator++() noexcept {
+            ++m_value;
+            return *this;
+        }
+
+        // postfix ++
+        EnumIterator operator++(int) {
+            EnumIterator result(*this);
+            ++(*this);
+            return result;
+        }
+
+        bool operator==(const EnumIterator& rhs) noexcept {
+            return m_value == rhs.m_value;
+        }
 
         bool operator!=(const EnumIterator& rhs) noexcept {
             return m_value != rhs.m_value;
@@ -163,14 +202,14 @@ class Enum {
     Enum() = default;
 
     EnumIterator begin() const {
-        // avoid linking error, undefined reference begin_enum
         static constexpr underlying_type b = Enum<E>().begin_enum;
-        return EnumIterator(b);
+        const auto it = EnumIterator(b);
+        return it;
     }
     EnumIterator end() const {
-        // avoid linking error, undefined reference end_enum
         static constexpr underlying_type e = Enum<E>().end_enum;
-        return EnumIterator(e);
+        const auto it = EnumIterator(e);
+        return it;
     }
 };
 

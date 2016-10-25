@@ -18,7 +18,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -std=c++14 -pthread")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(warnings "-Wall -Wextra")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(warnings "-Wall -Wextra -Wno-missing-braces -Wmissing-field-initializers -Wno-unused-parameter -Wno-error=unused-variable -Wno-error=sign-compare")
+    set(warnings "-Wall -Wextra -Wno-missing-braces -Wmissing-field-initializers -Wno-unused-parameter")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(warnings "/W4 /WX /EHsc")
 endif()
@@ -28,6 +28,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${warnings}")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
+
 
 ##
 # Testing Compiler
@@ -113,6 +114,8 @@ set(LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(ENTITYX_BUILD_SHARED 0)
 add_subdirectory(${LIB_PATH}/entityx)
 
+include_directories(${LIB_PATH}/entityx)
+
 
 
 
@@ -126,6 +129,7 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} entityx)
 
+target_compile_options(${PROJECT_NAME} PRIVATE -fno-exceptions)
 
 
 ###
@@ -139,6 +143,7 @@ endif()
 
 target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}_test PRIVATE ${TEST_PATH})
+target_compile_options(${PROJECT_NAME}_test PRIVATE -fexceptions)
 
 enable_testing ()
 add_test (NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_NAME}_test)
@@ -155,6 +160,7 @@ endif()
 
 target_link_libraries(${PROJECT_NAME}_benchmark ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${BENCHMARK_PATH})
+target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
 
 target_link_libraries (${PROJECT_NAME}_benchmark ${CMAKE_THREAD_LIBS_INIT})
 

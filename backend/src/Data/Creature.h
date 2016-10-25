@@ -1,4 +1,4 @@
-#ifndef DATA_CREATURE_H
+#ifndef DATA_CREATURE_H_
 #define DATA_CREATURE_H_
 
 #include "Data/Battler.h"
