@@ -7,12 +7,12 @@
 namespace gamecomp {
 
 /// Basic Battler Data
-struct CreatureData : public entityx::Component<CreatureData> {
+struct CreatureDataComponent {
     std::string creature_name;
 };
 
 /// Battler
-struct CreatureBattler : public entityx::Component<CreatureBattler> {
+struct CreatureBattlerComponent {
     /// learned skills
     std::vector<std::string> learned_skills_name;
 

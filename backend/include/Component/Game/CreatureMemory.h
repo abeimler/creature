@@ -73,7 +73,7 @@ struct CreatureMemoryDeepMemory {
 };
 
 /// GameCreature Gedächnis
-struct CreatureMemory : public entityx::Component<CreatureMemory> {
+struct CreatureMemoryComponent {
     /// Maximaleanzahl Erinnerung im Kurzzeitgedächnis
     size_t max_short_memorysize = 0;
 
@@ -86,7 +86,7 @@ struct CreatureMemory : public entityx::Component<CreatureMemory> {
 
 
 /// GameCreature Persönlichkeit
-struct CreaturePersonality : public entityx::Component<CreaturePersonality> {
+struct CreaturePersonalityComponent {
     /// Erinnerung an die Geburt
     double rememberborn = 1.0;
 

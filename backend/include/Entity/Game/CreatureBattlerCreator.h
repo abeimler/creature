@@ -27,23 +27,23 @@ class CreatureBattlerCreator {
     static bool isSkillLearned(const std::vector<std::string>& skills,
                                std::string skill_name);
 
-    static int getAttr(const gamecomp::CreatureBattler& battler,
+    static int getAttr(const gamecomp::CreatureBattlerComponent& battler,
                        data::Attribute attr);
 
-    static void setHP(int value, gamecomp::CreatureBattler& battler);
-    static void setMP(int value, gamecomp::CreatureBattler& battler);
+    static void setHP(int value, gamecomp::CreatureBattlerComponent& battler);
+    static void setMP(int value, gamecomp::CreatureBattlerComponent& battler);
 
     static void setAttr(data::Attribute attr, int value,
-                        gamecomp::CreatureBattler& battler);
+                        gamecomp::CreatureBattlerComponent& battler);
 
 
-    static void updateNewLvL(gamecomp::CreatureBattler& battler,
+    static void updateNewLvL(gamecomp::CreatureBattlerComponent& battler,
                              const data::Creature& creature);
 
-    static void setEXP(gamecomp::CreatureBattler& battler,
+    static void setEXP(gamecomp::CreatureBattlerComponent& battler,
                        const data::Creature& creature, int exp);
 
-    static void setLvL(gamecomp::CreatureBattler& battler,
+    static void setLvL(gamecomp::CreatureBattlerComponent& battler,
                        const data::Creature& creature, int lvl);
 
     static constexpr double getMinInflation() { return MIN_INFLATION; }
@@ -108,7 +108,7 @@ class CreatureBattlerCreator {
 
     template <class T>
     static std::vector<T> genAttrs(const data::Creature& creature,
-                                   const gamecomp::CreatureBattlerGene& gene,
+                                   const gamecomp::CreatureBattlerGeneComponent& gene,
                                    data::Attribute attr) {
         int minlvl = creature.getMinLvL();
         int maxlvl = creature.getMaxLvL();
@@ -122,39 +122,39 @@ class CreatureBattlerCreator {
 
     CreatureBattlerCreator();
 
-    gamecomp::CreatureData createCreatureData(const data::Creature& creature);
+    gamecomp::CreatureDataComponent createCreatureData(const data::Creature& creature);
 
-    gamecomp::CreatureBattler createCreatureBattler();
+    gamecomp::CreatureBattlerComponent createCreatureBattler();
 
-    gamecomp::CreatureBattlerGene createCreatureBattlerGene();
+    gamecomp::CreatureBattlerGeneComponent createCreatureBattlerGene();
 
-    gamecomp::BattlerBattleState createBattlerBattleState();
+    gamecomp::BattlerBattleStateComponent createBattlerBattleState();
 
-    gamecomp::BattlerBattleState
+    gamecomp::BattlerBattleStateComponent
     createBattlerBattleState(const data::Creature& creature);
 
-    gamecomp::BattlerResists
+    gamecomp::BattlerResistsComponent
     createBattlerResists(const data::Creature& creature);
 
 
 
-    void loadCreatureBattler(gamecomp::CreatureBattler& battler,
+    void loadCreatureBattler(gamecomp::CreatureBattlerComponent& battler,
                              const data::Creature& creature,
-                             const gamecomp::CreatureBattlerGene& battlergene,
+                             const gamecomp::CreatureBattlerGeneComponent& battlergene,
                              int lvl);
 
     inline void
-    loadCreatureBattler(gamecomp::CreatureBattler& battler,
+    loadCreatureBattler(gamecomp::CreatureBattlerComponent& battler,
                         const data::Creature& creature,
-                        const gamecomp::CreatureBattlerGene& battlergene) {
+                        const gamecomp::CreatureBattlerGeneComponent& battlergene) {
         int start_lvl = creature.getStartLvL();
         loadCreatureBattler(battler, creature, battlergene, start_lvl);
     }
 
     inline void
-    transformCreatureBattler(gamecomp::CreatureBattler& battler,
+    transformCreatureBattler(gamecomp::CreatureBattlerComponent& battler,
                              const data::Creature& creature,
-                             const gamecomp::CreatureBattlerGene& battlergene) {
+                             const gamecomp::CreatureBattlerGeneComponent& battlergene) {
         loadCreatureBattler(battler, creature, battlergene, battler.lvl);
     }
 };

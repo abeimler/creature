@@ -15,7 +15,7 @@ include(CheckCXXSourceCompiles)
 ## More Flags: https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
 
 if (CMAKE_COMPILER_IS_GNUCXX)
-    set(warnings "-Wall -Wextra")
+    set(warnings "-Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wcast-align -Woverloaded-virtual")
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         set(warnings "${warnings} -Weverything")
     endif()
@@ -145,7 +145,6 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_constexpr
                                                 cxx_nullptr)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambdas)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE entityx)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/entityx)
 target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/better-enums)
@@ -156,7 +155,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/GSL)
 target_include_directories(${PROJECT_NAME} PUBLIC ${LIB_PATH}/json/src)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_PATH})
-target_include_directories(${PROJECT_NAME} PUBLIC ${SRC_PATH})
+target_include_directories(${PROJECT_NAME} PRIVATE ${SRC_PATH})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -fno-exceptions)
 
@@ -174,8 +173,10 @@ set_property(TARGET ${PROJECT_NAME}_test PROPERTY CXX_STANDARD 14)
 set_property(TARGET ${PROJECT_NAME}_test PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(${PROJECT_NAME}_test PRIVATE ${PROJECT_NAME})
+
 target_include_directories(${PROJECT_NAME}_test PRIVATE ${TEST_PATH})
 target_include_directories(${PROJECT_NAME}_test PRIVATE ${LIB_PATH}/doctest/doctest)
+
 target_compile_options(${PROJECT_NAME}_test PRIVATE -fexceptions)
 
 enable_testing ()
@@ -194,8 +195,10 @@ set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD 14)
 set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME})
+
 target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${BENCHMARK_PATH})
 target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${LIB_PATH}/benchpress/src)
+
 target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
 
 target_link_libraries (${PROJECT_NAME}_benchmark PRIVATE ${CMAKE_THREAD_LIBS_INIT})

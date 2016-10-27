@@ -1,7 +1,7 @@
 #ifndef COMPONENT_BASIC_H_
 #define COMPONENT_BASIC_H_
 
-#include <entityx/entityx.h>
+#include <entityx/entityx.hh>
 
 #include "basic.h"
 

@@ -53,7 +53,7 @@ struct BattlerStatusResist {
         : battlerstatus_name(p_battlerstatus_name), resist(p_resist) {}
 };
 
-struct BattlerStatuses : public entityx::Component<BattlerStatuses> {
+struct BattlerStatusesComponent {
     std::vector<std::string> statuses_name;
 
     /// start Turn of Statuses, {BattlerStatusID, turn}
@@ -63,7 +63,7 @@ struct BattlerStatuses : public entityx::Component<BattlerStatuses> {
         data::StatusRestrictionOption::None;
 };
 
-struct BattlerBattleState : public entityx::Component<BattlerBattleState> {
+struct BattlerBattleStateComponent {
     /// current Battle turn to count turn for recover BattlerStatus after Turn
     size_t turn = 0;
 
@@ -76,7 +76,7 @@ struct BattlerBattleState : public entityx::Component<BattlerBattleState> {
     bool isescapeing = false; ///< is escapeing (in Battle)
 };
 
-struct BattlerResists : public entityx::Component<BattlerResists> {
+struct BattlerResistsComponent {
     std::vector<std::string> atk_elements_name;
 
     /**

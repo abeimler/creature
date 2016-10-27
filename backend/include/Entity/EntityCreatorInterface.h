@@ -1,7 +1,7 @@
 #ifndef ENTITY_ENTITYCREATORINTERFACE_HPP_
 #define ENTITY_ENTITYCREATORINTERFACE_HPP_
 
-#include <entityx/entityx.h>
+#include <entityx/entityx.hh>
 
 #include "basic.h"
 

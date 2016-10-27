@@ -41,18 +41,18 @@ BETTER_ENUM(CauseOfRunAway, size_t, BEGIN,
             END)
 
 
-struct CreatureHunger : public entityx::Component<CreatureHunger> {
+struct CreatureHungerComponent {
     StarvationPhase starvationphase = StarvationPhase::None; ///< Hungerphasen
     int digestionheap = 0; ///< Anzahl der Haufen (nicht weggeräumt)
 };
 
-struct CreatureSleep : public entityx::Component<CreatureSleep> {
+struct CreatureSleepComponent {
     bool lighton = false;    ///< Schlaflicht ist an/aus (gut/schlecht schlafen)
     bool cangosleep = false; ///< Creature ist bereit Schlafen zu gehen
     bool havegoodsleep = false; ///< hat guten schlaf
 };
 
-struct CreatureTraining : public entityx::Component<CreatureTraining> {
+struct CreatureTrainingComponent {
     /// Einfacher Timer um zu ermitteln wie lang schon trainiert wird
     comp::DateTimer trainingtimer;
 
@@ -86,24 +86,24 @@ struct CreatureTraining : public entityx::Component<CreatureTraining> {
     data::CreatureTrainTime mosttraintime = data::CreatureTrainTime::Noon;
 };
 
-struct CreatureBodilyState : public entityx::Component<CreatureBodilyState> {
+struct CreatureBodilyStateComponent {
     int hurtcount = 0; ///< Anzahl der überstanden Verletzungen
     int illcount = 0;  ///< Anzahl der überstanden Krankheiten
 };
 
-struct CreatureBody : public entityx::Component<CreatureBody> {
+struct CreatureBodyComponent {
     double weight = 0.0;   ///< Gewicht in g/kg
     double bodysize = 0.0; ///< Körpergröße in m
     double bmi = 0.0;      ///< Body Mass Index
     double calories = 0.0; ///< Eated Calories
 };
 
-struct CreaturePsyche : public entityx::Component<CreaturePsyche> {
+struct CreaturePsycheComponent {
     double luck = 0.0; ///< Glück
     double disc = 0.0; ///< Disziplin
 };
 
-struct CreatureEvolve : public entityx::Component<CreatureEvolve> {
+struct CreatureEvolveComponent {
     /// Evolution-Traking Info von den Vorstufen
     std::deque<std::string> preevolution_creature_name;
 
@@ -111,7 +111,7 @@ struct CreatureEvolve : public entityx::Component<CreatureEvolve> {
     std::deque<EvolutionTrakingInfo> evolutiontrakinginfo;
 };
 
-struct CreatureLife : public entityx::Component<CreatureLife> {
+struct CreatureLifeComponent {
     std::string name; ///< Creaturename
 
     /// Creature level

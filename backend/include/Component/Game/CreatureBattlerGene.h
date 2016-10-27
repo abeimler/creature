@@ -6,7 +6,7 @@
 namespace gamecomp {
 
 /// Battler Gene
-struct CreatureBattlerGene : public entityx::Component<CreatureBattlerGene> {
+struct CreatureBattlerGeneComponent {
     /// Boni Infaltion value of Attribute
     earr::enum_array<data::Attribute, int> boniattrinflation;
 

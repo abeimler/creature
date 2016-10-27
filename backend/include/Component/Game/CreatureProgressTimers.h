@@ -69,8 +69,7 @@ struct CreatureProgressTimersMemory {
     ProgressTimerCallback mediumterm;
 };
 
-struct CreatureProgressTimers
-    : public entityx::Component<CreatureProgressTimers> {
+struct CreatureProgressTimersComponent {
     comp::DateTimer lifetimer; ///< Lebenszeit (Alter)
 
     earr::enum_array<CreatureProgressTimer, ProgressTimer> timer;

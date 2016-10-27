@@ -88,7 +88,7 @@ struct CreatureGenePerEvolution {
 };
 
 /// GameCreature Genetik
-struct CreatureGene : public entityx::Component<CreatureGene> {
+struct CreatureGeneComponent {
     /// Creature Geschlecht
     data::CreatureGender gender = data::CreatureGender::None;
 
