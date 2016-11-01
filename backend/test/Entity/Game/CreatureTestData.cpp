@@ -1,81 +1,81 @@
 #include "Entity/Game/CreatureTestData.h"
 
 
-constexpr int CreatureTest::MAXHP;
-constexpr int CreatureTest::MAXMP;
-constexpr int CreatureTest::ATK;
-constexpr int CreatureTest::DEF;
-constexpr int CreatureTest::AGI;
-constexpr int CreatureTest::INT;
-constexpr int CreatureTest::EXP;
+constexpr int CreatureTestData::MAXHP;
+constexpr int CreatureTestData::MAXMP;
+constexpr int CreatureTestData::ATK;
+constexpr int CreatureTestData::DEF;
+constexpr int CreatureTestData::AGI;
+constexpr int CreatureTestData::INT;
+constexpr int CreatureTestData::EXP;
 
-constexpr int CreatureTest::ATTR_INFLATION;
-
-
-constexpr int CreatureTest::STARTLEVEL;
-constexpr int CreatureTest::MINLEVEL;
-constexpr int CreatureTest::MAXLEVEL;
-constexpr int CreatureTest::LVL;
-
-constexpr int CreatureTest::HITRATE;
-constexpr int CreatureTest::HITRATE_HALF;
-constexpr int CreatureTest::CRITICAL_HITRATE;
-constexpr int CreatureTest::EVARATE;
+constexpr int CreatureTestData::ATTR_INFLATION;
 
 
-constexpr double CreatureTest::MIN_WEIGHT;
-constexpr double CreatureTest::MAX_WEIGHT;
+constexpr int CreatureTestData::STARTLEVEL;
+constexpr int CreatureTestData::MINLEVEL;
+constexpr int CreatureTestData::MAXLEVEL;
+constexpr int CreatureTestData::LVL;
 
-constexpr double CreatureTest::MIN_BODYSIZE;
-constexpr double CreatureTest::MAX_BODYSIZE;
-
-constexpr data::CreatureLevel CreatureTest::CREATURELEVEL;
-constexpr data::CreatureLevel CreatureTest::OTHERCREATURELEVEL;
-
-constexpr data::CreatureGender CreatureTest::GENDER;
-
-constexpr double CreatureTest::MIN_BMI;
-constexpr double CreatureTest::IDEAL_BMI;
-constexpr double CreatureTest::MAX_BMI;
-constexpr double CreatureTest::MAX_BODYSIZE_GENE;
-constexpr double CreatureTest::BODYMASS;
+constexpr int CreatureTestData::HITRATE;
+constexpr int CreatureTestData::HITRATE_HALF;
+constexpr int CreatureTestData::CRITICAL_HITRATE;
+constexpr int CreatureTestData::EVARATE;
 
 
-constexpr double CreatureTest::BMI;
-constexpr double CreatureTest::BODYSIZE;
-constexpr double CreatureTest::WEIGHT;
-constexpr double CreatureTest::LOWER_WEIGHT;
-constexpr double CreatureTest::HIGHER_WEIGHT;
-constexpr int CreatureTest::CALORIES;
-constexpr int CreatureTest::HIGHCALORIES;
+constexpr double CreatureTestData::MIN_WEIGHT;
+constexpr double CreatureTestData::MAX_WEIGHT;
 
-constexpr int CreatureTest::CANGOSLEEP_AT_TIRED;
+constexpr double CreatureTestData::MIN_BODYSIZE;
+constexpr double CreatureTestData::MAX_BODYSIZE;
 
-constexpr size_t CreatureTest::MAX_DIGESTIONHEAP;
+constexpr data::CreatureLevel CreatureTestData::CREATURELEVEL;
+constexpr data::CreatureLevel CreatureTestData::OTHERCREATURELEVEL;
 
-constexpr int CreatureTest::NEEDSLEEPINPERCENT;
-constexpr int CreatureTest::NEEDRESTINHOSPITALINPERCENT;
+constexpr data::CreatureGender CreatureTestData::GENDER;
 
-constexpr std::chrono::seconds CreatureTest::TOTALMAXLIFETIME;
-constexpr std::chrono::seconds CreatureTest::LIFETIME;
-constexpr std::chrono::seconds CreatureTest::AGEINGTIME;
-constexpr int CreatureTest::AGE;
+constexpr double CreatureTestData::MIN_BMI;
+constexpr double CreatureTestData::IDEAL_BMI;
+constexpr double CreatureTestData::MAX_BMI;
+constexpr double CreatureTestData::MAX_BODYSIZE_GENE;
+constexpr double CreatureTestData::BODYMASS;
 
-constexpr std::chrono::milliseconds CreatureTest::GOOD_TRAINTIME;
-constexpr std::chrono::milliseconds CreatureTest::MIDDLE_TRAINTIME;
-constexpr std::chrono::milliseconds CreatureTest::MIN_TRAINTIME;
 
-constexpr const char* CreatureTest::CREATURENAME;
+constexpr double CreatureTestData::BMI;
+constexpr double CreatureTestData::BODYSIZE;
+constexpr double CreatureTestData::WEIGHT;
+constexpr double CreatureTestData::LOWER_WEIGHT;
+constexpr double CreatureTestData::HIGHER_WEIGHT;
+constexpr int CreatureTestData::CALORIES;
+constexpr int CreatureTestData::HIGHCALORIES;
 
-constexpr data::CreatureTrainTime CreatureTest::CREATURETRAINTIME;
+constexpr int CreatureTestData::CANGOSLEEP_AT_TIRED;
 
-constexpr double CreatureTest::MAX_HUNGRYOVERLAY_INTRAINING;
-constexpr double CreatureTest::MAX_THIRSTYOVERLAY_INTRAINING;
-constexpr double CreatureTest::MAX_TIREDOVERLAY_INTRAINING;
+constexpr size_t CreatureTestData::MAX_DIGESTIONHEAP;
 
-constexpr size_t CreatureTest::MAX_SHORTMEMORY_SIZE;
+constexpr int CreatureTestData::NEEDSLEEPINPERCENT;
+constexpr int CreatureTestData::NEEDRESTINHOSPITALINPERCENT;
 
-std::chrono::system_clock::time_point CreatureTest::make_time_point_01_01_2000() {
+constexpr std::chrono::seconds CreatureTestData::TOTALMAXLIFETIME;
+constexpr std::chrono::seconds CreatureTestData::LIFETIME;
+constexpr std::chrono::seconds CreatureTestData::AGEINGTIME;
+constexpr int CreatureTestData::AGE;
+
+constexpr std::chrono::milliseconds CreatureTestData::GOOD_TRAINTIME;
+constexpr std::chrono::milliseconds CreatureTestData::MIDDLE_TRAINTIME;
+constexpr std::chrono::milliseconds CreatureTestData::MIN_TRAINTIME;
+
+constexpr const char* CreatureTestData::CREATURENAME;
+
+constexpr data::CreatureTrainTime CreatureTestData::CREATURETRAINTIME;
+
+constexpr double CreatureTestData::MAX_HUNGRYOVERLAY_INTRAINING;
+constexpr double CreatureTestData::MAX_THIRSTYOVERLAY_INTRAINING;
+constexpr double CreatureTestData::MAX_TIREDOVERLAY_INTRAINING;
+
+constexpr size_t CreatureTestData::MAX_SHORTMEMORY_SIZE;
+
+std::chrono::system_clock::time_point CreatureTestData::make_time_point_01_01_2000() {
     // create tm with 1/1/2000:
     std::tm timeinfo = std::tm();
     timeinfo.tm_year = 100; // year: 2000
@@ -86,7 +86,7 @@ std::chrono::system_clock::time_point CreatureTest::make_time_point_01_01_2000()
     return std::chrono::system_clock::from_time_t(tt);
 }
 
-data::Creature CreatureTest::make_DataCreature() {
+data::Creature CreatureTestData::make_DataCreature() {
     data::Creature creature;
 
     creature.setName(CREATURENAME);

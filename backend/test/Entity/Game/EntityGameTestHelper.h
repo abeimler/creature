@@ -6,8 +6,9 @@
 #include "CreatureTestData.h"
 
 class EntityGameTestHelper {
+    public:
 
-static gamecomp::CreatureBattlerGeneComponent make_CreatureBattlerGene_withValues();
+    static gamecomp::CreatureBattlerGeneComponent make_CreatureBattlerGene_withValues();
 
 };
 

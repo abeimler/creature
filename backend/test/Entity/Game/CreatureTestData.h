@@ -1,10 +1,10 @@
-#ifndef ENTITY_GAME_CREATURETESTDATA_H_
-#define ENTITY_GAME_CREATURETESTDATA_H_
+#ifndef ENTITY_GAME_CreatureTestDataDATA_H_
+#define ENTITY_GAME_CreatureTestDataDATA_H_
 
 #include "Entity/Game/CreatureCreator.h"
 
 
-class CreatureTest {
+class CreatureTestData {
     public:
 
     // Attributes
@@ -85,9 +85,9 @@ class CreatureTest {
 
     static constexpr size_t MAX_SHORTMEMORY_SIZE = 7;
 
-    std::chrono::system_clock::time_point make_time_point_01_01_2000();
-    data::Creature make_DataCreature();
+    static std::chrono::system_clock::time_point make_time_point_01_01_2000();
+    static data::Creature make_DataCreature();
 };
 
 
-#endif // ENTITY_GAME_CREATURETESTDATA_H_
+#endif // ENTITY_GAME_CreatureTestDataDATA_H_
