@@ -139,7 +139,7 @@ gamecomp::CreatureDataComponent
 CreatureBattlerCreator::createCreatureData(const data::Creature& creature) {
     gamecomp::CreatureDataComponent creature_data;
 
-    creature_data.creature_name = creature.getName();
+    creature_data.creature = creature;
 
     return creature_data;
 }

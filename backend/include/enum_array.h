@@ -130,6 +130,7 @@ class Enum {
     */
 
     using underlying_type = typename E::_integral;
+    using enum_type = typename E::_enumerated;
     static_assert(std::is_unsigned<underlying_type>::value,
                   "underlying_type of E must be unsigned");
 
@@ -141,9 +142,13 @@ class Enum {
     template <class T>
     using array = std::array<T, count>;
 
-    static size_t to_index(E index) noexcept { return index._to_integral(); }
-    static E to_enum(underlying_type index) noexcept {
+    static BETTER_ENUMS_CONSTEXPR_ size_t to_index(E index) noexcept { return index._to_integral(); }
+    static BETTER_ENUMS_CONSTEXPR_ E to_enum(underlying_type index) noexcept {
         return E::_from_integral_unchecked(index);
+    }
+    static BETTER_ENUMS_CONSTEXPR_ size_t to_index(enum_type index) noexcept { return to_index(+index); }
+    static BETTER_ENUMS_CONSTEXPR_ E to_enum(enum_type index) noexcept {
+        return +index;
     }
 
     template <class T>
@@ -151,9 +156,18 @@ class Enum {
         return arr[to_index(index)];
     }
     template <class T>
+    static const T& array_at(const array<T>& arr, enum_type index) noexcept {
+        return arr[to_index(index)];
+    }
+    template <class T>
     static T& array_at(array<T>& arr, E index) noexcept {
         return arr[to_index(index)];
     }
+    template <class T>
+    static T& array_at(array<T>& arr, enum_type index) noexcept {
+        return arr[to_index(index)];
+    }
+    
 
     template <class T>
     static typename array<T>::const_iterator array_at_it(const array<T>& arr,
@@ -161,7 +175,16 @@ class Enum {
         return std::next(std::begin(arr), to_index(index));
     }
     template <class T>
+    static typename array<T>::const_iterator array_at_it(const array<T>& arr,
+                                                         enum_type index) {
+        return std::next(std::begin(arr), to_index(index));
+    }
+    template <class T>
     static typename array<T>::iterator array_at_it(array<T>& arr, E index) {
+        return std::next(std::begin(arr), to_index(index));
+    }
+    template <class T>
+    static typename array<T>::iterator array_at_it(array<T>& arr, enum_type index) {
         return std::next(std::begin(arr), to_index(index));
     }
 
@@ -172,6 +195,7 @@ class Enum {
         public:
         explicit EnumIterator(const underlying_type& value) : m_value(value) {}
         explicit EnumIterator(const E& e) : m_value(e._to_integral()) {}
+        explicit EnumIterator(const enum_type& e) : m_value((+e)._to_integral()) {}
 
         E operator*(void)const noexcept {
             return E::_from_integral_unchecked(m_value);
@@ -220,10 +244,15 @@ template <class E, class T>
 inline T& enum_array_at(enum_array<E, T>& arr, E index) noexcept {
     return Enum<E>::array_at(arr, index);
 }
+
+
 template <class E, class T>
 inline const T& enum_array_at(const enum_array<E, T>& arr, E index) noexcept {
     return Enum<E>::array_at(arr, index);
 }
+
+
+
 
 template <class E, class T>
 inline typename enum_array<E, T>::iterator

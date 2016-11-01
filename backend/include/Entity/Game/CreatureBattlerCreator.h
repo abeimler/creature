@@ -11,8 +11,6 @@
 #include "Component/Game/CreatureGene.h"
 #include "Component/Game/CreatureMemory.h"
 
-#include "Entity/Game/DataManager.h"
-
 namespace gameentity {
 
 class CreatureBattlerCreator {

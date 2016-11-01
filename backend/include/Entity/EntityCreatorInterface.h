@@ -5,6 +5,7 @@
 
 #include "basic.h"
 
+template<class Entity>
 class EntityCreatorInterface {
     public:
     virtual ~EntityCreatorInterface() = default;
@@ -13,7 +14,7 @@ class EntityCreatorInterface {
     EntityCreatorInterface(EntityCreatorInterface&&) = default;
     EntityCreatorInterface& operator=(EntityCreatorInterface&&) = default;
 
-    virtual void create(entityx::Entity& entity) = 0;
+    virtual void create(Entity& entity) = 0;
 };
 
 #endif // ENTITY_ENTITYCREATORINTERFACE_HPP_

@@ -179,6 +179,9 @@ target_include_directories(${PROJECT_NAME}_test PRIVATE ${LIB_PATH}/doctest/doct
 
 target_compile_options(${PROJECT_NAME}_test PRIVATE -fexceptions)
 
+target_link_libraries (${PROJECT_NAME}_test PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+target_compile_options(${PROJECT_NAME}_test PRIVATE -pthread)
+
 enable_testing ()
 add_test (NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_NAME}_test)
 

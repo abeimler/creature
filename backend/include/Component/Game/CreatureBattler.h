@@ -8,7 +8,7 @@ namespace gamecomp {
 
 /// Basic Battler Data
 struct CreatureDataComponent {
-    std::string creature_name;
+    data::Creature creature;
 };
 
 /// Battler
