@@ -8,6 +8,7 @@
 template<class Entity>
 class EntityCreatorInterface {
     public:
+    EntityCreatorInterface() = default;
     virtual ~EntityCreatorInterface() = default;
     EntityCreatorInterface(const EntityCreatorInterface&) = default;
     EntityCreatorInterface& operator=(const EntityCreatorInterface&) = default;
