@@ -172,7 +172,7 @@ void CreatureCreator::setupCreatureProgressTimers(
                 earr::enum_array_at(gene_perevolution.waittime.shorttermmemory, index);
 
             earr::enum_array_at(earr::enum_array_at(timers.memory, index).mediumterm.base.waittime, creature_level) =
-                earr::enum_array_at(gene_perevolution.waittime.shorttermmemory, index);
+                earr::enum_array_at(gene_perevolution.waittime.mediumtermmemory, index);
         }
     }
 }

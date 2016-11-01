@@ -1,6 +1,6 @@
-#include "doctest.h"
-
 #include <thread>
+
+#include "doctest.h"
 
 #include "Entity/Game/TimerUtil.h"
 

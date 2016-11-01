@@ -65,11 +65,11 @@ struct CreatureMemoryDeepMemory {
     CreatureActivityShort medium_memory;
 
     /// Langzeitgedächnis
-    double long_memory;
+    double long_memory = 0.0;
 
     /// Erinnerungswert als factor
-    double goodmemoryfactor;
-    double badmemoryfactor;
+    double goodmemoryfactor = 1.0;
+    double badmemoryfactor = 1.0;
 };
 
 /// GameCreature Gedächnis

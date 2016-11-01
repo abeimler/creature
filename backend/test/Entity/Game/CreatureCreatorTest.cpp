@@ -2,7 +2,7 @@
 
 #include "Entity/Game/CreatureCreator.h"
 
-#include "EntityGameTestHelper.h"
+#include "Entity/Game/EntityGameTestHelper.h"
 
 TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
     gameentity::CreatureCreator creaturecreator;
