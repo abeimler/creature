@@ -1,4 +1,4 @@
-#include "CreatureType.h"
+#include "Data/CreatureType.h"
 
 namespace data {
 

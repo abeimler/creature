@@ -1,4 +1,4 @@
-#include "CreatureBattlerStatus.h"
+#include "Data/CreatureBattlerStatus.h"
 
 namespace data {
 

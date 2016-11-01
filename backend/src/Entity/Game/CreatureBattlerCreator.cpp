@@ -1,4 +1,4 @@
-#include "CreatureBattlerCreator.h"
+#include "Entity/Game/CreatureBattlerCreator.h"
 
 namespace gameentity {
 
@@ -25,7 +25,7 @@ bool CreatureBattlerCreator::isSkillLearned(
 
 CreatureBattlerCreator::CreatureBattlerCreator() {}
 
-int CreatureBattlerCreator::getAttr(const gamecomp::CreatureBattler& battler,
+int CreatureBattlerCreator::getAttr(const gamecomp::CreatureBattlerComponent& battler,
                                     data::Attribute attr) {
     int attr_base_value = earr::enum_array_at(battler.attrbase, attr);
     int attr_plus_value = earr::enum_array_at(battler.attrplus, attr);
@@ -33,18 +33,18 @@ int CreatureBattlerCreator::getAttr(const gamecomp::CreatureBattler& battler,
 }
 
 void CreatureBattlerCreator::setHP(int value,
-                                   gamecomp::CreatureBattler& battler) {
+                                   gamecomp::CreatureBattlerComponent& battler) {
     battler.hp = clamp(value, 0, getAttr(battler, data::Attribute::MaxMP));
 }
 
 void CreatureBattlerCreator::setMP(int value,
-                                   gamecomp::CreatureBattler& battler) {
+                                   gamecomp::CreatureBattlerComponent& battler) {
     battler.mp = clamp(value, 0, getAttr(battler, data::Attribute::MaxMP));
 }
 
 
 void CreatureBattlerCreator::setAttr(data::Attribute attr, int value,
-                                     gamecomp::CreatureBattler& battler) {
+                                     gamecomp::CreatureBattlerComponent& battler) {
     earr::enum_array_at(battler.attrplus, attr) =
         value - earr::enum_array_at(battler.attrbase, attr);
     earr::enum_array_at(battler.attr, attr) = value;
@@ -57,7 +57,7 @@ void CreatureBattlerCreator::setAttr(data::Attribute attr, int value,
 }
 
 
-void CreatureBattlerCreator::updateNewLvL(gamecomp::CreatureBattler& battler,
+void CreatureBattlerCreator::updateNewLvL(gamecomp::CreatureBattlerComponent& battler,
                                           const data::Creature& creature) {
     battler.lvl = std::max<int>(battler.lvl, creature.getMinLvL());
     battler.lvl = std::min<int>(battler.lvl, creature.getMaxLvL());
@@ -90,7 +90,7 @@ void CreatureBattlerCreator::updateNewLvL(gamecomp::CreatureBattler& battler,
     setMP(battler.mp, battler);
 }
 
-void CreatureBattlerCreator::setEXP(gamecomp::CreatureBattler& battler,
+void CreatureBattlerCreator::setEXP(gamecomp::CreatureBattlerComponent& battler,
                                     const data::Creature& creature, int exp) {
     size_t battler_exp_size =
         earr::enum_array_at(battler.attrparam, +data::Attribute::Exp).size();
@@ -123,7 +123,7 @@ void CreatureBattlerCreator::setEXP(gamecomp::CreatureBattler& battler,
     }
 }
 
-void CreatureBattlerCreator::setLvL(gamecomp::CreatureBattler& battler,
+void CreatureBattlerCreator::setLvL(gamecomp::CreatureBattlerComponent& battler,
                                     const data::Creature& creature, int lvl) {
     auto& attrParamExp =
         earr::enum_array_at(battler.attrparam, +data::Attribute::Exp);
@@ -135,17 +135,17 @@ void CreatureBattlerCreator::setLvL(gamecomp::CreatureBattler& battler,
 }
 
 
-gamecomp::CreatureData
+gamecomp::CreatureDataComponent
 CreatureBattlerCreator::createCreatureData(const data::Creature& creature) {
-    gamecomp::CreatureData creature_data;
+    gamecomp::CreatureDataComponent creature_data;
 
-    creature_data.creature_name = creature.getName();
+    creature_data.creature = creature;
 
     return creature_data;
 }
 
-gamecomp::CreatureBattler CreatureBattlerCreator::createCreatureBattler() {
-    gamecomp::CreatureBattler ret;
+gamecomp::CreatureBattlerComponent CreatureBattlerCreator::createCreatureBattler() {
+    gamecomp::CreatureBattlerComponent ret;
 
     ret.attrbase.fill(0);
     ret.attrinf.fill(0);
@@ -156,9 +156,9 @@ gamecomp::CreatureBattler CreatureBattlerCreator::createCreatureBattler() {
 }
 
 
-gamecomp::CreatureBattlerGene
+gamecomp::CreatureBattlerGeneComponent
 CreatureBattlerCreator::createCreatureBattlerGene() {
-    gamecomp::CreatureBattlerGene ret;
+    gamecomp::CreatureBattlerGeneComponent ret;
 
     ret.boniattrfactor.fill(1.0);
     ret.boniattrinflation.fill(1.0);
@@ -166,27 +166,27 @@ CreatureBattlerCreator::createCreatureBattlerGene() {
     return ret;
 }
 
-gamecomp::BattlerBattleState
+gamecomp::BattlerBattleStateComponent
 CreatureBattlerCreator::createBattlerBattleState() {
-    gamecomp::BattlerBattleState ret;
+    gamecomp::BattlerBattleStateComponent ret;
 
     ret.option.fill(false);
 
     return ret;
 }
 
-gamecomp::BattlerBattleState CreatureBattlerCreator::createBattlerBattleState(
+gamecomp::BattlerBattleStateComponent CreatureBattlerCreator::createBattlerBattleState(
     const data::Creature& creature) {
-    gamecomp::BattlerBattleState ret;
+    gamecomp::BattlerBattleStateComponent ret;
 
     ret.option = creature.getOption();
 
     return ret;
 }
 
-gamecomp::BattlerResists
+gamecomp::BattlerResistsComponent
 CreatureBattlerCreator::createBattlerResists(const data::Creature& creature) {
-    gamecomp::BattlerResists ret;
+    gamecomp::BattlerResistsComponent ret;
 
 
     ret.atk_elements_name = creature.getElements();
@@ -211,8 +211,8 @@ CreatureBattlerCreator::createBattlerResists(const data::Creature& creature) {
 }
 
 void CreatureBattlerCreator::loadCreatureBattler(
-    gamecomp::CreatureBattler& battler, const data::Creature& creature,
-    const gamecomp::CreatureBattlerGene& gene, int lvl) {
+    gamecomp::CreatureBattlerComponent& battler, const data::Creature& creature,
+    const gamecomp::CreatureBattlerGeneComponent& gene, int lvl) {
 
     for (auto index : earr::Enum<data::Attribute>()) {
         earr::enum_array_at(battler.attrparam, index) =

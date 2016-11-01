@@ -1,4 +1,4 @@
-#include "CreatureImage.h"
+#include "Data/CreatureImage.h"
 
 namespace model {
 
