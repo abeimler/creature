@@ -14,8 +14,8 @@
 namespace gamecomp {
 
 /// Hungerphase
-BETTER_ENUM(StarvationPhase, size_t, BEGIN,
-            None = BEGIN, ///< Nichts
+BETTER_ENUM(StarvationPhase, size_t, None,
+            BEGIN = None, ///< Nichts
             Phase1,       ///< Hungern
             Phase2,       ///< Weglaufen
             Phase3,       ///< Unglücklich wieder kommen
@@ -24,8 +24,8 @@ BETTER_ENUM(StarvationPhase, size_t, BEGIN,
             Phase6,       ///< Tot
             END)
 
-BETTER_ENUM(CreatureProgressTimer, size_t, BEGIN,
-            Hungry = BEGIN, ///< Prozess für Hunger
+BETTER_ENUM(CreatureProgressTimer, size_t, Hungry,
+            BEGIN = Hungry, ///< Prozess für Hunger
             Thirsty,        ///< Prozess für Durst
             Tired,          ///< Verlauf für Müdigkeit
             Training,       ///< Verlauf für Training
@@ -34,8 +34,8 @@ BETTER_ENUM(CreatureProgressTimer, size_t, BEGIN,
             END)
 
 BETTER_ENUM(
-    CreatureProgressTimerCallback, size_t, BEGIN,
-    Digestion = BEGIN,    ///< Prozess für die Verdauung
+    CreatureProgressTimerCallback, size_t, Digestion,
+    BEGIN = Digestion,    ///< Prozess für die Verdauung
     PauseDigestionHungry, ///< Pausiert Verdauung wenn Hunger zu lang geht
     FullDigestionHeap,    ///< wenn X haufen nicht aufgeräumt wurden, Krankheit
     IllbyOverweight,      ///< Timer für Krankheit durch Übergewicht
@@ -49,9 +49,8 @@ BETTER_ENUM(
     END)
 
 BETTER_ENUM(
-    CreatureProgressTimerIncrement, size_t, BEGIN,
-    LostWeightTimerHungry =
-        BEGIN, ///< normaler Gewichtsverlust(Hunger) in einer bestimmten Zeit
+    CreatureProgressTimerIncrement, size_t, LostWeightTimerHungry,
+    BEGIN = LostWeightTimerHungry, ///< normaler Gewichtsverlust(Hunger) in einer bestimmten Zeit
     LostWeightTimerThirsty, ///< normaler Gewichtsverlust(Durst) in einer
                             /// bestimmten Zeit
     LostCalories,           ///< Calories Verbrauch in einer bestimmten Zeit

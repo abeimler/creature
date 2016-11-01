@@ -10,8 +10,8 @@ namespace data {
 /// Creature Normal-Animation Frames
 BETTER_ENUM(CreatureAnimation, size_t,
             /// start at 12, see AnimationPose
-            BEGIN = static_cast<size_t>(AnimationPose::END),
-            Standing = BEGIN, ///< Standing
+            Standing = static_cast<size_t>(AnimationPose::END),
+            BEGIN = Standing, ///< Standing
             WalkingLeft,      ///< Walking left
             WalkingRight,     ///< Walking right
             Sitting,          ///< Sitting
@@ -24,8 +24,8 @@ BETTER_ENUM(CreatureAnimation, size_t,
 /// Creature Misc-Animation Frames
 BETTER_ENUM(CreatureAnimationMisc, size_t,
             /// start at 20, see CreatureAnimation
-            BEGIN = static_cast<size_t>(CreatureAnimation::END),
-            Born = BEGIN,  ///< Is Born
+            Born = static_cast<size_t>(CreatureAnimation::END),
+            BEGIN = Born,  ///< Is Born
             Happy = BEGIN, ///< Happy
             EvolutionFrom, ///< evolution from ...
             EvolutionTo,   ///< ... evolution to
@@ -35,8 +35,8 @@ BETTER_ENUM(CreatureAnimationMisc, size_t,
 /// Creature Status-Animation Frames
 BETTER_ENUM(CreatureStatusAnimation, size_t,
             /// start at 23, see CreatureAnimationMisc
-            BEGIN = static_cast<size_t>(CreatureAnimationMisc::END),
-            Normal = BEGIN,
+            Normal = static_cast<size_t>(CreatureAnimationMisc::END),
+            BEGIN = Normal,
             Dead,     ///< Dead
             RunAway,  ///< Run Away
             Sleep,    ///< Sleep, Rest
@@ -47,8 +47,8 @@ BETTER_ENUM(CreatureStatusAnimation, size_t,
 
 
 /// GameCreature Status
-BETTER_ENUM(CreatureStatus, size_t, BEGIN,
-            Normal = BEGIN, ///< Normal Status (no Statuses)
+BETTER_ENUM(CreatureStatus, size_t, Normal,
+            BEGIN = Normal, ///< Normal Status (no Statuses)
             Dead,           ///< Dead
             RunAway,        ///< Run Away
             Sleep,          ///< Sleep
@@ -67,8 +67,8 @@ BETTER_ENUM(CreatureStatus, size_t, BEGIN,
             END)
 
 /// Creature Level
-BETTER_ENUM(CreatureLevel, size_t, BEGIN,
-            Egg = BEGIN, ///< Egg
+BETTER_ENUM(CreatureLevel, size_t, Egg,
+            BEGIN = Egg, ///< Egg
             Baby,        ///< Baby
             Baby2,       ///< Baby2
             Child,       ///< Child
@@ -79,8 +79,8 @@ BETTER_ENUM(CreatureLevel, size_t, BEGIN,
 
 /// Creature Circadian Rhythm
 BETTER_ENUM(
-    CreatureCircadianRhythm, size_t, BEGIN,
-    None = BEGIN, ///< None
+    CreatureCircadianRhythm, size_t, None,
+    BEGIN = None, ///< None
     Crepuscular,  ///< Crepuscular      during twilight (i.e., dawn and dusk).
     Diurnal,      ///< Diurnal          during the day and sleeping, or other
                   ///                   inactivity, at night.
@@ -91,8 +91,8 @@ BETTER_ENUM(
     END)
 
 /// Creature TrainingTime/ActiveTime
-BETTER_ENUM(CreatureTrainTime, size_t, BEGIN,
-            Morning = BEGIN, ///< Morning:      4 - 11 o'clock
+BETTER_ENUM(CreatureTrainTime, size_t, Morning,
+            BEGIN = Morning, ///< Morning:      4 - 11 o'clock
             Noon,            ///< Noon:         12 - 16 o'clock
             AfterNoon,       ///< AfterNoon:    17 - 19 o'clock
             Evening,         ///< Evening:      20 - 22 o'clock
@@ -100,8 +100,8 @@ BETTER_ENUM(CreatureTrainTime, size_t, BEGIN,
             END)
 
 /// Creature Gender
-BETTER_ENUM(CreatureGender, size_t, BEGIN,
-            None = BEGIN,  ///< None/Genderless
+BETTER_ENUM(CreatureGender, size_t, None,
+            BEGIN = None,  ///< None/Genderless
             Male,          ///< Male
             Female,        ///< Fermale
             Hermaphrodite, ///< Hermaphrodite
@@ -260,25 +260,25 @@ class Creature : public Battler {
     public:
     template <class Archive>
     void serialize(Archive& ar) {
-        ar(cereal::base_class<Battler>(this));
+        ar(cereal::make_nvp("_base", cereal::base_class<Battler>(this)));
 
-        ar(cereal::make_nvp("weight", creaturelevel_));
-        ar(cereal::make_nvp("luck", elements_));
-        ar(cereal::make_nvp("disc", creaturerhythm_));
+        ar(cereal::make_nvp("creaturelevel", creaturelevel_));
+        ar(cereal::make_nvp("elements", elements_));
+        ar(cereal::make_nvp("creaturerhythm", creaturerhythm_));
 
-        ar(cereal::make_nvp("wasnotill", creaturetype_));
+        ar(cereal::make_nvp("creaturetype", creaturetype_));
 
-        ar(cereal::make_nvp("wasnothurt", minweight_));
-        ar(cereal::make_nvp("wasnothurt", maxweight_));
-        ar(cereal::make_nvp("wasnothurt", minbodysize_));
-        ar(cereal::make_nvp("wasnothurt", maxbodysize_));
+        ar(cereal::make_nvp("minweight", minweight_));
+        ar(cereal::make_nvp("maxweight", maxweight_));
+        ar(cereal::make_nvp("minbodysize", minbodysize_));
+        ar(cereal::make_nvp("maxbodysize", maxbodysize_));
 
-        ar(cereal::make_nvp("mustevolveatlevel", nextcreatures_));
-        ar(cereal::make_nvp("attr", prevcreatures_));
-        ar(cereal::make_nvp("attr", misscreatures_));
+        ar(cereal::make_nvp("nextcreatures", nextcreatures_));
+        ar(cereal::make_nvp("prevcreatures", prevcreatures_));
+        ar(cereal::make_nvp("misscreatures", misscreatures_));
 
-        ar(cereal::make_nvp("traintime", evolcondition_));
-        ar(cereal::make_nvp("traintime", genderdistribution_));
+        ar(cereal::make_nvp("evolcondition", evolcondition_));
+        ar(cereal::make_nvp("genderdistribution", genderdistribution_));
     }
 
     public:

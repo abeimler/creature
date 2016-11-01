@@ -7,8 +7,8 @@
 namespace data {
 
 /// Skill Option
-BETTER_ENUM(SkillOption, size_t, BEGIN,
-            Absorb = BEGIN,  ///< Absort
+BETTER_ENUM(SkillOption, size_t, Absorb,
+            BEGIN = Absorb,  ///< Absort
             IgnoreDefensive, ///< Ignore Defensive
             PhysicalAttack,  ///< Physical Attack
             CanUseinBattle,  ///< can use in Battle
@@ -20,7 +20,8 @@ BETTER_ENUM(SkillOption, size_t, BEGIN,
 
             /// on dead Character and alive Character
             /// (dont use OnlyOnDeadChara and OnDeadChara together)
-            OnDeadChara, END)
+            OnDeadChara, 
+            END)
 
 /// Skill
 class Skill {

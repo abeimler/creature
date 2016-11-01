@@ -21,8 +21,8 @@
 namespace gamecomp {
 
 /// Grund des Todes
-BETTER_ENUM(CauseOfDeath, size_t, BEGIN,
-            Alive = BEGIN,     ///< Noch am leben
+BETTER_ENUM(CauseOfDeath, size_t, Alive,
+            BEGIN = Alive,     ///< Noch am leben
             Starved,           ///< Verhungert
             Thirst,            ///< Verdurstet
             StrongUnderweight, ///< starkes Untergewicht
@@ -34,8 +34,8 @@ BETTER_ENUM(CauseOfDeath, size_t, BEGIN,
             END)
 
 /// Grund des Weglaufens
-BETTER_ENUM(CauseOfRunAway, size_t, BEGIN,
-            NotRunAway = BEGIN, ///< Nicht weggelaufen
+BETTER_ENUM(CauseOfRunAway, size_t, NotRunAway,
+            BEGIN = NotRunAway, ///< Nicht weggelaufen
             Starved,            ///< Verhungert
             Unhappy,            ///< Unglücklich
             END)

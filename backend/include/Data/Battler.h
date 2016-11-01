@@ -9,8 +9,8 @@
 namespace data {
 
 /// Weapon Animation: Move
-BETTER_ENUM(ActionPrevMoveOption, size_t, BEGIN,
-            None = BEGIN, ///< none
+BETTER_ENUM(ActionPrevMoveOption, size_t, None,
+            BEGIN = None, ///< none
             StepForward,  ///< 1 step forward
             StepBackward, ///< 1 Step backward
             JumpForward,  ///< 1 jump forward
@@ -19,8 +19,8 @@ BETTER_ENUM(ActionPrevMoveOption, size_t, BEGIN,
             END)
 
 /// Batter Animation Pose
-BETTER_ENUM(AnimationPose, size_t, BEGIN,
-            Normal = BEGIN, ///< Normal/Standing
+BETTER_ENUM(AnimationPose, size_t, Normal,
+            BEGIN = Normal, ///< Normal/Standing
             RightHand,      ///< Right Hand Attack
             LeftHand,       ///< Left hand Attack
             Skill,          ///< use Skill
@@ -35,8 +35,8 @@ BETTER_ENUM(AnimationPose, size_t, BEGIN,
             END)
 
 /// Class Option
-BETTER_ENUM(BattlerOption, size_t, BEGIN,
-            LessDamage = BEGIN, ///< 1/4 damage less
+BETTER_ENUM(BattlerOption, size_t, LessDamage,
+            BEGIN = LessDamage, ///< 1/4 damage less
             HigherGuard,        ///< 1/4 damage less by defending
             DoubleItemEffect,   ///< Double Effect of UseItem, recover HP/MP
             END)

@@ -6,8 +6,8 @@
 namespace gamecomp {
 
 /// GameCreature Aktivitäten
-BETTER_ENUM(CreatureActivity, size_t, BEGIN,
-            Noting = BEGIN, ///< Nichts tun
+BETTER_ENUM(CreatureActivity, size_t, Noting,
+            BEGIN = Noting, ///< Nichts tun
             Bored,          ///< gelangweilt
 
             Born,    ///< Wurde gerade Geboren/Geschlüpft

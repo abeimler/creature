@@ -8,8 +8,8 @@
 namespace data {
 
 ///  BattlerStatus Restriction (order by smallest effect (first))
-BETTER_ENUM(StatusRestrictionOption, size_t, BEGIN,
-            None = BEGIN, ///< None
+BETTER_ENUM(StatusRestrictionOption, size_t, None,
+            BEGIN = None, ///< None
             AtkEnemies,   ///< allways attack enemies
             AtkAllies,    ///< allways attack allies
             AtkAll,       ///< allways attack enemies/allies
@@ -18,8 +18,8 @@ BETTER_ENUM(StatusRestrictionOption, size_t, BEGIN,
             END)
 
 /// BattlerStatus Option
-BETTER_ENUM(StatusOption, size_t, BEGIN,
-            EvadePhysical = BEGIN, ///< can't hit by physical attacks
+BETTER_ENUM(StatusOption, size_t, EvadePhysical,
+            BEGIN = EvadePhysical, ///< can't hit by physical attacks
             ReflectSkills,         ///< Skill reflected back to the user
             Dead,                  ///< dead/knockout
             END)

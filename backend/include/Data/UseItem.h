@@ -10,8 +10,8 @@
 namespace data {
 
 /// UseItem Option
-BETTER_ENUM(UseItemOption, size_t, BEGIN,
-            CanUseinBattle = BEGIN, ///< can use in Battle
+BETTER_ENUM(UseItemOption, size_t, CanUseinBattle,
+            BEGIN = CanUseinBattle, ///< can use in Battle
             CanUseinField,          ///< can use in Field/Map
 
             /// only on Dead Character
@@ -53,7 +53,7 @@ class UseItem : public Item {
     public:
     template <class Archive>
     void serialize(Archive& ar) {
-        ar(cereal::base_class<Item>(this));
+        ar(cereal::make_nvp("_base", cereal::base_class<Item>(this)));
 
         ar(cereal::make_nvp("canuse", canuse_));
         ar(cereal::make_nvp("target", target_));

@@ -17,7 +17,7 @@ class CreatureBattlerStatus : public BattlerStatus {
     public:
     template <class Archive>
     void serialize(Archive& ar) {
-        ar(cereal::base_class<BattlerStatus>(this));
+        ar(cereal::make_nvp("_base", cereal::base_class<BattlerStatus>(this)));
 
         ar(cereal::make_nvp("creaturestatus", creaturestatus_));
         ar(cereal::make_nvp("filename", filename_));

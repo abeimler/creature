@@ -10,8 +10,8 @@
 namespace data {
 
 /// Attributes of Hero/Enemy
-BETTER_ENUM(Attribute, size_t, BEGIN,
-            MaxHP = BEGIN, ///< Maximal HP
+BETTER_ENUM(Attribute, size_t, MaxHP,
+            BEGIN = MaxHP, ///< Maximal HP
             MaxMP,         ///< Minimal MP
             Atk,           ///< Attack
             Def,           ///< Defensive
@@ -21,8 +21,8 @@ BETTER_ENUM(Attribute, size_t, BEGIN,
             END)
 
 /// Resist of Element
-BETTER_ENUM(Resist, size_t, BEGIN,
-            MoreSensitivity = BEGIN, ///< double damage, 200%
+BETTER_ENUM(Resist, size_t, MoreSensitivity,
+            BEGIN = MoreSensitivity, ///< double damage, 200%
             Sensitivity,             ///< 1/2 damage more, 150%
             Normal,                  ///< normal damage, 100%
             Resistance,              ///< 1/2 damage less, 50%
@@ -32,8 +32,8 @@ BETTER_ENUM(Resist, size_t, BEGIN,
             END)
 
 /// Item Type
-BETTER_ENUM(ItemType, size_t, BEGIN,
-            Basis = BEGIN, ///< Basis Item
+BETTER_ENUM(ItemType, size_t, Basis,
+            BEGIN = Basis, ///< Basis Item
             Weapon,        ///< Weapon Item
             Shield,        ///< Shield (Armor) Item
             Armor,         ///< Armor (Armor) Item
@@ -43,8 +43,8 @@ BETTER_ENUM(ItemType, size_t, BEGIN,
             END)
 
 /// Target
-BETTER_ENUM(TargetOption, size_t, BEGIN,
-            None = BEGIN,   ///< None
+BETTER_ENUM(TargetOption, size_t, None,
+            BEGIN = None,   ///< None
             OneEnemy,       ///< 1 Enemy
             Nenemies,       ///< (Numbers of Atk) enemies
             RandomOneEnemy, ///< 1 Enemy, Random

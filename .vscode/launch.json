@@ -8,7 +8,7 @@
             "program": "${workspaceRoot}/build/backend/creature_backend_test",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceRoot}/build/backend",
             "environment": [],
             "externalConsole": true,
             "linux": {

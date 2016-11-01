@@ -23,7 +23,7 @@ class Food : public UseItem {
     public:
     template <class Archive>
     void serialize(Archive& ar) {
-        ar(cereal::base_class<UseItem>(this));
+        ar(cereal::make_nvp("_base", cereal::base_class<UseItem>(this)));
 
         ar(cereal::make_nvp("luck", luck_));
         ar(cereal::make_nvp("disc", disc_));
