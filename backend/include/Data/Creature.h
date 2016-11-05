@@ -430,7 +430,7 @@ class Creature : public Battler {
      * @param misscreatures miss/bad Creature Evolution
      * @brief set miss Creature Evolution
      */
-    void setMissCreatures(const Creature& misscreature) {
+    void addMissCreature(const Creature& misscreature) {
         this->misscreatures_.push_back(misscreature.getName());
     }
 
@@ -494,6 +494,8 @@ class CreatureStarter {
 
     public:
     CreatureStarter() = default;
+
+    explicit CreatureStarter(const Creature& creature);
 
     /// Creature
     std::string getCreatureName() const { return this->creature_name_; }

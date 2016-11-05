@@ -277,17 +277,17 @@ class BattlerStatus {
 
     void setExtent(const StatusExtent& extent) { this->extent_ = extent; }
 
-    void setElementResist(const std::shared_ptr<Element>& element,
+    void setElementResist(const Element& element,
                           Resist resist) {
-        if (!element) {
-            return;
-        }
-
-        this->elementresist_[element->getName()] = resist;
+        this->elementresist_[element.getName()] = resist;
     }
 
-    void setRemoveStatuses(const std::vector<std::string>& statuses) {
-        this->removestatuses_ = statuses;
+    void addRemoveStatus(const BattlerStatus& status) {
+        this->removestatuses_.push_back(status.getName());
+    }
+
+    void clearRemoveStatuses() {
+        this->removestatuses_.clear();
     }
 
     void setNoSkillATK(int value) { this->noskillatk_ = value; }
@@ -341,7 +341,7 @@ class BattlerStatus {
      * @return removed BattlerStatus
      * @return remove_statuses.end(), BattlerStatus not removed
      */
-    decltype(auto) getRemoveStatus(std::string name) {
+    decltype(auto) findRemoveStatus(std::string name) {
         auto find_byName = [name](const std::string& battlerstatus_name) {
             return name == battlerstatus_name;
         };
@@ -350,8 +350,8 @@ class BattlerStatus {
                             std::end(this->removestatuses_), find_byName);
     }
 
-    decltype(auto) getRemoveStatus(const BattlerStatus& battlerstatus) {
-        return this->getRemoveStatus(battlerstatus.getName());
+    decltype(auto) findRemoveStatus(const BattlerStatus& battlerstatus) {
+        return this->findRemoveStatus(battlerstatus.getName());
     }
 };
 } // namespace data

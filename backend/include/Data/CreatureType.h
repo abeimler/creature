@@ -72,10 +72,25 @@ class CreatureRootType {
 
     void setName(std::string name) { this->name_ = name; }
 
-    void addCreatureType(const CreatureType& type) {
+    decltype(auto) findCreatureType(std::string type_name) {
+        auto find_byName = [type_name](const CreatureType& type) {
+            return type_name == type.getName();
+        };
+
+        return std::find_if(std::begin(this->types_), std::end(this->types_), find_byName);
+    }
+
+    bool isExistCreatureType(std::string type_name) {
+        return findCreatureType(type_name) != std::end(this->types_);
+    }
+
+    CreatureType& addCreatureType(const CreatureType& type) {
+        // TODO c++17 push_back returns back value
         this->types_.push_back(type);
         auto& newtype = this->types_.back();
         newtype.setCreatureRootType(this->name_);
+
+        return newtype;
     }
 
     void removeCreatureType(std::string name) {

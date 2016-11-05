@@ -10,15 +10,13 @@ set(CREATURE_BACKEND_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
 set(CREATURE_BACKEND_BENCHMARK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/benchmark)
 
 file(GLOB_RECURSE CREATURE_BACKEND_SRC ${CREATURE_BACKEND_SRC_PATH}/*.cpp ${CREATURE_BACKEND_SRC_PATH}/*.cxx ${CREATURE_BACKEND_SRC_PATH}/*.cc)
-file(GLOB_RECURSE CREATURE_BACKEND_HEADERS ${CREATURE_BACKEND_SRC_PATH}/*.h ${CREATURE_BACKEND_SRC_PATH}/*.hpp ${CREATURE_BACKEND_SRC_PATH}/*.hxx)
+file(GLOB_RECURSE CREATURE_BACKEND_HEADERS ${CREATURE_BACKEND_INCLUDE_PATH}/*.h ${CREATURE_BACKEND_INCLUDE_PATH}/*.hpp ${CREATURE_BACKEND_INCLUDE_PATH}/*.hxx)
 
 file(GLOB_RECURSE CREATURE_BACKEND_TEST_SRC ${CREATURE_BACKEND_TEST_PATH}/*.cpp ${CREATURE_BACKEND_TEST_PATH}/*.cxx ${CREATURE_BACKEND_TEST_PATH}/*.cc)
 file(GLOB_RECURSE CREATURE_BACKEND_TEST_HEADERS ${CREATURE_BACKEND_TEST_PATH}/*.h ${CREATURE_BACKEND_TEST_PATH}/*.hpp ${CREATURE_BACKEND_TEST_PATH}/*.hxx)
 
 file(GLOB_RECURSE CREATURE_BACKEND_BENCHMARK_SRC ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cpp ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cxx ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cc)
 file(GLOB_RECURSE CREATURE_BACKEND_BENCHMARK_HEADERS ${CREATURE_BACKEND_BENCHMARK_PATH}/*.h ${CREATURE_BACKEND_BENCHMARK_PATH}/*.hpp ${CREATURE_BACKEND_BENCHMARK_PATH}/*.hxx)
-
-
 
 ###
 ## 3rd libs
@@ -58,14 +56,14 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_constexpr
                                                 cxx_nullptr)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambdas)
 
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_LIB_PATH}/entityx)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums/extra)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_LIB_PATH}/cereal/include)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_LIB_PATH}/clamp)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_LIB_PATH}/GSL)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_LIB_PATH}/json/src)
+# use SYSTEM to get rid of 3rd party libs warnings
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/entityx)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums/extra)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/cereal/include)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/clamp)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/GSL)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/json/src)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_INCLUDE_PATH})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CREATURE_BACKEND_SRC_PATH})
@@ -87,8 +85,8 @@ set_property(TARGET ${PROJECT_NAME}_test PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(${PROJECT_NAME}_test PRIVATE ${PROJECT_NAME})
 
+target_include_directories(${PROJECT_NAME}_test SYSTEM PRIVATE ${CREATURE_BACKEND_LIB_PATH}/doctest/doctest)
 target_include_directories(${PROJECT_NAME}_test PRIVATE ${CREATURE_BACKEND_TEST_PATH})
-target_include_directories(${PROJECT_NAME}_test PRIVATE ${CREATURE_BACKEND_LIB_PATH}/doctest/doctest)
 
 target_compile_options(${PROJECT_NAME}_test PRIVATE -fexceptions)
 
@@ -112,8 +110,8 @@ set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME})
 
-target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${CREATURE_BACKEND_BENCHMARK_PATH})
 target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${CREATURE_BACKEND_LIB_PATH}/benchpress/src)
+target_include_directories(${PROJECT_NAME}_benchmark SYSTEM PRIVATE ${CREATURE_BACKEND_BENCHMARK_PATH})
 
 target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
 
