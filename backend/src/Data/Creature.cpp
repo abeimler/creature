@@ -43,4 +43,8 @@ Creature::Creature(const Battler& battler) : Battler(battler) {
     }
 }
 
+CreatureStarter::CreatureStarter(const Creature& creature){
+    this->setCreature(creature);
+}
+
 } // namespace data

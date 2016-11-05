@@ -107,7 +107,13 @@
                   Archive>::value> = cereal::traits::sfinae>             \
     void load_minimal(Archive const&, _integral const& xx) {             \
         _value = xx;                                                     \
-    }
+    }                                                                    \
+    struct hash {                                                        \
+        template <typename Enum>                                         \
+        std::size_t operator()(Enum e) const {                           \
+            return static_cast<std::size_t>(e._to_integral());           \
+        }                                                                \
+    };
 
 #include <better-enums/n4428.h>
 #include <enum.h>

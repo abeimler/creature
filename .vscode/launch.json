@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "C++ Test Launch",
+            "name": "Backend Test Launch",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/build/backend/creature_backend_test",
@@ -22,10 +22,47 @@
             }
         },
         {
-            "name": "C++ Test Attach",
+            "name": "Backend Test Attach",
             "type": "cppdbg",
             "request": "attach",
             "program": "${workspaceRoot}/build/backend/creature_backend_test",
+            "processId": "${command.pickProcess}",
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            }
+        },
+
+        {
+            "name": "Makedata Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/creature_makedata",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/build",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            }
+        },
+        {
+            "name": "Makedata Attach",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceRoot}/build/creature_makedata",
             "processId": "${command.pickProcess}",
             "linux": {
                 "MIMode": "gdb"
