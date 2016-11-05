@@ -240,102 +240,133 @@ void InitData::initTypes() {
         { "Avatar", { 
             "Avatar" 
         }},
+
+        { "Dragon", {
+            "Dragon", 
+            "Baby Dragon", 
+            "Dragon Man",
+            "Dragon Warrior",
+            "Beast Dragon",
+            "Dark Dragon",
+            "Evil Dragon",
+            "Holy Dragon",
+            "Light Dragon",
+            "Mythical Dragon",
+            "Ocean Dragon",
+            "Sky Dragon"
+        }},
+
+        { "Beast", {
+            "Beast", 
+            "Aquatic Beast", 
+            "Mythical Beast", 
+            "Beast Knight",
+            "Beast Man",
+            "God Beast",
+            "Holy Beast",
+            "Synthetic Beast"
+        }},
+
+        { "Bewitching", { 
+            "Bewitching Beast",
+            "Bewitching Bird" 
+        }},
+
+        { "Bird", {
+            "Bird Man", 
+            "Chick", 
+            "Giant Bird",
+            "Holy Bird"
+        }},
+
+        { "Machine", {
+            "Machine", 
+            "Cyborg", 
+            "Machine Dragon",
+            "Mine"
+        }},
+
+        { "Knight", {
+            "Dark Knight", 
+            "Holy Knight", 
+            "Magic Warrior",
+            "Warrior"
+        }},
+
+        { "Demon", {
+            "Demon Beast", 
+            "Demon Dragon", 
+            "Demon God",
+            "Demon Lord",
+            "Demon Man"
+        }},
+
+        { "Fairy", {
+            "Fairy", 
+            "Spirit"
+        }},
+
+        { "Monster", {
+            "Oni", 
+            "Mutant"
+        }},
+
+        { "Rock", {
+            "Rock", 
+            "Mineral",
+            "Ore"
+        }},
+
+        { "Flame", {
+            "Flame", 
+            "Flame Dragon",
+            "Smoke"
+        }},
+
+        { "Hybrid", {
+            "Hybrid", 
+            "Enhancement",
+            "Composite",
+            "Unique"
+        }},
+
+        { "Ice", {
+            "Icy Snow"
+        }},
+
+        { "Insect", {
+            "Insect", 
+            "Larva",
+            "Parasite"
+        }},
+
+        { "Plant", {
+            "Plant",
+            "Insectivorous Plant",
+            "Plant"
+        }},
+
+        { "Mollusk", {
+            "Mollusk"
+        }},
+
+        { "Toy", {
+            "Toy",
+            "Puppet"
+        }},
+
+        { "Undead", {
+            "Undead",
+            "Skeleton",
+            "Ghost"
+        }},
+
+        { "Unknown", {
+            "Unknown",
+            "Perfect",
+            "9000",
+            "Perfect",
+            "No Data",
+        }},
     };
-
-    /*
-
-
-
-
-    makeType("Dragon", "Dragon");
-    makeType("Baby Dragon", "Dragon");
-    makeType("Dragon Man", "Dragon");
-    makeType("Dragon Warrior", "Dragon");
-    makeType("Beast Dragon", "Dragon");
-    makeType("Dark Dragon", "Dragon");
-    makeType("Evil Dragon", "Dragon");
-    makeType("Holy Dragon", "Dragon");
-    makeType("Light Dragon", "Dragon");
-    makeType("Mythical Dragon", "Dragon");
-    makeType("Ocean Dragon", "Dragon");
-    makeType("Sky Dragon", "Dragon");
-
-    makeType("Beast", "Beast");
-    makeType("Mythical Beast", "Beast");
-    makeType("Beast Knight", "Beast");
-    makeType("Beast Man", "Beast");
-    makeType("God Beast", "Beast");
-    makeType("Holy Beast", "Beast");
-    makeType("Synthetic Beast", "Beast");
-
-    makeType("Bewitching Beast", "Bewitching");
-    makeType("Bewitching Bird", "Bewitching");
-
-    makeType("Bird", "Bird");
-    makeType("Bird Man", "Bird");
-    makeType("Chick", "Bird");
-    makeType("Giant Bird", "Bird");
-    makeType("Holy Bird", "Bird");
-
-    makeType("Machine", "Machine");
-    makeType("Cyborg", "Machine");
-    makeType("Machine Dragon", "Machine");
-    makeType("Mine", "Machine");
-
-    makeType("Dark Knight", "Knight");
-    makeType("Holy Knight", "Knight");
-    makeType("Magic Warrior", "Knight");
-    makeType("Warrior", "Knight");
-
-    makeType("Demon Beast", "Demon");
-    makeType("Demon Dragon", "Demon");
-    makeType("Demon God", "Demon");
-    makeType("Demon Lord", "Demon");
-    makeType("Demon Man", "Demon");
-
-    makeType("Fairy", "Fairy");
-    makeType("Spirit", "Fairy");
-
-    makeType("Oni", "Monster");
-    makeType("Mutant", "Monster");
-
-    makeType("Rock", "Rock");
-    makeType("Mineral", "Rock");
-    makeType("Ore", "Rock");
-
-    makeType("Flame", "Flame");
-    makeType("Flame Dragon", "Flame");
-    makeType("Smoke", "Flame");
-
-    makeType("Hybrid", "Hybrid");
-    makeType("Enhancement", "Hybrid");
-    makeType("Composite", "Hybrid");
-    makeType("Unique", "Hybrid");
-
-    makeType("Icy Snow", "Ice");
-
-    makeType("Insect", "Insect");
-    makeType("Larva", "Insect");
-    makeType("Parasite", "Insect");
-
-    makeType("Insectivorous Plant", "Plant");
-
-    makeType("Mollusk", "Mollusk");
-
-    makeType("Plant", "Plant");
-    makeType("Seed", "Plant");
-
-    makeType("Toy", "Toy");
-    makeType("Puppet", "Toy");
-
-    makeType("Undead", "Undead");
-    makeType("Skeleton", "Undead");
-    makeType("Ghost", "Undead");
-
-    makeType("Unknown", "Unknown");
-    makeType("Perfect", "Unknown");
-    makeType("9000", "Unknown");
-    makeType("Unanalyzable", "Unknown");
-    makeType("No Data", "Unknown");
-    */
 }
