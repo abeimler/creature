@@ -1,29 +1,20 @@
 #include "DataMaker/DataCreatureMaker.h"
 
-
+namespace datamaker {
 
 void DataCreatureMaker::makeElement(std::string name) {
-    std::cout << "make element: " << name << " , ";
+    std::cout << "make element: " << name << '\n';
 
     data::Element element;
     element.setName(name);
     this->datamanager_.saveElement(element);
-
-    std::cout << '\n';
 }
 
-void DataCreatureMaker::makeElements() {
-    makeElement("Nature Spirits");
-    makeElement("Deep Savers");
-    makeElement("Nightmare Soldiers");
-    makeElement("Wind Guardians");
-    makeElement("Metal Empire");
-    makeElement("Unknown");
-    makeElement("Dark Area");
-    makeElement("Virus Busters");
-    makeElement("Dragons Roar");
-    makeElement("Jungle Troopers");
-    makeElement("X-Antibody");
+void DataCreatureMaker::makeElements(const std::vector<std::string>& elements, const resists_t& resists) {
+    for(auto element : elements) {
+        makeElement(element);
+    }
+    this->resists_ = resists;
 }
 
 
@@ -106,9 +97,6 @@ void DataCreatureMaker::initStatuses(CreatureBattlerStatus_map_t& statuses) {
     }
 }
 
-void DataCreatureMaker::loadStatuses() {
-    /// TODO load creature battler status from file
-}
 
 void DataCreatureMaker::makeStatuses() {
     /*
@@ -242,8 +230,9 @@ void DataCreatureMaker::makeStatuses() {
             creaturestatus->addRemoveStatus(status);
         }
 
-        std::cout << "update CreatureStatuses " << creaturestatus->getName()
-                  << '\n';
         this->datamanager_.saveCreatureBattlerStatus(*creaturestatus);
     }
 }
+
+
+} // namespace datamaker

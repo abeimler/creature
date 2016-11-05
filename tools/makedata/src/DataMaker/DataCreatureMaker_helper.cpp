@@ -1,15 +1,7 @@
 #include "DataMaker/DataCreatureMaker.h"
 
-void DataCreatureMaker::reloadDataOnce() {
-    if (!this->datamanager_.getCreatures().empty())
-        return;
+namespace datamaker {
 
-    this->reloadData();
-}
-
-void DataCreatureMaker::reloadData() {
-    // TODO load data from file
-}
 
 void DataCreatureMaker::saveCreature(data::Creature& data_creature) {
     std::cout << "save creature data " << data_creature.getName() << '\n';
@@ -24,14 +16,14 @@ void DataCreatureMaker::updateEvolution(
     std::vector<std::string> nexts_names;
     std::vector<std::string> misses_names;
 
-    std::cout << "update creature evol: " << name << "... ";
+    std::cout << "update creature evol: " << name << '\n';
 
     for (auto nextname : nexts) {
         auto find_creature = this->datamanager_.findCreature(nextname);
         if (find_creature) {
             nexts_names.push_back(find_creature->getName());
         } else {
-            std::cout << nextname << " not found" << '\n';
+            std::cout << "updateEvolution: " << nextname << " not found" << '\n';
         }
     }
 
@@ -40,7 +32,7 @@ void DataCreatureMaker::updateEvolution(
         if (find_creature) {
             misses_names.push_back(find_creature->getName());
         } else {
-            std::cout << missname << " not found" << '\n';
+            std::cout << "updateEvolution: " << missname << " not found" << '\n';
         }
     }
 
@@ -48,7 +40,7 @@ void DataCreatureMaker::updateEvolution(
     if (find_creature) {
         updateEvolution(*find_creature, nexts_names, misses_names);
     } else {
-        std::cout << name << " not found" << '\n';
+        std::cout << "updateEvolution: " << name << " not found" << '\n';
     }
 }
 
@@ -56,14 +48,14 @@ void DataCreatureMaker::updateEvolution(std::string name,
                                         const std::vector<std::string>& nexts) {
     std::vector<std::string> nexts_names;
 
-    std::cout << "update creature evol: " << name << "... ";
+    std::cout << "update creature evol " << name << '\n';
 
     for (auto nextname : nexts) {
         auto find_creature = this->datamanager_.findCreature(nextname);
         if (find_creature) {
             nexts_names.push_back(find_creature->getName());
         } else {
-            std::cout << nextname << " not found" << '\n';
+            std::cout << "updateEvolution: " << nextname << " not found" << '\n';
         }
     }
 
@@ -71,7 +63,7 @@ void DataCreatureMaker::updateEvolution(std::string name,
     if (find_creature) {
         updateEvolution(*find_creature, nexts_names);
     } else {
-        std::cout << name << " not found" << '\n';
+        std::cout << "updateEvolution: " << name << " not found" << '\n';
     }
 }
 
@@ -114,7 +106,7 @@ void DataCreatureMaker::updateEvolutionCond(
                         min_attr = 0;
                     }
                 } else {
-                    std::cerr << "updateEvolutionCond: prev creature "
+                    std::cout << "updateEvolutionCond: prev creature "
                               << prev_name << " not found"
                               << '\n';
                 }
@@ -147,7 +139,7 @@ void DataCreatureMaker::updateEvolutionNextPrev(
 
             this->updateCreature(*creature_next);
         } else {
-            std::cerr << "updateEvolutionNextPrev: next creature " << next_name
+            std::cout << "updateEvolutionNextPrev: next creature " << next_name
                       << " not found" << '\n';
         }
 
@@ -172,7 +164,7 @@ void DataCreatureMaker::updateEvolutionMissPrev(
 
             this->updateCreature(*creature_miss);
         } else {
-            std::cerr << "updateEvolutionMissPrev: miss creature " << miss_name
+            std::cout << "updateEvolutionMissPrev: miss creature " << miss_name
                       << " not found" << '\n';
         }
 
@@ -184,7 +176,7 @@ void DataCreatureMaker::updateEvolutionMissPrev(
 void DataCreatureMaker::updateEvolution(
     data::Creature& data_creature,
     const std::vector<std::string>& nexts) {
-    std::cout << "update creature evol: " << data_creature.getName() << " , ";
+    std::cout << "update creature evol: " << data_creature.getName() << '\n';
 
     for (std::string next_name : nexts) {
         auto creature_next = this->datamanager_.findCreature(next_name);
@@ -198,14 +190,12 @@ void DataCreatureMaker::updateEvolution(
 
             this->updateCreature(data_creature);
         } else {
-            std::cerr << "updateEvolution: next creature " << next_name
+            std::cout << "updateEvolution: next creature " << next_name
                       << " not found" << '\n';
         }
     }
 
-    updateEvolutionNextPrev(data_creature, nexts);
-
-    std::cout << '\n';
+    this->updateEvolutionNextPrev(data_creature, nexts);
 }
 
 void DataCreatureMaker::updateEvolution(
@@ -228,33 +218,30 @@ void DataCreatureMaker::updateEvolution(
 
             this->updateCreature(data_creature);
         } else {
-            std::cerr << "updateEvolution: miss creature " << miss_name
+            std::cout << "updateEvolution: miss creature " << miss_name
                       << " not found" << '\n';
         }
     }
 
-    updateEvolutionMissPrev(data_creature, misses);
+    this->updateEvolutionMissPrev(data_creature, misses);
 
-    std::cout << '\n';
 }
 
 void DataCreatureMaker::updateCreature(data::Creature& data_creature) {
-    
-    std::cout << "update creature: " << data_creature.getName() << " ";
+    std::cout << "save creature: " << data_creature.getName() << '\n';
 
     this->datamanager_.saveCreature(data_creature);
-
-    std::cout << '\n';
 }
 
 void DataCreatureMaker::makeStarter() {
     for (const auto& creature : this->datamanager_.getCreatures()) {
         if (creature && creature->getCreatureLevel() == +data::CreatureLevel::Egg) {
-            std::cout << "creature starter: " << creature->getName() << " ";
+            std::cout << "save creature starter: " << creature->getName() << '\n';
 
             this->datamanager_.saveCreatureStarter(*creature);
-
-            std::cout << '\n';
         }
     }
 }
+
+
+} // namespace datamaker

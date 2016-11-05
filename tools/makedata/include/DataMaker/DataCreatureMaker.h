@@ -1,12 +1,15 @@
 #ifndef DATACREATUREMAKER_H_
 #define DATACREATUREMAKER_H_
 
+#include <map>
 #include <tuple>
 
 #include "Entity/Data/DataManager.h"
 
 #include "Entity/Game/CreatureBattlerCreator.h"
 #include "Entity/Game/CreatureCreator.h"
+
+namespace datamaker {
 
 BETTER_ENUM(DataCreatureEvol, size_t, BadMiss, Bad, Normal, Good )
 
@@ -38,6 +41,17 @@ class DataCreatureMaker {
     using rand_tuple_t = std::tuple<int, int>;
     using CreatureBattlerStatus_map_t = std::unordered_map<data::CreatureStatus, data::CreatureBattlerStatus, data::CreatureStatus::hash>;
     using attr_factor_t = std::unordered_map<data::Attribute, float, data::Attribute::hash>;
+    
+    // resist[ElementName] = [0: pluses ,1: minuses]
+    using resists_t = std::map<std::string, 
+        std::tuple<
+            std::vector<std::string>,
+            std::vector<std::string>
+        >
+    >;
+
+
+    
 
     private:
     gameentity::DataManager datamanager_;
@@ -45,9 +59,11 @@ class DataCreatureMaker {
     gameentity::CreatureCreator creaturecreator_;
     gameentity::CreatureBattlerCreator creaturebattlercreator_;
 
+    // resist[ElementName] = [0: pluses ,1: minuses]
+    resists_t resists_;
+
 
     void initStatuses(CreatureBattlerStatus_map_t& statuses);
-    void loadStatuses();
 
 
     void calcStatuses(data::Creature& creature);
@@ -89,17 +105,6 @@ class DataCreatureMaker {
 
 
 
-
-    void makeStarter();
-
-    void makeRootType(std::string name);
-    void makeType(std::string name, std::string root_name);
-    void makeElement(std::string name);
-
-    void makeTypes();
-    void makeElements();
-    void makeStatuses();
-
     public:
     void
     makeDataCreature(std::string name, std::string type, DataCreatureEvol state,
@@ -116,12 +121,24 @@ class DataCreatureMaker {
 
     DataCreatureMaker();
 
+    const gameentity::DataManager& getDataManager() const { return this->datamanager_; }
 
-    void initBeforData();
+    void initBeforData(const std::vector<std::string>& elements, const resists_t& elements_resists,
+                       const std::map<std::string, std::vector<std::string>>& types);
     void initAfterData();
 
-    void reloadData();
-    void reloadDataOnce();
+
+    void makeStarter();
+
+    void makeRootType(std::string name);
+    void makeType(std::string name, std::string root_name);
+    void makeElement(std::string name);
+
+    void makeTypes(const std::map<std::string, std::vector<std::string>>& types);
+    void makeElements(const std::vector<std::string>& elements, const resists_t& resists);
+    void makeStatuses();
 };
+
+} // namespace datamaker
 
 #endif // DATACREATUREMAKER_HPP_

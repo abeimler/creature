@@ -1,5 +1,7 @@
 #include "DataMaker/DataCreatureMaker.h"
 
+namespace datamaker {
+
 DataCreatureMaker::DataCreatureMaker() {}
 
 
@@ -29,23 +31,26 @@ int DataCreatureMaker::getLeveltoEvol(data::CreatureLevel creatureLevel) {
     return lvl;
 }
 
-void DataCreatureMaker::initBeforData() {
-    std::cout << "make Element" << '\n';
-    this->makeElements();
-    std::cout << "make Element done" << '\n';
+void DataCreatureMaker::initBeforData(
+    const std::vector<std::string>& elements, const resists_t& elements_resists,
+    const std::map<std::string, std::vector<std::string>>& types) {
+    std::cout << "make Elements" << '\n';
+    this->makeElements(elements, elements_resists);
+    std::cout << "make Elements done" << '\n';
+
+    std::cout << "make CreatureTypes" << '\n';
+    this->makeTypes(types);
+    std::cout << "make CreatureTypes done" << '\n';
 
     std::cout << "make CreatureStatuses" << '\n';
     this->makeStatuses();
     std::cout << "make CreatureStatuses done" << '\n';
-
-    std::cout << "make CreatureTypes" << '\n';
-    this->makeTypes();
-    std::cout << "make CreatureTypes done" << '\n';
 }
 
 void DataCreatureMaker::initAfterData() {
-    this->reloadData();
+    std::cout << "make CreatureStarter" << '\n';
     this->makeStarter();
+    std::cout << "make CreatureStarter done" << '\n';
 }
 
 
@@ -68,7 +73,7 @@ void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::str
     if(type){
         data_creature.setCreatureType(*type);
     } else {
-        std::cerr << "makeDataCreature: type " << type_name
+        std::cout << "makeDataCreature: type " << type_name
                       << " not found" << '\n';
     }
 
@@ -699,7 +704,6 @@ void DataCreatureMaker::makeDataCreature(
 }
 
 void DataCreatureMaker::calcStatuses(data::Creature& creature) {
-    this->loadStatuses();
     creature.clearStatusResist();
     for (const auto& status : this->datamanager_.getCreatureBattlerStatuses()) {
         if(status){
@@ -718,9 +722,9 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
         if (element) {
             creature.addElement(*element);
         } else {
-            std::cerr << "calcElements " << elementname << ": "
-                      << "Not Found"
-                      << "\n";
+            std::cerr << "calcElements: " << elementname << " "
+                      << " Not Found"
+                      << '\n';
         }
 
     }
@@ -735,79 +739,6 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
         }
     }
 
-    /**
-    Nature Spirits      : Generic monsters and beasts. Also represents
-    grasslands and canyons.
-    Deep Savers	        : Aquatic or ice-related Creature. Can represent the
-    ocean or arctic.
-    Nightmare Soldiers  : Darkness or spirit based Creature, or Creature based
-    on traditional "Halloween" monsters like vampires, werewolves, or Japanese
-    youkai and demons. Can represent haunted or cursed areas.
-    Wind Guardians      : Flying, air, or plant based Creature. Can represent
-    forests and the sky.
-    Metal Empire        : Machine, cyborg, or other mechanical Creature. Can
-    represent cities and factories.
-    Unknown             : Mutant, unusual, or strange Creature. Can represent
-    junkyards and other strange places.
-    Dark Area           : Villanous, demonic, terrifying, evil Creature. Can
-    represent the Dark Area of the Digital World.
-    Virus Busters       : Heroic or angelic Creature, often includes main
-    characters from the anime or manga. Can represent the sky or heavens.
-    Dragon's Roar       : Draconic Creature.
-    Jungle Troopers     : Plant or Insect based Creature.
-
-    NS: +(), -()
-    DS: +(DR), -(JT)
-    NS: +(VB), -(ME)
-    WG: +(JT), -(ME)
-    ME: +(WG), -(DR)
-    UK: +(), -()
-    DA: +(NS), -(ME)
-    VB: +(DA), -(ME)
-    DR: +(JT), -(DS)
-    JT: +(ME), -(DR)
-    */
-
-    // resist[ElementName] = [0: pluses ,1: minuses]
-    std::unordered_map<std::string, 
-        std::tuple<
-            std::vector<std::string>,
-            std::vector<std::string>
-        >
-    > resists;
-
-    resists["Nature Spirits"] = { {}, {} };
-    resists["Deep Savers"] = {
-        { "Dragons Roar" }, { "Jungle Troopers" }
-    };
-    resists["Nightmare Soldiers"] = {
-        { "Virus Busters" }, { "Metal Empire", "Nightmare Soldiers" }
-    };
-    resists["Wind Guardians"] = {
-        { "Jungle Troopers" }, { "Metal Empire" }
-    };
-    resists["Metal Empire"] = {
-        { "Wind Guardians", "Deep Savers" }, { "Dragons Roar" }
-    };
-    resists["Unknown"] = { {}, {} };
-    resists["Dark Area"] = {
-        { "Nightmare Soldiers" }, { "Metal Empire", "Virus Busters" }
-    };
-    resists["Virus Busters"] = {
-        { "Dark Area" }, { "Metal Empire", "Nightmare Soldiers" }
-    };
-    resists["Dragons Roar"] = {
-        { "Jungle Troopers" }, { "Deep Savers" }
-    };
-    resists["Jungle Troopers"] = {
-        { "Metal Empire" }, { "Wind Guardians", "Dragons Roar" }
-    };
-    resists["X-Antibody"] = {
-        { "Nature Spirits", "Deep Savers", "Nightmare Soldiers",
-          "Wind Guardians", "Metal Empire", "Dark Area", "Virus Busters",
-          "Dragons Roar", "Jungle Troopers" },
-        {}
-    };
 
     for (const auto& element : this->datamanager_.getElements()) {
         if(element){
@@ -818,13 +749,13 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
                     elements_value[element_name] += 50;
                     count_elements_value[element_name]++;
                 } else {
-                    if (resists.find(element_name) == std::end(resists)) {
-                        std::cerr << "Make CreatureData: Element not found"
-                                << "\n";
+                    if (this->resists_.find(element_name) == std::end(this->resists_)) {
+                        std::cerr << "calcElements: Element in resists_ not found"
+                                << '\n';
                         continue;
                     }
 
-                    const std::vector<std::string>& pluses = std::get<0>(resists.at(element_name));
+                    const std::vector<std::string>& pluses = std::get<0>(this->resists_.at(element_name));
                     for (std::string plus_element : pluses) {
                         if (elementname == plus_element) {
                             elements_value[element_name] += 150;
@@ -834,7 +765,7 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
                         count_elements_value[element_name]++;
                     }
 
-                    const std::vector<std::string>& minuses = std::get<0>(resists.at(element_name));
+                    const std::vector<std::string>& minuses = std::get<1>(this->resists_.at(element_name));
                     for (std::string minus_element : minuses) {
                         if (elementname == minus_element) {
                             elements_value[element_name] += 50;
@@ -889,3 +820,6 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
         }
     }
 }
+
+
+} // namespace datamaker

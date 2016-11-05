@@ -188,49 +188,6 @@ class DataManager {
     DataManager& operator=(DataManager&&) = default;
 
 
-
-    std::shared_ptr<data::Skill> findSkill(std::string name) const {
-        return this->skills_.findByName(name);
-    }
-    void saveSkill(const data::Skill& data) {
-        this->skills_.save(data);
-    }
-    void setSkills(const std::vector<std::shared_ptr<data::Skill>>& data) {
-        this->skills_.setAll(data);
-    }
-    const std::vector<std::shared_ptr<data::Skill>>& getSkills() const {
-        return this->skills_.getAll();
-    }
-    SkillDataManager& getSkillDataManager() {
-        return this->skills_;
-    }
-    const SkillDataManager& getSkillDataManager() const {
-        return this->skills_;
-    }
-
-
-
-    std::shared_ptr<data::Food> findFood(std::string name) const {
-        return this->foods_.findByName(name);
-    }
-    void saveFood(const data::Food& data) {
-        this->foods_.save(data);
-    }
-    void setFoods(const std::vector<std::shared_ptr<data::Food>>& data) {
-        this->foods_.setAll(data);
-    }
-    const std::vector<std::shared_ptr<data::Food>>& getFoods() const {
-        return this->foods_.getAll();
-    }
-    FoodDataManager& getFoodDataManager() {
-        return this->foods_;
-    }
-    const FoodDataManager& getFoodDataManager() const {
-        return this->foods_;
-    }
-
-
-
     std::shared_ptr<data::Element> findElement(std::string name) const {
         return this->elements_.findByName(name);
     }
@@ -350,6 +307,51 @@ class DataManager {
         this->creaturestarters_.save(data::CreatureStarter (data));
     }
     
+
+
+
+    std::shared_ptr<data::Skill> findSkill(std::string name) const {
+        return this->skills_.findByName(name);
+    }
+    void saveSkill(const data::Skill& data) {
+        this->skills_.save(data);
+    }
+    void setSkills(const std::vector<std::shared_ptr<data::Skill>>& data) {
+        this->skills_.setAll(data);
+    }
+    const std::vector<std::shared_ptr<data::Skill>>& getSkills() const {
+        return this->skills_.getAll();
+    }
+    SkillDataManager& getSkillDataManager() {
+        return this->skills_;
+    }
+    const SkillDataManager& getSkillDataManager() const {
+        return this->skills_;
+    }
+
+
+
+    std::shared_ptr<data::Food> findFood(std::string name) const {
+        return this->foods_.findByName(name);
+    }
+    void saveFood(const data::Food& data) {
+        this->foods_.save(data);
+    }
+    void setFoods(const std::vector<std::shared_ptr<data::Food>>& data) {
+        this->foods_.setAll(data);
+    }
+    const std::vector<std::shared_ptr<data::Food>>& getFoods() const {
+        return this->foods_.getAll();
+    }
+    FoodDataManager& getFoodDataManager() {
+        return this->foods_;
+    }
+    const FoodDataManager& getFoodDataManager() const {
+        return this->foods_;
+    }
+
+
+
 };
 
 }
