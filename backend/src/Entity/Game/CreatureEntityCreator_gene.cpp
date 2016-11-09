@@ -1,8 +1,8 @@
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 namespace gameentity {
 
-double CreatureCreator::getBMI(const gamecomp::CreatureGeneComponent& gene,
+double CreatureEntityCreator::getBMI(const gamecomp::CreatureGeneComponent& gene,
                               double minweight, double maxweight, double weight,
                               double bodysize) {
     /*
@@ -54,7 +54,7 @@ double CreatureCreator::getBMI(const gamecomp::CreatureGeneComponent& gene,
             : 0.0;
 }
 
-double CreatureCreator::getBodyMass(double s, double g, double mg, double ibmi,
+double CreatureEntityCreator::getBodyMass(double s, double g, double mg, double ibmi,
                                    double minbmi, double maxbmi) {
     /*
     s    : Größe
@@ -71,7 +71,7 @@ double CreatureCreator::getBodyMass(double s, double g, double mg, double ibmi,
     es dürfen keine nevativen Werte rauskommen
     bei mass < 0 : mass = 1 / abs(mass)
 
-    see CreatureCreator::getBMI()
+    see CreatureEntityCreator::getBMI()
     */
 
     double mass =
@@ -80,7 +80,7 @@ double CreatureCreator::getBodyMass(double s, double g, double mg, double ibmi,
     return (mass < 0.0)? 1.0 / std::abs(mass) : mass;
 }
 
-double CreatureCreator::getBodySize(double minbmi, double maxbmi, double bmi,
+double CreatureEntityCreator::getBodySize(double minbmi, double maxbmi, double bmi,
                                    double mass, double minweight, double maxweight,
                                    double weight) {
     /*
@@ -109,7 +109,7 @@ double CreatureCreator::getBodySize(double minbmi, double maxbmi, double bmi,
 
 
 
-double CreatureCreator::getBMI(const data::Creature& creature,
+double CreatureEntityCreator::getBMI(const data::Creature& creature,
                               const gamecomp::CreatureGeneComponent& gene,
                               double weight) {
     double bodysize = creature.getBodySize();
@@ -120,7 +120,7 @@ double CreatureCreator::getBMI(const data::Creature& creature,
 }
 
 
-double CreatureCreator::getBodyMass(const data::Creature& creature,
+double CreatureEntityCreator::getBodyMass(const data::Creature& creature,
                                     const gamecomp::CreatureGeneComponent& gene) {
     double s = creature.getBodySize();
     double g =
@@ -132,7 +132,7 @@ double CreatureCreator::getBodyMass(const data::Creature& creature,
     return getBodyMass(gene, s, g, mg);
 }
 
-double CreatureCreator::getBodyMass(const gamecomp::CreatureGeneComponent& gene, 
+double CreatureEntityCreator::getBodyMass(const gamecomp::CreatureGeneComponent& gene, 
                                     double s, double g, double mg) {
     double ibmi = gene.ideal_bmi;
     double maxbmi = gene.max_bmi;
@@ -143,7 +143,7 @@ double CreatureCreator::getBodyMass(const gamecomp::CreatureGeneComponent& gene,
 
 
 gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimer>
-CreatureCreator::createTimerWaitTime(data::CreatureLevel creature_level) {
+CreatureEntityCreator::createTimerWaitTime(data::CreatureLevel creature_level) {
     gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimer> ret;
 
     switch(creature_level){
@@ -228,7 +228,7 @@ CreatureCreator::createTimerWaitTime(data::CreatureLevel creature_level) {
 
 
 gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimerCallback>
-CreatureCreator::createCallbackWaitTime(data::CreatureLevel creature_level) {
+CreatureEntityCreator::createCallbackWaitTime(data::CreatureLevel creature_level) {
     gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimerCallback> ret;
 
     switch(creature_level){
@@ -385,7 +385,7 @@ CreatureCreator::createCallbackWaitTime(data::CreatureLevel creature_level) {
 
 
 gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimerIncrement>
-CreatureCreator::createIncrementWaitTime(data::CreatureLevel creature_level) {
+CreatureEntityCreator::createIncrementWaitTime(data::CreatureLevel creature_level) {
     gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimerIncrement> ret;
 
 
@@ -550,7 +550,7 @@ CreatureCreator::createIncrementWaitTime(data::CreatureLevel creature_level) {
 
 
 gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::StarvationPhase>
-CreatureCreator::createStarvationWaitTime(data::CreatureLevel creature_level) {
+CreatureEntityCreator::createStarvationWaitTime(data::CreatureLevel creature_level) {
     gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::StarvationPhase> ret;
 
     switch(creature_level){
@@ -645,7 +645,7 @@ CreatureCreator::createStarvationWaitTime(data::CreatureLevel creature_level) {
 }
 
 gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureActivity>
-CreatureCreator::createShortTermMemoryWaitTime(data::CreatureLevel creature_level) {
+CreatureEntityCreator::createShortTermMemoryWaitTime(data::CreatureLevel creature_level) {
     gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureActivity> ret;
 
     switch(creature_level){
@@ -685,7 +685,7 @@ CreatureCreator::createShortTermMemoryWaitTime(data::CreatureLevel creature_leve
 }
 
 gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureActivity>
-CreatureCreator::createMediumTermMemoryWaitTime(data::CreatureLevel creature_level) {
+CreatureEntityCreator::createMediumTermMemoryWaitTime(data::CreatureLevel creature_level) {
     gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureActivity> ret;
 
     switch(creature_level){
@@ -724,7 +724,7 @@ CreatureCreator::createMediumTermMemoryWaitTime(data::CreatureLevel creature_lev
 }
 
 
-gamecomp::CreatureGeneComponent CreatureCreator::createCreatureGene(const data::Creature& creature) {
+gamecomp::CreatureGeneComponent CreatureEntityCreator::createCreatureGene(const data::Creature& creature) {
     gamecomp::CreatureGeneComponent ret;
 
     ret.gender = data::CreatureGender::None;

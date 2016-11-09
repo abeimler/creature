@@ -1,8 +1,8 @@
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 namespace gameentity {
 
-gamecomp::CreatureMemoryComponent CreatureCreator::createCreatureMemory() {
+gamecomp::CreatureMemoryComponent CreatureEntityCreator::createCreatureMemory() {
     gamecomp::CreatureMemoryComponent ret;
 
     int variance = util::random(-this->max_short_memorysize_variance_,

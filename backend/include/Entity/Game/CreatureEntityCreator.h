@@ -1,5 +1,5 @@
-#ifndef ENTITY_GAME_CREATURECREATOR_HPP_
-#define ENTITY_GAME_CREATURECREATOR_HPP_
+#ifndef ENTITY_GAME_CREATUREENTITYCREATOR_H_
+#define ENTITY_GAME_CREATUREENTITYCREATOR_H_
 
 #include "basic.h"
 
@@ -17,45 +17,16 @@
 #include "Entity/Game/DateTimerUtil.h"
 #include "Entity/Game/ProgressTimerUtil.h"
 
-#include "Entity/EntityCreatorInterface.h"
+#include "Entity/EntityCreator.h"
 
 #include "Entity/Game/CreatureBattlerCreator.h"
 
+#include "Entity/Game/Entitys.h"
+
+
 namespace gameentity {
 
-// Convenience types for our entity system.
-using GameComponents = entityx::Components<
-    gamecomp::CreatureDataComponent,
-    gamecomp::CreatureProgressTimersComponent,
-
-    gamecomp::BattlerStatusesComponent,
-    gamecomp::BattlerBattleStateComponent,
-    gamecomp::BattlerResistsComponent,
-
-    gamecomp::CreatureBattlerComponent,
-
-    gamecomp::CreatureBattlerGeneComponent,
-    gamecomp::CreatureGeneComponent,
-
-    gamecomp::CreatureMemoryComponent,
-    gamecomp::CreaturePersonalityComponent,
-
-    gamecomp::CreatureHungerComponent,
-    gamecomp::CreatureEvolveComponent,
-    gamecomp::CreatureSleepComponent,
-    gamecomp::CreatureTrainingComponent,
-    gamecomp::CreatureBodilyStateComponent,
-    gamecomp::CreatureBodyComponent,
-    gamecomp::CreaturePsycheComponent,
-    gamecomp::CreatureLifeComponent
-    >;
-
-using EntityManager = entityx::EntityX<GameComponents, entityx::ColumnStorage<GameComponents>>;
-template <typename C>
-using Component = EntityManager::Component<C>;
-using Entity = EntityManager::Entity;
-
-class CreatureCreator : public EntityCreatorInterface<Entity> {
+class CreatureEntityCreator : public EntityCreator<Entity> {
     private:
     computil::TimerUtil timer_util_;
     computil::DateTimerUtil datetimer_util_;
@@ -236,7 +207,7 @@ class CreatureCreator : public EntityCreatorInterface<Entity> {
         return earr::enum_array_at(earr::enum_array_at(timer, index).base.waittime, creature_level);
     }
 
-    CreatureCreator() = default;
+    CreatureEntityCreator() = default;
 
     std::chrono::seconds getMinNeedRefreshIn() const {
         return this->min_needrefreshin_;
@@ -354,4 +325,5 @@ class CreatureCreator : public EntityCreatorInterface<Entity> {
 };
 } // namespace gameentity
 
-#endif // ENTITY_GAME_CREATURECREATOR_HPP_
+
+#endif // ENTITY_GAME_CREATUREENTITYCREATOR_H_

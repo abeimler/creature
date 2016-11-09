@@ -1,12 +1,12 @@
 #include "doctest.h"
 
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 #include "Entity/Game/EntityGameTestHelper.h"
 
 
 TEST_CASE("create CreaturePsyche Component") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     auto psyche = creaturecreator.createCreaturePsyche();
 

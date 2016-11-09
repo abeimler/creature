@@ -1,17 +1,17 @@
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 namespace gameentity {
 
 
-constexpr std::chrono::seconds CreatureCreator::DEFAULT_MIN_NEEDREFRESHIN;
-constexpr std::chrono::seconds CreatureCreator::DEFAULT_MAX_NEEDREFRESHIN;
-constexpr std::chrono::seconds CreatureCreator::DEFAULT_MIN_TOTALLIFETIME;
-constexpr std::chrono::seconds CreatureCreator::DEFAULT_AGEINGTIME;
+constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_MIN_NEEDREFRESHIN;
+constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_MAX_NEEDREFRESHIN;
+constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_MIN_TOTALLIFETIME;
+constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_AGEINGTIME;
 
-constexpr size_t CreatureCreator::DEFAULT_MAX_SHORT_MEMORYSIZE;
-constexpr int CreatureCreator::DEFAULT_MAX_SHORT_MEMORYSIZE_VARIANCE;
+constexpr size_t CreatureEntityCreator::DEFAULT_MAX_SHORT_MEMORYSIZE;
+constexpr int CreatureEntityCreator::DEFAULT_MAX_SHORT_MEMORYSIZE_VARIANCE;
 
-gamecomp::CreatureTrainingComponent CreatureCreator::createCreatureTraining() {
+gamecomp::CreatureTrainingComponent CreatureEntityCreator::createCreatureTraining() {
     gamecomp::CreatureTrainingComponent ret;
 
     earr::enum_array_fill(ret.trainingcounter, 0);
@@ -28,7 +28,7 @@ gamecomp::CreatureTrainingComponent CreatureCreator::createCreatureTraining() {
 
 
 gamecomp::CreatureBodyComponent
-CreatureCreator::createCreatureBody(const data::Creature& creature_data,
+CreatureEntityCreator::createCreatureBody(const data::Creature& creature_data,
                                     const gamecomp::CreatureGeneComponent& gene) {
     gamecomp::CreatureBodyComponent ret;
 
@@ -53,7 +53,7 @@ CreatureCreator::createCreatureBody(const data::Creature& creature_data,
     return ret;
 }
 
-gamecomp::CreaturePsycheComponent CreatureCreator::createCreaturePsyche() {
+gamecomp::CreaturePsycheComponent CreatureEntityCreator::createCreaturePsyche() {
     gamecomp::CreaturePsycheComponent ret;
 
     ret.luck = 100.0;
@@ -62,7 +62,7 @@ gamecomp::CreaturePsycheComponent CreatureCreator::createCreaturePsyche() {
     return ret;
 }
 
-gamecomp::CreatureLifeComponent CreatureCreator::createCreatureLife(
+gamecomp::CreatureLifeComponent CreatureEntityCreator::createCreatureLife(
     const data::Creature& creature,
     std::chrono::system_clock::time_point realtime,
     const gamecomp::CreatureBattlerComponent& battler,
@@ -100,7 +100,7 @@ gamecomp::CreatureLifeComponent CreatureCreator::createCreatureLife(
 
 
 
-void CreatureCreator::create(Entity& entity) {
+void CreatureEntityCreator::create(Entity& entity) {
     auto time = std::chrono::system_clock::now();
 
     auto timers = createCreatureProgressTimers(time);
@@ -131,7 +131,7 @@ void CreatureCreator::create(Entity& entity) {
     entity.assign<gamecomp::CreatureLifeComponent>();
 }
 
-void CreatureCreator::create(Entity& entity,
+void CreatureEntityCreator::create(Entity& entity,
     const data::Creature& creature,
     std::chrono::system_clock::time_point realtime, double realtime_factor) {
     auto timers =

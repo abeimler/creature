@@ -1,12 +1,12 @@
 #include "doctest.h"
 
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 #include "Entity/Game/EntityGameTestHelper.h"
 
 
 TEST_CASE("create CreatePrograssTimers with time 01.01.2000") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
     auto time = CreatureTestData::make_time_point_01_01_2000();
     float factor = 1.0f;
 
@@ -24,7 +24,7 @@ TEST_CASE("create CreatePrograssTimers with time 01.01.2000") {
 }
 
 TEST_CASE("create empty CreatePrograssTimers and set with time 01.01.2000") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
     auto time = CreatureTestData::make_time_point_01_01_2000();
     float factor = 1.0f;
 
@@ -44,7 +44,7 @@ TEST_CASE("create empty CreatePrograssTimers and set with time 01.01.2000") {
 
 TEST_CASE("create CreatePrograssTimers and setup with lifetimer") {
     computil::DateTimerUtil datetimer_util;
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
     auto time = CreatureTestData::make_time_point_01_01_2000();
     float factor = 1.0f;
 

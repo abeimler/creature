@@ -1,11 +1,11 @@
 #include "doctest.h"
 
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 #include "Entity/Game/EntityGameTestHelper.h"
 
 TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     // bodysize
     // float min_bodysize = 1.2f;
@@ -80,7 +80,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
 
 
 TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     // bodysize
     // float min_bodysize = 4.4f;
@@ -154,7 +154,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
 }
 
 TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     // bodysize
     // float min_bodysize = 0.1f;
@@ -231,7 +231,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
 
 TEST_CASE("create empty Creature Entity") {
     gameentity::EntityManager manager;
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     auto entity = manager.create();
     creaturecreator.create(entity);
@@ -254,7 +254,7 @@ TEST_CASE("create empty Creature Entity") {
 
 TEST_CASE("create Creature Entity with Creatue Data") {
     gameentity::EntityManager manager;
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     auto creature = CreatureTestData::make_DataCreature();
     auto time = CreatureTestData::make_time_point_01_01_2000();

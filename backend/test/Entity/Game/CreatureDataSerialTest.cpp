@@ -8,7 +8,7 @@
 #include "doctest.h"
 
 
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 #include "Entity/Game/EntityGameTestHelper.h"
 
@@ -17,7 +17,7 @@
 
 
 TEST_CASE("data::Creature serial json") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     auto creature = CreatureTestData::make_DataCreature();
 
@@ -47,7 +47,7 @@ TEST_CASE("data::Creature serial json") {
 
 
 TEST_CASE("data::Creature serial json as file") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     auto creature = CreatureTestData::make_DataCreature();
 
@@ -64,7 +64,7 @@ TEST_CASE("data::Creature serial json as file") {
 }
 
 TEST_CASE("data::Creatures serial json as file") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
 
     auto creatures = CreatureTestEvolution::make_DataCreatureEvolutions();
 

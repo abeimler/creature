@@ -1,7 +1,7 @@
 #ifndef ENTITY_GAME_CreatureTestDataDATA_H_
 #define ENTITY_GAME_CreatureTestDataDATA_H_
 
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 
 class CreatureTestData {

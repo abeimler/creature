@@ -1,12 +1,12 @@
 #include "doctest.h"
 
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 #include "Entity/Game/EntityGameTestHelper.h"
 
 
 TEST_CASE("create CreatureBody Component with DataCreature") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
     auto creature = CreatureTestData::make_DataCreature();

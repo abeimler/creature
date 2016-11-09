@@ -1,12 +1,12 @@
 #include "doctest.h"
 
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 #include "EntityGameTestHelper.h"
 
 
 TEST_CASE("setup CreatureProgressTimers with Gene") {
-    gameentity::CreatureCreator creaturecreator;
+    gameentity::CreatureEntityCreator creaturecreator;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
     auto time = CreatureTestData::make_time_point_01_01_2000();
@@ -115,7 +115,7 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
     }
 
     SUBCASE("Hungry Timer waittime is set") {
-        std::chrono::milliseconds timer_waittime = gameentity::CreatureCreator::getCreatureProgressTimersWaitTime(timers.timer, 
+        std::chrono::milliseconds timer_waittime = gameentity::CreatureEntityCreator::getCreatureProgressTimersWaitTime(timers.timer, 
             +gamecomp::CreatureProgressTimer::Hungry, 
             CreatureTestData::CREATURELEVEL);
 
@@ -132,7 +132,7 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
     }
 
     SUBCASE("Digestion Timer waittime is set") {
-        std::chrono::milliseconds timer_waittime = gameentity::CreatureCreator::getCreatureProgressTimersWaitTime(timers.callback, 
+        std::chrono::milliseconds timer_waittime = gameentity::CreatureEntityCreator::getCreatureProgressTimersWaitTime(timers.callback, 
             +gamecomp::CreatureProgressTimerCallback::Digestion, 
             CreatureTestData::CREATURELEVEL);
         
@@ -147,7 +147,7 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
     }
 
     SUBCASE("Growing Timer waittime is set") {
-        std::chrono::milliseconds timer_waittime = gameentity::CreatureCreator::getCreatureProgressTimersWaitTime(timers.increment, 
+        std::chrono::milliseconds timer_waittime = gameentity::CreatureEntityCreator::getCreatureProgressTimersWaitTime(timers.increment, 
             +gamecomp::CreatureProgressTimerIncrement::Growing, 
             CreatureTestData::CREATURELEVEL);
 
@@ -163,7 +163,7 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
     }
 
     SUBCASE("Starvation Timer waittime is set") {
-        std::chrono::milliseconds timer_waittime = gameentity::CreatureCreator::getCreatureProgressTimersWaitTime(timers.starvation, 
+        std::chrono::milliseconds timer_waittime = gameentity::CreatureEntityCreator::getCreatureProgressTimersWaitTime(timers.starvation, 
             +gamecomp::StarvationPhase::Phase1, 
             CreatureTestData::CREATURELEVEL);
 

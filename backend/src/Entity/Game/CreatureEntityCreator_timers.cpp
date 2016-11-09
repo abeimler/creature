@@ -1,8 +1,8 @@
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 namespace gameentity {
 
-gamecomp::CreatureProgressTimersComponent CreatureCreator::createCreatureProgressTimers(
+gamecomp::CreatureProgressTimersComponent CreatureEntityCreator::createCreatureProgressTimers(
     std::chrono::system_clock::time_point time, double realtime_factor) {
     gamecomp::CreatureProgressTimersComponent ret;
 
@@ -30,7 +30,7 @@ gamecomp::CreatureProgressTimersComponent CreatureCreator::createCreatureProgres
     return ret;
 }
 
-void CreatureCreator::setCreatureProgressTimersRealTime(
+void CreatureEntityCreator::setCreatureProgressTimersRealTime(
     gamecomp::CreatureProgressTimersComponent& timers,
     std::chrono::system_clock::time_point time, double realtime_factor) {
     datetimer_util_.setRealTime(timers.lifetimer, time, realtime_factor);
@@ -55,7 +55,7 @@ void CreatureCreator::setCreatureProgressTimersRealTime(
     }
 }
 
-void CreatureCreator::setCreatureProgressTimersRealTimeFromLifetimer(
+void CreatureEntityCreator::setCreatureProgressTimersRealTimeFromLifetimer(
     gamecomp::CreatureProgressTimersComponent& timers) {
     std::chrono::system_clock::time_point time =
         std::chrono::system_clock::time_point() + timers.lifetimer.realtime;
@@ -65,7 +65,7 @@ void CreatureCreator::setCreatureProgressTimersRealTimeFromLifetimer(
 }
 
 gamecomp::CreatureProgressTimersComponent
-CreatureCreator::createCreatureProgressTimersCreature(
+CreatureEntityCreator::createCreatureProgressTimersCreature(
     std::chrono::system_clock::time_point time, double realtime_factor) {
     auto timers =
         createCreatureProgressTimers(time, realtime_factor);
@@ -78,7 +78,7 @@ CreatureCreator::createCreatureProgressTimersCreature(
 }
 
 
-void CreatureCreator::setupCreatureProgressTimers(
+void CreatureEntityCreator::setupCreatureProgressTimers(
     gamecomp::CreatureProgressTimersComponent& timers,
     const data::Creature& creature,
     const gamecomp::CreatureLifeComponent& life, 
