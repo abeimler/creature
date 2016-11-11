@@ -8,4 +8,5 @@ git subtree pull --prefix backend/lib/doctest https://github.com/onqtam/doctest.
 git subtree pull --prefix backend/lib/entityx https://github.com/alecthomas/entityx.git experimental/compile_time --squash
 git subtree pull --prefix backend/lib/GSL https://github.com/Microsoft/GSL  master --squash
 git subtree pull --prefix backend/lib/json https://github.com/nlohmann/json  master --squash
+git subtree pull --prefix backend/lib/eventpp https://github.com/skypjack/eventpp  master --squash
 

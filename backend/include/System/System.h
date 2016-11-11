@@ -63,13 +63,13 @@ class Receiver : public System {
   Receiver(Receiver&&) = default;
   Receiver& operator=(Receiver&&) = default;
 
-  virtual void handle(EventComp& es, EntityManager& ev, EventManager&, TimeDelta at) = 0;
+  virtual void receive(EventComp& es, EntityManager& ev, EventManager&, TimeDelta at) = 0;
 
   void update(EntityManager& es, EventManager& ev, TimeDelta dt) final {
     for (auto evententity : ev.entities_with_components<EventComp>()) {
       auto event = get_event(evententity);
       if(event){
-        handle(*event, es, ev, dt);
+        receive(*event, es, ev, dt);
       }
       evententity.destroy();
     }  
