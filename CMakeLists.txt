@@ -19,6 +19,7 @@ find_package (Threads)
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     set(warnings "-Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wcast-align -Woverloaded-virtual")
+    # set(warnings "${warnings} -Weffc++")
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         set(warnings "${warnings} -Weverything")
     endif()

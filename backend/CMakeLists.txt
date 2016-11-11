@@ -25,6 +25,7 @@ set(CREATURE_BACKEND_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 set(ENTITYX_BUILD_SHARED 0)
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/entityx)
+add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/eventpp)
 
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/benchpress)
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/doctest)
@@ -58,6 +59,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambdas)
 
 # use SYSTEM to get rid of 3rd party libs warnings
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/entityx)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/eventcpp/src)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums/extra)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/cereal/include)

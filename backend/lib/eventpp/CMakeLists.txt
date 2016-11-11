@@ -73,7 +73,7 @@ set(PROJECT_RUNTIME_OUTPUT_DIRECTORY bin)
 set(
     CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
-    ${CMAKE_SOURCE_DIR}/${PROJECT_CMAKE_MODULES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_CMAKE_MODULES}
 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_RUNTIME_OUTPUT_DIRECTORY})
@@ -89,7 +89,7 @@ include(CTest)
 #
 
 find_package(Threads REQUIRED)
-find_package(GoogleTest REQUIRED)
+find_package(GoogleTest)
 
 #
 # Referenced directories and targets

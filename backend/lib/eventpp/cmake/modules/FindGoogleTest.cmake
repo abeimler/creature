@@ -12,7 +12,7 @@
 #   GOOGLETEST_FOUND, if false, do not try to use the above mentioned vars
 #
 
-set(BUILD_DEPS_DIR ${CMAKE_SOURCE_DIR}/${PROJECT_DEPS_DIR})
+set(BUILD_DEPS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_DEPS_DIR})
 set(GOOGLETEST_DEPS_DIR googletest)
 
 find_path(
