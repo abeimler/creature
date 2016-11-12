@@ -3,7 +3,7 @@
 namespace gamesystem {
 
 double CreatureProgressTimerSystem::updateCallbackTimer(
-    EventManager& events, Entity entity,
+    EventBus& events, Entity entity,
     gamecomp::ProgressTimerCallback& timer, data::CreatureLevel level,
     gamecomp::CreatureProgressTimerCallback type) {
     double ret = updateTimer(timer.base, level);
@@ -30,7 +30,7 @@ double CreatureProgressTimerSystem::updateCallbackTimer(
 }
 
 double CreatureProgressTimerSystem::updateIncrementTimer(
-    EventManager& events, Entity entity,
+    EventBus& events, Entity entity,
     gamecomp::ProgressTimerIncrement& timer, data::CreatureLevel level,
     gamecomp::CreatureProgressTimerIncrement type) {
     double ret = updateTimer(timer.base, level);
@@ -53,7 +53,7 @@ double CreatureProgressTimerSystem::updateIncrementTimer(
 }
 
 double CreatureProgressTimerSystem::updateStarvationPhaseTimer(
-    EventManager& events, Entity entity,
+    EventBus& events, Entity entity,
     gamecomp::ProgressTimerCallback& timer, data::CreatureLevel level,
     gamecomp::StarvationPhase type) {
     double ret = updateTimer(timer.base, level);
@@ -75,7 +75,7 @@ double CreatureProgressTimerSystem::updateStarvationPhaseTimer(
 }
 
 double CreatureProgressTimerSystem::updateShortTermMemoryTimer(
-    EventManager& events, Entity entity,
+    EventBus& events, Entity entity,
     gamecomp::ProgressTimerCallback& timer, data::CreatureLevel level,
     gamecomp::CreatureActivity activity) {
     double ret = updateTimer(timer.base, level);
@@ -97,7 +97,7 @@ double CreatureProgressTimerSystem::updateShortTermMemoryTimer(
 }
 
 double CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
-    EventManager& events, Entity entity,
+    EventBus& events, Entity entity,
     gamecomp::ProgressTimerCallback& timer, data::CreatureLevel level,
     gamecomp::CreatureActivity activity) {
     double ret = updateTimer(timer.base, level);
@@ -200,7 +200,7 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
 }
 
 void CreatureProgressTimerSystem::update(EntityManager& entities,
-                                         EventManager& events,
+                                         EventBus& events,
                                          TimeDelta dt) {
     gameentity::Component<gamecomp::CreatureProgressTimersComponent> creatureprogresstimers;
 

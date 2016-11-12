@@ -1,39 +1,36 @@
 #ifndef SYSTEM_GAME_EVENTS_H_
 #define SYSTEM_GAME_EVENTS_H_
 
+#include <entityx/entityx.hh>
+
+#include <bus.hpp>
+#include <event.hpp>
+#include <signal.hpp>
+
 #include "basic.h"
 
 #include "Data/Basic.h"
 
+#include "System/Event/CreatureBattlerSystemEvents.h"
 #include "System/Event/CreatureProgressTimerSystemEvents.h"
 
 namespace gameevent {
 
-// Convenience types for our entity system.
-using GameEvents = entityx::Components<
-    ProgressTimerCallbackEvent,
-    ProgressTimerIncrementEvent,
-    ProgressTimerStarvationPhaseEvent,
-    ProgressTimerShortTermMemoryEvent,
-    ProgressTimerMediumTermMemoryEvent
-    >;
+using EventBus = eventpp::Bus<
+  CreatureAddBattlerStatusEvent,
+  CreatureRemoveBattlerStatusEvent,
+  CreatureRecoverEvent,
+  CreatureAddExpEvent,
 
-using EventManager = entityx::EntityX<GameEvents, entityx::ColumnStorage<GameEvents>>;
-
-template <typename E>
-using Event = EventManager::Component<E>;
-
-using EventEntity = EventManager::Entity;
+  ProgressTimerCallbackEvent,
+  ProgressTimerIncrementEvent,
+  ProgressTimerStarvationPhaseEvent,
+  ProgressTimerShortTermMemoryEvent,
+  ProgressTimerMediumTermMemoryEvent
+>;
 
 } // namespace gameevent
 
-namespace std {
-template <> struct hash<const gameevent::EventEntity> {
-  std::size_t operator () (const gameevent::EventEntity &entity) const {
-    return static_cast<std::size_t>(entity.id().index() ^ entity.id().version());
-  }
-};
-}
 
 
 

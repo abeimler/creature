@@ -56,8 +56,8 @@ struct BattlerStatusResist {
 struct BattlerStatusesComponent {
     std::vector<std::string> statuses_name;
 
-    /// start Turn of Statuses, {BattlerStatusID, turn}
-    std::vector<BattlerStatusTurn> startstatusturn;
+    /// start Turn of Statuses
+    std::vector<BattlerStatusTurn> startstatusturns;
 
     data::StatusRestrictionOption statusrestriction =
         data::StatusRestrictionOption::None;

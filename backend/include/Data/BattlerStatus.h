@@ -96,6 +96,7 @@ class StatusDamage {
 /// BattlerStatus
 class BattlerStatus {
     std::string name_;
+    int priority_ = 0;
 
     earr::enum_array<Attribute, float> attr_;
 
@@ -113,9 +114,11 @@ class BattlerStatus {
     int noskillatk_ = -1;
     int noskillint_ = -1;
 
-    int priority_ = 0;
 
     double hitrate_ = 1.0;
+    double critical_hitrate_ = 1.0;
+    double evarate_ = 1.0;
+
     StatusDamage hpdamage_;
     StatusDamage mpdamage_;
     StatusRestrictionOption restriction_ = StatusRestrictionOption::None;
@@ -128,6 +131,7 @@ class BattlerStatus {
     void serialize(Archive& ar) {
         ar(cereal::make_nvp("name", name_));
         ar(cereal::make_nvp("attr", attr_));
+        ar(cereal::make_nvp("priority", priority_));
 
         ar(cereal::make_nvp("extent", extent_));
 
@@ -137,8 +141,10 @@ class BattlerStatus {
         ar(cereal::make_nvp("noskillatk", noskillatk_));
         ar(cereal::make_nvp("noskillint", noskillint_));
 
-        ar(cereal::make_nvp("priority", priority_));
         ar(cereal::make_nvp("hitrate", hitrate_));
+        ar(cereal::make_nvp("critical_hitrate", critical_hitrate_));
+        ar(cereal::make_nvp("evarate", evarate_));
+
         ar(cereal::make_nvp("hpdamage", hpdamage_));
         ar(cereal::make_nvp("mpdamage", mpdamage_));
         ar(cereal::make_nvp("restriction", restriction_));
@@ -228,6 +234,12 @@ class BattlerStatus {
     /// Boni HitRate factor
     double getHitRate() const { return this->hitrate_; }
 
+    /// Boni Critical HitRate factor
+    double getCriticalHitRate() const { return this->critical_hitrate_; }
+
+    /// Boni EvaRate factor
+    double getEvaRate() const { return this->evarate_; }
+
     /// HP damage
     const StatusDamage& getHPDamage() const { return this->hpdamage_; }
 
@@ -297,6 +309,10 @@ class BattlerStatus {
     void setPriority(int priority) { this->priority_ = priority; }
 
     void setHitRate(double hitrate) { this->hitrate_ = hitrate; }
+
+    void setCriticalHitRate(double critical_hitrate) { this->critical_hitrate_ = critical_hitrate; }
+
+    void setEvaRate(double evarate) { this->evarate_ = evarate; }
 
     void setHPDamage(const StatusDamage& damage) { this->hpdamage_ = damage; }
 

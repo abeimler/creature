@@ -19,12 +19,8 @@ class System {
   template <typename C>
   using Component = gameentity::Component<C>;
 
+  using EventBus = gameevent::EventBus;
 
-  using EventManager = gameevent::EventManager;
-  using EventEntity = gameevent::EventEntity;
-
-  template <typename E>
-  using Event = gameevent::Event<E>;
 
   System() = default;
   virtual ~System() = default;
@@ -33,46 +29,43 @@ class System {
   System(System&&) = default;
   System& operator=(System&&) = default;
 
-  virtual void update(EntityManager& es, EventManager& ev, TimeDelta dt) = 0;
+  virtual void update(EntityManager& entities, EventBus& events, TimeDelta dt) = 0;
 
-  template<class EventComp>
-  static void emit_event(EventManager& events, const EventComp& e){
-    auto evententity = events.create();
-    evententity.assign<EventComp>(e);
+  template<class Event>
+  static void emit_event(EventBus& events, const Event& e){
+    events.publish<Event>(e);
   }
 
-  template <class EventComp, typename ...Args> 
-  static void emit_event(EventManager& events, Args && ...args){
-    return emit_event(events, EventComp (std::forward<Args>(args)...));
-  }
-
-  template<class EventComp>
-  static Event<EventComp> get_event(EventEntity& evententity) {
-    Event<EventComp> event = evententity.component<EventComp>();
-    return event;
+  template <class Event, typename ...Args> 
+  static void emit_event(EventBus& events, Args && ...args){
+    events.publish<Event>(std::forward<Args>(args)...);
   }
 };
 
-template<class EventComp>
-class Receiver : public System {
+template<class Event>
+class Listener : public System {
+  protected:
+  std::vector<Event> events_;
+
   public:
-  Receiver() = default;
-  virtual ~Receiver() = default;
-  Receiver(const Receiver&) = default;
-  Receiver& operator=(const Receiver&) = default;
-  Receiver(Receiver&&) = default;
-  Receiver& operator=(Receiver&&) = default;
+  Listener() = default;
+  virtual ~Listener() = default;
+  Listener(const Listener&) = default;
+  Listener& operator=(const Listener&) = default;
+  Listener(Listener&&) = default;
+  Listener& operator=(Listener&&) = default;
 
-  virtual void receive(EventComp& es, EntityManager& ev, EventManager&, TimeDelta at) = 0;
+  void receive(const Event& ev) {
+    this->events_.push_back(ev);
+  }
 
-  void update(EntityManager& es, EventManager& ev, TimeDelta dt) final {
-    for (auto evententity : ev.entities_with_components<EventComp>()) {
-      auto event = get_event(evententity);
-      if(event){
-        receive(*event, es, ev, dt);
-      }
-      evententity.destroy();
-    }  
+  virtual void update(const Event& event, EntityManager& entities, EventBus& events, TimeDelta dt) = 0;
+
+  void update(EntityManager& entities, EventBus& events, TimeDelta dt) override final {
+    for(const auto& event : this->events_) {
+      update(event, entities, events, dt);
+    }
+    this->events_.clear();
   }
 };
 

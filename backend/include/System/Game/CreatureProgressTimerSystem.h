@@ -29,31 +29,31 @@ class CreatureProgressTimerSystem : public System {
 
 
 
-    double updateCallbackTimer(EventManager& events,
+    double updateCallbackTimer(EventBus& events,
                                Entity entity,
                                gamecomp::ProgressTimerCallback& timer,
                                data::CreatureLevel level,
                                gamecomp::CreatureProgressTimerCallback type);
 
-    double updateIncrementTimer(EventManager& events,
+    double updateIncrementTimer(EventBus& events,
                                 Entity entity,
                                 gamecomp::ProgressTimerIncrement& timer,
                                 data::CreatureLevel level,
                                 gamecomp::CreatureProgressTimerIncrement type);
 
-    double updateStarvationPhaseTimer(EventManager& events,
+    double updateStarvationPhaseTimer(EventBus& events,
                                       Entity entity,
                                       gamecomp::ProgressTimerCallback& timer,
                                       data::CreatureLevel level,
                                       gamecomp::StarvationPhase type);
 
-    double updateShortTermMemoryTimer(EventManager& events,
+    double updateShortTermMemoryTimer(EventBus& events,
                                       Entity entity,
                                       gamecomp::ProgressTimerCallback& timer,
                                       data::CreatureLevel level,
                                       gamecomp::CreatureActivity activity);
 
-    double updateMediumTermMemoryTimer(EventManager& events,
+    double updateMediumTermMemoryTimer(EventBus& events,
                                        Entity entity,
                                        gamecomp::ProgressTimerCallback& timer,
                                        data::CreatureLevel level,
@@ -64,7 +64,7 @@ class CreatureProgressTimerSystem : public System {
     void setIgnoreTimer(bool ignortimer) { this->ignortimer_ = ignortimer; }
     bool isIgnoreTimer() const { return this->ignortimer_; }
 
-    void update(EntityManager& entities, EventManager& events, TimeDelta dt) override;
+    void update(EntityManager& entities, EventBus& events, TimeDelta dt) override;
 };
 } // namespace gamesystem
 
