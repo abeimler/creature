@@ -210,7 +210,7 @@ constexpr size_t CreatureTestEvolutionBaby2::MAX_SHORTMEMORY_SIZE;
 
 
 
-data::Creature CreatureTestEvolution::make_DataCreatureEgg() {
+data::Creature CreatureTestEvolution::make_DataCreature_Egg() {
     data::Creature creature;
 
     creature.setName(CreatureTestEvolutionEgg::CREATURENAME);
@@ -271,7 +271,7 @@ data::Creature CreatureTestEvolution::make_DataCreatureEgg() {
     return creature;
 }
 
-data::Creature CreatureTestEvolution::make_DataCreatureBaby() {
+data::Creature CreatureTestEvolution::make_DataCreature_Baby() {
     data::Creature creature;
 
     creature.setName(CreatureTestEvolutionBaby::CREATURENAME);
@@ -332,7 +332,7 @@ data::Creature CreatureTestEvolution::make_DataCreatureBaby() {
     return creature;
 }
 
-data::Creature CreatureTestEvolution::make_DataCreatureBaby2() {
+data::Creature CreatureTestEvolution::make_DataCreature_Baby2() {
     data::Creature creature;
 
     creature.setName(CreatureTestEvolutionBaby2::CREATURENAME);
@@ -394,11 +394,23 @@ data::Creature CreatureTestEvolution::make_DataCreatureBaby2() {
 }
 
 
+std::chrono::system_clock::time_point CreatureTestEvolution::make_time_point_01_01_2000() {
+    // create tm with 1/1/2000:
+    std::tm timeinfo = std::tm();
+    timeinfo.tm_year = 100; // year: 2000
+    timeinfo.tm_mon = 0;    // month: january
+    timeinfo.tm_mday = 1;   // day: 1st
+    std::time_t tt = std::mktime(&timeinfo);
+
+    return std::chrono::system_clock::from_time_t(tt);
+}
+
+
 std::vector<data::Creature>
-CreatureTestEvolution::make_DataCreatureEvolutions() {
-    data::Creature egg = make_DataCreatureEgg();
-    data::Creature baby = make_DataCreatureBaby();
-    data::Creature baby2 = make_DataCreatureBaby2();
+CreatureTestEvolution::make_DataCreature_Evolutions() {
+    data::Creature egg = make_DataCreature_Egg();
+    data::Creature baby = make_DataCreature_Baby();
+    data::Creature baby2 = make_DataCreature_Baby2();
 
     egg.addNextCreature(baby);
 
@@ -406,6 +418,22 @@ CreatureTestEvolution::make_DataCreatureEvolutions() {
     baby.addNextCreature(baby2);
 
     baby2.addPrevCreature(baby);
+
+    return { egg, baby, baby2 };
+}
+
+std::vector<std::shared_ptr<data::Creature>>
+CreatureTestEvolution::make_DataCreature_Evolutions_shared_ptrs() {
+    auto egg = std::make_shared<data::Creature>(make_DataCreature_Egg());
+    auto baby = std::make_shared<data::Creature>(make_DataCreature_Baby());
+    auto baby2 = std::make_shared<data::Creature>(make_DataCreature_Baby2());
+
+    egg->addNextCreature(*baby);
+
+    baby->addPrevCreature(*egg);
+    baby->addNextCreature(*baby2);
+
+    baby2->addPrevCreature(*baby);
 
     return { egg, baby, baby2 };
 }

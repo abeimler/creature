@@ -66,7 +66,7 @@ TEST_CASE("data::Creature serial json as file") {
 TEST_CASE("data::Creatures serial json as file") {
     gameentity::CreatureEntityCreator creaturecreator;
 
-    auto creatures = CreatureTestEvolution::make_DataCreatureEvolutions();
+    auto creatures = CreatureTestEvolution::make_DataCreature_Evolutions();
 
     auto& data = creatures;
 

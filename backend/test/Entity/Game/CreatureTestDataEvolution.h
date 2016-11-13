@@ -218,11 +218,16 @@ class CreatureTestEvolutionBaby2 {
 
 class CreatureTestEvolution {
     public:
-    static std::vector<data::Creature> make_DataCreatureEvolutions();
-    static data::Creature make_DataCreatureEgg();
-    static data::Creature make_DataCreatureBaby();
-    static data::Creature make_DataCreatureBaby2();
+    static std::chrono::system_clock::time_point make_time_point_01_01_2000();
 
+    static data::Creature make_DataCreature_Egg();
+    static data::Creature make_DataCreature_Baby();
+    static data::Creature make_DataCreature_Baby2();
+    
+    static std::vector<data::Creature> make_DataCreature_Evolutions();
+
+    static std::vector<std::shared_ptr<data::Creature>>
+    make_DataCreature_Evolutions_shared_ptrs();
 };
 
 #endif // ENTITY_GAME_CREATURETESTDATAEVOLUTION_HPP_
