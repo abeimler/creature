@@ -1,4 +1,4 @@
-#include "System/Game/CreatureBattlerCreatureRemoveStatusSystem.h"
+#include "System/Game/CreatureBattlerRemoveBattlerStatusSystem.h"
 
 namespace gamesystem {
 

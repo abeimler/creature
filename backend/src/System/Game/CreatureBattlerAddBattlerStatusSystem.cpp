@@ -1,4 +1,4 @@
-#include "System/Game/CreatureBattlerCreatureAddStatusSystem.h"
+#include "System/Game/CreatureBattlerAddBattlerStatusSystem.h"
 
 namespace gamesystem {
 
@@ -12,7 +12,7 @@ void CreatureBattlerAddBattlerStatusSystem::sortBattlerStatuses(std::vector<std:
         auto status_a = this->datamanager_.findCreatureBattlerStatus(a);
         auto status_b = this->datamanager_.findCreatureBattlerStatus(b);
 
-        if(status_a && status_b){
+        if(status_a && status_b) {
             return *status_a > *status_b;
         }
 

@@ -1,0 +1,98 @@
+#include "doctest.h"
+
+#include "System/Application.h"
+
+#include "System/Game/MakeCreatureHelper.h"
+
+#include "System/Game/CreatureBattlerCreatureAddExpSystem.h"
+
+class EventListenerMockup : public gamesystem::Listener<gameevent::CreatureAddExpEvent> {
+    public:
+    bool emitevent = false;
+
+    EventListenerMockup() = default;
+
+    void update(const gameevent::CreatureAddExpEvent& event, EntityManager& entities, EventBus& events, TimeDelta dt) override {
+        this->emitevent = true;
+    }
+
+};
+
+class CreatureBattlerCreatureAddExpSystemApplication : public gamesystem::Application {
+    public:
+    std::shared_ptr<EventListenerMockup> eventlistenermockup = std::make_shared<EventListenerMockup>();
+    std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpSystem> system = std::make_shared<gamesystem::CreatureBattlerCreatureAddExpSystem>();
+
+    CreatureBattlerCreatureAddExpSystemApplication() {
+        this->addListener<gameevent::CreatureAddExpEvent>(this->eventlistenermockup);
+        this->addListener<gameevent::CreatureAddExpEvent>(this->system);
+    }
+
+    static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
+};
+
+
+
+
+
+
+SCENARIO("Creature Entity emit addExp-Event to gain exp") {
+    GIVEN("Creature Entity") {
+        CreatureBattlerCreatureAddExpSystemApplication app;
+        auto& entities = app.getEntityManager();
+
+        //auto time = CreatureTestData::make_time_point_01_01_2000();
+        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+
+        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+
+        int add_exp = 1;
+
+        WHEN("emit addExp-Event") {
+            app.emit_event<gameevent::CreatureAddExpEvent>(entity, add_exp);
+
+            AND_WHEN("update manager") {
+                app.update(app.FAKE_TIMEDELTA);
+
+                REQUIRE(app.eventlistenermockup->emitevent);
+
+                THEN("has gain exp") { 
+                    CHECK(creature_battler->exp > 0); 
+                }
+            }
+        }
+    }
+}
+
+SCENARIO("Creature Entity emit addExp-Event to level up") {
+    GIVEN("Creature Entity") {
+        CreatureBattlerCreatureAddExpSystemApplication app;
+        auto& entities = app.getEntityManager();
+
+        //auto time = CreatureTestData::make_time_point_01_01_2000();
+        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+
+        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+
+        int old_current_lvl = CreatureTestData::LVL;
+        int add_exp = CreatureTestData::EXP;
+
+        WHEN("emit addExp-Event") {
+            app.emit_event<gameevent::CreatureAddExpEvent>(entity, add_exp);
+
+            AND_WHEN("update manager") {
+                app.update(app.FAKE_TIMEDELTA);
+
+                REQUIRE(app.eventlistenermockup->emitevent);
+
+                THEN("has gain exp") { 
+                    CHECK(creature_battler->exp > 0); 
+                }
+
+                THEN("has level up") {
+                    CHECK(creature_battler->lvl > old_current_lvl);
+                }
+            }
+        }
+    }
+}

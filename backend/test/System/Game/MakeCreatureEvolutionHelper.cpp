@@ -1,23 +1,23 @@
-#include "SystemGameTestMakeCreatureHelper.h"
+#include "MakeCreatureEvolutionHelper.h"
 
 
-gamecomp::CreatureDataComponent MakeCreatureHelper::make_CreatureData() {
+gamecomp::CreatureDataComponent MakeCreatureEvolutionHelper::make_CreatureData() {
     gamecomp::CreatureDataComponent ret;
 
-    ret.creature = CreatureTestData::make_DataCreature();
+    data::Creature creature = CreatureTestEvolution::make_DataCreature_Egg();
+
+    ret.creature = creature;
 
     return ret;
 }
 
-gamecomp::CreatureProgressTimersComponent MakeCreatureHelper::make_CreatureProgressTimers() {
+gamecomp::CreatureProgressTimersComponent MakeCreatureEvolutionHelper::make_CreatureProgressTimers() {
     gamecomputil::ProgressTimerUtil progresstimer_util;
     computil::DateTimerUtil datetimer_util;
 
     gamecomp::CreatureProgressTimersComponent ret;
-
-    ret.creaturelevel = CreatureTestData::CREATURELEVEL;
-
-    auto time = CreatureTestData::make_time_point_01_01_2000();
+    ret.creaturelevel = CreatureTestEvolutionEgg::CREATURELEVEL;
+    auto time = CreatureTestEvolution::make_time_point_01_01_2000();
     float factor = 1.0f;
 
     for (auto timertype : earr::Enum<gamecomp::CreatureProgressTimer>()) {
@@ -42,56 +42,56 @@ gamecomp::CreatureProgressTimersComponent MakeCreatureHelper::make_CreatureProgr
     return ret;
 }
 
-gamecomp::BattlerStatusesComponent MakeCreatureHelper::make_BattlerStatuses() {
+gamecomp::BattlerStatusesComponent MakeCreatureEvolutionHelper::make_BattlerStatuses() {
     gamecomp::BattlerStatusesComponent ret;
 
     return ret;
 }
 
-gamecomp::BattlerBattleStateComponent MakeCreatureHelper::make_BattlerBattleState() {
+gamecomp::BattlerBattleStateComponent MakeCreatureEvolutionHelper::make_BattlerBattleState() {
     gamecomp::BattlerBattleStateComponent ret;
 
     return ret;
 }
 
-gamecomp::BattlerResistsComponent MakeCreatureHelper::make_BattlerResists() {
+gamecomp::BattlerResistsComponent MakeCreatureEvolutionHelper::make_BattlerResists() {
     gamecomp::BattlerResistsComponent ret;
 
     return ret;
 }
 
-gamecomp::CreatureBattlerComponent MakeCreatureHelper::make_CreatureBattler() {
+gamecomp::CreatureBattlerComponent MakeCreatureEvolutionHelper::make_CreatureBattler() {
     gamecomp::CreatureBattlerComponent ret;
 
     earr::enum_array_at(ret.attrbase, +data::Attribute::MaxHP) =
-        CreatureTestData::MAXHP;
+        CreatureTestEvolutionEgg::MAXHP;
     earr::enum_array_at(ret.attrbase, +data::Attribute::MaxMP) =
-        CreatureTestData::MAXMP;
+        CreatureTestEvolutionEgg::MAXMP;
     earr::enum_array_at(ret.attrbase, +data::Attribute::Atk) =
-        CreatureTestData::ATK;
+        CreatureTestEvolutionEgg::ATK;
     earr::enum_array_at(ret.attrbase, +data::Attribute::Def) =
-        CreatureTestData::DEF;
+        CreatureTestEvolutionEgg::DEF;
     earr::enum_array_at(ret.attrbase, +data::Attribute::Agi) =
-        CreatureTestData::AGI;
+        CreatureTestEvolutionEgg::AGI;
     earr::enum_array_at(ret.attrbase, +data::Attribute::Int) =
-        CreatureTestData::INT;
+        CreatureTestEvolutionEgg::INT;
     earr::enum_array_at(ret.attrbase, +data::Attribute::Exp) =
-        CreatureTestData::EXP;
+        CreatureTestEvolutionEgg::EXP;
 
     earr::enum_array_at(ret.attrinf, +data::Attribute::MaxHP) =
-        CreatureTestData::ATTR_INFLATION;
+        CreatureTestEvolutionEgg::ATTR_INFLATION;
     earr::enum_array_at(ret.attrinf, +data::Attribute::MaxMP) =
-        CreatureTestData::ATTR_INFLATION;
+        CreatureTestEvolutionEgg::ATTR_INFLATION;
     earr::enum_array_at(ret.attrinf, +data::Attribute::Atk) =
-        CreatureTestData::ATTR_INFLATION;
+        CreatureTestEvolutionEgg::ATTR_INFLATION;
     earr::enum_array_at(ret.attrinf, +data::Attribute::Def) =
-        CreatureTestData::ATTR_INFLATION;
+        CreatureTestEvolutionEgg::ATTR_INFLATION;
     earr::enum_array_at(ret.attrinf, +data::Attribute::Agi) =
-        CreatureTestData::ATTR_INFLATION;
+        CreatureTestEvolutionEgg::ATTR_INFLATION;
     earr::enum_array_at(ret.attrinf, +data::Attribute::Int) =
-        CreatureTestData::ATTR_INFLATION;
+        CreatureTestEvolutionEgg::ATTR_INFLATION;
     earr::enum_array_at(ret.attrinf, +data::Attribute::Exp) =
-        CreatureTestData::ATTR_INFLATION;
+        CreatureTestEvolutionEgg::ATTR_INFLATION;
 
     earr::enum_array_at(ret.attrplus, +data::Attribute::MaxHP) = 0;
     earr::enum_array_at(ret.attrplus, +data::Attribute::MaxMP) = 0;
@@ -102,83 +102,106 @@ gamecomp::CreatureBattlerComponent MakeCreatureHelper::make_CreatureBattler() {
     earr::enum_array_at(ret.attrplus, +data::Attribute::Exp) = 0;
 
     earr::enum_array_at(ret.attr, +data::Attribute::MaxHP) =
-        CreatureTestData::MAXHP;
+        CreatureTestEvolutionEgg::MAXHP;
     earr::enum_array_at(ret.attr, +data::Attribute::MaxMP) =
-        CreatureTestData::MAXMP;
-    earr::enum_array_at(ret.attr, +data::Attribute::Atk) = CreatureTestData::ATK;
-    earr::enum_array_at(ret.attr, +data::Attribute::Def) = CreatureTestData::DEF;
-    earr::enum_array_at(ret.attr, +data::Attribute::Agi) = CreatureTestData::AGI;
-    earr::enum_array_at(ret.attr, +data::Attribute::Int) = CreatureTestData::INT;
-    earr::enum_array_at(ret.attr, +data::Attribute::Exp) = CreatureTestData::EXP;
+        CreatureTestEvolutionEgg::MAXMP;
+    earr::enum_array_at(ret.attr, +data::Attribute::Atk) =
+        CreatureTestEvolutionEgg::ATK;
+    earr::enum_array_at(ret.attr, +data::Attribute::Def) =
+        CreatureTestEvolutionEgg::DEF;
+    earr::enum_array_at(ret.attr, +data::Attribute::Agi) =
+        CreatureTestEvolutionEgg::AGI;
+    earr::enum_array_at(ret.attr, +data::Attribute::Int) =
+        CreatureTestEvolutionEgg::INT;
+    earr::enum_array_at(ret.attr, +data::Attribute::Exp) =
+        CreatureTestEvolutionEgg::EXP;
 
 
     // set level 1
     ret.exp = 0;
-    ret.lvl = CreatureTestData::LVL;
+    ret.lvl = CreatureTestEvolutionEgg::LVL;
 
-    ret.hp = CreatureTestData::MAXHP;
-    ret.mp = CreatureTestData::MAXMP;
+    ret.hp = CreatureTestEvolutionEgg::MAXHP;
+    ret.mp = CreatureTestEvolutionEgg::MAXMP;
 
 
     // set attributes for 5 Levels, Index 0-5 => 5 Levels
     earr::enum_array_at(ret.attrparam, +data::Attribute::MaxHP) = {
-        0,
-        CreatureTestData::MAXHP,
-        CreatureTestData::MAXHP + CreatureTestData::ATTR_INFLATION,
-        CreatureTestData::MAXHP + CreatureTestData::ATTR_INFLATION * 2,
-        CreatureTestData::MAXHP + CreatureTestData::ATTR_INFLATION * 3,
-        CreatureTestData::MAXMP + CreatureTestData::ATTR_INFLATION * 4
+        0, CreatureTestEvolutionEgg::MAXHP,
+        CreatureTestEvolutionEgg::MAXHP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION,
+        CreatureTestEvolutionEgg::MAXHP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 2,
+        CreatureTestEvolutionEgg::MAXHP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 3,
+        CreatureTestEvolutionEgg::MAXMP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 4
     };
 
     earr::enum_array_at(ret.attrparam, +data::Attribute::MaxMP) = {
-        0,
-        CreatureTestData::MAXMP,
-        CreatureTestData::MAXMP + CreatureTestData::ATTR_INFLATION,
-        CreatureTestData::MAXMP + CreatureTestData::ATTR_INFLATION * 2,
-        CreatureTestData::MAXMP + CreatureTestData::ATTR_INFLATION * 3,
-        CreatureTestData::MAXMP + CreatureTestData::ATTR_INFLATION * 4
+        0, CreatureTestEvolutionEgg::MAXMP,
+        CreatureTestEvolutionEgg::MAXMP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION,
+        CreatureTestEvolutionEgg::MAXMP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 2,
+        CreatureTestEvolutionEgg::MAXMP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 3,
+        CreatureTestEvolutionEgg::MAXMP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 4
     };
 
     earr::enum_array_at(ret.attrparam, +data::Attribute::Atk) = {
-        0,
-        CreatureTestData::ATK,
-        CreatureTestData::ATK + CreatureTestData::ATTR_INFLATION,
-        CreatureTestData::ATK + CreatureTestData::ATTR_INFLATION * 2,
-        CreatureTestData::ATK + CreatureTestData::ATTR_INFLATION * 3,
-        CreatureTestData::ATK + CreatureTestData::ATTR_INFLATION * 4
+        0, CreatureTestEvolutionEgg::ATK,
+        CreatureTestEvolutionEgg::ATK +
+            CreatureTestEvolutionEgg::ATTR_INFLATION,
+        CreatureTestEvolutionEgg::ATK +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 2,
+        CreatureTestEvolutionEgg::ATK +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 3,
+        CreatureTestEvolutionEgg::ATK +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 4
     };
 
     earr::enum_array_at(ret.attrparam, +data::Attribute::Def) = {
-        0,
-        CreatureTestData::DEF,
-        CreatureTestData::DEF + CreatureTestData::ATTR_INFLATION,
-        CreatureTestData::DEF + CreatureTestData::ATTR_INFLATION * 2,
-        CreatureTestData::DEF + CreatureTestData::ATTR_INFLATION * 3,
-        CreatureTestData::DEF + CreatureTestData::ATTR_INFLATION * 4
+        0, CreatureTestEvolutionEgg::DEF,
+        CreatureTestEvolutionEgg::DEF +
+            CreatureTestEvolutionEgg::ATTR_INFLATION,
+        CreatureTestEvolutionEgg::DEF +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 2,
+        CreatureTestEvolutionEgg::DEF +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 3,
+        CreatureTestEvolutionEgg::DEF +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 4
     };
 
     earr::enum_array_at(ret.attrparam, +data::Attribute::Agi) = {
-        0,
-        CreatureTestData::AGI,
-        CreatureTestData::AGI + CreatureTestData::ATTR_INFLATION,
-        CreatureTestData::AGI + CreatureTestData::ATTR_INFLATION * 2,
-        CreatureTestData::AGI + CreatureTestData::ATTR_INFLATION * 3,
-        CreatureTestData::AGI + CreatureTestData::ATTR_INFLATION * 4
+        0, CreatureTestEvolutionEgg::AGI,
+        CreatureTestEvolutionEgg::AGI +
+            CreatureTestEvolutionEgg::ATTR_INFLATION,
+        CreatureTestEvolutionEgg::AGI +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 2,
+        CreatureTestEvolutionEgg::AGI +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 3,
+        CreatureTestEvolutionEgg::AGI +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 4
     };
 
     earr::enum_array_at(ret.attrparam, +data::Attribute::Exp) = {
-        0,
-        CreatureTestData::EXP,
-        CreatureTestData::EXP + CreatureTestData::ATTR_INFLATION,
-        CreatureTestData::EXP + CreatureTestData::ATTR_INFLATION * 2,
-        CreatureTestData::EXP + CreatureTestData::ATTR_INFLATION * 3,
-        CreatureTestData::EXP + CreatureTestData::ATTR_INFLATION * 4
+        0, CreatureTestEvolutionEgg::EXP,
+        CreatureTestEvolutionEgg::EXP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION,
+        CreatureTestEvolutionEgg::EXP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 2,
+        CreatureTestEvolutionEgg::EXP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 3,
+        CreatureTestEvolutionEgg::EXP +
+            CreatureTestEvolutionEgg::ATTR_INFLATION * 4
     };
 
     return ret;
 }
 
-gamecomp::CreatureBattlerGeneComponent MakeCreatureHelper::make_CreatureBattlerGene() {
+gamecomp::CreatureBattlerGeneComponent MakeCreatureEvolutionHelper::make_CreatureBattlerGene() {
     gamecomp::CreatureBattlerGeneComponent ret;
 
     ret.boniattrfactor.fill(0);
@@ -187,61 +210,62 @@ gamecomp::CreatureBattlerGeneComponent MakeCreatureHelper::make_CreatureBattlerG
     return ret;
 }
 
-gamecomp::CreatureGeneComponent MakeCreatureHelper::make_CreatureGene() {
+gamecomp::CreatureGeneComponent MakeCreatureEvolutionHelper::make_CreatureGene() {
     gamecomp::CreatureGeneComponent ret;
 
+    auto creaturelevel = CreatureTestEvolutionEgg::CREATURELEVEL;
+
     ret.generationnr = 1;
-    auto creaturelevel = CreatureTestData::CREATURELEVEL;
 
-    ret.gender = CreatureTestData::GENDER;
-    ret.min_bmi = CreatureTestData::MIN_BMI;
-    ret.ideal_bmi = CreatureTestData::IDEAL_BMI;
-    ret.max_bmi = CreatureTestData::MAX_BMI;
-    ret.max_bodysize = CreatureTestData::MAX_BODYSIZE_GENE;
-    ret.bodymass = CreatureTestData::BODYMASS;
+    ret.gender = CreatureTestEvolutionEgg::GENDER;
+    ret.min_bmi = CreatureTestEvolutionEgg::MIN_BMI;
+    ret.ideal_bmi = CreatureTestEvolutionEgg::IDEAL_BMI;
+    ret.max_bmi = CreatureTestEvolutionEgg::MAX_BMI;
+    ret.max_bodysize = CreatureTestEvolutionEgg::MAX_BODYSIZE_GENE;
+    ret.bodymass = CreatureTestEvolutionEgg::BODYMASS;
 
-    ret.cangosleep_at_tired = CreatureTestData::CANGOSLEEP_AT_TIRED;
-    ret.max_digestionheap = CreatureTestData::MAX_DIGESTIONHEAP;
+    ret.cangosleep_at_tired = CreatureTestEvolutionEgg::CANGOSLEEP_AT_TIRED;
+    ret.max_digestionheap = CreatureTestEvolutionEgg::MAX_DIGESTIONHEAP;
 
     auto& perevolution = earr::enum_array_at(ret.perevolution, creaturelevel);
 
-    perevolution.needsleepinpercent = CreatureTestData::NEEDSLEEPINPERCENT;
-    perevolution.needrestinhospitalinpercent = CreatureTestData::NEEDRESTINHOSPITALINPERCENT;
+    perevolution.needsleepinpercent = CreatureTestEvolutionEgg::NEEDSLEEPINPERCENT;
+    perevolution.needrestinhospitalinpercent = CreatureTestEvolutionEgg::NEEDRESTINHOSPITALINPERCENT;
 
-    ret.totalmaxlifetime = CreatureTestData::TOTALMAXLIFETIME;
+    ret.totalmaxlifetime = CreatureTestEvolutionEgg::TOTALMAXLIFETIME;
 
     auto& training = perevolution.training;
     
-    training.good_trainitime = CreatureTestData::GOOD_TRAINTIME;
-    training.middle_trainitime = CreatureTestData::MIDDLE_TRAINTIME;
-    training.min_trainitime = CreatureTestData::MIN_TRAINTIME;
+    training.good_trainitime = CreatureTestEvolutionEgg::GOOD_TRAINTIME;
+    training.middle_trainitime = CreatureTestEvolutionEgg::MIDDLE_TRAINTIME;
+    training.min_trainitime = CreatureTestEvolutionEgg::MIN_TRAINTIME;
 
     training.max_hungryoverlay_intraining =
-        CreatureTestData::MAX_HUNGRYOVERLAY_INTRAINING;
+        CreatureTestEvolutionEgg::MAX_HUNGRYOVERLAY_INTRAINING;
     training.max_thirstyoverlay_intraining =
-        CreatureTestData::MAX_THIRSTYOVERLAY_INTRAINING;
+        CreatureTestEvolutionEgg::MAX_THIRSTYOVERLAY_INTRAINING;
     training.max_tiredoverlay_intraining =
-        CreatureTestData::MAX_TIREDOVERLAY_INTRAINING;
+        CreatureTestEvolutionEgg::MAX_TIREDOVERLAY_INTRAINING;
 
     return ret;
 }
 
 
-gamecomp::CreatureMemoryComponent MakeCreatureHelper::make_CreatureMemory() {
+gamecomp::CreatureMemoryComponent MakeCreatureEvolutionHelper::make_CreatureMemory() {
     gamecomp::CreatureMemoryComponent ret;
 
-    ret.max_short_memorysize = CreatureTestData::MAX_SHORTMEMORY_SIZE;
+    ret.max_short_memorysize = CreatureTestEvolutionEgg::MAX_SHORTMEMORY_SIZE;
 
     return ret;
 }
 
-gamecomp::CreaturePersonalityComponent MakeCreatureHelper::make_CreaturePersonality() {
+gamecomp::CreaturePersonalityComponent MakeCreatureEvolutionHelper::make_CreaturePersonality() {
     gamecomp::CreaturePersonalityComponent ret;
 
     return ret;
 }
 
-gamecomp::CreatureHungerComponent MakeCreatureHelper::make_CreatureHunger() {
+gamecomp::CreatureHungerComponent MakeCreatureEvolutionHelper::make_CreatureHunger() {
     gamecomp::CreatureHungerComponent ret;
 
     ret.digestionheap = 0;
@@ -250,57 +274,57 @@ gamecomp::CreatureHungerComponent MakeCreatureHelper::make_CreatureHunger() {
     return ret;
 }
 
-gamecomp::CreatureEvolveComponent MakeCreatureHelper::make_CreatureEvolve() {
+gamecomp::CreatureEvolveComponent MakeCreatureEvolutionHelper::make_CreatureEvolve() {
     gamecomp::CreatureEvolveComponent ret;
 
     return ret;
 }
 
-gamecomp::CreatureSleepComponent MakeCreatureHelper::make_CreatureSleep() {
+gamecomp::CreatureSleepComponent MakeCreatureEvolutionHelper::make_CreatureSleep() {
     gamecomp::CreatureSleepComponent ret;
 
     return ret;
 }
 
-gamecomp::CreatureTrainingComponent MakeCreatureHelper::make_CreatureTraining() {
+gamecomp::CreatureTrainingComponent MakeCreatureEvolutionHelper::make_CreatureTraining() {
     gamecomp::CreatureTrainingComponent ret;
 
     earr::enum_array_at(ret.attrparam_befortrain, +data::Attribute::MaxHP) =
-        CreatureTestData::MAXHP;
+        CreatureTestEvolutionEgg::MAXHP;
     earr::enum_array_at(ret.attrparam_befortrain, +data::Attribute::MaxMP) =
-        CreatureTestData::MAXMP;
+        CreatureTestEvolutionEgg::MAXMP;
     earr::enum_array_at(ret.attrparam_befortrain, +data::Attribute::Atk) =
-        CreatureTestData::ATK;
+        CreatureTestEvolutionEgg::ATK;
     earr::enum_array_at(ret.attrparam_befortrain, +data::Attribute::Def) =
-        CreatureTestData::DEF;
+        CreatureTestEvolutionEgg::DEF;
     earr::enum_array_at(ret.attrparam_befortrain, +data::Attribute::Agi) =
-        CreatureTestData::AGI;
+        CreatureTestEvolutionEgg::AGI;
     earr::enum_array_at(ret.attrparam_befortrain, +data::Attribute::Int) =
-        CreatureTestData::INT;
+        CreatureTestEvolutionEgg::INT;
     earr::enum_array_at(ret.attrparam_befortrain, +data::Attribute::Exp) =
-        CreatureTestData::EXP;
+        CreatureTestEvolutionEgg::EXP;
 
     earr::enum_array_at(ret.attrparam_aftertrain, +data::Attribute::MaxHP) =
-        CreatureTestData::MAXHP;
+        CreatureTestEvolutionEgg::MAXHP;
     earr::enum_array_at(ret.attrparam_aftertrain, +data::Attribute::MaxMP) =
-        CreatureTestData::MAXMP;
+        CreatureTestEvolutionEgg::MAXMP;
     earr::enum_array_at(ret.attrparam_aftertrain, +data::Attribute::Atk) =
-        CreatureTestData::ATK;
+        CreatureTestEvolutionEgg::ATK;
     earr::enum_array_at(ret.attrparam_aftertrain, +data::Attribute::Def) =
-        CreatureTestData::DEF;
+        CreatureTestEvolutionEgg::DEF;
     earr::enum_array_at(ret.attrparam_aftertrain, +data::Attribute::Agi) =
-        CreatureTestData::AGI;
+        CreatureTestEvolutionEgg::AGI;
     earr::enum_array_at(ret.attrparam_aftertrain, +data::Attribute::Int) =
-        CreatureTestData::INT;
+        CreatureTestEvolutionEgg::INT;
     earr::enum_array_at(ret.attrparam_aftertrain, +data::Attribute::Exp) =
-        CreatureTestData::EXP;
+        CreatureTestEvolutionEgg::EXP;
 
     ret.trainingcounter.fill(0);
 
     return ret;
 }
 
-gamecomp::CreatureBodilyStateComponent MakeCreatureHelper::make_CreatureBodilyState() {
+gamecomp::CreatureBodilyStateComponent MakeCreatureEvolutionHelper::make_CreatureBodilyState() {
     gamecomp::CreatureBodilyStateComponent ret;
 
     ret.hurtcount = 0;
@@ -309,18 +333,18 @@ gamecomp::CreatureBodilyStateComponent MakeCreatureHelper::make_CreatureBodilySt
     return ret;
 }
 
-gamecomp::CreatureBodyComponent MakeCreatureHelper::make_CreatureBody() {
+gamecomp::CreatureBodyComponent MakeCreatureEvolutionHelper::make_CreatureBody() {
     gamecomp::CreatureBodyComponent ret;
 
-    ret.bmi = CreatureTestData::BMI;
-    ret.bodysize = CreatureTestData::BODYSIZE;
-    ret.calories = CreatureTestData::CALORIES;
-    ret.weight = CreatureTestData::WEIGHT;
+    ret.bmi = CreatureTestEvolutionEgg::BMI;
+    ret.bodysize = CreatureTestEvolutionEgg::BODYSIZE;
+    ret.calories = CreatureTestEvolutionEgg::CALORIES;
+    ret.weight = CreatureTestEvolutionEgg::WEIGHT;
 
     return ret;
 }
 
-gamecomp::CreaturePsycheComponent MakeCreatureHelper::make_CreaturePsyche() {
+gamecomp::CreaturePsycheComponent MakeCreatureEvolutionHelper::make_CreaturePsyche() {
     gamecomp::CreaturePsycheComponent ret;
 
     ret.disc = 100;
@@ -329,26 +353,26 @@ gamecomp::CreaturePsycheComponent MakeCreatureHelper::make_CreaturePsyche() {
     return ret;
 }
 
-gamecomp::CreatureLifeComponent MakeCreatureHelper::make_CreatureLife() {
+gamecomp::CreatureLifeComponent MakeCreatureEvolutionHelper::make_CreatureLife() {
     gamecomp::CreatureLifeComponent ret;
 
     ret.name = "Testmon";
 
-    ret.born = true;
-    ret.birthday = CreatureTestData::make_time_point_01_01_2000();
+    ret.born = false;
+    ret.birthday = CreatureTestEvolution::make_time_point_01_01_2000();
 
     ret.causeofdeath = gamecomp::CauseOfDeath::Alive;
     ret.causeofrunaway = gamecomp::CauseOfRunAway::NotRunAway;
     ret.isdead = false;
 
-    ret.creaturelevel = CreatureTestData::CREATURELEVEL;
+    ret.creaturelevel = CreatureTestEvolutionEgg::CREATURELEVEL;
 
-    ret.maxlifetime = CreatureTestData::TOTALMAXLIFETIME;
-    ret.lifetime = CreatureTestData::LIFETIME;
-    ret.ageingtime = CreatureTestData::AGEINGTIME;
-    ret.age = CreatureTestData::AGE;
+    ret.maxlifetime = CreatureTestEvolutionEgg::TOTALMAXLIFETIME;
+    ret.lifetime = CreatureTestEvolutionEgg::LIFETIME;
+    ret.ageingtime = CreatureTestEvolutionEgg::AGEINGTIME;
+    ret.age = CreatureTestEvolutionEgg::AGE;
 
-    ret.oldlevel = CreatureTestData::LVL;
+    ret.oldlevel = CreatureTestEvolutionEgg::LVL;
 
     ret.hasstatus.fill(false);
     ret.isbusy = false;
@@ -360,7 +384,8 @@ gamecomp::CreatureLifeComponent MakeCreatureHelper::make_CreatureLife() {
 
 
 
-gameentity::Entity MakeCreatureHelper::create_Entity_Creature(gameentity::EntityManager& entities) {
+
+gameentity::Entity MakeCreatureEvolutionHelper::create_Entity_Creature(gameentity::EntityManager& entities) {
 
     auto entity = entities.create();
 
@@ -392,11 +417,11 @@ gameentity::Entity MakeCreatureHelper::create_Entity_Creature(gameentity::Entity
 
 
 gameentity::Entity
-MakeCreatureHelper::create_Entity_CreatureAllWaitTime(gameentity::EntityManager& entities,
+MakeCreatureEvolutionHelper::create_Entity_CreatureAllWaitTime(gameentity::EntityManager& entities,
                                 std::chrono::milliseconds waittime) {
 
     auto entity = create_Entity_Creature(entities);
-    auto creaturelevel = CreatureTestData::CREATURELEVEL;
+    auto creaturelevel = CreatureTestEvolutionEgg::CREATURELEVEL;
 
 
     auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
@@ -423,11 +448,11 @@ MakeCreatureHelper::create_Entity_CreatureAllWaitTime(gameentity::EntityManager&
 
 
 gameentity::Entity
-MakeCreatureHelper::create_Entity_CreatureAllWaitTime_Starvation(gameentity::EntityManager& entities,
+MakeCreatureEvolutionHelper::create_Entity_CreatureAllWaitTime_Starvation(gameentity::EntityManager& entities,
                                 std::chrono::milliseconds waittime) {
 
     auto entity = create_Entity_Creature(entities);
-    auto creaturelevel = CreatureTestData::CREATURELEVEL;
+    auto creaturelevel = CreatureTestEvolutionEgg::CREATURELEVEL;
 
 
     auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();

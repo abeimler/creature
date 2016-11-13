@@ -8,17 +8,14 @@ void CreatureBattlerCreatureAddExpSystem::update(const gameevent::CreatureAddExp
     Component<gamecomp::CreatureBattlerComponent> creature_battler;
     
     for (auto entity : entities.entities_with_components(creature_data, creature_battler)) {
-        
         const data::Creature& creature = creature_data->creature;
+        int add_exp = event.exp;
+
+        creature_battler->exp += add_exp;
 
         int maxlvl = creature.getMaxLvL();
-
-        int exp = event.exp;
         int nextexp =
             earr::enum_array_at(creature_battler->attr, +data::Attribute::Exp);
-
-        creature_battler->exp += exp;
-
         while (creature_battler->lvl <= maxlvl && creature_battler->exp >= nextexp) {
             creature_battler->lvl++;
 
@@ -33,10 +30,14 @@ void CreatureBattlerCreatureAddExpSystem::update(const gameevent::CreatureAddExp
                         exp_attrparams.at(lvl_index);
                 }
             }
+
+            creaturebattler_creator_.updateNewLvL(*creature_battler.get(),
+                                                creature_data->creature);
+
+            nextexp =
+                earr::enum_array_at(creature_battler->attr, +data::Attribute::Exp);
         }
 
-        creaturebattler_creator_.updateNewLvL(*creature_battler.get(),
-                                              creature_data->creature);
     }
 }
 

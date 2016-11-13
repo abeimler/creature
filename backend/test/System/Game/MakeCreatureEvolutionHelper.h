@@ -1,10 +1,11 @@
-#ifndef TEST_SYSTEM_GAME_SYSTEMGAMETESTMAKECREATUREHELPER_H_
-#define TEST_SYSTEM_GAME_SYSTEMGAMETESTMAKECREATUREHELPER_H_
+#ifndef TEST_SYSTEM_GAME_MAKECREATUREEVOLUTIONHELPER_H_
+#define TEST_SYSTEM_GAME_MAKECREATUREEVOLUTIONHELPER_H_
 
 #include "Entity/Game/CreatureEntityCreator.h"
-#include "Entity/Game/CreatureTestData.h"
 
-class MakeCreatureHelper {
+#include "Entity/Game/CreatureTestDataEvolution.h"
+
+class MakeCreatureEvolutionHelper {
     public:
 
     static gamecomp::CreatureDataComponent make_CreatureData();
@@ -44,4 +45,4 @@ class MakeCreatureHelper {
 };
 
 
-#endif // TEST_SYSTEM_GAME_SYSTEMGAMETESTMAKECREATUREHELPER_H_
+#endif // TEST_SYSTEM_GAME_MAKECREATUREEVOLUTIONHELPER_H_

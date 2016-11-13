@@ -21,6 +21,8 @@ class System {
 
   using EventBus = gameevent::EventBus;
 
+  using TimeDelta = gamesystem::TimeDelta;
+
 
   System() = default;
   virtual ~System() = default;
@@ -61,7 +63,7 @@ class Listener : public System {
 
   virtual void update(const Event& event, EntityManager& entities, EventBus& events, TimeDelta dt) = 0;
 
-  void update(EntityManager& entities, EventBus& events, TimeDelta dt) override final {
+  void update(EntityManager& entities, EventBus& events, TimeDelta dt) final {
     for(const auto& event : this->events_) {
       update(event, entities, events, dt);
     }
