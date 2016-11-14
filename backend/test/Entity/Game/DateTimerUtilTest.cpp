@@ -168,8 +168,8 @@ TEST_CASE("getTime of DateTimer Slowdown with factor") {
     comp::DateTimer datetimer;
     init_DateTimer(datetimer_util, datetimer);
 
-    int factor = 2;
-    datetimer.realtime_factor = 1.0f / factor;
+    double factor = 2;
+    datetimer.realtime_factor = 1.0 / factor;
 
     std::chrono::milliseconds sleeptime_ms(10);
     std::chrono::milliseconds expectwaittime_ms(5);

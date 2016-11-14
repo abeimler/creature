@@ -92,7 +92,7 @@ void DateTimerUtil::update(comp::DateTimer& datetimer, bool ignortimer) {
             realtimer_ms =
                 std::chrono::duration_cast<std::chrono::milliseconds>(
                     timer_util_.getTime(datetimer.realtimer));
-            double add_ms_f = realtimer_ms.count() *
+            double add_ms_f = static_cast<double>(realtimer_ms.count()) *
                               static_cast<double>(datetimer.realtime_factor);
             add_ms = std::chrono::milliseconds(static_cast<int64_t>(add_ms_f));
         } else {

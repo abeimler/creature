@@ -2,7 +2,9 @@
 
 namespace gamesystem {
 
-
+CreatureBattlerSystem::CreatureBattlerSystem(gameentity::DataManager& datamanager)
+    : datamanager_(datamanager)
+{}
 
 void CreatureBattlerSystem::updateCreatureBattlerAttribute(
     Component<gamecomp::CreatureBattlerComponent>& creature_battler,
@@ -36,7 +38,7 @@ void CreatureBattlerSystem::updateCreatureBattlerAttribute(
         if (status) {
             for (auto attr : earr::Enum<data::Attribute>()) {
                 auto& battler_attr = earr::enum_array_at(creature_battler->attr, attr);
-                battler_attr *= status->getAttr(attr);
+                battler_attr = battler_attr * status->getAttr(attr);
             }
         }
     }
@@ -74,7 +76,7 @@ void CreatureBattlerSystem::updateCreatureHitRate(
         0, 
         sum_battlerstatuses_hitrate_func);
 
-    int status_avg_hitrate = (battlerstatuses.size() != 0)? status_sum_hitrate / battlerstatuses.size() : DEFAULT_HITRATE;
+    int status_avg_hitrate = (battlerstatuses.size() != 0)? status_sum_hitrate / battlerstatuses.size() : basehitrate;
 
     creature_battler->hitrate = (basehitrate + status_avg_hitrate) / 2;
 }
@@ -102,7 +104,7 @@ void CreatureBattlerSystem::updateCreatureCriticalHitRate(
         0, 
         sum_battlerstatuses_critical_hitrate_func);
 
-    int status_avg_hitrate = (battlerstatuses.size() != 0)? status_sum_critical_hitrate / battlerstatuses.size() : DEFAULT_CRITICAL_HITRATE;
+    int status_avg_hitrate = (battlerstatuses.size() != 0)? status_sum_critical_hitrate / battlerstatuses.size() : basecritical_hitrate;
 
     creature_battler->critical_hitrate = (basecritical_hitrate + status_avg_hitrate) / 2;
 }
@@ -130,7 +132,7 @@ void CreatureBattlerSystem::updateCreatureEvaRate(
         0, 
         sum_battlerstatuses_evarate_func);
 
-    int status_avg_evarate = (battlerstatuses.size() != 0)? status_sum_evarate / battlerstatuses.size() : DEFAULT_EVARATE;
+    int status_avg_evarate = (battlerstatuses.size() != 0)? status_sum_evarate / battlerstatuses.size() : baseevarate;
 
     creature_battler->evarate = (baseevarate + status_avg_evarate) / 2;
 }
@@ -140,7 +142,7 @@ void CreatureBattlerSystem::updateCreatureEvaRate(
 void CreatureBattlerSystem::updateCreatureStatusRestriction(
     Component<gamecomp::CreatureBattlerComponent>& creature_battler,
     Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
-    Component<gamecomp::CreatureDataComponent>& creature_data) {
+    Component<gamecomp::CreatureDataComponent>& /*creature_data*/) {
 
     //const data::Creature& creature = creature_data->creature;
 
@@ -168,5 +170,37 @@ void CreatureBattlerSystem::updateCreatureStatusRestriction(
         }
     }
 }
+
+
+
+
+
+
+void CreatureBattlerSystem::update(EntityManager& entities,
+                                   EventBus& events,
+                                   TimeDelta dt) {
+
+    Component<gamecomp::CreatureDataComponent> creature_data;
+    Component<gamecomp::CreatureBattlerComponent> creature_battler;
+    Component<gamecomp::BattlerStatusesComponent> battler_statuses;
+
+    for (auto entity : entities.entities_with_components(creature_data, creature_battler, battler_statuses)) {
+        this->updateCreatureBattlerAttribute(creature_battler, battler_statuses,
+                                             creature_data);
+
+        this->updateCreatureHitRate(creature_battler, battler_statuses,
+                                    creature_data);
+
+        this->updateCreatureCriticalHitRate(creature_battler, battler_statuses,
+                                            creature_data);
+
+        this->updateCreatureEvaRate(creature_battler, battler_statuses,
+                                    creature_data);
+
+        this->updateCreatureStatusRestriction(creature_battler,
+                                              battler_statuses, creature_data);
+    }
+}
+
 
 } // namespace gamesystem

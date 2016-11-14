@@ -126,8 +126,6 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
         std::chrono::milliseconds gene_waittime = earr::enum_array_at(perevolution.waittime.timer,
             +gamecomp::CreatureProgressTimer::Hungry);
 
-        std::cout << timer_waittime.count() << " == " << gene_waittime.count() << '\n';
-
         CHECK(timer_waittime == gene_waittime);
     }
 

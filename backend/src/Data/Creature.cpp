@@ -13,33 +13,34 @@ void EvolutionCondition::setTrainTimeEveryDay() {
 
 Creature::Creature() {
     for (size_t i = 0; i < this->genderdistribution_.size(); i++) {
-        this->genderdistribution_[i] = 0.0;
+        this->genderdistribution_[i] = [&](){
+            auto index = CreatureGender::_from_integral_nothrow(i);
 
-        auto index = CreatureGender::_from_integral_nothrow(i);
-
-        if (index) {
-            if (*index != +CreatureGender::None &&
-                *index != +CreatureGender::Hermaphrodite) {
-                this->genderdistribution_[i] =
-                    100 / (this->genderdistribution_.size() - 2);
+            if (index) {
+                if (*index != +CreatureGender::None &&
+                    *index != +CreatureGender::Hermaphrodite) {
+                    return 100 / (this->genderdistribution_.size() - 2);
+                }
             }
-        }
+
+            return 0;
+        }();
     }
 }
 
 Creature::Creature(const Battler& battler) : Battler(battler) {
     for (size_t i = 0; i < this->genderdistribution_.size(); i++) {
-        this->genderdistribution_[i] = 0.0;
+        this->genderdistribution_[i] = [&](){
+            auto index = CreatureGender::_from_integral_nothrow(i);
 
-        auto index = CreatureGender::_from_integral_nothrow(i);
-
-        if (index) {
-            if (*index != +CreatureGender::None &&
-                *index != +CreatureGender::Hermaphrodite) {
-                this->genderdistribution_[i] =
-                    100 / (this->genderdistribution_.size() - 2);
+            if (index) {
+                if (*index != +CreatureGender::None &&
+                    *index != +CreatureGender::Hermaphrodite) {
+                    return 100 / (this->genderdistribution_.size() - 2);
+                }
             }
-        }
+            return 0;
+        }();
     }
 }
 

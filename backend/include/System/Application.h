@@ -34,9 +34,14 @@ class Application {
     }
 
     template<class Event>
-    void addListener(const std::shared_ptr<Listener<Event>>& listener) {
+    void addSystem(const std::shared_ptr<Listener<Event>>& listener) {
         this->events_.reg(listener);
         this->systems_.emplace_back(listener);
+    }
+
+    template<class Event>
+    void addListener(const std::shared_ptr<Listener<Event>>& listener) {
+        this->addSystem<Event>(listener);
     }
 
     /*

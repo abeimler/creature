@@ -8,25 +8,25 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
     gameentity::CreatureEntityCreator creaturecreator;
 
     // bodysize
-    // float min_bodysize = 1.2f;
-    float max_bodysize = 2.2f;
-    float bodysize = 1.8f;
+    // double min_bodysize = 1.2f;
+    double max_bodysize = 2.2f;
+    double bodysize = 1.8f;
 
     // body weight
-    float min_weight = 35;
-    float max_weight = 560;
-    float weight = 70;
+    double min_weight = 35;
+    double max_weight = 560;
+    double weight = 70;
 
     // bmi
-    float min_bmi = 10;
-    float max_bmi = 40;
-    float ideal_bmi = 22;
+    double min_bmi = 10;
+    double max_bmi = 40;
+    double ideal_bmi = 22;
 
-    float high_weight = 90;
-    float low_weight = 56;
+    double high_weight = 90;
+    double low_weight = 56;
 
     SUBCASE("get body mass") {
-        float ideal_mass = creaturecreator.getBodyMass(
+        double ideal_mass = creaturecreator.getBodyMass(
             bodysize, weight, min_weight, ideal_bmi, min_bmi, max_bmi);
 
         //CAPTURE(ideal_mass);
@@ -41,7 +41,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
         gene.min_bmi = min_bmi;
 
         SUBCASE("get bmi from mass") {
-            float bmi_mass = creaturecreator.getBMI(
+            double bmi_mass = creaturecreator.getBMI(
                 gene, min_weight, max_weight, weight, bodysize);
 
             SUBCASE("got bmi from mass") {
@@ -50,7 +50,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
             }
 
             SUBCASE("get bodysize from mass and bmi") {
-                float bodysize_mass = creaturecreator.getBodySize(
+                double bodysize_mass = creaturecreator.getBodySize(
                     min_bmi, max_bmi, bmi_mass, ideal_mass, min_weight,
                     max_weight, weight);
 
@@ -63,14 +63,14 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
 
 
         SUBCASE("get low bmi by lower weight") {
-            float low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
+            double low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
                                                    low_weight, bodysize);
 
             SUBCASE("got lower bmi") { CHECK(low_bmi < ideal_bmi); }
         }
 
         SUBCASE("get high bmi by higher weight") {
-            float high_bmi = creaturecreator.getBMI(
+            double high_bmi = creaturecreator.getBMI(
                 gene, min_weight, max_weight, high_weight, bodysize);
 
             SUBCASE("got higer bmi") { CHECK(high_bmi > ideal_bmi); }
@@ -83,25 +83,25 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
     gameentity::CreatureEntityCreator creaturecreator;
 
     // bodysize
-    // float min_bodysize = 4.4f;
-    float max_bodysize = 10.0f;
-    float bodysize = 8.0f;
+    // double min_bodysize = 4.4f;
+    double max_bodysize = 10.0f;
+    double bodysize = 8.0f;
 
     // body weight
-    float min_weight = 50;
-    float max_weight = 500;
-    float weight = 130;
+    double min_weight = 50;
+    double max_weight = 500;
+    double weight = 130;
 
     // bmi
-    float min_bmi = 100;
-    float max_bmi = 400;
-    float ideal_bmi = 220;
+    double min_bmi = 100;
+    double max_bmi = 400;
+    double ideal_bmi = 220;
 
-    float high_weight = 200;
-    float low_weight = 60;
+    double high_weight = 200;
+    double low_weight = 60;
 
     SUBCASE("get body mass") {
-        float ideal_mass = creaturecreator.getBodyMass(
+        double ideal_mass = creaturecreator.getBodyMass(
             bodysize, weight, min_weight, ideal_bmi, min_bmi, max_bmi);
 
         //CAPTURE(ideal_mass);
@@ -116,7 +116,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
         gene.min_bmi = min_bmi;
 
         SUBCASE("get bmi from mass") {
-            float bmi_mass = creaturecreator.getBMI(
+            double bmi_mass = creaturecreator.getBMI(
                 gene, min_weight, max_weight, weight, bodysize);
 
             SUBCASE("got bmi from mass") {
@@ -125,7 +125,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
             }
 
             SUBCASE("get bodysize from mass and bmi") {
-                float bodysize_mass = creaturecreator.getBodySize(
+                double bodysize_mass = creaturecreator.getBodySize(
                     min_bmi, max_bmi, bmi_mass, ideal_mass, min_weight,
                     max_weight, weight);
 
@@ -138,14 +138,14 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
 
 
         SUBCASE("get low bmi by lower weight") {
-            float low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
+            double low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
                                                    low_weight, bodysize);
 
             SUBCASE("got lower bmi") { CHECK(low_bmi < ideal_bmi); }
         }
 
         SUBCASE("get high bmi by higher weight") {
-            float high_bmi = creaturecreator.getBMI(
+            double high_bmi = creaturecreator.getBMI(
                 gene, min_weight, max_weight, high_weight, bodysize);
 
             SUBCASE("got higer bmi") { CHECK(high_bmi > ideal_bmi); }
@@ -157,25 +157,25 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
     gameentity::CreatureEntityCreator creaturecreator;
 
     // bodysize
-    // float min_bodysize = 0.1f;
-    float max_bodysize = 1.0f;
-    float bodysize = 0.5f;
+    // double min_bodysize = 0.1f;
+    double max_bodysize = 1.0f;
+    double bodysize = 0.5f;
 
     // body weight
-    float min_weight = 1;
-    float max_weight = 8;
-    float weight = 2;
+    double min_weight = 1;
+    double max_weight = 8;
+    double weight = 2;
 
     // bmi
-    float min_bmi = 10;
-    float max_bmi = 40;
-    float ideal_bmi = 22;
+    double min_bmi = 10;
+    double max_bmi = 40;
+    double ideal_bmi = 22;
 
-    float high_weight = 5;
-    float low_weight = 1.25;
+    double high_weight = 5;
+    double low_weight = 1.25;
 
     SUBCASE("get body mass") {
-        float ideal_mass = creaturecreator.getBodyMass(
+        double ideal_mass = creaturecreator.getBodyMass(
             bodysize, weight, min_weight, ideal_bmi, min_bmi, max_bmi);
 
         //CAPTURE(ideal_mass);
@@ -190,7 +190,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
         gene.min_bmi = min_bmi;
 
         SUBCASE("get bmi from mass") {
-            float bmi_mass = creaturecreator.getBMI(
+            double bmi_mass = creaturecreator.getBMI(
                 gene, min_weight, max_weight, weight, bodysize);
 
             SUBCASE("got bmi from mass") {
@@ -199,7 +199,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
             }
 
             SUBCASE("get bodysize from mass and bmi") {
-                float bodysize_mass = creaturecreator.getBodySize(
+                double bodysize_mass = creaturecreator.getBodySize(
                     min_bmi, max_bmi, bmi_mass, ideal_mass, min_weight,
                     max_weight, weight);
 
@@ -212,14 +212,14 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
 
 
         SUBCASE("get low bmi by lower weight") {
-            float low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
+            double low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
                                                    low_weight, bodysize);
 
             SUBCASE("got lower bmi") { CHECK(low_bmi < ideal_bmi); }
         }
 
         SUBCASE("get high bmi by higher weight") {
-            float high_bmi = creaturecreator.getBMI(
+            double high_bmi = creaturecreator.getBMI(
                 gene, min_weight, max_weight, high_weight, bodysize);
 
             SUBCASE("got higer bmi") { CHECK(high_bmi > ideal_bmi); }

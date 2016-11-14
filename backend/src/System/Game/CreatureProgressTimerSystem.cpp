@@ -156,7 +156,7 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
                 datetimer_util_.start(timer.fulltimer);
 
                 double ticks_ms_f =
-                    waitTime_ms.count() *
+                    static_cast<double>(waitTime_ms.count()) *
                     ((timer.value - 100.0) / 100.0);
                 std::chrono::milliseconds addTm_ms(
                     static_cast<int64_t>(ticks_ms_f));
@@ -186,7 +186,7 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
 
             double fullValue_percent =
                 (static_cast<double>(fulltimer_ms.count()) * 100.0) /
-                waitTime_ms.count();
+                static_cast<double>(waitTime_ms.count());
             timer.overlayvalue += fullValue_percent * timer.factor;
         }
 

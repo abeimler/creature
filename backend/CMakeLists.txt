@@ -42,9 +42,6 @@ add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/json)
 ## Application Build
 ###
 add_library(${PROJECT_NAME} STATIC ${CREATURE_BACKEND_SRC})
-if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
-    target_link_libraries(${PROJECT_NAME} c++abi)
-endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -77,9 +74,6 @@ target_compile_options(${PROJECT_NAME} PRIVATE -fno-exceptions)
 ###
 
 add_executable(${PROJECT_NAME}_test ${CREATURE_BACKEND_TEST_SRC})
-if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
-    target_link_libraries(${PROJECT_NAME}_test c++abi)
-endif()
 
 set_property(TARGET ${PROJECT_NAME}_test PROPERTY CXX_STANDARD 14)
 set_property(TARGET ${PROJECT_NAME}_test PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -91,8 +85,6 @@ target_include_directories(${PROJECT_NAME}_test PRIVATE ${CREATURE_BACKEND_TEST_
 
 target_compile_options(${PROJECT_NAME}_test PRIVATE -fexceptions)
 
-target_link_libraries (${PROJECT_NAME}_test PRIVATE ${CMAKE_THREAD_LIBS_INIT})
-target_compile_options(${PROJECT_NAME}_test PRIVATE -pthread)
 
 enable_testing ()
 add_test (NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_NAME}_test)
@@ -116,8 +108,6 @@ target_include_directories(${PROJECT_NAME}_benchmark SYSTEM PRIVATE ${CREATURE_B
 
 target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
 
-target_link_libraries (${PROJECT_NAME}_benchmark PRIVATE ${CMAKE_THREAD_LIBS_INIT})
-target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -pthread)
 
 ###
 ## Tools
