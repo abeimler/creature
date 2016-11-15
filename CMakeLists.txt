@@ -51,7 +51,7 @@ if(MSVC)
   # how to workaround or fix the error. So I'm disabling it globally.
   add_definitions(/wd4503)
 else()
-  add_definitions(-Wall -Wextra -Wconversion -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wcast-qual -Wunused -Woverloaded-virtual -Wno-old-style-cast  -pedantic ${CPP11_FLAG})
+  add_definitions(-Wall -Wextra -Wno-error -Wconversion -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wcast-qual -Wunused -Woverloaded-virtual -Wno-old-style-cast  -pedantic ${CPP11_FLAG})
 
   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     add_definitions(-Weverything -Wno-c++98-compat-pedantic  -Wno-c++98-compat -Wno-documentation -Wno-switch-enum -Wno-weak-vtables -Wno-missing-prototypes -Wno-padded -Wno-missing-noreturn -Wno-exit-time-destructors -Wno-documentation-unknown-command)
@@ -195,3 +195,34 @@ target_include_directories(${PROJECT_NAME}_makedata PRIVATE ${CREATURE_BACKEND_I
 target_compile_options(${PROJECT_NAME}_makedata PRIVATE -fexceptions)
 
 
+
+###
+## Tools
+###
+
+
+# Adding clang-format target if executable is found
+find_program(CLANG_FORMAT "clang-format")
+if(CLANG_FORMAT)
+  add_custom_target(
+    clang-format
+      COMMAND ${CLANG_FORMAT}
+        -style=file
+        -i
+        ${CREATURE_BACKEND_HEADERS} ${CREATURE_BACKEND_TEST_HEADERS} ${CREATURE_BACKEND_BENCHMARK_HEADERS}
+        ${CREATURE_BACKEND_SRC} ${CREATURE_BACKEND_TEST_SRC} ${CREATURE_BACKEND_BENCHMARK_SRC}
+    )
+endif()
+
+# Adding clang-tidy target if executable is found
+find_program(CLANG_TIDY "clang-tidy")
+if(CLANG_TIDY)
+  add_custom_target(clang-tidy
+    COMMAND find ${CREATURE_BACKEND_SRC_PATH} -name '*.cpp' -exec 
+      ${CLANG_TIDY} 
+        -p ${CMAKE_CURRENT_BINARY_DIR} 
+        -config='' 
+        --header-filter=${CREATURE_BACKEND_INCLUDE_PATH} 
+        {} +
+  )
+endif()

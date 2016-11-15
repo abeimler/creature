@@ -18,6 +18,28 @@ file(GLOB_RECURSE CREATURE_BACKEND_TEST_HEADERS ${CREATURE_BACKEND_TEST_PATH}/*.
 file(GLOB_RECURSE CREATURE_BACKEND_BENCHMARK_SRC ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cpp ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cxx ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cc)
 file(GLOB_RECURSE CREATURE_BACKEND_BENCHMARK_HEADERS ${CREATURE_BACKEND_BENCHMARK_PATH}/*.h ${CREATURE_BACKEND_BENCHMARK_PATH}/*.hpp ${CREATURE_BACKEND_BENCHMARK_PATH}/*.hxx)
 
+
+
+set(CREATURE_BACKEND_SRC_PATH ${CREATURE_BACKEND_SRC_PATH} PARENT_SCOPE)
+set(CREATURE_BACKEND_INCLUDE_PATH ${CREATURE_BACKEND_INCLUDE_PATH} PARENT_SCOPE)
+set(CREATURE_BACKEND_TEST_PATH ${CREATURE_BACKEND_TEST_PATH} PARENT_SCOPE)
+set(CREATURE_BACKEND_BENCHMARK_PATH ${CREATURE_BACKEND_BENCHMARK_PATH} PARENT_SCOPE)
+
+set(CREATURE_BACKEND_SRC ${CREATURE_BACKEND_SRC} PARENT_SCOPE)
+set(CREATURE_BACKEND_HEADERS ${CREATURE_BACKEND_HEADERS} PARENT_SCOPE)
+
+set(CREATURE_BACKEND_SRC ${CREATURE_BACKEND_SRC} PARENT_SCOPE)
+set(CREATURE_BACKEND_HEADERS ${CREATURE_BACKEND_HEADERS} PARENT_SCOPE)
+
+set(CREATURE_BACKEND_TEST_SRC ${CREATURE_BACKEND_TEST_SRC} PARENT_SCOPE)
+set(CREATURE_BACKEND_TEST_HEADERS ${CREATURE_BACKEND_TEST_HEADERS} PARENT_SCOPE)
+
+set(CREATURE_BACKEND_BENCHMARK_SRC ${CREATURE_BACKEND_BENCHMARK_SRC} PARENT_SCOPE)
+set(CREATURE_BACKEND_BENCHMARK_HEADERS ${CREATURE_BACKEND_BENCHMARK_HEADERS} PARENT_SCOPE)
+
+
+
+
 ###
 ## 3rd libs
 ###
@@ -109,6 +131,8 @@ target_include_directories(${PROJECT_NAME}_benchmark SYSTEM PRIVATE ${CREATURE_B
 target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
 
 
+
+
 ###
 ## Tools
 ###
@@ -117,25 +141,68 @@ target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
 # Adding clang-format target if executable is found
 find_program(CLANG_FORMAT "clang-format")
 if(CLANG_FORMAT)
+
   add_custom_target(
-    clang-format
-    COMMAND ${CLANG_FORMAT}
-    -i
-    -style=file
-    ${CREATURE_BACKEND_SRC} ${CREATURE_BACKEND_TEST_SRC} ${CREATURE_BACKEND_BENCHMARK_SRC}
+    clang-format_backend
+      COMMAND find ${CREATURE_BACKEND_SRC_PATH} -name '*.cpp' -name '*.h' -exec 
+        ${CLANG_FORMAT}
+        -style=file
+        -i
+        {} +
     )
+
+  add_custom_target(
+    clang-format_backend_test
+      COMMAND find ${CREATURE_BACKEND_TEST_PATH} -name '*.cpp' -name '*.h' -exec 
+        ${CLANG_FORMAT}
+        -style=file
+        -i
+        {} +
+    )
+
+  add_custom_target(
+    clang-format_backend_benchmark
+      COMMAND find ${CREATURE_BACKEND_BENCHMARK_PATH} -name '*.cpp' -name '*.h' -exec 
+        ${CLANG_FORMAT}
+        -style=file
+        -i
+        {} +
+    )
+
 endif()
 
 # Adding clang-tidy target if executable is found
 find_program(CLANG_TIDY "clang-tidy")
 if(CLANG_TIDY)
-  add_custom_target(
-    clang-tidy
-    COMMAND ${CLANG_TIDY}
-    ${CREATURE_BACKEND_SRC} ${CREATURE_BACKEND_TEST_SRC} ${CREATURE_BACKEND_BENCHMARK_SRC}
-    -config=''
-    --
-    ${CMAKE_CXX_FLAGS}
-    ${CREATURE_BACKEND_INCLUDE_DIRECTORIES}
-    )
+
+  add_custom_target(clang-tidy_backend
+    COMMAND find ${CREATURE_BACKEND_SRC_PATH} -name '*.cpp' -exec 
+      ${CLANG_TIDY} 
+        -p ${CMAKE_CURRENT_BINARY_DIR} 
+        -config='' 
+        --header-filter=${CREATURE_BACKEND_INCLUDE_PATH} 
+        -fix
+        {} +
+  )
+
+  add_custom_target(clang-tidy_backend_test
+    COMMAND find ${CREATURE_BACKEND_TEST_PATH} -name '*.cpp' -exec 
+      ${CLANG_TIDY} 
+        -p ${CMAKE_CURRENT_BINARY_DIR} 
+        -config='' 
+        --header-filter=${CREATURE_BACKEND_TEST_PATH} 
+        -fix
+        {} +
+  )
+
+  add_custom_target(clang-tidy_backend_benchmark
+    COMMAND find ${CREATURE_BACKEND_BENCHMARK_PATH} -name '*.cpp' -exec 
+      ${CLANG_TIDY} 
+        -p ${CMAKE_CURRENT_BINARY_DIR} 
+        -config='' 
+        --header-filter=${CREATURE_BACKEND_BENCHMARK_PATH} 
+        -fix
+        {} +
+  )
+
 endif()

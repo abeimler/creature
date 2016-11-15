@@ -19,11 +19,11 @@ Creature::Creature() {
             if (index) {
                 if (*index != +CreatureGender::None &&
                     *index != +CreatureGender::Hermaphrodite) {
-                    return 100 / (this->genderdistribution_.size() - 2);
+                    return 100.0 / (this->genderdistribution_.size() - 2.0);
                 }
             }
 
-            return 0;
+            return 0.0;
         }();
     }
 }
@@ -36,10 +36,11 @@ Creature::Creature(const Battler& battler) : Battler(battler) {
             if (index) {
                 if (*index != +CreatureGender::None &&
                     *index != +CreatureGender::Hermaphrodite) {
-                    return 100 / (this->genderdistribution_.size() - 2);
+                    return 100.0 / (this->genderdistribution_.size() - 2.0);
                 }
             }
-            return 0;
+            
+            return 0.0;
         }();
     }
 }

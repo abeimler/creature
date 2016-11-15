@@ -1,6 +1,5 @@
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,-clang-analyzer-alpha*,*,-clang-analyzer-alpha.*,-llvm-include-order'
-HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
 User:            hirc
 CheckOptions:    
