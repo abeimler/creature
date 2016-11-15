@@ -233,7 +233,6 @@ if(CLANG_TIDY)
       ${CLANG_TIDY} 
         -p ${CMAKE_CURRENT_BINARY_DIR} 
         -config='' 
-        --header-filter=${TOOLS_MAKEDATA_INCLUDE_PATH} 
         -fix
         {} +
 

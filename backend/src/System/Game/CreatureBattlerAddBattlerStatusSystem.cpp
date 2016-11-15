@@ -25,7 +25,7 @@ void CreatureBattlerAddBattlerStatusSystem::sortBattlerStatuses(
 
 void CreatureBattlerAddBattlerStatusSystem::update(
     const gameevent::CreatureAddBattlerStatusEvent& event,
-    EntityManager& entities, EventBus& events, TimeDelta dt) {
+    EntityManager& entities, EventBus& events, TimeDelta  /*dt*/) {
     Component<gamecomp::BattlerStatusesComponent> battlerstatuses;
 
     for (auto entity : entities.entities_with_components(battlerstatuses)) {
@@ -55,4 +55,4 @@ void CreatureBattlerAddBattlerStatusSystem::update(
         }
     }
 }
-}
+}  // namespace gamesystem

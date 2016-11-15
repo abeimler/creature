@@ -39,7 +39,7 @@ TEST_CASE("load better-enum serial binary") {
 
     std::stringstream ss;
     {
-        ss.write((char*)&value, sizeof(value));
+        ss.write(reinterpret_cast<char*>(&value), sizeof(value));
         cereal::BinaryInputArchive ar(ss);
 
         ar(e);

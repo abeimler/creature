@@ -23,7 +23,7 @@ bool CreatureBattlerCreator::isSkillLearned(
            std::end(skills);
 }
 
-CreatureBattlerCreator::CreatureBattlerCreator() {}
+CreatureBattlerCreator::CreatureBattlerCreator() = default;
 
 int CreatureBattlerCreator::getAttr(
     const gamecomp::CreatureBattlerComponent& battler, data::Attribute attr) {

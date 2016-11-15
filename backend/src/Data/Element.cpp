@@ -2,6 +2,6 @@
 
 namespace data {
 
-Element::Element(std::string name) : name_(name) {}
+Element::Element(std::string name) : name_(std::move(name)) {}
 
 } // namespace data

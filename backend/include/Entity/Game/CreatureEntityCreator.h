@@ -289,11 +289,11 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
         std::chrono::system_clock::time_point time, double realtime_factor);
 
     void setCreatureProgressTimersRealTime(
-        gamecomp::CreatureProgressTimersComponent& timer,
+        gamecomp::CreatureProgressTimersComponent& timers,
         std::chrono::system_clock::time_point time, double realtime_factor);
 
     void setCreatureProgressTimersRealTimeFromLifetimer(
-        gamecomp::CreatureProgressTimersComponent& timer);
+        gamecomp::CreatureProgressTimersComponent& timers);
 
     void setupCreatureProgressTimers(
         gamecomp::CreatureProgressTimersComponent& timers,
@@ -325,7 +325,7 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     gamecomp::CreatureTrainingComponent createCreatureTraining();
 
     gamecomp::CreatureBodyComponent
-    createCreatureBody(const data::Creature& creature,
+    createCreatureBody(const data::Creature& creature_data,
                        const gamecomp::CreatureGeneComponent& gene);
 
     inline gamecomp::CreatureBodyComponent

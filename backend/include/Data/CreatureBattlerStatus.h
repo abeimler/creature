@@ -28,7 +28,7 @@ class CreatureBattlerStatus : public BattlerStatus {
     public:
     CreatureBattlerStatus() = default;
 
-    CreatureBattlerStatus(const BattlerStatus& battlerstatus,
+    CreatureBattlerStatus(BattlerStatus  battlerstatus,
                           CreatureStatus status);
 
     CreatureBattlerStatus(std::string name, CreatureStatus status);

@@ -76,7 +76,7 @@ class UseItem : public Item {
     }
 
     protected:
-    explicit UseItem(const Item& item);
+    explicit UseItem(Item  item);
 
     public:
     /// constant for "can't use" @see UseItem.canuse_

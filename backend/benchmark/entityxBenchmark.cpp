@@ -81,7 +81,7 @@ class EntityXBenchmark {
         public:
         ComflabSystem() = default;
 
-        void update(EntityManager& es, double dt) override {
+        void update(EntityManager& es, double  /*dt*/) override {
             Component<ComflabulationComponent> comflab;
 
             for (Entity entity :

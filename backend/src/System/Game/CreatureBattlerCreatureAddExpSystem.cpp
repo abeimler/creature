@@ -5,7 +5,7 @@ namespace gamesystem {
 
 void CreatureBattlerCreatureAddExpSystem::update(
     const gameevent::CreatureAddExpEvent& event, EntityManager& entities,
-    EventBus& events, TimeDelta dt) {
+    EventBus&  /*events*/, TimeDelta  /*dt*/) {
     Component<gamecomp::CreatureDataComponent> creature_data;
     Component<gamecomp::CreatureBattlerComponent> creature_battler;
 
@@ -44,4 +44,4 @@ void CreatureBattlerCreatureAddExpSystem::update(
         }
     }
 }
-}
+}  // namespace gamesystem

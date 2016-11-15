@@ -77,13 +77,13 @@ class DataCreatureMaker {
         const rand_tuple_t& rand_expBasis, 
         const rand_tuple_t& rand_expInfla,
         data::CreatureCircadianRhythm creatureRhythm,
-        data::CreatureLevel creatureLevel, std::string type,
+        data::CreatureLevel creatureLevel, std::string type_name,
         const std::vector<std::string>& elements, 
         const rand_tuple_t& minmax_lvl,
         int criticalHit, int hitRate, float evol_weight, float bodysize,
         DataCreatureGender gender = DataCreatureGender::Normal);
 
-    void saveCreature(data::Creature& creature);
+    void saveCreature(data::Creature& data_creature);
 
     int getLeveltoEvol(data::CreatureLevel creatureLevel);
 

@@ -202,7 +202,6 @@ if(CLANG_TIDY)
       ${CLANG_TIDY} 
         -p ${CMAKE_CURRENT_BINARY_DIR} 
         -config='' 
-        --header-filter=${CREATURE_BACKEND_INCLUDE_PATH} 
         -fix
         {} +
 
@@ -214,7 +213,6 @@ if(CLANG_TIDY)
       ${CLANG_TIDY} 
         -p ${CMAKE_CURRENT_BINARY_DIR} 
         -config='' 
-        --header-filter=${CREATURE_BACKEND_TEST_PATH} 
         -fix
         {} +
 
@@ -226,7 +224,6 @@ if(CLANG_TIDY)
       ${CLANG_TIDY} 
         -p ${CMAKE_CURRENT_BINARY_DIR} 
         -config='' 
-        --header-filter=${CREATURE_BACKEND_BENCHMARK_PATH} 
         -fix
         {} +
 

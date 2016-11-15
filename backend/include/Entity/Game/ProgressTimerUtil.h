@@ -59,17 +59,17 @@ class ProgressTimerUtil {
         init(progtimer.base);
     }
 
-    void start(gamecomp::ProgressTimer& progtimer);
-    void restart(gamecomp::ProgressTimer& progtimer);
-    void stop(gamecomp::ProgressTimer& progtimer);
-    void pause(gamecomp::ProgressTimer& progtimer);
-    void unpause(gamecomp::ProgressTimer& progtimer);
+    void start(gamecomp::ProgressTimer& proctimer);
+    void restart(gamecomp::ProgressTimer& proctimer);
+    void stop(gamecomp::ProgressTimer& proctimer);
+    void pause(gamecomp::ProgressTimer& proctimer);
+    void unpause(gamecomp::ProgressTimer& proctimer);
 
-    void addTime(gamecomp::ProgressTimer& progtimer,
+    void addTime(gamecomp::ProgressTimer& proctimer,
                  const std::chrono::hours& time);
-    void addTime(gamecomp::ProgressTimer& progtimer,
+    void addTime(gamecomp::ProgressTimer& proctimer,
                  const std::chrono::seconds& time);
-    void addTime(gamecomp::ProgressTimer& progtimer,
+    void addTime(gamecomp::ProgressTimer& proctimer,
                  const std::chrono::milliseconds& time);
 };
 } // namespace gamecomputil

@@ -40,7 +40,7 @@ class Food : public UseItem {
     public:
     Food() = default;
 
-    explicit Food(const UseItem& item);
+    explicit Food(UseItem  item);
 
     /// Boni for luck
     double getLuck() const { return this->luck_; }

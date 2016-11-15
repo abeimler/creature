@@ -13,9 +13,9 @@ class EventListenerMockup
 
     EventListenerMockup() = default;
 
-    void update(const gameevent::CreatureAddExpEvent& event,
-                EntityManager& entities, EventBus& events,
-                TimeDelta dt) override {
+    void update(const gameevent::CreatureAddExpEvent&  /*event*/,
+                EntityManager&  /*entities*/, EventBus&  /*events*/,
+                TimeDelta  /*dt*/) override {
         this->emitevent = true;
     }
 };

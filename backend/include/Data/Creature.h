@@ -284,7 +284,7 @@ class Creature : public Battler {
     public:
     Creature();
 
-    explicit Creature(const Battler& battler);
+    explicit Creature(Battler  battler);
 
     /// Creature Level
     CreatureLevel getCreatureLevel() const { return this->creaturelevel_; }

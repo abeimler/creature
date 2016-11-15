@@ -76,7 +76,7 @@ void CreatureBattlerSystem::updateCreatureHitRate(
         std::accumulate(std::begin(battlerstatuses), std::end(battlerstatuses),
                         0, sum_battlerstatuses_hitrate_func);
 
-    int status_avg_hitrate = (battlerstatuses.size() != 0)
+    int status_avg_hitrate = (!battlerstatuses.empty())
                                  ? status_sum_hitrate / battlerstatuses.size()
                                  : basehitrate;
 
@@ -106,7 +106,7 @@ void CreatureBattlerSystem::updateCreatureCriticalHitRate(
                         0, sum_battlerstatuses_critical_hitrate_func);
 
     int status_avg_hitrate =
-        (battlerstatuses.size() != 0)
+        (!battlerstatuses.empty())
             ? status_sum_critical_hitrate / battlerstatuses.size()
             : basecritical_hitrate;
 
@@ -136,7 +136,7 @@ void CreatureBattlerSystem::updateCreatureEvaRate(
         std::accumulate(std::begin(battlerstatuses), std::end(battlerstatuses),
                         0, sum_battlerstatuses_evarate_func);
 
-    int status_avg_evarate = (battlerstatuses.size() != 0)
+    int status_avg_evarate = (!battlerstatuses.empty())
                                  ? status_sum_evarate / battlerstatuses.size()
                                  : baseevarate;
 
@@ -184,8 +184,8 @@ void CreatureBattlerSystem::updateCreatureStatusRestriction(
 
 
 
-void CreatureBattlerSystem::update(EntityManager& entities, EventBus& events,
-                                   TimeDelta dt) {
+void CreatureBattlerSystem::update(EntityManager& entities, EventBus&  /*events*/,
+                                   TimeDelta  /*dt*/) {
 
     Component<gamecomp::CreatureDataComponent> creature_data;
     Component<gamecomp::CreatureBattlerComponent> creature_battler;

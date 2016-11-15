@@ -141,7 +141,7 @@ class CreatureBattlerCreator {
     void loadCreatureBattler(
         gamecomp::CreatureBattlerComponent& battler,
         const data::Creature& creature,
-        const gamecomp::CreatureBattlerGeneComponent& battlergene, int lvl);
+        const gamecomp::CreatureBattlerGeneComponent& gene, int lvl);
 
     inline void loadCreatureBattler(
         gamecomp::CreatureBattlerComponent& battler,
