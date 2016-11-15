@@ -8,14 +8,14 @@
 #include "Component/DateTimer.h"
 
 #include "Component/Game/Battler.h"
-#include "Component/Game/CreatureBattler.h"
-#include "Component/Game/CreatureMemory.h"
-#include "Component/Game/CreatureGene.h"
 #include "Component/Game/Creature.h"
+#include "Component/Game/CreatureBattler.h"
+#include "Component/Game/CreatureGene.h"
+#include "Component/Game/CreatureMemory.h"
 
-#include "Entity/Game/TimerUtil.h"
 #include "Entity/Game/DateTimerUtil.h"
 #include "Entity/Game/ProgressTimerUtil.h"
+#include "Entity/Game/TimerUtil.h"
 
 #include "Entity/EntityCreator.h"
 
@@ -43,25 +43,30 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
 
 
     template <class E>
-    void setCreatureGeneWaitTime(gamecomp::CreatureGeneWaitTime::waittime_t<E>& waittime,
-        E index, std::chrono::milliseconds time) {
+    void setCreatureGeneWaitTime(
+        gamecomp::CreatureGeneWaitTime::waittime_t<E>& waittime, E index,
+        std::chrono::milliseconds time) {
         earr::enum_array_set(waittime, index, time);
     }
-    
+
 
     template <class E>
-    void clearCreatureGeneWaitTime(gamecomp::CreatureGeneWaitTime::waittime_t<E>& waittime, E index) {
-        earr::enum_array_set(waittime, index, std::chrono::milliseconds::zero());
+    void clearCreatureGeneWaitTime(
+        gamecomp::CreatureGeneWaitTime::waittime_t<E>& waittime, E index) {
+        earr::enum_array_set(waittime, index,
+                             std::chrono::milliseconds::zero());
     }
 
 
     gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimer>
     createTimerWaitTime(data::CreatureLevel creature_level);
 
-    gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimerCallback>
+    gamecomp::CreatureGeneWaitTime::waittime_t<
+        gamecomp::CreatureProgressTimerCallback>
     createCallbackWaitTime(data::CreatureLevel creature_level);
 
-    gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimerIncrement>
+    gamecomp::CreatureGeneWaitTime::waittime_t<
+        gamecomp::CreatureProgressTimerIncrement>
     createIncrementWaitTime(data::CreatureLevel creature_level);
 
     gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::StarvationPhase>
@@ -83,24 +88,28 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
      * @return ermittle die Körpermasse
      */
     static double getBodyMass(double s, double g, double mg, double ibmi,
-                             double minbmi, double maxbmi);
+                              double minbmi, double maxbmi);
 
-    static double getBodySize(double minbmi, double maxbmi, double bmi, double mass,
-                             double minweight, double maxweight, double weight);
+    static double getBodySize(double minbmi, double maxbmi, double bmi,
+                              double mass, double minweight, double maxweight,
+                              double weight);
 
-    static double getBMI(const gamecomp::CreatureGeneComponent& gene, double minweight,
-                        double maxweight, double weight, double bodysize);
+    static double getBMI(const gamecomp::CreatureGeneComponent& gene,
+                         double minweight, double maxweight, double weight,
+                         double bodysize);
 
     static double getBMI(const data::Creature& creature,
-                        const gamecomp::CreatureGeneComponent& gene, double weight);
+                         const gamecomp::CreatureGeneComponent& gene,
+                         double weight);
 
     static double getBMI(const data::Creature& creature,
-                        const gamecomp::CreatureGeneComponent& gene,
-                        const gamecomp::CreatureBodyComponent& body);
+                         const gamecomp::CreatureGeneComponent& gene,
+                         const gamecomp::CreatureBodyComponent& body);
 
-    inline static double getBMI(const gamecomp::CreatureDataComponent& creature_data,
-                        const gamecomp::CreatureGeneComponent& gene,
-                        const gamecomp::CreatureBodyComponent& body) {
+    inline static double
+    getBMI(const gamecomp::CreatureDataComponent& creature_data,
+           const gamecomp::CreatureGeneComponent& gene,
+           const gamecomp::CreatureBodyComponent& body) {
         return getBMI(creature_data.creature, gene, body);
     }
 
@@ -116,8 +125,9 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     static double getBodyMass(const data::Creature& creature,
                               const gamecomp::CreatureGeneComponent& gene);
 
-    static double getBodyMass(const gamecomp::CreatureDataComponent& creature_data,
-                              const gamecomp::CreatureGeneComponent& gene) {
+    static double
+    getBodyMass(const gamecomp::CreatureDataComponent& creature_data,
+                const gamecomp::CreatureGeneComponent& gene) {
         return getBodyMass(creature_data.creature, gene);
     }
 
@@ -131,7 +141,7 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
      * @see getIdealMass(float s, float g, float mg, float ibmi,
      *                   float maxbmi)
      */
-    static double getBodyMass(const gamecomp::CreatureGeneComponent& gene, 
+    static double getBodyMass(const gamecomp::CreatureGeneComponent& gene,
                               double s, double g, double mg);
 
 
@@ -176,35 +186,53 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
 
 
 
-    template<class E>
-    static std::chrono::milliseconds& getCreatureProgressTimersWaitTime(earr::enum_array<E, gamecomp::ProgressTimer>& timer, E index, data::CreatureLevel creature_level){
-        return earr::enum_array_at(earr::enum_array_at(timer, index).waittime, creature_level);
+    template <class E>
+    static std::chrono::milliseconds& getCreatureProgressTimersWaitTime(
+        earr::enum_array<E, gamecomp::ProgressTimer>& timer, E index,
+        data::CreatureLevel creature_level) {
+        return earr::enum_array_at(earr::enum_array_at(timer, index).waittime,
+                                   creature_level);
     }
 
-    template<class E>
-    static std::chrono::milliseconds& getCreatureProgressTimersWaitTime(earr::enum_array<E, gamecomp::ProgressTimerCallback>& timer, E index, data::CreatureLevel creature_level){
-        return earr::enum_array_at(earr::enum_array_at(timer, index).base.waittime, creature_level);
+    template <class E>
+    static std::chrono::milliseconds& getCreatureProgressTimersWaitTime(
+        earr::enum_array<E, gamecomp::ProgressTimerCallback>& timer, E index,
+        data::CreatureLevel creature_level) {
+        return earr::enum_array_at(
+            earr::enum_array_at(timer, index).base.waittime, creature_level);
     }
 
-    template<class E>
-    static std::chrono::milliseconds& getCreatureProgressTimersWaitTime(earr::enum_array<E, gamecomp::ProgressTimerIncrement>& timer, E index, data::CreatureLevel creature_level){
-        return earr::enum_array_at(earr::enum_array_at(timer, index).base.waittime, creature_level);
+    template <class E>
+    static std::chrono::milliseconds& getCreatureProgressTimersWaitTime(
+        earr::enum_array<E, gamecomp::ProgressTimerIncrement>& timer, E index,
+        data::CreatureLevel creature_level) {
+        return earr::enum_array_at(
+            earr::enum_array_at(timer, index).base.waittime, creature_level);
     }
 
 
-    template<class E>
-    static const std::chrono::milliseconds& getCreatureProgressTimersWaitTime(const earr::enum_array<E, gamecomp::ProgressTimer>& timer, E index, data::CreatureLevel creature_level){
-        return earr::enum_array_at(earr::enum_array_at(timer, index).waittime, creature_level);
+    template <class E>
+    static const std::chrono::milliseconds& getCreatureProgressTimersWaitTime(
+        const earr::enum_array<E, gamecomp::ProgressTimer>& timer, E index,
+        data::CreatureLevel creature_level) {
+        return earr::enum_array_at(earr::enum_array_at(timer, index).waittime,
+                                   creature_level);
     }
 
-    template<class E>
-    static const std::chrono::milliseconds& getCreatureProgressTimersWaitTime(const earr::enum_array<E, gamecomp::ProgressTimerCallback>& timer, E index, data::CreatureLevel creature_level){
-        return earr::enum_array_at(earr::enum_array_at(timer, index).base.waittime, creature_level);
+    template <class E>
+    static const std::chrono::milliseconds& getCreatureProgressTimersWaitTime(
+        const earr::enum_array<E, gamecomp::ProgressTimerCallback>& timer,
+        E index, data::CreatureLevel creature_level) {
+        return earr::enum_array_at(
+            earr::enum_array_at(timer, index).base.waittime, creature_level);
     }
 
-    template<class E>
-    static const std::chrono::milliseconds& getCreatureProgressTimersWaitTime(const earr::enum_array<E, gamecomp::ProgressTimerIncrement>& timer, E index, data::CreatureLevel creature_level){
-        return earr::enum_array_at(earr::enum_array_at(timer, index).base.waittime, creature_level);
+    template <class E>
+    static const std::chrono::milliseconds& getCreatureProgressTimersWaitTime(
+        const earr::enum_array<E, gamecomp::ProgressTimerIncrement>& timer,
+        E index, data::CreatureLevel creature_level) {
+        return earr::enum_array_at(
+            earr::enum_array_at(timer, index).base.waittime, creature_level);
     }
 
     CreatureEntityCreator() = default;
@@ -228,17 +256,14 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
 
     void create(Entity& entity) override;
 
-    void create(Entity& entity,
-                const data::Creature& creature,
+    void create(Entity& entity, const data::Creature& creature,
                 std::chrono::system_clock::time_point realtime,
                 double realtime_factor);
-    inline void create(Entity& entity,
-                       const data::Creature& creature,
+    inline void create(Entity& entity, const data::Creature& creature,
                        std::chrono::system_clock::time_point realtime) {
         create(entity, creature, realtime, 1.0);
     }
-    inline void create(Entity& entity,
-                       const data::Creature& creature) {
+    inline void create(Entity& entity, const data::Creature& creature) {
         auto realtime = std::chrono::system_clock::now();
         create(entity, creature, realtime);
     }
@@ -252,13 +277,15 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     createCreatureProgressTimers(std::chrono::system_clock::time_point time) {
         return createCreatureProgressTimers(time, 1.0);
     }
-    inline gamecomp::CreatureProgressTimersComponent createCreatureProgressTimers() {
+    inline gamecomp::CreatureProgressTimersComponent
+    createCreatureProgressTimers() {
         auto realtime = std::chrono::system_clock::now();
         return createCreatureProgressTimers(realtime);
     }
 
 
-    gamecomp::CreatureProgressTimersComponent createCreatureProgressTimersCreature(
+    gamecomp::CreatureProgressTimersComponent
+    createCreatureProgressTimersCreature(
         std::chrono::system_clock::time_point time, double realtime_factor);
 
     void setCreatureProgressTimersRealTime(
@@ -268,20 +295,21 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     void setCreatureProgressTimersRealTimeFromLifetimer(
         gamecomp::CreatureProgressTimersComponent& timer);
 
-    void
-    setupCreatureProgressTimers(gamecomp::CreatureProgressTimersComponent& timers,
-                                const data::Creature& creature,
-                                const gamecomp::CreatureLifeComponent& life,
-                                const gamecomp::CreatureGeneComponent& gene,
-                                const gamecomp::CreatureBodyComponent& body);
+    void setupCreatureProgressTimers(
+        gamecomp::CreatureProgressTimersComponent& timers,
+        const data::Creature& creature,
+        const gamecomp::CreatureLifeComponent& life,
+        const gamecomp::CreatureGeneComponent& gene,
+        const gamecomp::CreatureBodyComponent& body);
 
-    inline void
-    setupCreatureProgressTimers(gamecomp::CreatureProgressTimersComponent& timers,
-                                const gamecomp::CreatureDataComponent& creature_data,
-                                const gamecomp::CreatureLifeComponent& life,
-                                const gamecomp::CreatureGeneComponent& gene,
-                                const gamecomp::CreatureBodyComponent& body) {
-        setupCreatureProgressTimers(timers, creature_data.creature, life, gene, body); 
+    inline void setupCreatureProgressTimers(
+        gamecomp::CreatureProgressTimersComponent& timers,
+        const gamecomp::CreatureDataComponent& creature_data,
+        const gamecomp::CreatureLifeComponent& life,
+        const gamecomp::CreatureGeneComponent& gene,
+        const gamecomp::CreatureBodyComponent& body) {
+        setupCreatureProgressTimers(timers, creature_data.creature, life, gene,
+                                    body);
     }
 
 
@@ -299,7 +327,7 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     gamecomp::CreatureBodyComponent
     createCreatureBody(const data::Creature& creature,
                        const gamecomp::CreatureGeneComponent& gene);
-    
+
     inline gamecomp::CreatureBodyComponent
     createCreatureBody(const gamecomp::CreatureDataComponent& creature_data,
                        const gamecomp::CreatureGeneComponent& gene) {
@@ -320,7 +348,8 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
                        std::chrono::system_clock::time_point realtime,
                        const gamecomp::CreatureBattlerComponent& battler,
                        const gamecomp::CreatureGeneComponent& gene) {
-        return createCreatureLife(creature_data.creature, realtime, battler, gene);
+        return createCreatureLife(creature_data.creature, realtime, battler,
+                                  gene);
     }
 };
 } // namespace gameentity

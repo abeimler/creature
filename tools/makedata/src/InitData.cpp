@@ -6,7 +6,8 @@ void InitData::makeDataCreature() {
     this->initElements();
     this->initTypes();
 
-    this->maker_.initBeforData(this->elements_, this->elements_resists_, this->types_);
+    this->maker_.initBeforData(this->elements_, this->elements_resists_,
+                               this->types_);
 
     this->makeCreature1();
     this->makeCreature2();
@@ -16,4 +17,3 @@ void InitData::makeDataCreature() {
 
     this->maker_.initAfterData();
 }
-

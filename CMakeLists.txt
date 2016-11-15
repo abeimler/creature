@@ -175,10 +175,11 @@ set(TOOLS_MAKEDATA_SRC_PATH ${TOOLS_MAKEDATA_DIR}/src)
 set(TOOLS_MAKEDATA_INCLUDE_PATH ${TOOLS_MAKEDATA_DIR}/include)
 
 
-
-
 file(GLOB_RECURSE TOOLS_MAKEDATA_SRC ${TOOLS_MAKEDATA_SRC_PATH}/*.cpp ${TOOLS_MAKEDATA_SRC_PATH}/*.cxx ${TOOLS_MAKEDATA_SRC_PATH}/*.cc)
 file(GLOB_RECURSE TOOLS_MAKEDATA_HEADERS ${TOOLS_MAKEDATA_SRC_PATH}/*.h ${TOOLS_MAKEDATA_SRC_PATH}/*.hpp ${TOOLS_MAKEDATA_SRC_PATH}/*.hxx)
+
+
+
 
 add_executable(${PROJECT_NAME}_makedata ${TOOLS_MAKEDATA_SRC})
 
@@ -195,3 +196,48 @@ target_include_directories(${PROJECT_NAME}_makedata PRIVATE ${CREATURE_BACKEND_I
 target_compile_options(${PROJECT_NAME}_makedata PRIVATE -fexceptions)
 
 
+
+###
+## Tools
+###
+
+
+# Adding clang-format target if executable is found
+find_program(CLANG_FORMAT "clang-format")
+if(CLANG_FORMAT)
+
+  add_custom_target(
+    clang-format_makedata
+      COMMAND find ${TOOLS_MAKEDATA_SRC_PATH} -name '*.cpp' -exec 
+          ${CLANG_FORMAT}
+          -style=file
+          -i
+          {} +
+        || find ${TOOLS_MAKEDATA_INCLUDE_PATH} -name '*.h' -exec 
+          ${CLANG_FORMAT}
+          -style=file
+          -i
+          {} +
+
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+
+endif()
+
+# Adding clang-tidy target if executable is found
+find_program(CLANG_TIDY "clang-tidy")
+if(CLANG_TIDY)
+
+  add_custom_target(clang-tidy_makedata
+    COMMAND find ${TOOLS_MAKEDATA_SRC_PATH} -name '*.cpp' -exec 
+      ${CLANG_TIDY} 
+        -p ${CMAKE_CURRENT_BINARY_DIR} 
+        -config='' 
+        --header-filter=${TOOLS_MAKEDATA_INCLUDE_PATH} 
+        -fix
+        {} +
+
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+endif()

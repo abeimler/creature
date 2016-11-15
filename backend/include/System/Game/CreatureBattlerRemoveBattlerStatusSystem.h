@@ -13,7 +13,8 @@
 namespace gamesystem {
 
 
-class CreatureBattlerRemoveBattlerStatusSystem : public Listener<gameevent::CreatureRemoveBattlerStatusEvent> {
+class CreatureBattlerRemoveBattlerStatusSystem
+    : public Listener<gameevent::CreatureRemoveBattlerStatusEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
@@ -21,16 +22,21 @@ class CreatureBattlerRemoveBattlerStatusSystem : public Listener<gameevent::Crea
 
     void sortBattlerStatuses(std::vector<std::string>& statuses_name);
 
-    void removeBattlerStatus(const gameevent::CreatureRemoveBattlerStatusEvent& event, Component<gamecomp::BattlerStatusesComponent>& battlerstatuses);
-    void removeStartBattlerStatusTurn(const gameevent::CreatureRemoveBattlerStatusEvent& event, Component<gamecomp::BattlerStatusesComponent>& battlerstatuses);
+    void removeBattlerStatus(
+        const gameevent::CreatureRemoveBattlerStatusEvent& event,
+        Component<gamecomp::BattlerStatusesComponent>& battlerstatuses);
+    void removeStartBattlerStatusTurn(
+        const gameevent::CreatureRemoveBattlerStatusEvent& event,
+        Component<gamecomp::BattlerStatusesComponent>& battlerstatuses);
 
 
     public:
+    CreatureBattlerRemoveBattlerStatusSystem(
+        gameentity::DataManager& datamanager);
 
-    CreatureBattlerRemoveBattlerStatusSystem(gameentity::DataManager& datamanager);
-
-    void update(const gameevent::CreatureRemoveBattlerStatusEvent& event, EntityManager& entities, EventBus& events, TimeDelta dt) override;
-
+    void update(const gameevent::CreatureRemoveBattlerStatusEvent& event,
+                EntityManager& entities, EventBus& events,
+                TimeDelta dt) override;
 };
 
 

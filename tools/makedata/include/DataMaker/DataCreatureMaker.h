@@ -7,7 +7,7 @@
 #include "Entity/Data/DataManager.h"
 
 #include "Entity/Game/CreatureBattlerCreator.h"
-#include "Entity/Game/CreatureCreator.h"
+#include "Entity/Game/CreatureEntityCreator.h"
 
 namespace datamaker {
 
@@ -56,7 +56,7 @@ class DataCreatureMaker {
     private:
     gameentity::DataManager datamanager_;
 
-    gameentity::CreatureCreator creaturecreator_;
+    gameentity::CreatureEntityCreator creaturecreator_;
     gameentity::CreatureBattlerCreator creaturebattlercreator_;
 
     // resist[ElementName] = [0: pluses ,1: minuses]

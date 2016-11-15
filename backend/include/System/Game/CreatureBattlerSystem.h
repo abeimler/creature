@@ -8,9 +8,9 @@
 
 #include "Entity/Data/DataManager.h"
 
-#include "Entity/Game/TimerUtil.h"
 #include "Entity/Game/DateTimerUtil.h"
 #include "Entity/Game/ProgressTimerUtil.h"
+#include "Entity/Game/TimerUtil.h"
 
 #include "Entity/Game/CreatureEntityCreator.h"
 
@@ -31,9 +31,8 @@ class CreatureBattlerSystem : public System {
     gameentity::DataManager& datamanager_;
 
     public:
-    
     static constexpr int DEFAULT_HITRATE = 90;
-    static constexpr int DEFAULT_CRITICAL_HITRATE = 30; 
+    static constexpr int DEFAULT_CRITICAL_HITRATE = 30;
     static constexpr int DEFAULT_EVARATE = 20;
 
     CreatureBattlerSystem(gameentity::DataManager& datamanager);
@@ -44,27 +43,28 @@ class CreatureBattlerSystem : public System {
         Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
         Component<gamecomp::CreatureDataComponent>& creature_data);
 
-    void
-    updateCreatureHitRate(Component<gamecomp::CreatureBattlerComponent>& creature_battler,
-                          Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
-                          Component<gamecomp::CreatureDataComponent>& creature_data);
+    void updateCreatureHitRate(
+        Component<gamecomp::CreatureBattlerComponent>& creature_battler,
+        Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
+        Component<gamecomp::CreatureDataComponent>& creature_data);
 
     void updateCreatureCriticalHitRate(
         Component<gamecomp::CreatureBattlerComponent>& creature_battler,
         Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
         Component<gamecomp::CreatureDataComponent>& creature_data);
 
-    void
-    updateCreatureEvaRate(Component<gamecomp::CreatureBattlerComponent>& creature_battler,
-                          Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
-                          Component<gamecomp::CreatureDataComponent>& creature_data);
+    void updateCreatureEvaRate(
+        Component<gamecomp::CreatureBattlerComponent>& creature_battler,
+        Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
+        Component<gamecomp::CreatureDataComponent>& creature_data);
 
     void updateCreatureStatusRestriction(
         Component<gamecomp::CreatureBattlerComponent>& creature_battler,
         Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
         Component<gamecomp::CreatureDataComponent>& creature_data);
 
-    void update(EntityManager& entities, EventBus& events, TimeDelta dt) override;
+    void update(EntityManager& entities, EventBus& events,
+                TimeDelta dt) override;
 };
 
 } // namespace gamesystem

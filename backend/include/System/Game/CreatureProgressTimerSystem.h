@@ -5,9 +5,9 @@
 
 #include "Data/Basic.h"
 
-#include "Entity/Game/TimerUtil.h"
 #include "Entity/Game/DateTimerUtil.h"
 #include "Entity/Game/ProgressTimerUtil.h"
+#include "Entity/Game/TimerUtil.h"
 
 #include "Entity/Game/CreatureEntityCreator.h"
 
@@ -29,42 +29,37 @@ class CreatureProgressTimerSystem : public System {
 
 
 
-    double updateCallbackTimer(EventBus& events,
-                               Entity entity,
+    double updateCallbackTimer(EventBus& events, Entity entity,
                                gamecomp::ProgressTimerCallback& timer,
                                data::CreatureLevel level,
                                gamecomp::CreatureProgressTimerCallback type);
 
-    double updateIncrementTimer(EventBus& events,
-                                Entity entity,
+    double updateIncrementTimer(EventBus& events, Entity entity,
                                 gamecomp::ProgressTimerIncrement& timer,
                                 data::CreatureLevel level,
                                 gamecomp::CreatureProgressTimerIncrement type);
 
-    double updateStarvationPhaseTimer(EventBus& events,
-                                      Entity entity,
+    double updateStarvationPhaseTimer(EventBus& events, Entity entity,
                                       gamecomp::ProgressTimerCallback& timer,
                                       data::CreatureLevel level,
                                       gamecomp::StarvationPhase type);
 
-    double updateShortTermMemoryTimer(EventBus& events,
-                                      Entity entity,
+    double updateShortTermMemoryTimer(EventBus& events, Entity entity,
                                       gamecomp::ProgressTimerCallback& timer,
                                       data::CreatureLevel level,
                                       gamecomp::CreatureActivity activity);
 
-    double updateMediumTermMemoryTimer(EventBus& events,
-                                       Entity entity,
+    double updateMediumTermMemoryTimer(EventBus& events, Entity entity,
                                        gamecomp::ProgressTimerCallback& timer,
                                        data::CreatureLevel level,
                                        gamecomp::CreatureActivity activity);
 
     public:
-
     void setIgnoreTimer(bool ignortimer) { this->ignortimer_ = ignortimer; }
     bool isIgnoreTimer() const { return this->ignortimer_; }
 
-    void update(EntityManager& entities, EventBus& events, TimeDelta dt) override;
+    void update(EntityManager& entities, EventBus& events,
+                TimeDelta dt) override;
 };
 } // namespace gamesystem
 

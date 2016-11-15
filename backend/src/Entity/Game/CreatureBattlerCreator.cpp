@@ -25,26 +25,27 @@ bool CreatureBattlerCreator::isSkillLearned(
 
 CreatureBattlerCreator::CreatureBattlerCreator() {}
 
-int CreatureBattlerCreator::getAttr(const gamecomp::CreatureBattlerComponent& battler,
-                                    data::Attribute attr) {
+int CreatureBattlerCreator::getAttr(
+    const gamecomp::CreatureBattlerComponent& battler, data::Attribute attr) {
     int attr_base_value = earr::enum_array_at(battler.attrbase, attr);
     int attr_plus_value = earr::enum_array_at(battler.attrplus, attr);
     return attr_base_value + attr_plus_value;
 }
 
-void CreatureBattlerCreator::setHP(int value,
-                                   gamecomp::CreatureBattlerComponent& battler) {
+void CreatureBattlerCreator::setHP(
+    int value, gamecomp::CreatureBattlerComponent& battler) {
     battler.hp = clamp(value, 0, getAttr(battler, data::Attribute::MaxMP));
 }
 
-void CreatureBattlerCreator::setMP(int value,
-                                   gamecomp::CreatureBattlerComponent& battler) {
+void CreatureBattlerCreator::setMP(
+    int value, gamecomp::CreatureBattlerComponent& battler) {
     battler.mp = clamp(value, 0, getAttr(battler, data::Attribute::MaxMP));
 }
 
 
-void CreatureBattlerCreator::setAttr(data::Attribute attr, int value,
-                                     gamecomp::CreatureBattlerComponent& battler) {
+void CreatureBattlerCreator::setAttr(
+    data::Attribute attr, int value,
+    gamecomp::CreatureBattlerComponent& battler) {
     earr::enum_array_at(battler.attrplus, attr) =
         value - earr::enum_array_at(battler.attrbase, attr);
     earr::enum_array_at(battler.attr, attr) = value;
@@ -57,8 +58,9 @@ void CreatureBattlerCreator::setAttr(data::Attribute attr, int value,
 }
 
 
-void CreatureBattlerCreator::updateNewLvL(gamecomp::CreatureBattlerComponent& battler,
-                                          const data::Creature& creature) {
+void CreatureBattlerCreator::updateNewLvL(
+    gamecomp::CreatureBattlerComponent& battler,
+    const data::Creature& creature) {
     battler.lvl = std::max<int>(battler.lvl, creature.getMinLvL());
     battler.lvl = std::min<int>(battler.lvl, creature.getMaxLvL());
 
@@ -144,7 +146,8 @@ CreatureBattlerCreator::createCreatureData(const data::Creature& creature) {
     return creature_data;
 }
 
-gamecomp::CreatureBattlerComponent CreatureBattlerCreator::createCreatureBattler() {
+gamecomp::CreatureBattlerComponent
+CreatureBattlerCreator::createCreatureBattler() {
     gamecomp::CreatureBattlerComponent ret;
 
     ret.attrbase.fill(0);
@@ -175,7 +178,8 @@ CreatureBattlerCreator::createBattlerBattleState() {
     return ret;
 }
 
-gamecomp::BattlerBattleStateComponent CreatureBattlerCreator::createBattlerBattleState(
+gamecomp::BattlerBattleStateComponent
+CreatureBattlerCreator::createBattlerBattleState(
     const data::Creature& creature) {
     gamecomp::BattlerBattleStateComponent ret;
 

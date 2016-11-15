@@ -12,63 +12,63 @@ namespace gamesystem {
 using TimeDelta = double;
 
 class System {
-  public:
-  using EntityManager = gameentity::EntityManager;
-  using Entity = gameentity::Entity;
-  
-  template <typename C>
-  using Component = gameentity::Component<C>;
+    public:
+    using EntityManager = gameentity::EntityManager;
+    using Entity = gameentity::Entity;
 
-  using EventBus = gameevent::EventBus;
+    template <typename C>
+    using Component = gameentity::Component<C>;
 
-  using TimeDelta = gamesystem::TimeDelta;
+    using EventBus = gameevent::EventBus;
+
+    using TimeDelta = gamesystem::TimeDelta;
 
 
-  System() = default;
-  virtual ~System() = default;
-  System(const System&) = default;
-  System& operator=(const System&) = default;
-  System(System&&) = default;
-  System& operator=(System&&) = default;
+    System() = default;
+    virtual ~System() = default;
+    System(const System&) = default;
+    System& operator=(const System&) = default;
+    System(System&&) = default;
+    System& operator=(System&&) = default;
 
-  virtual void update(EntityManager& entities, EventBus& events, TimeDelta dt) = 0;
+    virtual void update(EntityManager& entities, EventBus& events,
+                        TimeDelta dt) = 0;
 
-  template<class Event>
-  static void emit_event(EventBus& events, const Event& e){
-    events.publish<Event>(e);
-  }
+    template <class Event>
+    static void emit_event(EventBus& events, const Event& e) {
+        events.publish<Event>(e);
+    }
 
-  template <class Event, typename ...Args> 
-  static void emit_event(EventBus& events, Args && ...args){
-    events.publish<Event>(std::forward<Args>(args)...);
-  }
+    template <class Event, typename... Args>
+    static void emit_event(EventBus& events, Args&&... args) {
+        events.publish<Event>(std::forward<Args>(args)...);
+    }
 };
 
-template<class Event>
+template <class Event>
 class Listener : public System {
-  protected:
-  std::vector<Event> events_;
+    protected:
+    std::vector<Event> events_;
 
-  public:
-  Listener() = default;
-  virtual ~Listener() = default;
-  Listener(const Listener&) = default;
-  Listener& operator=(const Listener&) = default;
-  Listener(Listener&&) = default;
-  Listener& operator=(Listener&&) = default;
+    public:
+    Listener() = default;
+    virtual ~Listener() = default;
+    Listener(const Listener&) = default;
+    Listener& operator=(const Listener&) = default;
+    Listener(Listener&&) = default;
+    Listener& operator=(Listener&&) = default;
 
-  void receive(const Event& ev) {
-    this->events_.push_back(ev);
-  }
+    void receive(const Event& ev) { this->events_.push_back(ev); }
 
-  virtual void update(const Event& event, EntityManager& entities, EventBus& events, TimeDelta dt) = 0;
+    virtual void update(const Event& event, EntityManager& entities,
+                        EventBus& events, TimeDelta dt) = 0;
 
-  void update(EntityManager& entities, EventBus& events, TimeDelta dt) final {
-    for(const auto& event : this->events_) {
-      update(event, entities, events, dt);
+    void update(EntityManager& entities, EventBus& events, TimeDelta dt) final {
+        for (const auto& event : this->events_) {
+            update(event, entities, events, dt);
+        }
+        this->events_.clear();
     }
-    this->events_.clear();
-  }
 };
 
 } // namespace gamesystem

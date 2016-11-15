@@ -13,7 +13,8 @@
 namespace gamesystem {
 
 
-class CreatureBattlerAddBattlerStatusSystem : public Listener<gameevent::CreatureAddBattlerStatusEvent> {
+class CreatureBattlerAddBattlerStatusSystem
+    : public Listener<gameevent::CreatureAddBattlerStatusEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
@@ -22,11 +23,11 @@ class CreatureBattlerAddBattlerStatusSystem : public Listener<gameevent::Creatur
     void sortBattlerStatuses(std::vector<std::string>& statuses_name);
 
     public:
-
     CreatureBattlerAddBattlerStatusSystem(gameentity::DataManager& datamanager);
 
-    void update(const gameevent::CreatureAddBattlerStatusEvent& event, EntityManager& entities, EventBus& events, TimeDelta dt) override;
-
+    void update(const gameevent::CreatureAddBattlerStatusEvent& event,
+                EntityManager& entities, EventBus& events,
+                TimeDelta dt) override;
 };
 
 

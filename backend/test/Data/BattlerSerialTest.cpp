@@ -1,6 +1,6 @@
+#include <cereal/archives/json.hpp>
 #include <fstream>
 #include <json.hpp>
-#include <cereal/archives/json.hpp>
 
 #include "doctest.h"
 

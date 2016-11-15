@@ -82,28 +82,27 @@ TEST_CASE("Generate Attributes with Big values") {
 TEST_CASE("create empty CreatureBattler") {
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creaturebattler =
-        creaturebattler_creator.createCreatureBattler();
+    auto creaturebattler = creaturebattler_creator.createCreatureBattler();
 
     SUBCASE("CreatureBattler Base MaxHP Attribute wurde mit 0 gesetzt") {
         CHECK(0 == earr::enum_array_at(creaturebattler.attrbase,
-                                   +data::Attribute::MaxHP));
+                                       +data::Attribute::MaxHP));
     }
 
     SUBCASE("CreatureBattler Base Exp Attribute wurde mit 0 gesetzt") {
         CHECK(0 == earr::enum_array_at(creaturebattler.attrbase,
-                                   +data::Attribute::Exp));
+                                       +data::Attribute::Exp));
     }
 
 
     SUBCASE("CreatureBattler Plus MaxHP Attribute wurde mit 0 gesetzt") {
         CHECK(0 == earr::enum_array_at(creaturebattler.attrplus,
-                                   +data::Attribute::MaxHP));
+                                       +data::Attribute::MaxHP));
     }
 
     SUBCASE("CreatureBattler Plus Exp Attribute wurde mit 0 gesetzt") {
         CHECK(0 == earr::enum_array_at(creaturebattler.attrplus,
-                                   +data::Attribute::Exp));
+                                       +data::Attribute::Exp));
     }
 }
 
@@ -114,8 +113,7 @@ TEST_CASE("create BattlerBattleState with DataCreature") {
 
     auto creature = CreatureTestData::make_DataCreature();
 
-    auto creature_data =
-        creaturebattler_creator.createCreatureData(creature);
+    auto creature_data = creaturebattler_creator.createCreatureData(creature);
     auto creaturebattlestate =
         creaturebattler_creator.createBattlerBattleState(creature);
 
@@ -126,14 +124,12 @@ TEST_CASE("create BattlerBattleState with DataCreature") {
 
 
 
-
 TEST_CASE("create BattlerResists with DataCreature") {
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
     auto creature = CreatureTestData::make_DataCreature();
 
-    auto creature_data =
-        creaturebattler_creator.createCreatureData(creature);
+    auto creature_data = creaturebattler_creator.createCreatureData(creature);
     auto battlerresists =
         creaturebattler_creator.createBattlerResists(creature);
 
@@ -143,15 +139,14 @@ TEST_CASE("create BattlerResists with DataCreature") {
 
     SUBCASE("CreatureBattler has right elements resists (size)") {
         CHECK(creature.getElementResist().size() ==
-                battlerresists.elementresist.size());
+              battlerresists.elementresist.size());
     }
 
     SUBCASE("CreatureBattler has right status resists (size)") {
         CHECK(creature.getStatusResist().size() ==
-                battlerresists.statusresist.size());
+              battlerresists.statusresist.size());
     }
 }
-
 
 
 
@@ -162,12 +157,11 @@ TEST_CASE("create and load CreatureBattler with start Level") {
 
     int lvl = creature.getStartLvL();
 
-    auto creature_data =
-        creaturebattler_creator.createCreatureData(creature);
-    auto creaturebattler =
-        creaturebattler_creator.createCreatureBattler();
+    auto creature_data = creaturebattler_creator.createCreatureData(creature);
+    auto creaturebattler = creaturebattler_creator.createCreatureBattler();
 
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene, lvl);
+    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                                lvl);
 
     SUBCASE("CreatureBattler minimal level") {
         CHECK(creaturebattler.lvl >= creature.getMinLvL());
@@ -187,26 +181,26 @@ TEST_CASE("create and load CreatureBattler with start Level") {
     SUBCASE("CreatureBattler has right base Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler.attr, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
 
     SUBCASE("CreatureBattler has right base Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
         CHECK(earr::enum_array_at(creaturebattler.attr, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
 
@@ -215,30 +209,30 @@ TEST_CASE("create and load CreatureBattler with start Level") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMinLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMinLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right Attribute, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMaxLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMaxLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("Attibutes has right size, minlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMinLvL()));
+              static_cast<size_t>(creature.getMinLvL()));
     }
 
     SUBCASE("Attibutes has right size, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMaxLvL()));
+              static_cast<size_t>(creature.getMaxLvL()));
     }
 }
 
@@ -251,12 +245,11 @@ TEST_CASE("create and load CreatureBattler with Level 5") {
 
     int lvl = 5;
 
-    auto creature_data =
-        creaturebattler_creator.createCreatureData(creature);
-    auto creaturebattler =
-        creaturebattler_creator.createCreatureBattler();
+    auto creature_data = creaturebattler_creator.createCreatureData(creature);
+    auto creaturebattler = creaturebattler_creator.createCreatureBattler();
 
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene, lvl);
+    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                                lvl);
 
     SUBCASE("CreatureBattler minimal level") {
         CHECK(creaturebattler.lvl >= creature.getMinLvL());
@@ -268,21 +261,19 @@ TEST_CASE("create and load CreatureBattler with Level 5") {
         CHECK(creaturebattler.lvl <= creature.getMaxLvL());
     }
 
-    SUBCASE("CreatureBattler has same exp") {
-        CHECK(creaturebattler.exp >= 0);
-    }
+    SUBCASE("CreatureBattler has same exp") { CHECK(creaturebattler.exp >= 0); }
 
 
     SUBCASE("CreatureBattler has right base Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right base Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
 
@@ -291,30 +282,30 @@ TEST_CASE("create and load CreatureBattler with Level 5") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMinLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMinLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right Attribute, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMaxLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMaxLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("Attibutes has right size, minlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMinLvL()));
+              static_cast<size_t>(creature.getMinLvL()));
     }
 
     SUBCASE("Attibutes has right size, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMaxLvL()));
+              static_cast<size_t>(creature.getMaxLvL()));
     }
 }
 
@@ -328,7 +319,8 @@ TEST_CASE("load CreatureBattler with Max Level") {
 
     auto creature_data = creaturebattler_creator.createCreatureData(creature);
     auto creaturebattler = creaturebattler_creator.createCreatureBattler();
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene, lvl);
+    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                                lvl);
 
     SUBCASE("CreatureBattler minimal level") {
         CHECK(creaturebattler.lvl >= creature.getMinLvL());
@@ -340,21 +332,19 @@ TEST_CASE("load CreatureBattler with Max Level") {
         CHECK(creaturebattler.lvl <= creature.getMaxLvL());
     }
 
-    SUBCASE("CreatureBattler has same exp") {
-        CHECK(creaturebattler.exp >= 0);
-    }
+    SUBCASE("CreatureBattler has same exp") { CHECK(creaturebattler.exp >= 0); }
 
 
     SUBCASE("CreatureBattler has right base Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right base Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
 
@@ -363,30 +353,30 @@ TEST_CASE("load CreatureBattler with Max Level") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMinLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMinLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right Attribute, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMaxLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMaxLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("Attibutes has right size, minlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMinLvL()));
+              static_cast<size_t>(creature.getMinLvL()));
     }
 
     SUBCASE("Attibutes has right size, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMaxLvL()));
+              static_cast<size_t>(creature.getMaxLvL()));
     }
 }
 
@@ -401,9 +391,11 @@ TEST_CASE("create load and transform CreatureBattler with Level 5") {
 
     auto creature_data = creaturebattler_creator.createCreatureData(creature);
     auto creaturebattler = creaturebattler_creator.createCreatureBattler();
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene, lvl);
+    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                                lvl);
 
-    creaturebattler_creator.transformCreatureBattler(creaturebattler, creature, gene);
+    creaturebattler_creator.transformCreatureBattler(creaturebattler, creature,
+                                                     gene);
 
     SUBCASE("CreatureBattler minimal level") {
         CHECK(creaturebattler.lvl >= creature.getMinLvL());
@@ -415,21 +407,19 @@ TEST_CASE("create load and transform CreatureBattler with Level 5") {
         CHECK(creaturebattler.lvl <= creature.getMaxLvL());
     }
 
-    SUBCASE("CreatureBattler has same exp") {
-        CHECK(creaturebattler.exp >= 0);
-    }
+    SUBCASE("CreatureBattler has same exp") { CHECK(creaturebattler.exp >= 0); }
 
 
     SUBCASE("CreatureBattler has right base Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right base Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
 
@@ -438,30 +428,30 @@ TEST_CASE("create load and transform CreatureBattler with Level 5") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMinLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMinLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right Attribute, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMaxLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMaxLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("Attibutes has right size, minlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMinLvL()));
+              static_cast<size_t>(creature.getMinLvL()));
     }
 
     SUBCASE("Attibutes has right size, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMaxLvL()));
+              static_cast<size_t>(creature.getMaxLvL()));
     }
 }
 
@@ -481,7 +471,8 @@ TEST_CASE("create load and (re)load again CreatureBattler with Level 5") {
     creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
                                                 start_lvl);
 
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene, lvl);
+    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                                lvl);
 
     SUBCASE("CreatureBattler minimal level") {
         CHECK(creaturebattler.lvl >= creature.getMinLvL());
@@ -496,21 +487,19 @@ TEST_CASE("create load and (re)load again CreatureBattler with Level 5") {
         CHECK(creaturebattler.lvl <= creature.getMaxLvL());
     }
 
-    SUBCASE("CreatureBattler has same exp") {
-        CHECK(creaturebattler.exp >= 0);
-    }
+    SUBCASE("CreatureBattler has same exp") { CHECK(creaturebattler.exp >= 0); }
 
 
     SUBCASE("CreatureBattler has right base Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right base Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
         CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
 
@@ -519,23 +508,23 @@ TEST_CASE("create load and (re)load again CreatureBattler with Level 5") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMinLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMinLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right Attribute, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
-                    .at(static_cast<size_t>(creature.getMaxLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMaxLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("Attibutes has right size, minlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
-                static_cast<size_t>(creature.getMinLvL()));
+              static_cast<size_t>(creature.getMinLvL()));
     }
 
     SUBCASE("Attibutes has right size, maxlevel") {

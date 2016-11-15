@@ -13,13 +13,14 @@
 namespace gamesystem {
 
 
-class CreatureBattlerCreatureRecoverSystem : public Listener<gameevent::CreatureRecoverEvent> {
+class CreatureBattlerCreatureRecoverSystem
+    : public Listener<gameevent::CreatureRecoverEvent> {
     public:
-
     CreatureBattlerCreatureRecoverSystem() = default;
 
-    void update(const gameevent::CreatureRecoverEvent& event, EntityManager& entities, EventBus& events, TimeDelta dt) override;
-
+    void update(const gameevent::CreatureRecoverEvent& event,
+                EntityManager& entities, EventBus& events,
+                TimeDelta dt) override;
 };
 
 

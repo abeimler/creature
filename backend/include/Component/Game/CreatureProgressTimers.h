@@ -50,15 +50,16 @@ BETTER_ENUM(
 
 BETTER_ENUM(
     CreatureProgressTimerIncrement, size_t, LostWeightTimerHungry,
-    BEGIN = LostWeightTimerHungry, ///< normaler Gewichtsverlust(Hunger) in einer bestimmten Zeit
-    LostWeightTimerThirsty, ///< normaler Gewichtsverlust(Durst) in einer
-                            /// bestimmten Zeit
-    LostCalories,           ///< Calories Verbrauch in einer bestimmten Zeit
-    GainWeightCalories,     ///< normaler Gewichtszunahme bei zu vielen Kalorien
-    GoodSleep,              ///< Verlauf für den guten Schlaf
-    BadSleep,               ///< Verlauf für den schlechten Schlaf
-    Rest,                   ///< Verlauf für normales Ausruhen
-    RestHospital,           ///< Verlauf für Ausruhen im Krankenhaus
+    BEGIN = LostWeightTimerHungry, ///< normaler Gewichtsverlust(Hunger) in
+                                   /// einer bestimmten Zeit
+    LostWeightTimerThirsty,        ///< normaler Gewichtsverlust(Durst) in einer
+                                   /// bestimmten Zeit
+    LostCalories,       ///< Calories Verbrauch in einer bestimmten Zeit
+    GainWeightCalories, ///< normaler Gewichtszunahme bei zu vielen Kalorien
+    GoodSleep,          ///< Verlauf für den guten Schlaf
+    BadSleep,           ///< Verlauf für den schlechten Schlaf
+    Rest,               ///< Verlauf für normales Ausruhen
+    RestHospital,       ///< Verlauf für Ausruhen im Krankenhaus
     HurtLostHP, ///< Regelmässiges verlieren von HP durch die Verletzung
     Growing,    ///< Verlauf für deb Wachstum
     END)

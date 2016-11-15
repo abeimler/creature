@@ -10,8 +10,9 @@ void DataCreatureMaker::makeElement(std::string name) {
     this->datamanager_.saveElement(element);
 }
 
-void DataCreatureMaker::makeElements(const std::vector<std::string>& elements, const resists_t& resists) {
-    for(auto element : elements) {
+void DataCreatureMaker::makeElements(const std::vector<std::string>& elements,
+                                     const resists_t& resists) {
+    for (auto element : elements) {
         makeElement(element);
     }
     this->resists_ = resists;
@@ -126,13 +127,14 @@ void DataCreatureMaker::makeStatuses() {
         this->datamanager_.saveCreatureBattlerStatus(status.second);
     }
 
-    
+
     for (auto index : earr::Enum<data::CreatureStatus>()) {
         if (index == +data::CreatureStatus::Normal) {
             continue;
         }
 
-        auto creaturestatus = this->datamanager_.findCreatureBattlerStatusByStatus(index);
+        auto creaturestatus =
+            this->datamanager_.findCreatureBattlerStatusByStatus(index);
         if (!creaturestatus) {
             continue;
         }
@@ -152,9 +154,12 @@ void DataCreatureMaker::makeStatuses() {
                         continue;
                     }
 
-                    auto remove_creaturestatus = this->datamanager_.findCreatureBattlerStatusByStatus(index_j);
+                    auto remove_creaturestatus =
+                        this->datamanager_.findCreatureBattlerStatusByStatus(
+                            index_j);
                     if (remove_creaturestatus) {
-                        std::string remove_creaturestatus_name = remove_creaturestatus->getName();
+                        std::string remove_creaturestatus_name =
+                            remove_creaturestatus->getName();
                         if (remove_creaturestatus_name != creaturestatus_name) {
                             removeStatuses.emplace_back(*remove_creaturestatus);
                         }
@@ -178,30 +183,39 @@ void DataCreatureMaker::makeStatuses() {
             case data::CreatureStatus::Training:
                 break;
             case data::CreatureStatus::Unhappy: {
-                auto remove_creaturestatus = this->datamanager_.findCreatureBattlerStatusByStatus(data::CreatureStatus::Happy);
-                
+                auto remove_creaturestatus =
+                    this->datamanager_.findCreatureBattlerStatusByStatus(
+                        data::CreatureStatus::Happy);
+
                 if (remove_creaturestatus) {
-                    std::string remove_creaturestatus_name = remove_creaturestatus->getName();
+                    std::string remove_creaturestatus_name =
+                        remove_creaturestatus->getName();
                     if (remove_creaturestatus_name != creaturestatus_name) {
                         removeStatuses.emplace_back(*remove_creaturestatus);
                     }
                 }
             } break;
             case data::CreatureStatus::Happy: {
-                auto remove_creaturestatus = this->datamanager_.findCreatureBattlerStatusByStatus(data::CreatureStatus::Unhappy);
-                
+                auto remove_creaturestatus =
+                    this->datamanager_.findCreatureBattlerStatusByStatus(
+                        data::CreatureStatus::Unhappy);
+
                 if (remove_creaturestatus) {
-                    std::string remove_creaturestatus_name = remove_creaturestatus->getName();
+                    std::string remove_creaturestatus_name =
+                        remove_creaturestatus->getName();
                     if (remove_creaturestatus_name != creaturestatus_name) {
                         removeStatuses.emplace_back(*remove_creaturestatus);
                     }
                 }
             } break;
             case data::CreatureStatus::Hungry: {
-                auto remove_creaturestatus = this->datamanager_.findCreatureBattlerStatusByStatus(data::CreatureStatus::Replete);
-                
+                auto remove_creaturestatus =
+                    this->datamanager_.findCreatureBattlerStatusByStatus(
+                        data::CreatureStatus::Replete);
+
                 if (remove_creaturestatus) {
-                    std::string remove_creaturestatus_name = remove_creaturestatus->getName();
+                    std::string remove_creaturestatus_name =
+                        remove_creaturestatus->getName();
                     if (remove_creaturestatus_name != creaturestatus_name) {
                         removeStatuses.emplace_back(*remove_creaturestatus);
                     }
@@ -210,10 +224,13 @@ void DataCreatureMaker::makeStatuses() {
             case data::CreatureStatus::Thirsty:
                 break;
             case data::CreatureStatus::Replete: {
-                auto remove_creaturestatus = this->datamanager_.findCreatureBattlerStatusByStatus(data::CreatureStatus::Hungry);
-                
+                auto remove_creaturestatus =
+                    this->datamanager_.findCreatureBattlerStatusByStatus(
+                        data::CreatureStatus::Hungry);
+
                 if (remove_creaturestatus) {
-                    std::string remove_creaturestatus_name = remove_creaturestatus->getName();
+                    std::string remove_creaturestatus_name =
+                        remove_creaturestatus->getName();
                     if (remove_creaturestatus_name != creaturestatus_name) {
                         removeStatuses.emplace_back(*remove_creaturestatus);
                     }
@@ -226,7 +243,7 @@ void DataCreatureMaker::makeStatuses() {
         }
 
 
-        for(const auto& status : removeStatuses){
+        for (const auto& status : removeStatuses) {
             creaturestatus->addRemoveStatus(status);
         }
 

@@ -8,7 +8,7 @@
 
 
 void init_DateTimer(computil::DateTimerUtil& datetimer_util,
-                           comp::DateTimer& datetimer) {
+                    comp::DateTimer& datetimer) {
     datetimer_util.init(datetimer);
 }
 
@@ -182,9 +182,7 @@ TEST_CASE("getTime of DateTimer Slowdown with factor") {
     auto time = datetimer_util.getTime(datetimer);
     auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(time);
 
-    SUBCASE("getTime >= expected time") {
-        CHECK(time_ms >= expectwaittime_ms);
-    }
+    SUBCASE("getTime >= expected time") { CHECK(time_ms >= expectwaittime_ms); }
 
     SUBCASE("getTime < sleeped time") { CHECK(time_ms < sleeptime_ms); }
 }

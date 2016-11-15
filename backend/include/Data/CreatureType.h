@@ -77,7 +77,8 @@ class CreatureRootType {
             return type_name == type.getName();
         };
 
-        return std::find_if(std::begin(this->types_), std::end(this->types_), find_byName);
+        return std::find_if(std::begin(this->types_), std::end(this->types_),
+                            find_byName);
     }
 
     bool isExistCreatureType(std::string type_name) {

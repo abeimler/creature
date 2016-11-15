@@ -3,16 +3,15 @@
 namespace gamesystem {
 
 double CreatureProgressTimerSystem::updateCallbackTimer(
-    EventBus& events, Entity entity,
-    gamecomp::ProgressTimerCallback& timer, data::CreatureLevel level,
-    gamecomp::CreatureProgressTimerCallback type) {
+    EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
+    data::CreatureLevel level, gamecomp::CreatureProgressTimerCallback type) {
     double ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
         if (!util::iszero(timer.base.value - timer.oldvalue)) {
             if (timer.base.isfull) {
-                emit_event<gameevent::ProgressTimerCallbackEvent>(events, 
-                    entity, type, level);
+                emit_event<gameevent::ProgressTimerCallbackEvent>(
+                    events, entity, type, level);
 
                 timer.oldvalue = 0;
             } else {
@@ -30,9 +29,8 @@ double CreatureProgressTimerSystem::updateCallbackTimer(
 }
 
 double CreatureProgressTimerSystem::updateIncrementTimer(
-    EventBus& events, Entity entity,
-    gamecomp::ProgressTimerIncrement& timer, data::CreatureLevel level,
-    gamecomp::CreatureProgressTimerIncrement type) {
+    EventBus& events, Entity entity, gamecomp::ProgressTimerIncrement& timer,
+    data::CreatureLevel level, gamecomp::CreatureProgressTimerIncrement type) {
     double ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
@@ -40,8 +38,8 @@ double CreatureProgressTimerSystem::updateIncrementTimer(
         addvalue *= timer.addvalue_per_percent;
 
         if (!util::iszero(addvalue)) {
-            emit_event<gameevent::ProgressTimerIncrementEvent>(events, entity, type, level,
-                                                     addvalue);
+            emit_event<gameevent::ProgressTimerIncrementEvent>(
+                events, entity, type, level, addvalue);
         }
 
         if (timer.base.isfull && timer.isendless) {
@@ -53,16 +51,15 @@ double CreatureProgressTimerSystem::updateIncrementTimer(
 }
 
 double CreatureProgressTimerSystem::updateStarvationPhaseTimer(
-    EventBus& events, Entity entity,
-    gamecomp::ProgressTimerCallback& timer, data::CreatureLevel level,
-    gamecomp::StarvationPhase type) {
+    EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
+    data::CreatureLevel level, gamecomp::StarvationPhase type) {
     double ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
         if (!util::iszero(timer.base.value - timer.oldvalue)) {
             if (timer.base.isfull) {
-                emit_event<gameevent::ProgressTimerStarvationPhaseEvent>(events, 
-                    entity, type, level);
+                emit_event<gameevent::ProgressTimerStarvationPhaseEvent>(
+                    events, entity, type, level);
 
                 timer.oldvalue = 0;
             } else {
@@ -75,16 +72,15 @@ double CreatureProgressTimerSystem::updateStarvationPhaseTimer(
 }
 
 double CreatureProgressTimerSystem::updateShortTermMemoryTimer(
-    EventBus& events, Entity entity,
-    gamecomp::ProgressTimerCallback& timer, data::CreatureLevel level,
-    gamecomp::CreatureActivity activity) {
+    EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
+    data::CreatureLevel level, gamecomp::CreatureActivity activity) {
     double ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
         if (!util::iszero(timer.base.value - timer.oldvalue)) {
             if (timer.base.isfull) {
-                emit_event<gameevent::ProgressTimerShortTermMemoryEvent>(events, 
-                    entity, activity, level);
+                emit_event<gameevent::ProgressTimerShortTermMemoryEvent>(
+                    events, entity, activity, level);
 
                 timer.oldvalue = 0;
             } else {
@@ -97,16 +93,15 @@ double CreatureProgressTimerSystem::updateShortTermMemoryTimer(
 }
 
 double CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
-    EventBus& events, Entity entity,
-    gamecomp::ProgressTimerCallback& timer, data::CreatureLevel level,
-    gamecomp::CreatureActivity activity) {
+    EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
+    data::CreatureLevel level, gamecomp::CreatureActivity activity) {
     double ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
         if (!util::iszero(timer.base.value - timer.oldvalue)) {
             if (timer.base.isfull) {
-                emit_event<gameevent::ProgressTimerMediumTermMemoryEvent>(events, 
-                    entity, activity, level);
+                emit_event<gameevent::ProgressTimerMediumTermMemoryEvent>(
+                    events, entity, activity, level);
 
                 timer.oldvalue = 0;
             } else {
@@ -119,15 +114,14 @@ double CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
 }
 
 
-double
-CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
-                                         data::CreatureLevel level) {
+double CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
+                                                data::CreatureLevel level) {
     datetimer_util_.update(timer.timer, this->ignortimer_);
     datetimer_util_.update(timer.fulltimer, this->ignortimer_);
 
     if (!timer.timer.isstart && !timer.timer.ispause) {
         return 0.0;
-}
+    }
 
     double addValue = 0.0;
     auto waitTime_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -155,9 +149,8 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
             if (!timer.isfull) {
                 datetimer_util_.start(timer.fulltimer);
 
-                double ticks_ms_f =
-                    static_cast<double>(waitTime_ms.count()) *
-                    ((timer.value - 100.0) / 100.0);
+                double ticks_ms_f = static_cast<double>(waitTime_ms.count()) *
+                                    ((timer.value - 100.0) / 100.0);
                 std::chrono::milliseconds addTm_ms(
                     static_cast<int64_t>(ticks_ms_f));
 
@@ -200,14 +193,13 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
 }
 
 void CreatureProgressTimerSystem::update(EntityManager& entities,
-                                         EventBus& events,
-                                         TimeDelta dt) {
-    gameentity::Component<gamecomp::CreatureProgressTimersComponent> creatureprogresstimers;
+                                         EventBus& events, TimeDelta dt) {
+    gameentity::Component<gamecomp::CreatureProgressTimersComponent>
+        creatureprogresstimers;
 
     for (auto entity :
          entities.entities_with_components(creatureprogresstimers)) {
-        data::CreatureLevel level =
-            creatureprogresstimers->creaturelevel;
+        data::CreatureLevel level = creatureprogresstimers->creaturelevel;
 
         datetimer_util_.update(creatureprogresstimers->lifetimer);
 
@@ -215,32 +207,41 @@ void CreatureProgressTimerSystem::update(EntityManager& entities,
             updateTimer(timer, level);
         }
 
-        for (auto type : earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
-            auto& timer = earr::enum_array_at(creatureprogresstimers->callback, type);
+        for (auto type :
+             earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
+            auto& timer =
+                earr::enum_array_at(creatureprogresstimers->callback, type);
 
             updateCallbackTimer(events, entity, timer, level, type);
         }
 
-        for (auto type : earr::Enum<gamecomp::CreatureProgressTimerIncrement>()) {
-            auto& timer = earr::enum_array_at(creatureprogresstimers->increment, type);
+        for (auto type :
+             earr::Enum<gamecomp::CreatureProgressTimerIncrement>()) {
+            auto& timer =
+                earr::enum_array_at(creatureprogresstimers->increment, type);
 
             updateIncrementTimer(events, entity, timer, level, type);
         }
 
         for (auto type : earr::Enum<gamecomp::StarvationPhase>()) {
-            auto& timer = earr::enum_array_at(creatureprogresstimers->starvation, type);
+            auto& timer =
+                earr::enum_array_at(creatureprogresstimers->starvation, type);
 
             updateStarvationPhaseTimer(events, entity, timer, level, type);
         }
 
         for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-            auto& shortterm_timer = earr::enum_array_at(creatureprogresstimers->memory, activity).shortterm;
+            auto& shortterm_timer =
+                earr::enum_array_at(creatureprogresstimers->memory, activity)
+                    .shortterm;
 
             updateShortTermMemoryTimer(events, entity, shortterm_timer, level,
                                        activity);
 
 
-            auto& mediumterm_timer = earr::enum_array_at(creatureprogresstimers->memory, activity).mediumterm;
+            auto& mediumterm_timer =
+                earr::enum_array_at(creatureprogresstimers->memory, activity)
+                    .mediumterm;
 
             updateMediumTermMemoryTimer(events, entity, mediumterm_timer, level,
                                         activity);

@@ -13,7 +13,7 @@ void EvolutionCondition::setTrainTimeEveryDay() {
 
 Creature::Creature() {
     for (size_t i = 0; i < this->genderdistribution_.size(); i++) {
-        this->genderdistribution_[i] = [&](){
+        this->genderdistribution_[i] = [&]() {
             auto index = CreatureGender::_from_integral_nothrow(i);
 
             if (index) {
@@ -30,7 +30,7 @@ Creature::Creature() {
 
 Creature::Creature(const Battler& battler) : Battler(battler) {
     for (size_t i = 0; i < this->genderdistribution_.size(); i++) {
-        this->genderdistribution_[i] = [&](){
+        this->genderdistribution_[i] = [&]() {
             auto index = CreatureGender::_from_integral_nothrow(i);
 
             if (index) {
@@ -39,13 +39,13 @@ Creature::Creature(const Battler& battler) : Battler(battler) {
                     return 100.0 / (this->genderdistribution_.size() - 2.0);
                 }
             }
-            
+
             return 0.0;
         }();
     }
 }
 
-CreatureStarter::CreatureStarter(const Creature& creature){
+CreatureStarter::CreatureStarter(const Creature& creature) {
     this->setCreature(creature);
 }
 

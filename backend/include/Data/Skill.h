@@ -20,8 +20,7 @@ BETTER_ENUM(SkillOption, size_t, Absorb,
 
             /// on dead Character and alive Character
             /// (dont use OnlyOnDeadChara and OnDeadChara together)
-            OnDeadChara, 
-            END)
+            OnDeadChara, END)
 
 /// Skill
 class Skill {

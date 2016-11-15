@@ -2,16 +2,17 @@
 
 using namespace datamaker;
 
-void InitData::makeDataCreature(
-    std::string name, std::string type, DataCreatureEvol state,
-    DataCreatureClass cls, const std::vector<std::string>& elements,
-    data::CreatureCircadianRhythm creatureRhythm,
-    data::CreatureLevel creatureLevel, float evol_weight, float bodysize,
-    DataCreatureGender gender) {
+void InitData::makeDataCreature(std::string name, std::string type,
+                                DataCreatureEvol state, DataCreatureClass cls,
+                                const std::vector<std::string>& elements,
+                                data::CreatureCircadianRhythm creatureRhythm,
+                                data::CreatureLevel creatureLevel,
+                                float evol_weight, float bodysize,
+                                DataCreatureGender gender) {
 
     this->maker_.makeDataCreature(name, type, state, cls, elements,
-                                   creatureRhythm, creatureLevel, evol_weight,
-                                   bodysize, gender);
+                                  creatureRhythm, creatureLevel, evol_weight,
+                                  bodysize, gender);
 }
 
 
@@ -75,20 +76,11 @@ void InitData::updateEvolution(std::string name,
 
 
 
-void InitData::initElements(){
-    this->elements_ = {
-        "Nature Spirits",
-        "Deep Savers",
-        "Nightmare Soldiers",
-        "Wind Guardians",
-        "Metal Empire",
-        "Unknown",
-        "Dark Area",
-        "Virus Busters",
-        "Dragons Roar",
-        "Jungle Troopers",
-        "X-Antibody"
-    };
+void InitData::initElements() {
+    this->elements_ = {"Nature Spirits",  "Deep Savers",   "Nightmare Soldiers",
+                       "Wind Guardians",  "Metal Empire",  "Unknown",
+                       "Dark Area",       "Virus Busters", "Dragons Roar",
+                       "Jungle Troopers", "X-Antibody"};
 
 
 
@@ -127,246 +119,115 @@ void InitData::initElements(){
 
     this->elements_resists_.clear();
 
-    this->elements_resists_["Nature Spirits"] = { {}, {} };
-    this->elements_resists_["Deep Savers"] = {
-        { "Dragons Roar" }, { "Jungle Troopers" }
-    };
+    this->elements_resists_["Nature Spirits"] = {{}, {}};
+    this->elements_resists_["Deep Savers"] = {{"Dragons Roar"},
+                                              {"Jungle Troopers"}};
     this->elements_resists_["Nightmare Soldiers"] = {
-        { "Virus Busters" }, { "Metal Empire", "Nightmare Soldiers" }
-    };
-    this->elements_resists_["Wind Guardians"] = {
-        { "Jungle Troopers" }, { "Metal Empire" }
-    };
+        {"Virus Busters"}, {"Metal Empire", "Nightmare Soldiers"}};
+    this->elements_resists_["Wind Guardians"] = {{"Jungle Troopers"},
+                                                 {"Metal Empire"}};
     this->elements_resists_["Metal Empire"] = {
-        { "Wind Guardians", "Deep Savers" }, { "Dragons Roar" }
-    };
-    this->elements_resists_["Unknown"] = { {}, {} };
-    this->elements_resists_["Dark Area"] = {
-        { "Nightmare Soldiers" }, { "Metal Empire", "Virus Busters" }
-    };
+        {"Wind Guardians", "Deep Savers"}, {"Dragons Roar"}};
+    this->elements_resists_["Unknown"] = {{}, {}};
+    this->elements_resists_["Dark Area"] = {{"Nightmare Soldiers"},
+                                            {"Metal Empire", "Virus Busters"}};
     this->elements_resists_["Virus Busters"] = {
-        { "Dark Area" }, { "Metal Empire", "Nightmare Soldiers" }
-    };
-    this->elements_resists_["Dragons Roar"] = {
-        { "Jungle Troopers" }, { "Deep Savers" }
-    };
+        {"Dark Area"}, {"Metal Empire", "Nightmare Soldiers"}};
+    this->elements_resists_["Dragons Roar"] = {{"Jungle Troopers"},
+                                               {"Deep Savers"}};
     this->elements_resists_["Jungle Troopers"] = {
-        { "Metal Empire" }, { "Wind Guardians", "Dragons Roar" }
-    };
+        {"Metal Empire"}, {"Wind Guardians", "Dragons Roar"}};
     this->elements_resists_["X-Antibody"] = {
-        { "Nature Spirits", "Deep Savers", "Nightmare Soldiers",
-          "Wind Guardians", "Metal Empire", "Dark Area", "Virus Busters",
-          "Dragons Roar", "Jungle Troopers" },
-        {}
-    };
+        {"Nature Spirits", "Deep Savers", "Nightmare Soldiers",
+         "Wind Guardians", "Metal Empire", "Dark Area", "Virus Busters",
+         "Dragons Roar", "Jungle Troopers"},
+        {}};
 }
 
 void InitData::initTypes() {
 
     this->types_ = {
 
-        { "Digitama", { 
-            "Digitama" 
-        }},
+        {"Digitama", {"Digitama"}},
 
-        { "Little", {
-            "Slime", "Lesser", "Bulb", "Slime Angle", "Slime Bird", "Slime Devil", "Slime Dragon"
-        }},
+        {"Little",
+         {"Slime", "Lesser", "Bulb", "Slime Angle", "Slime Bird", "Slime Devil",
+          "Slime Dragon"}},
 
-        { "Alien", { 
-            "Alien" 
-        }},
+        {"Alien", {"Alien"}},
 
-        { "Amphibian", { 
-            "Amphibian" 
-        }},
+        {"Amphibian", {"Amphibian"}},
 
-        { "Ancient", {
-            "Ancient Aquatic Beast Man", 
-            "Ancient Aquatic Beast Man", 
-            "Ancient Beast", 
-            "Ancient Bird", 
-            "Ancient Crustacean", 
-            "Ancient Dragon Man", 
-            "Ancient Fish",
-            "Ancient Holy Knight",
-            "Ancient Insect", 
-            "Ancient Mutant",
-            "Ancient Mythical Beast",
-            "Ancient Ore",
-            "Ancient Plant",
-            "Rare Animal"
-        }},
+        {"Ancient",
+         {"Ancient Aquatic Beast Man", "Ancient Aquatic Beast Man",
+          "Ancient Beast", "Ancient Bird", "Ancient Crustacean",
+          "Ancient Dragon Man", "Ancient Fish", "Ancient Holy Knight",
+          "Ancient Insect", "Ancient Mutant", "Ancient Mythical Beast",
+          "Ancient Ore", "Ancient Plant", "Rare Animal"}},
 
-        { "Holy", {
-            "Angel", 
-            "Archangel", 
-            "Dominion", 
-            "Seraph", 
-            "Viture", 
-            "Ophan"
-        }},
+        {"Holy",
+         {"Angel", "Archangel", "Dominion", "Seraph", "Viture", "Ophan"}},
 
-        { "Unholy", {
-            "Fallen Angel", 
-            "Artificial Fallen Angel", 
-            "Devil"
-        }},
+        {"Unholy", {"Fallen Angel", "Artificial Fallen Angel", "Devil"}},
 
-        { "Reptile", {
-            "Reptile", 
-            "Dinosaur", 
-            "Ankylosaur",
-            "Ceratopsian",
-            "Plesiosaur",
-            "Pterosaur",
-            "Stegosaur"
-        }},
+        {"Reptile",
+         {"Reptile", "Dinosaur", "Ankylosaur", "Ceratopsian", "Plesiosaur",
+          "Pterosaur", "Stegosaur"}},
 
-        { "Mammal", { 
-            "Mammal" 
-        }},
+        {"Mammal", {"Mammal"}},
 
-        { "Aquatic", {
-            "Aquatic", 
-            "Aquatic Beast Man", 
-            "Aquatic Mammal",
-            "Crustacean",
-            "Marine Animal",
-            "Marine Man",
-            "Tropical Fish"
-        }},
+        {"Aquatic",
+         {"Aquatic", "Aquatic Beast Man", "Aquatic Mammal", "Crustacean",
+          "Marine Animal", "Marine Man", "Tropical Fish"}},
 
-        { "Avatar", { 
-            "Avatar" 
-        }},
+        {"Avatar", {"Avatar"}},
 
-        { "Dragon", {
-            "Dragon", 
-            "Baby Dragon", 
-            "Dragon Man",
-            "Dragon Warrior",
-            "Beast Dragon",
-            "Dark Dragon",
-            "Evil Dragon",
-            "Holy Dragon",
-            "Light Dragon",
-            "Mythical Dragon",
-            "Ocean Dragon",
-            "Sky Dragon"
-        }},
+        {"Dragon",
+         {"Dragon", "Baby Dragon", "Dragon Man", "Dragon Warrior",
+          "Beast Dragon", "Dark Dragon", "Evil Dragon", "Holy Dragon",
+          "Light Dragon", "Mythical Dragon", "Ocean Dragon", "Sky Dragon"}},
 
-        { "Beast", {
-            "Beast", 
-            "Aquatic Beast", 
-            "Mythical Beast", 
-            "Beast Knight",
-            "Beast Man",
-            "God Beast",
-            "Holy Beast",
-            "Synthetic Beast"
-        }},
+        {"Beast",
+         {"Beast", "Aquatic Beast", "Mythical Beast", "Beast Knight",
+          "Beast Man", "God Beast", "Holy Beast", "Synthetic Beast"}},
 
-        { "Bewitching", { 
-            "Bewitching Beast",
-            "Bewitching Bird" 
-        }},
+        {"Bewitching", {"Bewitching Beast", "Bewitching Bird"}},
 
-        { "Bird", {
-            "Bird Man", 
-            "Chick", 
-            "Giant Bird",
-            "Holy Bird"
-        }},
+        {"Bird", {"Bird Man", "Chick", "Giant Bird", "Holy Bird"}},
 
-        { "Machine", {
-            "Machine", 
-            "Cyborg", 
-            "Machine Dragon",
-            "Mine"
-        }},
+        {"Machine", {"Machine", "Cyborg", "Machine Dragon", "Mine"}},
 
-        { "Knight", {
-            "Dark Knight", 
-            "Holy Knight", 
-            "Magic Warrior",
-            "Warrior"
-        }},
+        {"Knight", {"Dark Knight", "Holy Knight", "Magic Warrior", "Warrior"}},
 
-        { "Demon", {
-            "Demon Beast", 
-            "Demon Dragon", 
-            "Demon God",
-            "Demon Lord",
-            "Demon Man"
-        }},
+        {"Demon",
+         {"Demon Beast", "Demon Dragon", "Demon God", "Demon Lord",
+          "Demon Man"}},
 
-        { "Fairy", {
-            "Fairy", 
-            "Spirit"
-        }},
+        {"Fairy", {"Fairy", "Spirit"}},
 
-        { "Monster", {
-            "Oni", 
-            "Mutant"
-        }},
+        {"Monster", {"Oni", "Mutant"}},
 
-        { "Rock", {
-            "Rock", 
-            "Mineral",
-            "Ore"
-        }},
+        {"Rock", {"Rock", "Mineral", "Ore"}},
 
-        { "Flame", {
-            "Flame", 
-            "Flame Dragon",
-            "Smoke"
-        }},
+        {"Flame", {"Flame", "Flame Dragon", "Smoke"}},
 
-        { "Hybrid", {
-            "Hybrid", 
-            "Enhancement",
-            "Composite",
-            "Unique"
-        }},
+        {"Hybrid", {"Hybrid", "Enhancement", "Composite", "Unique"}},
 
-        { "Ice", {
-            "Icy Snow"
-        }},
+        {"Ice", {"Icy Snow"}},
 
-        { "Insect", {
-            "Insect", 
-            "Larva",
-            "Parasite"
-        }},
+        {"Insect", {"Insect", "Larva", "Parasite"}},
 
-        { "Plant", {
-            "Plant",
-            "Insectivorous Plant",
-            "Plant"
-        }},
+        {"Plant", {"Plant", "Insectivorous Plant", "Plant"}},
 
-        { "Mollusk", {
-            "Mollusk"
-        }},
+        {"Mollusk", {"Mollusk"}},
 
-        { "Toy", {
-            "Toy",
-            "Puppet"
-        }},
+        {"Toy", {"Toy", "Puppet"}},
 
-        { "Undead", {
-            "Undead",
-            "Skeleton",
-            "Ghost"
-        }},
+        {"Undead", {"Undead", "Skeleton", "Ghost"}},
 
-        { "Unknown", {
-            "Unknown",
-            "Perfect",
-            "9000",
-            "Perfect",
-            "No Data",
-        }},
+        {"Unknown",
+         {
+             "Unknown", "Perfect", "9000", "Perfect", "No Data",
+         }},
     };
 }

@@ -11,14 +11,16 @@
 namespace gamesystem {
 
 
-class CreatureBattlerCreatureAddExpSystem : public Listener<gameevent::CreatureAddExpEvent> {
+class CreatureBattlerCreatureAddExpSystem
+    : public Listener<gameevent::CreatureAddExpEvent> {
     public:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
     CreatureBattlerCreatureAddExpSystem() = default;
 
-    void update(const gameevent::CreatureAddExpEvent& event, EntityManager& entities, EventBus& events, TimeDelta dt) override;
-
+    void update(const gameevent::CreatureAddExpEvent& event,
+                EntityManager& entities, EventBus& events,
+                TimeDelta dt) override;
 };
 
 

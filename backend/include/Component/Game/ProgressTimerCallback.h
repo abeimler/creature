@@ -10,7 +10,6 @@ struct ProgressTimerCallback {
 
     double oldvalue = 0.0;
     bool isendless = false;
-
 };
 } // namespace gamecomp
 

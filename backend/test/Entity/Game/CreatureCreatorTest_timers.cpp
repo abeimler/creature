@@ -17,8 +17,8 @@ TEST_CASE("create CreatePrograssTimers with time 01.01.2000") {
     }
 
     SUBCASE("Is realtime in ProgressTimer set") {
-        auto& timer = earr::enum_array_at(timers.timer,
-                                    +gamecomp::CreatureProgressTimer::Hungry);
+        auto& timer = earr::enum_array_at(
+            timers.timer, +gamecomp::CreatureProgressTimer::Hungry);
         CHECK(timer.timer.realtime > std::chrono::milliseconds::zero());
     }
 }
@@ -36,8 +36,8 @@ TEST_CASE("create empty CreatePrograssTimers and set with time 01.01.2000") {
     }
 
     SUBCASE("Is realtime in ProgressTimer set") {
-        auto& timer = earr::enum_array_at(timers.timer,
-                                    +gamecomp::CreatureProgressTimer::Hungry);
+        auto& timer = earr::enum_array_at(
+            timers.timer, +gamecomp::CreatureProgressTimer::Hungry);
         CHECK(timer.timer.realtime > std::chrono::milliseconds::zero());
     }
 }
@@ -57,8 +57,8 @@ TEST_CASE("create CreatePrograssTimers and setup with lifetimer") {
     }
 
     SUBCASE("Is realtime in ProgressTimer set") {
-        auto& timer = earr::enum_array_at(timers.timer,
-                                    +gamecomp::CreatureProgressTimer::Hungry);
+        auto& timer = earr::enum_array_at(
+            timers.timer, +gamecomp::CreatureProgressTimer::Hungry);
         CHECK(timer.timer.realtime >= timers.lifetimer.realtime);
     }
 }

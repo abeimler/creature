@@ -5,36 +5,24 @@
 namespace gameentity {
 
 
-CreatureDataManager::CreatureDataManager()
-    : DataManagerBase(findDataByName)
-{}
+CreatureDataManager::CreatureDataManager() : DataManagerBase(findDataByName) {}
 
 
 CreatureBattlerStatusDataManager::CreatureBattlerStatusDataManager()
-    : DataManagerBase(findDataByName)
-{}
+    : DataManagerBase(findDataByName) {}
 
 
 CreatureRootTypeDataManager::CreatureRootTypeDataManager()
-    : DataManagerBase(findDataByName)
-{}
+    : DataManagerBase(findDataByName) {}
 
 
-ElementDataManager::ElementDataManager()
-    : DataManagerBase(findDataByName)
-{}
+ElementDataManager::ElementDataManager() : DataManagerBase(findDataByName) {}
 
 
-FoodDataManager::FoodDataManager()
-    : DataManagerBase(findDataByName)
-{}
+FoodDataManager::FoodDataManager() : DataManagerBase(findDataByName) {}
 
-SkillDataManager::SkillDataManager()
-    : DataManagerBase(findDataByName)
-{}
+SkillDataManager::SkillDataManager() : DataManagerBase(findDataByName) {}
 
 CreatureStarterDataManager::CreatureStarterDataManager()
-    : DataManagerBase(findDataByName)
-{}
-
+    : DataManagerBase(findDataByName) {}
 }

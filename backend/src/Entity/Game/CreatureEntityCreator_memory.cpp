@@ -2,11 +2,12 @@
 
 namespace gameentity {
 
-gamecomp::CreatureMemoryComponent CreatureEntityCreator::createCreatureMemory() {
+gamecomp::CreatureMemoryComponent
+CreatureEntityCreator::createCreatureMemory() {
     gamecomp::CreatureMemoryComponent ret;
 
     int variance = util::random(-this->max_short_memorysize_variance_,
-                          this->max_short_memorysize_variance_);
+                                this->max_short_memorysize_variance_);
 
     int memorySize = static_cast<int>(this->max_short_memorysize_) + variance;
 

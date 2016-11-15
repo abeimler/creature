@@ -5,9 +5,9 @@
 
 #include "Data/Basic.h"
 
-#include "Entity/Game/TimerUtil.h"
 #include "Entity/Game/DateTimerUtil.h"
 #include "Entity/Game/ProgressTimerUtil.h"
+#include "Entity/Game/TimerUtil.h"
 
 #include "Entity/Game/CreatureEntityCreator.h"
 
@@ -32,12 +32,9 @@ struct ProgressTimerIncrementEvent {
 
     ProgressTimerIncrementEvent(gameentity::Entity p_entity,
                                 gamecomp::CreatureProgressTimerIncrement p_type,
-                                data::CreatureLevel p_level,
-                                double p_addvalue)
-        : entity(p_entity)
-        , type(p_type)
-        , level(p_level)
-        , addvalue(p_addvalue) {}
+                                data::CreatureLevel p_level, double p_addvalue)
+        : entity(p_entity), type(p_type), level(p_level), addvalue(p_addvalue) {
+    }
 };
 
 struct ProgressTimerStarvationPhaseEvent {

@@ -2,7 +2,8 @@
 
 namespace gameentity {
 
-gamecomp::CreatureProgressTimersComponent CreatureEntityCreator::createCreatureProgressTimers(
+gamecomp::CreatureProgressTimersComponent
+CreatureEntityCreator::createCreatureProgressTimers(
     std::chrono::system_clock::time_point time, double realtime_factor) {
     gamecomp::CreatureProgressTimersComponent ret;
 
@@ -50,8 +51,10 @@ void CreatureEntityCreator::setCreatureProgressTimersRealTime(
     }
 
     for (auto& memory : timers.memory) {
-        datetimer_util_.setRealTime(memory.shortterm.base.timer, time, realtime_factor);
-        datetimer_util_.setRealTime(memory.mediumterm.base.timer, time, realtime_factor);
+        datetimer_util_.setRealTime(memory.shortterm.base.timer, time,
+                                    realtime_factor);
+        datetimer_util_.setRealTime(memory.mediumterm.base.timer, time,
+                                    realtime_factor);
     }
 }
 
@@ -67,8 +70,7 @@ void CreatureEntityCreator::setCreatureProgressTimersRealTimeFromLifetimer(
 gamecomp::CreatureProgressTimersComponent
 CreatureEntityCreator::createCreatureProgressTimersCreature(
     std::chrono::system_clock::time_point time, double realtime_factor) {
-    auto timers =
-        createCreatureProgressTimers(time, realtime_factor);
+    auto timers = createCreatureProgressTimers(time, realtime_factor);
 
     datetimer_util_.restart(timers.lifetimer);
     progresstimer_util_.restart(earr::enum_array_at(
@@ -80,21 +82,22 @@ CreatureEntityCreator::createCreatureProgressTimersCreature(
 
 void CreatureEntityCreator::setupCreatureProgressTimers(
     gamecomp::CreatureProgressTimersComponent& timers,
-    const data::Creature& creature,
-    const gamecomp::CreatureLifeComponent& life, 
+    const data::Creature& creature, const gamecomp::CreatureLifeComponent& life,
     const gamecomp::CreatureGeneComponent& gene,
     const gamecomp::CreatureBodyComponent& body) {
     timers.creaturelevel = life.creaturelevel;
 
-    double maxbodysize = std::min<double>(gene.max_bodysize, creature.getMaxBodySize());
+    double maxbodysize =
+        std::min<double>(gene.max_bodysize, creature.getMaxBodySize());
 
     auto& growing_timer = earr::enum_array_at(
         timers.increment, +gamecomp::CreatureProgressTimerIncrement::Growing);
 
     growing_timer.addvalue_per_percent = (maxbodysize - body.bodysize) / 100.0;
 
-    auto& illbyOverweight_timer = earr::enum_array_at(timers.callback,
-                      +gamecomp::CreatureProgressTimerCallback::IllbyOverweight);
+    auto& illbyOverweight_timer = earr::enum_array_at(
+        timers.callback,
+        +gamecomp::CreatureProgressTimerCallback::IllbyOverweight);
     illbyOverweight_timer.isendless = true;
 
     auto& lostweighthungry_timer = earr::enum_array_at(
@@ -107,9 +110,9 @@ void CreatureEntityCreator::setupCreatureProgressTimers(
         +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerThirsty);
     lostweighthirsty_timer.isendless = true;
 
-    auto& lostcalories_timer =
-        earr::enum_array_at(timers.increment,
-                      +gamecomp::CreatureProgressTimerIncrement::LostCalories);
+    auto& lostcalories_timer = earr::enum_array_at(
+        timers.increment,
+        +gamecomp::CreatureProgressTimerIncrement::LostCalories);
     lostcalories_timer.isendless = true;
 
     auto& gainweightcalories_timer = earr::enum_array_at(
@@ -122,7 +125,8 @@ void CreatureEntityCreator::setupCreatureProgressTimers(
     hurtToDead_timer.isendless = true;
 
     auto& hurtLostHP_timer = earr::enum_array_at(
-        timers.increment, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP);
+        timers.increment,
+        +gamecomp::CreatureProgressTimerIncrement::HurtLostHP);
     hurtLostHP_timer.isendless = true;
 
     auto& illToDead_timer = earr::enum_array_at(
@@ -144,35 +148,50 @@ void CreatureEntityCreator::setupCreatureProgressTimers(
     fullDigestionHeap_timer.isendless = true;
 
 
-    for(auto creature_level : earr::Enum<data::CreatureLevel>()){
-        auto& gene_perevolution = earr::enum_array_at(gene.perevolution, creature_level);
+    for (auto creature_level : earr::Enum<data::CreatureLevel>()) {
+        auto& gene_perevolution =
+            earr::enum_array_at(gene.perevolution, creature_level);
 
         for (auto index : earr::Enum<gamecomp::CreatureProgressTimer>()) {
-            getCreatureProgressTimersWaitTime(timers.timer, index, creature_level) =
+            getCreatureProgressTimersWaitTime(timers.timer, index,
+                                              creature_level) =
                 earr::enum_array_at(gene_perevolution.waittime.timer, index);
         }
 
-        for (auto index : earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
-            getCreatureProgressTimersWaitTime(timers.callback, index, creature_level) =
+        for (auto index :
+             earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
+            getCreatureProgressTimersWaitTime(timers.callback, index,
+                                              creature_level) =
                 earr::enum_array_at(gene_perevolution.waittime.callback, index);
         }
 
-        for (auto index : earr::Enum<gamecomp::CreatureProgressTimerIncrement>()) {
-            getCreatureProgressTimersWaitTime(timers.increment, index, creature_level) =
-                earr::enum_array_at(gene_perevolution.waittime.increment, index);
+        for (auto index :
+             earr::Enum<gamecomp::CreatureProgressTimerIncrement>()) {
+            getCreatureProgressTimersWaitTime(timers.increment, index,
+                                              creature_level) =
+                earr::enum_array_at(gene_perevolution.waittime.increment,
+                                    index);
         }
 
         for (auto index : earr::Enum<gamecomp::StarvationPhase>()) {
-            getCreatureProgressTimersWaitTime(timers.starvation, index, creature_level) =
-                earr::enum_array_at(gene_perevolution.waittime.starvation, index);
+            getCreatureProgressTimersWaitTime(timers.starvation, index,
+                                              creature_level) =
+                earr::enum_array_at(gene_perevolution.waittime.starvation,
+                                    index);
         }
 
         for (auto index : earr::Enum<gamecomp::CreatureActivity>()) {
-            earr::enum_array_at(earr::enum_array_at(timers.memory, index).shortterm.base.waittime, creature_level) =
-                earr::enum_array_at(gene_perevolution.waittime.shorttermmemory, index);
+            earr::enum_array_at(earr::enum_array_at(timers.memory, index)
+                                    .shortterm.base.waittime,
+                                creature_level) =
+                earr::enum_array_at(gene_perevolution.waittime.shorttermmemory,
+                                    index);
 
-            earr::enum_array_at(earr::enum_array_at(timers.memory, index).mediumterm.base.waittime, creature_level) =
-                earr::enum_array_at(gene_perevolution.waittime.mediumtermmemory, index);
+            earr::enum_array_at(earr::enum_array_at(timers.memory, index)
+                                    .mediumterm.base.waittime,
+                                creature_level) =
+                earr::enum_array_at(gene_perevolution.waittime.mediumtermmemory,
+                                    index);
         }
     }
 }

@@ -6,33 +6,38 @@
 
 #include "System/Game/CreatureBattlerCreatureAddExpSystem.h"
 
-class EventListenerMockup : public gamesystem::Listener<gameevent::CreatureAddExpEvent> {
+class EventListenerMockup
+    : public gamesystem::Listener<gameevent::CreatureAddExpEvent> {
     public:
     bool emitevent = false;
 
     EventListenerMockup() = default;
 
-    void update(const gameevent::CreatureAddExpEvent& event, EntityManager& entities, EventBus& events, TimeDelta dt) override {
+    void update(const gameevent::CreatureAddExpEvent& event,
+                EntityManager& entities, EventBus& events,
+                TimeDelta dt) override {
         this->emitevent = true;
     }
-
 };
 
-class CreatureBattlerCreatureAddExpSystemApplication : public gamesystem::Application {
+class CreatureBattlerCreatureAddExpSystemApplication
+    : public gamesystem::Application {
     public:
-    std::shared_ptr<EventListenerMockup> eventlistenermockup = std::make_shared<EventListenerMockup>();
-    std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpSystem> creatureBattlerCreatureAddExpSystem = std::make_shared<gamesystem::CreatureBattlerCreatureAddExpSystem>();
+    std::shared_ptr<EventListenerMockup> eventlistenermockup =
+        std::make_shared<EventListenerMockup>();
+    std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpSystem>
+        creatureBattlerCreatureAddExpSystem =
+            std::make_shared<gamesystem::CreatureBattlerCreatureAddExpSystem>();
 
     CreatureBattlerCreatureAddExpSystemApplication() {
-        this->addListener<gameevent::CreatureAddExpEvent>(this->eventlistenermockup);
-        this->addListener<gameevent::CreatureAddExpEvent>(this->creatureBattlerCreatureAddExpSystem);
+        this->addListener<gameevent::CreatureAddExpEvent>(
+            this->eventlistenermockup);
+        this->addListener<gameevent::CreatureAddExpEvent>(
+            this->creatureBattlerCreatureAddExpSystem);
     }
 
     static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
 };
-
-
-
 
 
 
@@ -41,10 +46,11 @@ SCENARIO("Creature Entity emit addExp-Event to gain exp") {
         CreatureBattlerCreatureAddExpSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        //auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = CreatureTestData::make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+        auto creature_battler =
+            entity.component<gamecomp::CreatureBattlerComponent>();
 
         int add_exp = 1;
 
@@ -56,9 +62,7 @@ SCENARIO("Creature Entity emit addExp-Event to gain exp") {
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("has gain exp") { 
-                    CHECK(creature_battler->exp > 0); 
-                }
+                THEN("has gain exp") { CHECK(creature_battler->exp > 0); }
             }
         }
     }
@@ -69,10 +73,11 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
         CreatureBattlerCreatureAddExpSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        //auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = CreatureTestData::make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+        auto creature_battler =
+            entity.component<gamecomp::CreatureBattlerComponent>();
 
         int old_current_lvl = CreatureTestData::LVL;
         int add_exp = CreatureTestData::EXP;
@@ -85,9 +90,7 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("has gain exp") { 
-                    CHECK(creature_battler->exp > 0); 
-                }
+                THEN("has gain exp") { CHECK(creature_battler->exp > 0); }
 
                 THEN("has level up") {
                     CHECK(creature_battler->lvl > old_current_lvl);
@@ -97,15 +100,17 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
     }
 }
 
-SCENARIO("Creature Entity emit addExp-Event to level up and Attributes has up") {
+SCENARIO(
+    "Creature Entity emit addExp-Event to level up and Attributes has up") {
     GIVEN("Creature Entity") {
         CreatureBattlerCreatureAddExpSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        //auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = CreatureTestData::make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+        auto creature_battler =
+            entity.component<gamecomp::CreatureBattlerComponent>();
 
         int old_current_lvl = CreatureTestData::LVL;
         int old_current_maxhp = CreatureTestData::MAXHP;
@@ -120,20 +125,22 @@ SCENARIO("Creature Entity emit addExp-Event to level up and Attributes has up") 
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("has gain exp") { 
-                    CHECK(creature_battler->exp > 0); 
-                }
+                THEN("has gain exp") { CHECK(creature_battler->exp > 0); }
 
                 THEN("has level up") {
                     CHECK(creature_battler->lvl > old_current_lvl);
                 }
 
                 THEN("MaxHP Attributes has up") {
-                    CHECK(earr::enum_array_at(creature_battler->attr, +data::Attribute::MaxHP) > old_current_maxhp);
+                    CHECK(earr::enum_array_at(creature_battler->attr,
+                                              +data::Attribute::MaxHP) >
+                          old_current_maxhp);
                 }
 
                 THEN("MaxMP Attributes has up") {
-                    CHECK(earr::enum_array_at(creature_battler->attr, +data::Attribute::MaxMP) > old_current_maxmp);
+                    CHECK(earr::enum_array_at(creature_battler->attr,
+                                              +data::Attribute::MaxMP) >
+                          old_current_maxmp);
                 }
             }
         }

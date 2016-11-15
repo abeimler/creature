@@ -11,7 +11,8 @@ constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_AGEINGTIME;
 constexpr size_t CreatureEntityCreator::DEFAULT_MAX_SHORT_MEMORYSIZE;
 constexpr int CreatureEntityCreator::DEFAULT_MAX_SHORT_MEMORYSIZE_VARIANCE;
 
-gamecomp::CreatureTrainingComponent CreatureEntityCreator::createCreatureTraining() {
+gamecomp::CreatureTrainingComponent
+CreatureEntityCreator::createCreatureTraining() {
     gamecomp::CreatureTrainingComponent ret;
 
     earr::enum_array_fill(ret.trainingcounter, 0);
@@ -27,9 +28,9 @@ gamecomp::CreatureTrainingComponent CreatureEntityCreator::createCreatureTrainin
 }
 
 
-gamecomp::CreatureBodyComponent
-CreatureEntityCreator::createCreatureBody(const data::Creature& creature_data,
-                                    const gamecomp::CreatureGeneComponent& gene) {
+gamecomp::CreatureBodyComponent CreatureEntityCreator::createCreatureBody(
+    const data::Creature& creature_data,
+    const gamecomp::CreatureGeneComponent& gene) {
     gamecomp::CreatureBodyComponent ret;
 
     ret.weight = 5.0;
@@ -48,12 +49,13 @@ CreatureEntityCreator::createCreatureBody(const data::Creature& creature_data,
 
     /// 1 kcal/kg h * Weight * 24 h = need kcal per day
     ret.calories = 1.0 * ret.weight * 24;
-    
+
 
     return ret;
 }
 
-gamecomp::CreaturePsycheComponent CreatureEntityCreator::createCreaturePsyche() {
+gamecomp::CreaturePsycheComponent
+CreatureEntityCreator::createCreaturePsyche() {
     gamecomp::CreaturePsycheComponent ret;
 
     ret.luck = 100.0;
@@ -72,8 +74,7 @@ gamecomp::CreatureLifeComponent CreatureEntityCreator::createCreatureLife(
 
     ret.name = creature.getName();
     ret.creaturelevel = creature.getCreatureLevel();
-    ret.creaturecircadianrhythm =
-        creature.getCreatureCircadianRhythm();
+    ret.creaturecircadianrhythm = creature.getCreatureCircadianRhythm();
 
     ret.birthday = realtime;
     ret.causeofdeath = gamecomp::CauseOfDeath::Alive;
@@ -82,7 +83,7 @@ gamecomp::CreatureLifeComponent CreatureEntityCreator::createCreatureLife(
     if (!ret.born && ret.creaturelevel > +data::CreatureLevel::Egg) {
         ret.born = true;
     }
-        
+
 
     ret.needrefreshin_ms = min_needrefreshin_;
 
@@ -131,8 +132,8 @@ void CreatureEntityCreator::create(Entity& entity) {
     entity.assign<gamecomp::CreatureLifeComponent>();
 }
 
-void CreatureEntityCreator::create(Entity& entity,
-    const data::Creature& creature,
+void CreatureEntityCreator::create(
+    Entity& entity, const data::Creature& creature,
     std::chrono::system_clock::time_point realtime, double realtime_factor) {
     auto timers =
         createCreatureProgressTimersCreature(realtime, realtime_factor);
@@ -143,7 +144,8 @@ void CreatureEntityCreator::create(Entity& entity,
     gamecomp::CreatureBattlerGeneComponent battlergene =
         creaturebattler_creator_.createCreatureBattlerGene();
 
-    creaturebattler_creator_.loadCreatureBattler(creaturebattler, creature, battlergene);
+    creaturebattler_creator_.loadCreatureBattler(creaturebattler, creature,
+                                                 battlergene);
 
 
     auto battlerstate =

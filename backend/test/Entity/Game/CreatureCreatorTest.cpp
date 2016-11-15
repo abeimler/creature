@@ -29,7 +29,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
         double ideal_mass = creaturecreator.getBodyMass(
             bodysize, weight, min_weight, ideal_bmi, min_bmi, max_bmi);
 
-        //CAPTURE(ideal_mass);
+        // CAPTURE(ideal_mass);
 
         SUBCASE("got body mass") { CHECK(ideal_mass > 0.0f); }
 
@@ -56,15 +56,16 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
 
                 SUBCASE("got bmi from mass") {
                     CHECK(bodysize_mass > 0.0f);
-                    CHECK(bodysize_mass == doctest::Approx(bodysize).epsilon(0.01));
+                    CHECK(bodysize_mass ==
+                          doctest::Approx(bodysize).epsilon(0.01));
                 }
             }
         }
 
 
         SUBCASE("get low bmi by lower weight") {
-            double low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
-                                                   low_weight, bodysize);
+            double low_bmi = creaturecreator.getBMI(
+                gene, min_weight, max_weight, low_weight, bodysize);
 
             SUBCASE("got lower bmi") { CHECK(low_bmi < ideal_bmi); }
         }
@@ -104,7 +105,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
         double ideal_mass = creaturecreator.getBodyMass(
             bodysize, weight, min_weight, ideal_bmi, min_bmi, max_bmi);
 
-        //CAPTURE(ideal_mass);
+        // CAPTURE(ideal_mass);
 
         SUBCASE("got body mass") { CHECK(ideal_mass > 0.0f); }
 
@@ -131,15 +132,16 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
 
                 SUBCASE("got bmi from mass") {
                     CHECK(bodysize_mass > 0.0f);
-                    CHECK(bodysize_mass == doctest::Approx(bodysize).epsilon(0.01));
+                    CHECK(bodysize_mass ==
+                          doctest::Approx(bodysize).epsilon(0.01));
                 }
             }
         }
 
 
         SUBCASE("get low bmi by lower weight") {
-            double low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
-                                                   low_weight, bodysize);
+            double low_bmi = creaturecreator.getBMI(
+                gene, min_weight, max_weight, low_weight, bodysize);
 
             SUBCASE("got lower bmi") { CHECK(low_bmi < ideal_bmi); }
         }
@@ -178,7 +180,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
         double ideal_mass = creaturecreator.getBodyMass(
             bodysize, weight, min_weight, ideal_bmi, min_bmi, max_bmi);
 
-        //CAPTURE(ideal_mass);
+        // CAPTURE(ideal_mass);
 
         SUBCASE("got body mass") { CHECK(ideal_mass > 0.0f); }
 
@@ -205,15 +207,16 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
 
                 SUBCASE("got bmi from mass") {
                     CHECK(bodysize_mass > 0.0f);
-                    CHECK(bodysize_mass == doctest::Approx(bodysize).epsilon(0.01));
+                    CHECK(bodysize_mass ==
+                          doctest::Approx(bodysize).epsilon(0.01));
                 }
             }
         }
 
 
         SUBCASE("get low bmi by lower weight") {
-            double low_bmi = creaturecreator.getBMI(gene, min_weight, max_weight,
-                                                   low_weight, bodysize);
+            double low_bmi = creaturecreator.getBMI(
+                gene, min_weight, max_weight, low_weight, bodysize);
 
             SUBCASE("got lower bmi") { CHECK(low_bmi < ideal_bmi); }
         }
@@ -263,7 +266,8 @@ TEST_CASE("create Creature Entity with Creatue Data") {
 
     creaturecreator.create(entity, creature, time, 1.0f);
 
-    auto creaturebattler = entity.component<gamecomp::CreatureBattlerComponent>();
+    auto creaturebattler =
+        entity.component<gamecomp::CreatureBattlerComponent>();
 
 
     SUBCASE("CreatureBattler minimal level") {
@@ -281,25 +285,25 @@ TEST_CASE("create Creature Entity with Creatue Data") {
     SUBCASE("CreatureBattler has right base Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler->attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right base Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
         CHECK(earr::enum_array_at(creaturebattler->attrbase, index) >=
-                creature.getAttrBasis(index));
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right inflation Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler->attrinf, index) >=
-                creature.getAttrInflation(index));
+              creature.getAttrInflation(index));
     }
 
     SUBCASE("CreatureBattler has right inflation Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
         CHECK(earr::enum_array_at(creaturebattler->attrinf, index) >=
-                creature.getAttrInflation(index));
+              creature.getAttrInflation(index));
     }
 
 
@@ -308,27 +312,27 @@ TEST_CASE("create Creature Entity with Creatue Data") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler->attrparam, index)
-                    .at(static_cast<size_t>(creature.getMinLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMinLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right Attribute, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
         CHECK(earr::enum_array_at(creaturebattler->attrparam, index)
-                    .at(static_cast<size_t>(creature.getMaxLvL())) >=
-                creature.getAttrBasis(index));
+                  .at(static_cast<size_t>(creature.getMaxLvL())) >=
+              creature.getAttrBasis(index));
     }
 
     SUBCASE("Attibutes has right size, minlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler->attrparam, index).size() >=
-                static_cast<size_t>(creature.getMinLvL()));
+              static_cast<size_t>(creature.getMinLvL()));
     }
 
     SUBCASE("Attibutes has right size, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         CHECK(earr::enum_array_at(creaturebattler->attrparam, index).size() >=
-                static_cast<size_t>(creature.getMaxLvL()));
+              static_cast<size_t>(creature.getMaxLvL()));
     }
 }

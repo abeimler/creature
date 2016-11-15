@@ -28,7 +28,7 @@ TEST_CASE("create CreatureLife Component") {
 
     SUBCASE("CreatureCircadianRhythm is set") {
         CHECK(creature.getCreatureCircadianRhythm() ==
-                life.creaturecircadianrhythm);
+              life.creaturecircadianrhythm);
     }
 
     SUBCASE("oldLevel is set") { CHECK(battler.lvl == life.oldlevel); }
@@ -54,6 +54,7 @@ TEST_CASE("create CreatureLife Component") {
     }
 
     SUBCASE("Creature has none special status") {
-        CHECK_FALSE(earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Hungry));
+        CHECK_FALSE(
+            earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Hungry));
     }
 }

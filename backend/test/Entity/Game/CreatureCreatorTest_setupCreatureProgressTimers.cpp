@@ -115,45 +115,53 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
     }
 
     SUBCASE("Hungry Timer waittime is set") {
-        std::chrono::milliseconds timer_waittime = gameentity::CreatureEntityCreator::getCreatureProgressTimersWaitTime(timers.timer, 
-            +gamecomp::CreatureProgressTimer::Hungry, 
-            CreatureTestData::CREATURELEVEL);
+        std::chrono::milliseconds timer_waittime = gameentity::
+            CreatureEntityCreator::getCreatureProgressTimersWaitTime(
+                timers.timer, +gamecomp::CreatureProgressTimer::Hungry,
+                CreatureTestData::CREATURELEVEL);
 
 
-        auto& perevolution = earr::enum_array_at(gene.perevolution, 
-            CreatureTestData::CREATURELEVEL);
+        auto& perevolution = earr::enum_array_at(
+            gene.perevolution, CreatureTestData::CREATURELEVEL);
 
-        std::chrono::milliseconds gene_waittime = earr::enum_array_at(perevolution.waittime.timer,
-            +gamecomp::CreatureProgressTimer::Hungry);
+        std::chrono::milliseconds gene_waittime =
+            earr::enum_array_at(perevolution.waittime.timer,
+                                +gamecomp::CreatureProgressTimer::Hungry);
 
         CHECK(timer_waittime == gene_waittime);
     }
 
     SUBCASE("Digestion Timer waittime is set") {
-        std::chrono::milliseconds timer_waittime = gameentity::CreatureEntityCreator::getCreatureProgressTimersWaitTime(timers.callback, 
-            +gamecomp::CreatureProgressTimerCallback::Digestion, 
-            CreatureTestData::CREATURELEVEL);
-        
+        std::chrono::milliseconds timer_waittime = gameentity::
+            CreatureEntityCreator::getCreatureProgressTimersWaitTime(
+                timers.callback,
+                +gamecomp::CreatureProgressTimerCallback::Digestion,
+                CreatureTestData::CREATURELEVEL);
 
-        auto& perevolution = earr::enum_array_at(gene.perevolution, 
-            CreatureTestData::CREATURELEVEL);
 
-        std::chrono::milliseconds gene_waittime = earr::enum_array_at(perevolution.waittime.callback,
+        auto& perevolution = earr::enum_array_at(
+            gene.perevolution, CreatureTestData::CREATURELEVEL);
+
+        std::chrono::milliseconds gene_waittime = earr::enum_array_at(
+            perevolution.waittime.callback,
             +gamecomp::CreatureProgressTimerCallback::Digestion);
 
         CHECK(timer_waittime == gene_waittime);
     }
 
     SUBCASE("Growing Timer waittime is set") {
-        std::chrono::milliseconds timer_waittime = gameentity::CreatureEntityCreator::getCreatureProgressTimersWaitTime(timers.increment, 
-            +gamecomp::CreatureProgressTimerIncrement::Growing, 
-            CreatureTestData::CREATURELEVEL);
+        std::chrono::milliseconds timer_waittime = gameentity::
+            CreatureEntityCreator::getCreatureProgressTimersWaitTime(
+                timers.increment,
+                +gamecomp::CreatureProgressTimerIncrement::Growing,
+                CreatureTestData::CREATURELEVEL);
 
 
-        auto& perevolution = earr::enum_array_at(gene.perevolution, 
-            CreatureTestData::CREATURELEVEL);
+        auto& perevolution = earr::enum_array_at(
+            gene.perevolution, CreatureTestData::CREATURELEVEL);
 
-        std::chrono::milliseconds gene_waittime = earr::enum_array_at(perevolution.waittime.increment,
+        std::chrono::milliseconds gene_waittime = earr::enum_array_at(
+            perevolution.waittime.increment,
             +gamecomp::CreatureProgressTimerIncrement::Growing);
 
 
@@ -161,51 +169,58 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
     }
 
     SUBCASE("Starvation Timer waittime is set") {
-        std::chrono::milliseconds timer_waittime = gameentity::CreatureEntityCreator::getCreatureProgressTimersWaitTime(timers.starvation, 
-            +gamecomp::StarvationPhase::Phase1, 
-            CreatureTestData::CREATURELEVEL);
+        std::chrono::milliseconds timer_waittime = gameentity::
+            CreatureEntityCreator::getCreatureProgressTimersWaitTime(
+                timers.starvation, +gamecomp::StarvationPhase::Phase1,
+                CreatureTestData::CREATURELEVEL);
 
-        
-        auto& perevolution = earr::enum_array_at(gene.perevolution, 
-            CreatureTestData::CREATURELEVEL);
 
-        std::chrono::milliseconds gene_waittime = earr::enum_array_at(perevolution.waittime.starvation,
-            +gamecomp::StarvationPhase::Phase1);
+        auto& perevolution = earr::enum_array_at(
+            gene.perevolution, CreatureTestData::CREATURELEVEL);
+
+        std::chrono::milliseconds gene_waittime =
+            earr::enum_array_at(perevolution.waittime.starvation,
+                                +gamecomp::StarvationPhase::Phase1);
 
 
         CHECK(timer_waittime == gene_waittime);
     }
 
     SUBCASE("ShortMemoryTerm Timer waittime is set") {
-        auto& shortterm_memory_timer = earr::enum_array_at(timers.memory, 
-            +gamecomp::CreatureActivity::Eat).shortterm;
-        std::chrono::milliseconds timer_waittime = earr::enum_array_at(
-            shortterm_memory_timer.base.waittime, 
-            CreatureTestData::CREATURELEVEL);
+        auto& shortterm_memory_timer =
+            earr::enum_array_at(timers.memory, +gamecomp::CreatureActivity::Eat)
+                .shortterm;
+        std::chrono::milliseconds timer_waittime =
+            earr::enum_array_at(shortterm_memory_timer.base.waittime,
+                                CreatureTestData::CREATURELEVEL);
 
 
-        auto& perevolution = earr::enum_array_at(gene.perevolution, 
-            CreatureTestData::CREATURELEVEL);
+        auto& perevolution = earr::enum_array_at(
+            gene.perevolution, CreatureTestData::CREATURELEVEL);
 
-        std::chrono::milliseconds gene_waittime = earr::enum_array_at(perevolution.waittime.shorttermmemory,
-            +gamecomp::CreatureActivity::Eat);
+        std::chrono::milliseconds gene_waittime =
+            earr::enum_array_at(perevolution.waittime.shorttermmemory,
+                                +gamecomp::CreatureActivity::Eat);
 
 
         CHECK(timer_waittime == gene_waittime);
     }
 
     SUBCASE("MediumMemoryTerm Timer waittime is set") {
-        auto& mediumterm_memory_timer = earr::enum_array_at(timers.memory, 
-            +gamecomp::CreatureActivity::Eat).mediumterm;
-        std::chrono::milliseconds timer_waittime = earr::enum_array_at(
-            mediumterm_memory_timer.base.waittime, CreatureTestData::CREATURELEVEL);
+        auto& mediumterm_memory_timer =
+            earr::enum_array_at(timers.memory, +gamecomp::CreatureActivity::Eat)
+                .mediumterm;
+        std::chrono::milliseconds timer_waittime =
+            earr::enum_array_at(mediumterm_memory_timer.base.waittime,
+                                CreatureTestData::CREATURELEVEL);
 
 
-        auto& perevolution = earr::enum_array_at(gene.perevolution, 
-            CreatureTestData::CREATURELEVEL);
+        auto& perevolution = earr::enum_array_at(
+            gene.perevolution, CreatureTestData::CREATURELEVEL);
 
-        std::chrono::milliseconds gene_waittime = earr::enum_array_at(perevolution.waittime.mediumtermmemory,
-            +gamecomp::CreatureActivity::Eat);
+        std::chrono::milliseconds gene_waittime =
+            earr::enum_array_at(perevolution.waittime.mediumtermmemory,
+                                +gamecomp::CreatureActivity::Eat);
 
         CHECK(timer_waittime == gene_waittime);
     }

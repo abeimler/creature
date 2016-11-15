@@ -17,20 +17,14 @@
 namespace gameevent {
 
 using EventBus = eventpp::Bus<
-  CreatureAddBattlerStatusEvent,
-  CreatureRemoveBattlerStatusEvent,
-  CreatureRecoverEvent,
-  CreatureAddExpEvent,
+    CreatureAddBattlerStatusEvent, CreatureRemoveBattlerStatusEvent,
+    CreatureRecoverEvent, CreatureAddExpEvent,
 
-  ProgressTimerCallbackEvent,
-  ProgressTimerIncrementEvent,
-  ProgressTimerStarvationPhaseEvent,
-  ProgressTimerShortTermMemoryEvent,
-  ProgressTimerMediumTermMemoryEvent
->;
+    ProgressTimerCallbackEvent, ProgressTimerIncrementEvent,
+    ProgressTimerStarvationPhaseEvent, ProgressTimerShortTermMemoryEvent,
+    ProgressTimerMediumTermMemoryEvent>;
 
 } // namespace gameevent
-
 
 
 

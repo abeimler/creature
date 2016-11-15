@@ -25,12 +25,12 @@ class dateutil {
     using days = std::chrono::duration<
         int, std::ratio_multiply<std::ratio<24>, std::chrono::hours::period>>;
 
-    template<typename T>
+    template <typename T>
     static constexpr bool is_leap_year(T year) {
         return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
-    template<typename T, typename U>
+    template <typename T, typename U>
     static constexpr int64_t days_in_month(T year, U month) {
         const auto& DIM = !is_leap_year(year) ? MONTH_DAYS : MONTH_DAYS_LEAP;
 

@@ -35,16 +35,17 @@ void TimerUtil::stop(comp::Timer& timer) {
 }
 
 std::chrono::nanoseconds TimerUtil::getTime(const comp::Timer& timer) {
-    
+
     auto now = std::chrono::high_resolution_clock::now().time_since_epoch();
-    auto timesincestart = (now > timer.starttime) 
-                            ? now - timer.starttime
-                            : std::chrono::nanoseconds::zero();
-    
+    auto timesincestart = (now > timer.starttime)
+                              ? now - timer.starttime
+                              : std::chrono::nanoseconds::zero();
+
     auto time = (timer.ispause)
-                    ? std::chrono::duration_cast<std::chrono::nanoseconds>(timer.pausetime) 
+                    ? std::chrono::duration_cast<std::chrono::nanoseconds>(
+                          timer.pausetime)
                     : timesincestart;
-    
-    return  (timer.isstart)? time : std::chrono::nanoseconds::zero();
+
+    return (timer.isstart) ? time : std::chrono::nanoseconds::zero();
 }
 } // namespace computil

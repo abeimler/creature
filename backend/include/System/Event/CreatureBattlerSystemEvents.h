@@ -13,19 +13,17 @@ struct CreatureAddBattlerStatusEvent {
     gameentity::Entity entity;
     data::BattlerStatus addstatus;
 
-    CreatureAddBattlerStatusEvent(
-        gameentity::Entity p_entity,
-        const data::BattlerStatus& p_addstatus)
+    CreatureAddBattlerStatusEvent(gameentity::Entity p_entity,
+                                  const data::BattlerStatus& p_addstatus)
         : entity(p_entity), addstatus(p_addstatus) {}
 };
 
-struct CreatureRemoveBattlerStatusEvent  {
+struct CreatureRemoveBattlerStatusEvent {
     gameentity::Entity entity;
     data::BattlerStatus removestatus;
 
-    CreatureRemoveBattlerStatusEvent(
-        gameentity::Entity p_entity,
-        const data::BattlerStatus& p_removestatus)
+    CreatureRemoveBattlerStatusEvent(gameentity::Entity p_entity,
+                                     const data::BattlerStatus& p_removestatus)
         : entity(p_entity), removestatus(p_removestatus) {}
 };
 

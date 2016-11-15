@@ -289,8 +289,7 @@ class BattlerStatus {
 
     void setExtent(const StatusExtent& extent) { this->extent_ = extent; }
 
-    void setElementResist(const Element& element,
-                          Resist resist) {
+    void setElementResist(const Element& element, Resist resist) {
         this->elementresist_[element.getName()] = resist;
     }
 
@@ -298,9 +297,7 @@ class BattlerStatus {
         this->removestatuses_.push_back(status.getName());
     }
 
-    void clearRemoveStatuses() {
-        this->removestatuses_.clear();
-    }
+    void clearRemoveStatuses() { this->removestatuses_.clear(); }
 
     void setNoSkillATK(int value) { this->noskillatk_ = value; }
 
@@ -310,7 +307,9 @@ class BattlerStatus {
 
     void setHitRate(double hitrate) { this->hitrate_ = hitrate; }
 
-    void setCriticalHitRate(double critical_hitrate) { this->critical_hitrate_ = critical_hitrate; }
+    void setCriticalHitRate(double critical_hitrate) {
+        this->critical_hitrate_ = critical_hitrate;
+    }
 
     void setEvaRate(double evarate) { this->evarate_ = evarate; }
 

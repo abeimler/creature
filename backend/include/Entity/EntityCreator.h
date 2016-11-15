@@ -5,7 +5,7 @@
 
 #include "basic.h"
 
-template<class Entity>
+template <class Entity>
 class EntityCreator {
     public:
     EntityCreator() = default;

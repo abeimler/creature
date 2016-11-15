@@ -105,9 +105,10 @@ class CreatureBattlerCreator {
 
 
     template <class T>
-    static std::vector<T> genAttrs(const data::Creature& creature,
-                                   const gamecomp::CreatureBattlerGeneComponent& gene,
-                                   data::Attribute attr) {
+    static std::vector<T>
+    genAttrs(const data::Creature& creature,
+             const gamecomp::CreatureBattlerGeneComponent& gene,
+             data::Attribute attr) {
         int minlvl = creature.getMinLvL();
         int maxlvl = creature.getMaxLvL();
         int inf = creature.getAttrInflation(attr);
@@ -120,7 +121,8 @@ class CreatureBattlerCreator {
 
     CreatureBattlerCreator();
 
-    gamecomp::CreatureDataComponent createCreatureData(const data::Creature& creature);
+    gamecomp::CreatureDataComponent
+    createCreatureData(const data::Creature& creature);
 
     gamecomp::CreatureBattlerComponent createCreatureBattler();
 
@@ -136,23 +138,23 @@ class CreatureBattlerCreator {
 
 
 
-    void loadCreatureBattler(gamecomp::CreatureBattlerComponent& battler,
-                             const data::Creature& creature,
-                             const gamecomp::CreatureBattlerGeneComponent& battlergene,
-                             int lvl);
+    void loadCreatureBattler(
+        gamecomp::CreatureBattlerComponent& battler,
+        const data::Creature& creature,
+        const gamecomp::CreatureBattlerGeneComponent& battlergene, int lvl);
 
-    inline void
-    loadCreatureBattler(gamecomp::CreatureBattlerComponent& battler,
-                        const data::Creature& creature,
-                        const gamecomp::CreatureBattlerGeneComponent& battlergene) {
+    inline void loadCreatureBattler(
+        gamecomp::CreatureBattlerComponent& battler,
+        const data::Creature& creature,
+        const gamecomp::CreatureBattlerGeneComponent& battlergene) {
         int start_lvl = creature.getStartLvL();
         loadCreatureBattler(battler, creature, battlergene, start_lvl);
     }
 
-    inline void
-    transformCreatureBattler(gamecomp::CreatureBattlerComponent& battler,
-                             const data::Creature& creature,
-                             const gamecomp::CreatureBattlerGeneComponent& battlergene) {
+    inline void transformCreatureBattler(
+        gamecomp::CreatureBattlerComponent& battler,
+        const data::Creature& creature,
+        const gamecomp::CreatureBattlerGeneComponent& battlergene) {
         loadCreatureBattler(battler, creature, battlergene, battler.lvl);
     }
 };

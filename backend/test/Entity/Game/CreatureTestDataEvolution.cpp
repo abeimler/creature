@@ -58,8 +58,7 @@ constexpr std::chrono::milliseconds CreatureTestEvolutionEgg::MIN_TRAINTIME;
 
 constexpr const char* CreatureTestEvolutionEgg::CREATURENAME;
 
-constexpr data::CreatureTrainTime
-    CreatureTestEvolutionEgg::CREATURETRAINTIME;
+constexpr data::CreatureTrainTime CreatureTestEvolutionEgg::CREATURETRAINTIME;
 
 constexpr float CreatureTestEvolutionEgg::MAX_HUNGRYOVERLAY_INTRAINING;
 constexpr float CreatureTestEvolutionEgg::MAX_THIRSTYOVERLAY_INTRAINING;
@@ -126,8 +125,7 @@ constexpr std::chrono::milliseconds CreatureTestEvolutionBaby::MIN_TRAINTIME;
 
 constexpr const char* CreatureTestEvolutionBaby::CREATURENAME;
 
-constexpr data::CreatureTrainTime
-    CreatureTestEvolutionBaby::CREATURETRAINTIME;
+constexpr data::CreatureTrainTime CreatureTestEvolutionBaby::CREATURETRAINTIME;
 
 constexpr float CreatureTestEvolutionBaby::MAX_HUNGRYOVERLAY_INTRAINING;
 constexpr float CreatureTestEvolutionBaby::MAX_THIRSTYOVERLAY_INTRAINING;
@@ -195,18 +193,13 @@ constexpr std::chrono::milliseconds CreatureTestEvolutionBaby2::MIN_TRAINTIME;
 
 constexpr const char* CreatureTestEvolutionBaby2::CREATURENAME;
 
-constexpr data::CreatureTrainTime
-    CreatureTestEvolutionBaby2::CREATURETRAINTIME;
+constexpr data::CreatureTrainTime CreatureTestEvolutionBaby2::CREATURETRAINTIME;
 
 constexpr float CreatureTestEvolutionBaby2::MAX_HUNGRYOVERLAY_INTRAINING;
 constexpr float CreatureTestEvolutionBaby2::MAX_THIRSTYOVERLAY_INTRAINING;
 constexpr float CreatureTestEvolutionBaby2::MAX_TIREDOVERLAY_INTRAINING;
 
 constexpr size_t CreatureTestEvolutionBaby2::MAX_SHORTMEMORY_SIZE;
-
-
-
-
 
 
 
@@ -233,34 +226,29 @@ data::Creature CreatureTestEvolution::make_DataCreature_Egg() {
 
 
     creature.setAttrBasis(data::Attribute::MaxHP,
-                           CreatureTestEvolutionEgg::MAXHP);
+                          CreatureTestEvolutionEgg::MAXHP);
     creature.setAttrBasis(data::Attribute::MaxMP,
-                           CreatureTestEvolutionEgg::MAXMP);
-    creature.setAttrBasis(data::Attribute::Atk,
-                           CreatureTestEvolutionEgg::ATK);
-    creature.setAttrBasis(data::Attribute::Def,
-                           CreatureTestEvolutionEgg::DEF);
-    creature.setAttrBasis(data::Attribute::Agi,
-                           CreatureTestEvolutionEgg::AGI);
-    creature.setAttrBasis(data::Attribute::Int,
-                           CreatureTestEvolutionEgg::INT);
-    creature.setAttrBasis(data::Attribute::Exp,
-                           CreatureTestEvolutionEgg::EXP);
+                          CreatureTestEvolutionEgg::MAXMP);
+    creature.setAttrBasis(data::Attribute::Atk, CreatureTestEvolutionEgg::ATK);
+    creature.setAttrBasis(data::Attribute::Def, CreatureTestEvolutionEgg::DEF);
+    creature.setAttrBasis(data::Attribute::Agi, CreatureTestEvolutionEgg::AGI);
+    creature.setAttrBasis(data::Attribute::Int, CreatureTestEvolutionEgg::INT);
+    creature.setAttrBasis(data::Attribute::Exp, CreatureTestEvolutionEgg::EXP);
 
     creature.setAttrInflation(data::Attribute::MaxHP,
-                               CreatureTestEvolutionEgg::ATTR_INFLATION);
+                              CreatureTestEvolutionEgg::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::MaxMP,
-                               CreatureTestEvolutionEgg::ATTR_INFLATION);
+                              CreatureTestEvolutionEgg::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Atk,
-                               CreatureTestEvolutionEgg::ATTR_INFLATION);
+                              CreatureTestEvolutionEgg::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Def,
-                               CreatureTestEvolutionEgg::ATTR_INFLATION);
+                              CreatureTestEvolutionEgg::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Agi,
-                               CreatureTestEvolutionEgg::ATTR_INFLATION);
+                              CreatureTestEvolutionEgg::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Int,
-                               CreatureTestEvolutionEgg::ATTR_INFLATION);
+                              CreatureTestEvolutionEgg::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Exp,
-                               CreatureTestEvolutionEgg::ATTR_INFLATION);
+                              CreatureTestEvolutionEgg::ATTR_INFLATION);
 
 
     data::EvolutionCondition condition;
@@ -294,34 +282,29 @@ data::Creature CreatureTestEvolution::make_DataCreature_Baby() {
 
 
     creature.setAttrBasis(data::Attribute::MaxHP,
-                           CreatureTestEvolutionBaby::MAXHP);
+                          CreatureTestEvolutionBaby::MAXHP);
     creature.setAttrBasis(data::Attribute::MaxMP,
-                           CreatureTestEvolutionBaby::MAXMP);
-    creature.setAttrBasis(data::Attribute::Atk,
-                           CreatureTestEvolutionBaby::ATK);
-    creature.setAttrBasis(data::Attribute::Def,
-                           CreatureTestEvolutionBaby::DEF);
-    creature.setAttrBasis(data::Attribute::Agi,
-                           CreatureTestEvolutionBaby::AGI);
-    creature.setAttrBasis(data::Attribute::Int,
-                           CreatureTestEvolutionBaby::INT);
-    creature.setAttrBasis(data::Attribute::Exp,
-                           CreatureTestEvolutionBaby::EXP);
+                          CreatureTestEvolutionBaby::MAXMP);
+    creature.setAttrBasis(data::Attribute::Atk, CreatureTestEvolutionBaby::ATK);
+    creature.setAttrBasis(data::Attribute::Def, CreatureTestEvolutionBaby::DEF);
+    creature.setAttrBasis(data::Attribute::Agi, CreatureTestEvolutionBaby::AGI);
+    creature.setAttrBasis(data::Attribute::Int, CreatureTestEvolutionBaby::INT);
+    creature.setAttrBasis(data::Attribute::Exp, CreatureTestEvolutionBaby::EXP);
 
     creature.setAttrInflation(data::Attribute::MaxHP,
-                               CreatureTestEvolutionBaby::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::MaxMP,
-                               CreatureTestEvolutionBaby::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Atk,
-                               CreatureTestEvolutionBaby::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Def,
-                               CreatureTestEvolutionBaby::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Agi,
-                               CreatureTestEvolutionBaby::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Int,
-                               CreatureTestEvolutionBaby::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Exp,
-                               CreatureTestEvolutionBaby::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby::ATTR_INFLATION);
 
     data::EvolutionCondition condition;
     condition.setTrainTimeEveryDay();
@@ -355,34 +338,34 @@ data::Creature CreatureTestEvolution::make_DataCreature_Baby2() {
 
 
     creature.setAttrBasis(data::Attribute::MaxHP,
-                           CreatureTestEvolutionBaby2::MAXHP);
+                          CreatureTestEvolutionBaby2::MAXHP);
     creature.setAttrBasis(data::Attribute::MaxMP,
-                           CreatureTestEvolutionBaby2::MAXMP);
+                          CreatureTestEvolutionBaby2::MAXMP);
     creature.setAttrBasis(data::Attribute::Atk,
-                           CreatureTestEvolutionBaby2::ATK);
+                          CreatureTestEvolutionBaby2::ATK);
     creature.setAttrBasis(data::Attribute::Def,
-                           CreatureTestEvolutionBaby2::DEF);
+                          CreatureTestEvolutionBaby2::DEF);
     creature.setAttrBasis(data::Attribute::Agi,
-                           CreatureTestEvolutionBaby2::AGI);
+                          CreatureTestEvolutionBaby2::AGI);
     creature.setAttrBasis(data::Attribute::Int,
-                           CreatureTestEvolutionBaby2::INT);
+                          CreatureTestEvolutionBaby2::INT);
     creature.setAttrBasis(data::Attribute::Exp,
-                           CreatureTestEvolutionBaby2::EXP);
+                          CreatureTestEvolutionBaby2::EXP);
 
     creature.setAttrInflation(data::Attribute::MaxHP,
-                               CreatureTestEvolutionBaby2::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby2::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::MaxMP,
-                               CreatureTestEvolutionBaby2::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby2::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Atk,
-                               CreatureTestEvolutionBaby2::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby2::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Def,
-                               CreatureTestEvolutionBaby2::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby2::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Agi,
-                               CreatureTestEvolutionBaby2::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby2::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Int,
-                               CreatureTestEvolutionBaby2::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby2::ATTR_INFLATION);
     creature.setAttrInflation(data::Attribute::Exp,
-                               CreatureTestEvolutionBaby2::ATTR_INFLATION);
+                              CreatureTestEvolutionBaby2::ATTR_INFLATION);
 
     data::EvolutionCondition condition;
     condition.setTrainTimeEveryDay();
@@ -394,7 +377,8 @@ data::Creature CreatureTestEvolution::make_DataCreature_Baby2() {
 }
 
 
-std::chrono::system_clock::time_point CreatureTestEvolution::make_time_point_01_01_2000() {
+std::chrono::system_clock::time_point
+CreatureTestEvolution::make_time_point_01_01_2000() {
     // create tm with 1/1/2000:
     std::tm timeinfo = std::tm();
     timeinfo.tm_year = 100; // year: 2000
@@ -419,7 +403,7 @@ CreatureTestEvolution::make_DataCreature_Evolutions() {
 
     baby2.addPrevCreature(baby);
 
-    return { egg, baby, baby2 };
+    return {egg, baby, baby2};
 }
 
 std::vector<std::shared_ptr<data::Creature>>
@@ -435,5 +419,5 @@ CreatureTestEvolution::make_DataCreature_Evolutions_shared_ptrs() {
 
     baby2->addPrevCreature(*baby);
 
-    return { egg, baby, baby2 };
+    return {egg, baby, baby2};
 }

@@ -75,7 +75,8 @@ constexpr double CreatureTestData::MAX_TIREDOVERLAY_INTRAINING;
 
 constexpr size_t CreatureTestData::MAX_SHORTMEMORY_SIZE;
 
-std::chrono::system_clock::time_point CreatureTestData::make_time_point_01_01_2000() {
+std::chrono::system_clock::time_point
+CreatureTestData::make_time_point_01_01_2000() {
     // create tm with 1/1/2000:
     std::tm timeinfo = std::tm();
     timeinfo.tm_year = 100; // year: 2000
@@ -116,20 +117,13 @@ data::Creature CreatureTestData::make_DataCreature() {
     creature.setAttrBasis(data::Attribute::Int, INT);
     creature.setAttrBasis(data::Attribute::Exp, EXP);
 
-    creature.setAttrInflation(data::Attribute::MaxHP,
-                               ATTR_INFLATION);
-    creature.setAttrInflation(data::Attribute::MaxMP,
-                               ATTR_INFLATION);
-    creature.setAttrInflation(data::Attribute::Atk,
-                               ATTR_INFLATION);
-    creature.setAttrInflation(data::Attribute::Def,
-                               ATTR_INFLATION);
-    creature.setAttrInflation(data::Attribute::Agi,
-                               ATTR_INFLATION);
-    creature.setAttrInflation(data::Attribute::Int,
-                               ATTR_INFLATION);
-    creature.setAttrInflation(data::Attribute::Exp,
-                               ATTR_INFLATION);
+    creature.setAttrInflation(data::Attribute::MaxHP, ATTR_INFLATION);
+    creature.setAttrInflation(data::Attribute::MaxMP, ATTR_INFLATION);
+    creature.setAttrInflation(data::Attribute::Atk, ATTR_INFLATION);
+    creature.setAttrInflation(data::Attribute::Def, ATTR_INFLATION);
+    creature.setAttrInflation(data::Attribute::Agi, ATTR_INFLATION);
+    creature.setAttrInflation(data::Attribute::Int, ATTR_INFLATION);
+    creature.setAttrInflation(data::Attribute::Exp, ATTR_INFLATION);
 
     return creature;
 }

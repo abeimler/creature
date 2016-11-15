@@ -129,6 +129,7 @@ target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${CREATURE_BACKEND_
 target_include_directories(${PROJECT_NAME}_benchmark SYSTEM PRIVATE ${CREATURE_BACKEND_BENCHMARK_PATH})
 
 target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
+target_link_libraries (${PROJECT_NAME}_benchmark PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 
 
@@ -144,29 +145,50 @@ if(CLANG_FORMAT)
 
   add_custom_target(
     clang-format_backend
-      COMMAND find ${CREATURE_BACKEND_SRC_PATH} -name '*.cpp' -name '*.h' -exec 
-        ${CLANG_FORMAT}
-        -style=file
-        -i
-        {} +
+      COMMAND find ${CREATURE_BACKEND_SRC_PATH} -name '*.cpp' -exec 
+          ${CLANG_FORMAT}
+          -style=file
+          -i
+          {} +
+        || find ${CREATURE_BACKEND_INCLUDE_PATH} -name '*.h' -exec 
+          ${CLANG_FORMAT}
+          -style=file
+          -i
+          {} +
+
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 
   add_custom_target(
     clang-format_backend_test
-      COMMAND find ${CREATURE_BACKEND_TEST_PATH} -name '*.cpp' -name '*.h' -exec 
-        ${CLANG_FORMAT}
-        -style=file
-        -i
-        {} +
+      COMMAND find ${CREATURE_BACKEND_TEST_PATH} -name '*.cpp' -exec 
+          ${CLANG_FORMAT}
+          -style=file
+          -i
+          {} +
+        || find ${CREATURE_BACKEND_TEST_PATH} -name '*.h' -exec 
+          ${CLANG_FORMAT}
+          -style=file
+          -i
+          {} +
+
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 
   add_custom_target(
     clang-format_backend_benchmark
-      COMMAND find ${CREATURE_BACKEND_BENCHMARK_PATH} -name '*.cpp' -name '*.h' -exec 
-        ${CLANG_FORMAT}
-        -style=file
-        -i
-        {} +
+      COMMAND find ${CREATURE_BACKEND_BENCHMARK_PATH} -name '*.cpp' -exec 
+          ${CLANG_FORMAT}
+          -style=file
+          -i
+          {} +
+        || find ${CREATURE_BACKEND_BENCHMARK_PATH} -name '*.h' -exec 
+          ${CLANG_FORMAT}
+          -style=file
+          -i
+          {} +
+
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 
 endif()
@@ -183,6 +205,8 @@ if(CLANG_TIDY)
         --header-filter=${CREATURE_BACKEND_INCLUDE_PATH} 
         -fix
         {} +
+
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
 
   add_custom_target(clang-tidy_backend_test
@@ -193,6 +217,8 @@ if(CLANG_TIDY)
         --header-filter=${CREATURE_BACKEND_TEST_PATH} 
         -fix
         {} +
+
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
 
   add_custom_target(clang-tidy_backend_benchmark
@@ -203,6 +229,8 @@ if(CLANG_TIDY)
         --header-filter=${CREATURE_BACKEND_BENCHMARK_PATH} 
         -fix
         {} +
+
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
 
 endif()

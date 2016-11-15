@@ -54,15 +54,13 @@ void DataCreatureMaker::initAfterData() {
 }
 
 
-void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::string name, DataCreatureClass cls, 
-    const rand_tuple_t& rand_attrBasis,
-    const rand_tuple_t& rand_attrInfla, 
-    const rand_tuple_t& rand_expBasis,
-    const rand_tuple_t& rand_expInfla,
+void DataCreatureMaker::makeDataCreature(
+    data::Creature& data_creature, std::string name, DataCreatureClass cls,
+    const rand_tuple_t& rand_attrBasis, const rand_tuple_t& rand_attrInfla,
+    const rand_tuple_t& rand_expBasis, const rand_tuple_t& rand_expInfla,
     data::CreatureCircadianRhythm creatureRhythm,
     data::CreatureLevel creatureLevel, std::string type_name,
-    const std::vector<std::string>& elements, 
-    const rand_tuple_t& minmax_lvl,
+    const std::vector<std::string>& elements, const rand_tuple_t& minmax_lvl,
     int criticalHit, int hitRate, float evol_weight, float bodysize,
     DataCreatureGender gender) {
 
@@ -70,11 +68,11 @@ void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::str
     data_creature.setName(name);
 
     auto type = this->datamanager_.findCreatureType(type_name);
-    if(type){
+    if (type) {
         data_creature.setCreatureType(*type);
     } else {
-        std::cout << "makeDataCreature: type " << type_name
-                      << " not found" << '\n';
+        std::cout << "makeDataCreature: type " << type_name << " not found"
+                  << '\n';
     }
 
     auto data_creature_attrBasis = data_creature.getAttrBasis();
@@ -82,7 +80,8 @@ void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::str
     for (auto attr : earr::Enum<data::Attribute>()) {
         auto& attrBasis = earr::enum_array_at(data_creature_attrBasis, attr);
 
-        attrBasis = util::random(std::get<0>(rand_attrBasis), std::get<1>(rand_attrBasis));
+        attrBasis = util::random(std::get<0>(rand_attrBasis),
+                                 std::get<1>(rand_attrBasis));
 
         attrBasis *= (attr == +data::Attribute::MaxHP)
                          ? util::random(40, 55) / 10.0f
@@ -97,9 +96,11 @@ void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::str
     auto data_creature_attrInflation = data_creature.getAttrInflation();
 
     for (auto attr : earr::Enum<data::Attribute>()) {
-        auto& attrInfla = earr::enum_array_at(data_creature_attrInflation, attr);
+        auto& attrInfla =
+            earr::enum_array_at(data_creature_attrInflation, attr);
 
-        attrInfla = util::random(std::get<0>(rand_attrInfla), std::get<1>(rand_attrInfla));
+        attrInfla = util::random(std::get<0>(rand_attrInfla),
+                                 std::get<1>(rand_attrInfla));
 
         attrInfla *= (attr == +data::Attribute::MaxHP)
                          ? util::random(40, 50) / 10.0f
@@ -110,10 +111,12 @@ void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::str
     }
     data_creature.setAttrInflation(data_creature_attrInflation);
 
-    data_creature.setAttrBasis(data::Attribute::Exp,
-                               util::random(std::get<0>(rand_expBasis), std::get<1>(rand_expBasis)));
-    data_creature.setAttrInflation(data::Attribute::Exp,
-                                   util::random(std::get<0>(rand_expInfla), std::get<1>(rand_expInfla)));
+    data_creature.setAttrBasis(
+        data::Attribute::Exp,
+        util::random(std::get<0>(rand_expBasis), std::get<1>(rand_expBasis)));
+    data_creature.setAttrInflation(
+        data::Attribute::Exp,
+        util::random(std::get<0>(rand_expInfla), std::get<1>(rand_expInfla)));
 
     data_creature.setCreatureCircadianRhythm(creatureRhythm);
     data_creature.setCriticalHitRate(criticalHit);
@@ -150,7 +153,8 @@ void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::str
         max_bmi = 50;
     }
     */
-    //float bodymass = this->creaturecreator_.getBodyMass(bodysize, evol_weight, min_weight, ideal_bmi, min_bmi, max_bmi);
+    // float bodymass = this->creaturecreator_.getBodyMass(bodysize,
+    // evol_weight, min_weight, ideal_bmi, min_bmi, max_bmi);
 
 
 
@@ -447,48 +451,48 @@ void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::str
 
     switch (gender) {
         case DataCreatureGender::None:
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Male, 0.0f);
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Female, 0.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Male,
+                                                0.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Female,
+                                                0.0f);
             data_creature.setGenderDistribution(
                 data::CreatureGender::Hermaphrodite, 0.0f);
             break;
         case DataCreatureGender::Normal:
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Male, 50.0f);
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Female, 50.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Male,
+                                                50.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Female,
+                                                50.0f);
             break;
         case DataCreatureGender::MoreMale:
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Male, 87.5f);
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Female, 12.5f);
+            data_creature.setGenderDistribution(data::CreatureGender::Male,
+                                                87.5f);
+            data_creature.setGenderDistribution(data::CreatureGender::Female,
+                                                12.5f);
             break;
         case DataCreatureGender::MoreFemale:
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Male, 12.5f);
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Female, 87.5f);
+            data_creature.setGenderDistribution(data::CreatureGender::Male,
+                                                12.5f);
+            data_creature.setGenderDistribution(data::CreatureGender::Female,
+                                                87.5f);
             break;
         case DataCreatureGender::OnlyMale:
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Male, 100.0f);
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Female, 0.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Male,
+                                                100.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Female,
+                                                0.0f);
             break;
         case DataCreatureGender::OnlyFemale:
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Male, 0.0f);
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Female, 100.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Male,
+                                                0.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Female,
+                                                100.0f);
             break;
         case DataCreatureGender::Hermaphrodite:
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Male, 0.0f);
-            data_creature.setGenderDistribution(
-                data::CreatureGender::Female, 0.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Male,
+                                                0.0f);
+            data_creature.setGenderDistribution(data::CreatureGender::Female,
+                                                0.0f);
             data_creature.setGenderDistribution(
                 data::CreatureGender::Hermaphrodite, 100.0f);
             break;
@@ -499,8 +503,7 @@ void DataCreatureMaker::makeDataCreature(data::Creature& data_creature, std::str
 
 void DataCreatureMaker::makeDataCreature(
     std::string name, std::string type, DataCreatureEvol state,
-    DataCreatureClass cls, 
-    const std::vector<std::string>& elements,
+    DataCreatureClass cls, const std::vector<std::string>& elements,
     data::CreatureCircadianRhythm creatureRhythm,
     data::CreatureLevel creatureLevel, float evol_weight, float bodysize,
     DataCreatureGender gender) {
@@ -524,66 +527,66 @@ void DataCreatureMaker::makeDataCreature(
 
     switch (creatureLevel) {
         case data::CreatureLevel::Baby:
-            rand_attrBasis = { 5, 10 };
-            rand_attrInfla = { 3, 6 };
-            rand_expBasis = { 64, 128 };
-            rand_expInfla = { 2, 8 };
-            minmax_lvl = { 1, 50 };
+            rand_attrBasis = {5, 10};
+            rand_attrInfla = {3, 6};
+            rand_expBasis = {64, 128};
+            rand_expInfla = {2, 8};
+            minmax_lvl = {1, 50};
             criticalHit = 10;
             hitRate = 80;
             break;
         case data::CreatureLevel::Baby2:
-            rand_attrBasis = { 5, 10 };
-            rand_attrInfla = { 4, 8 };
-            rand_expBasis = { 64, 128 };
-            rand_expInfla = { 2, 8 };
-            minmax_lvl = { 1, 80 };
+            rand_attrBasis = {5, 10};
+            rand_attrInfla = {4, 8};
+            rand_expBasis = {64, 128};
+            rand_expInfla = {2, 8};
+            minmax_lvl = {1, 80};
             criticalHit = 10;
             hitRate = 80;
             break;
         case data::CreatureLevel::Child:
-            rand_attrBasis = { 8, 15 };
-            rand_attrInfla = { 12, 18 };
-            rand_expBasis = { 64, 128 };
-            rand_expInfla = { 16, 32 };
-            minmax_lvl = { 1, 100 };
+            rand_attrBasis = {8, 15};
+            rand_attrInfla = {12, 18};
+            rand_expBasis = {64, 128};
+            rand_expInfla = {16, 32};
+            minmax_lvl = {1, 100};
             criticalHit = 20;
             hitRate = 90;
             break;
         case data::CreatureLevel::Adult:
-            rand_attrBasis = { 13, 21 };
-            rand_attrInfla = { 16, 25 };
-            rand_expBasis = { 128, 128 };
-            rand_expInfla = { 128, 256 };
-            minmax_lvl = { 1, 100 };
+            rand_attrBasis = {13, 21};
+            rand_attrInfla = {16, 25};
+            rand_expBasis = {128, 128};
+            rand_expInfla = {128, 256};
+            minmax_lvl = {1, 100};
             criticalHit = 30;
             hitRate = 90;
             break;
         case data::CreatureLevel::Perfect:
-            rand_attrBasis = { 18, 28 };
-            rand_attrInfla = { 23, 32 };
-            rand_expBasis = { 128, 256 };
-            rand_expInfla = { 128, 256 };
-            minmax_lvl = { 1, 128 };
+            rand_attrBasis = {18, 28};
+            rand_attrInfla = {23, 32};
+            rand_expBasis = {128, 256};
+            rand_expInfla = {128, 256};
+            minmax_lvl = {1, 128};
             criticalHit = 30;
             hitRate = 90;
             break;
         case data::CreatureLevel::Ultimate:
-            rand_attrBasis = { 25, 32 };
-            rand_attrInfla = { 29, 36 };
-            rand_expBasis = { 128, 256 };
-            rand_expInfla = { 128, 256 };
-            minmax_lvl = { 1, 255 };
+            rand_attrBasis = {25, 32};
+            rand_attrInfla = {29, 36};
+            rand_expBasis = {128, 256};
+            rand_expInfla = {128, 256};
+            minmax_lvl = {1, 255};
             criticalHit = 30;
             hitRate = 90;
             break;
         case data::CreatureLevel::Egg:
         case data::CreatureLevel::END:
-            rand_attrBasis = { 1, 1 };
-            rand_attrInfla = { 1, 1 };
-            rand_expBasis = { 1, 1 };
-            rand_expInfla = { 1, 1 };
-            minmax_lvl = { 1, 1 };
+            rand_attrBasis = {1, 1};
+            rand_attrInfla = {1, 1};
+            rand_expBasis = {1, 1};
+            rand_expInfla = {1, 1};
+            minmax_lvl = {1, 1};
             criticalHit = 0;
             hitRate = 0;
             break;
@@ -706,9 +709,8 @@ void DataCreatureMaker::makeDataCreature(
 void DataCreatureMaker::calcStatuses(data::Creature& creature) {
     creature.clearStatusResist();
     for (const auto& status : this->datamanager_.getCreatureBattlerStatuses()) {
-        if(status){
-            creature.setStatusResist(*status,
-                                     data::Resist::Normal);
+        if (status) {
+            creature.setStatusResist(*status, data::Resist::Normal);
         }
     }
 }
@@ -723,16 +725,14 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
             creature.addElement(*element);
         } else {
             std::cerr << "calcElements: " << elementname << " "
-                      << " Not Found"
-                      << '\n';
+                      << " Not Found" << '\n';
         }
-
     }
 
     std::unordered_map<std::string, int> count_elements_value;
     std::unordered_map<std::string, int> elements_value;
     for (const auto& element : this->datamanager_.getElements()) {
-        if(element){
+        if (element) {
             std::string element_name = element->getName();
             elements_value[element_name] = 100;
             count_elements_value[element_name] = 1;
@@ -741,7 +741,7 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
 
 
     for (const auto& element : this->datamanager_.getElements()) {
-        if(element){
+        if (element) {
             std::string element_name = element->getName();
 
             for (std::string elementname : elements) {
@@ -749,13 +749,16 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
                     elements_value[element_name] += 50;
                     count_elements_value[element_name]++;
                 } else {
-                    if (this->resists_.find(element_name) == std::end(this->resists_)) {
-                        std::cerr << "calcElements: Element in resists_ not found"
-                                << '\n';
+                    if (this->resists_.find(element_name) ==
+                        std::end(this->resists_)) {
+                        std::cerr
+                            << "calcElements: Element in resists_ not found"
+                            << '\n';
                         continue;
                     }
 
-                    const std::vector<std::string>& pluses = std::get<0>(this->resists_.at(element_name));
+                    const std::vector<std::string>& pluses =
+                        std::get<0>(this->resists_.at(element_name));
                     for (std::string plus_element : pluses) {
                         if (elementname == plus_element) {
                             elements_value[element_name] += 150;
@@ -765,7 +768,8 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
                         count_elements_value[element_name]++;
                     }
 
-                    const std::vector<std::string>& minuses = std::get<1>(this->resists_.at(element_name));
+                    const std::vector<std::string>& minuses =
+                        std::get<1>(this->resists_.at(element_name));
                     for (std::string minus_element : minuses) {
                         if (elementname == minus_element) {
                             elements_value[element_name] += 50;
@@ -780,7 +784,7 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
     }
 
     for (auto& element_value : elements_value) {
-        if(count_elements_value[element_value.first] != 0){
+        if (count_elements_value[element_value.first] != 0) {
             element_value.second /= count_elements_value[element_value.first];
         } else {
             element_value.second = 100;
@@ -791,31 +795,25 @@ void DataCreatureMaker::calcElements(data::Creature& creature,
     for (const auto& element_value : elements_value) {
         auto element = this->datamanager_.findElement(element_value.first);
 
-        if(element){
+        if (element) {
             if (element_value.second >= 200) {
                 creature.setElementResist(*element,
-                                        data::Resist::MoreSensitivity);
+                                          data::Resist::MoreSensitivity);
             } else if (element_value.second >= 150) {
-                creature.setElementResist(*element,
-                                        data::Resist::Sensitivity);
+                creature.setElementResist(*element, data::Resist::Sensitivity);
             } else if (element_value.second >= 100) {
-                creature.setElementResist(*element,
-                                        data::Resist::Normal);
+                creature.setElementResist(*element, data::Resist::Normal);
             } else if (element_value.second >= 50) {
-                creature.setElementResist(*element,
-                                        data::Resist::Resistance);
+                creature.setElementResist(*element, data::Resist::Resistance);
             } else if (element_value.second > 0) {
                 creature.setElementResist(*element,
-                                        data::Resist::MoreResistance);
+                                          data::Resist::MoreResistance);
             } else if (element_value.second == 0) {
-                creature.setElementResist(*element,
-                                        data::Resist::Immune);
+                creature.setElementResist(*element, data::Resist::Immune);
             } else if (element_value.second < 0) {
-                creature.setElementResist(*element,
-                                        data::Resist::Heal);
+                creature.setElementResist(*element, data::Resist::Heal);
             } else {
-                creature.setElementResist(*element,
-                                        data::Resist::Normal);
+                creature.setElementResist(*element, data::Resist::Normal);
             }
         }
     }

@@ -1,7 +1,7 @@
-#include <string>
-#include <vector>
-#include <thread>
 #include <memory>
+#include <string>
+#include <thread>
+#include <vector>
 
 #include "benchpress/benchpress.hpp"
 
@@ -9,7 +9,6 @@
 
 class EntityXBenchmark {
     public:
-
     struct PositionComponent {
         float x = 0.0f;
         float y = 0.0f;
@@ -29,18 +28,20 @@ class EntityXBenchmark {
 
 
     // Convenience types for our entity system.
-    using GameComponents = entityx::Components<
-        PositionComponent, DirectionComponent, ComflabulationComponent
-    >;
+    using GameComponents =
+        entityx::Components<PositionComponent, DirectionComponent,
+                            ComflabulationComponent>;
 
-    static constexpr size_t INITIAL_CAPACITY = 16384; // bignumber to avoid alloc error, benchmark a lot of enteties
-    using EntityManager = entityx::EntityX<GameComponents, entityx::ColumnStorage<GameComponents, INITIAL_CAPACITY>>;
+    static constexpr size_t INITIAL_CAPACITY =
+        16384; // bignumber to avoid alloc error, benchmark a lot of enteties
+    using EntityManager = entityx::EntityX<
+        GameComponents,
+        entityx::ColumnStorage<GameComponents, INITIAL_CAPACITY>>;
 
     template <typename C>
     using Component = EntityManager::Component<C>;
 
     using Entity = EntityManager::Entity;
-
 
 
 
@@ -66,7 +67,10 @@ class EntityXBenchmark {
             Component<PositionComponent> position;
             Component<DirectionComponent> direction;
 
-            for (Entity entity : es.entities_with_components<PositionComponent, DirectionComponent>(position, direction)) {
+            for (Entity entity :
+                 es.entities_with_components<PositionComponent,
+                                             DirectionComponent>(position,
+                                                                 direction)) {
                 position->x += direction->x * dt;
                 position->y += direction->y * dt;
             }
@@ -80,11 +84,13 @@ class EntityXBenchmark {
         void update(EntityManager& es, double dt) override {
             Component<ComflabulationComponent> comflab;
 
-            for (Entity entity : es.entities_with_components<ComflabulationComponent>(comflab)) {
+            for (Entity entity :
+                 es.entities_with_components<ComflabulationComponent>(
+                     comflab)) {
                 comflab->thingy *= 1.000001f;
                 comflab->mingy = !comflab->mingy;
                 comflab->dingy++;
-                //comflab.stringy = std::to_string(comflab.dingy);
+                // comflab.stringy = std::to_string(comflab.dingy);
             }
         }
     };
@@ -103,7 +109,9 @@ class EntityXBenchmark {
         }
 
         EntityManager& getEntityManager() { return this->entities_; }
-        const EntityManager& getEntityManager() const { return this->entities_; }
+        const EntityManager& getEntityManager() const {
+            return this->entities_;
+        }
 
         private:
         EntityManager entities_;
@@ -115,236 +123,257 @@ class EntityXBenchmark {
 
 
 
-BENCHMARK("entityx create destroy entity with components", [](benchpress::context* ctx) {
-    EntityXBenchmark::EntityManager entities;
+BENCHMARK("entityx create destroy entity with components",
+          [](benchpress::context* ctx) {
+              EntityXBenchmark::EntityManager entities;
 
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        auto entity = entities.create();
+              ctx->reset_timer();
+              for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+                  auto entity = entities.create();
 
-        entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
-		entity.assign<EntityXBenchmark::ComflabulationComponent>();
+                  entity.assign<EntityXBenchmark::PositionComponent>();
+                  entity.assign<EntityXBenchmark::DirectionComponent>();
+                  entity.assign<EntityXBenchmark::ComflabulationComponent>();
 
-        entities.destroy(entity.id());
-    }
-})
-
-
-
-BENCHMARK("entityx    25 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
-
-    for (size_t i = 0; i < 25; i++) {
-		auto entity = entities.create();
-
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
-
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
-
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
-
-BENCHMARK("entityx    50 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
-
-    for (size_t i = 0; i < 50; i++) {
-		auto entity = entities.create();
-
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
-
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
-
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
-
-BENCHMARK("entityx   100 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
-
-    for (size_t i = 0; i < 100; i++) {
-		auto entity = entities.create();
-
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
-
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
-
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
-
-BENCHMARK("entityx   200 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
-
-    for (size_t i = 0; i < 200; i++) {
-		auto entity = entities.create();
-
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
-
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
-
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
-
-
-BENCHMARK("entityx   400 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
-
-    for (size_t i = 0; i < 400; i++) {
-		auto entity = entities.create();
-
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
-
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
-
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
-
-
-BENCHMARK("entityx   800 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
-
-    for (size_t i = 0; i < 800; i++) {
-		auto entity = entities.create();
-
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
-
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
-
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
-
-
-BENCHMARK("entityx  1600 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
-
-    for (size_t i = 0; i < 1600; i++) {
-		auto entity = entities.create();
-
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
-
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
-
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
+                  entities.destroy(entity.id());
+              }
+          })
 
 
 
-BENCHMARK("entityx  3200 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
+BENCHMARK(
+    "entityx    25 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
 
-    for (size_t i = 0; i < 3200; i++) {
-		auto entity = entities.create();
+        for (size_t i = 0; i < 25; i++) {
+            auto entity = entities.create();
 
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
 
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
 
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
+
+BENCHMARK(
+    "entityx    50 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
+
+        for (size_t i = 0; i < 50; i++) {
+            auto entity = entities.create();
+
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
+
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
+
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
+
+BENCHMARK(
+    "entityx   100 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
+
+        for (size_t i = 0; i < 100; i++) {
+            auto entity = entities.create();
+
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
+
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
+
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
+
+BENCHMARK(
+    "entityx   200 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
+
+        for (size_t i = 0; i < 200; i++) {
+            auto entity = entities.create();
+
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
+
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
+
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
 
 
-BENCHMARK("entityx  5000 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
+BENCHMARK(
+    "entityx   400 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
 
-    for (size_t i = 0; i < 5000; i++) {
-		auto entity = entities.create();
+        for (size_t i = 0; i < 400; i++) {
+            auto entity = entities.create();
 
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
 
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
 
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
 
 
-BENCHMARK("entityx 10000 entities component systems update", [](benchpress::context* ctx) {
-    EntityXBenchmark::Application app;
-    auto& entities = app.getEntityManager();
+BENCHMARK(
+    "entityx   800 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
 
-    for (size_t i = 0; i < 10000; i++) {
-		auto entity = entities.create();
+        for (size_t i = 0; i < 800; i++) {
+            auto entity = entities.create();
 
-		entity.assign<EntityXBenchmark::PositionComponent>();
-		entity.assign<EntityXBenchmark::DirectionComponent>();
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
 
-		if (i % 2) {
-			entity.assign<EntityXBenchmark::ComflabulationComponent>();
-		}
-	}
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
 
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        app.update(EntityXBenchmark::fakeDeltaTime);
-    }
-})
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
+
+
+BENCHMARK(
+    "entityx  1600 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
+
+        for (size_t i = 0; i < 1600; i++) {
+            auto entity = entities.create();
+
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
+
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
+
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
+
+
+
+BENCHMARK(
+    "entityx  3200 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
+
+        for (size_t i = 0; i < 3200; i++) {
+            auto entity = entities.create();
+
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
+
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
+
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
+
+
+BENCHMARK(
+    "entityx  5000 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
+
+        for (size_t i = 0; i < 5000; i++) {
+            auto entity = entities.create();
+
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
+
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
+
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })
+
+
+BENCHMARK(
+    "entityx 10000 entities component systems update",
+    [](benchpress::context* ctx) {
+        EntityXBenchmark::Application app;
+        auto& entities = app.getEntityManager();
+
+        for (size_t i = 0; i < 10000; i++) {
+            auto entity = entities.create();
+
+            entity.assign<EntityXBenchmark::PositionComponent>();
+            entity.assign<EntityXBenchmark::DirectionComponent>();
+
+            if (i % 2) {
+                entity.assign<EntityXBenchmark::ComflabulationComponent>();
+            }
+        }
+
+        ctx->reset_timer();
+        for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+            app.update(EntityXBenchmark::fakeDeltaTime);
+        }
+    })

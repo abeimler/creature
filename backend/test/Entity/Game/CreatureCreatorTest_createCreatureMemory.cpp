@@ -22,13 +22,12 @@ TEST_CASE("create CreatureMemory Component") {
         int higher_range = maxsize + variance;
 
         SUBCASE("maxShortMemorySize is in right lower range") {
-            CHECK(static_cast<int>(memory.max_short_memorysize) >=
-                    lower_range);
+            CHECK(static_cast<int>(memory.max_short_memorysize) >= lower_range);
         }
 
         SUBCASE("maxShortMemorySize is in right upper range") {
             CHECK(static_cast<int>(memory.max_short_memorysize) <=
-                    higher_range);
+                  higher_range);
         }
     }
 }
