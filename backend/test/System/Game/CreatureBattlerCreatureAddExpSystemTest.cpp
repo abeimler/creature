@@ -6,12 +6,12 @@
 
 #include "System/Game/CreatureBattlerCreatureAddExpSystem.h"
 
-class EventListenerMockup
+class AddExpEventListenerMockup
     : public gamesystem::Listener<gameevent::CreatureAddExpEvent> {
     public:
     bool emitevent = false;
 
-    EventListenerMockup() = default;
+    AddExpEventListenerMockup() = default;
 
     void update(const gameevent::CreatureAddExpEvent&  /*event*/,
                 EntityManager&  /*entities*/, EventBus&  /*events*/,
@@ -23,8 +23,9 @@ class EventListenerMockup
 class CreatureBattlerCreatureAddExpSystemApplication
     : public gamesystem::Application {
     public:
-    std::shared_ptr<EventListenerMockup> eventlistenermockup =
-        std::make_shared<EventListenerMockup>();
+    std::shared_ptr<AddExpEventListenerMockup> eventlistenermockup =
+        std::make_shared<AddExpEventListenerMockup>();
+        
     std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpSystem>
         creatureBattlerCreatureAddExpSystem =
             std::make_shared<gamesystem::CreatureBattlerCreatureAddExpSystem>();

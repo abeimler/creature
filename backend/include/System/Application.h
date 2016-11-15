@@ -46,19 +46,17 @@ class Application {
         this->addSystem<Event>(listener);
     }
 
-    /*
     template<typename T, typename... Args>
-    void addSystem(Args&&... args) {
+    void makeSystem(Args&&... args) {
         auto system = std::make_shared<T>( std::forward<Args>(args)... );
         this->addSystem(system);
     }
 
     template<typename T, typename... Args>
-    void addListener(Args&&... args) {
+    void makeListener(Args&&... args) {
         auto listener = std::make_shared<T>( std::forward<Args>(args)... );
         this->addListener(listener);
     }
-    */
 
     /*
     template<class Event>
@@ -72,8 +70,7 @@ class Application {
 
     template<typename T, typename... Args>
     void add(Args&&... args) {
-        auto system_listener = std::make_shared<T>( std::forward<Args>(args)...
-    );
+        auto system_listener = std::make_shared<T>( std::forward<Args>(args)... );
         this->add(system_listener);
     }
     */
@@ -84,11 +81,6 @@ class Application {
         for (auto& system : this->systems_) {
             system->update(this->entities_, this->events_, dt);
         }
-    }
-
-    template <class Event>
-    void emit_event(System::EventBus& events, const Event& e) {
-        System::emit_event<Event>(this->events_, e);
     }
 
     template <class Event, typename... Args>

@@ -34,11 +34,6 @@ class System {
     virtual void update(EntityManager& entities, EventBus& events,
                         TimeDelta dt) = 0;
 
-    template <class Event>
-    static void emit_event(EventBus& events, const Event& e) {
-        events.publish<Event>(e);
-    }
-
     template <class Event, typename... Args>
     static void emit_event(EventBus& events, Args&&... args) {
         events.publish<Event>(std::forward<Args>(args)...);
