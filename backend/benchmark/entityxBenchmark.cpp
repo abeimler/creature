@@ -32,8 +32,8 @@ class EntityXBenchmark {
         entityx::Components<PositionComponent, DirectionComponent,
                             ComflabulationComponent>;
 
-    static constexpr size_t INITIAL_CAPACITY =
-        16384; // bignumber to avoid alloc error, benchmark a lot of enteties
+    // bignumber to avoid alloc error, benchmark a lot of enteties
+    static constexpr size_t INITIAL_CAPACITY = 16384; 
     using EntityManager = entityx::EntityX<
         GameComponents,
         entityx::ColumnStorage<GameComponents, INITIAL_CAPACITY>>;
@@ -142,7 +142,7 @@ BENCHMARK("entityx create destroy entity with components",
 
 
 BENCHMARK(
-    "entityx    25 entities component systems update",
+    "[25]    entityx    25 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -165,7 +165,7 @@ BENCHMARK(
     })
 
 BENCHMARK(
-    "entityx    50 entities component systems update",
+    "[50]    entityx    50 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -188,7 +188,7 @@ BENCHMARK(
     })
 
 BENCHMARK(
-    "entityx   100 entities component systems update",
+    "[100]   entityx   100 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -211,7 +211,7 @@ BENCHMARK(
     })
 
 BENCHMARK(
-    "entityx   200 entities component systems update",
+    "[200]   entityx   200 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -235,7 +235,7 @@ BENCHMARK(
 
 
 BENCHMARK(
-    "entityx   400 entities component systems update",
+    "[400]   entityx   400 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -259,7 +259,7 @@ BENCHMARK(
 
 
 BENCHMARK(
-    "entityx   800 entities component systems update",
+    "[800]   entityx   800 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -283,7 +283,7 @@ BENCHMARK(
 
 
 BENCHMARK(
-    "entityx  1600 entities component systems update",
+    "[1600]  entityx  1600 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -308,7 +308,7 @@ BENCHMARK(
 
 
 BENCHMARK(
-    "entityx  3200 entities component systems update",
+    "[3200]  entityx  3200 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -332,7 +332,7 @@ BENCHMARK(
 
 
 BENCHMARK(
-    "entityx  5000 entities component systems update",
+    "[5000]  entityx  5000 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();
@@ -356,7 +356,7 @@ BENCHMARK(
 
 
 BENCHMARK(
-    "entityx 10000 entities component systems update",
+    "[10000] entityx 10000 entities component systems update",
     [](benchpress::context* ctx) {
         EntityXBenchmark::Application app;
         auto& entities = app.getEntityManager();

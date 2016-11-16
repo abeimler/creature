@@ -3,7 +3,7 @@
 #include "Entity/Game/CreatureEntityCreator.h"
 
 
-BENCHMARK("CreatureCreator create entity assign destory",
+BENCHMARK("CreatureEntityCreator create entity assign destory",
           [](benchpress::context* ctx) {
               gameentity::EntityManager entities;
               gameentity::CreatureEntityCreator creator;
