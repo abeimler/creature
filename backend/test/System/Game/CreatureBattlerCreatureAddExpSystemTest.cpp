@@ -86,7 +86,7 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
         WHEN("emit addExp-Event") {
             app.emit_event<gameevent::CreatureAddExpEvent>(entity, add_exp);
 
-            AND_WHEN("update manager") {
+            AND_WHEN("update entities") {
                 app.update(app.FAKE_TIMEDELTA);
 
                 REQUIRE(app.eventlistenermockup->emitevent);
@@ -121,7 +121,7 @@ SCENARIO(
         WHEN("emit addExp-Event") {
             app.emit_event<gameevent::CreatureAddExpEvent>(entity, add_exp);
 
-            AND_WHEN("update manager") {
+            AND_WHEN("update entities") {
                 app.update(app.FAKE_TIMEDELTA);
 
                 REQUIRE(app.eventlistenermockup->emitevent);

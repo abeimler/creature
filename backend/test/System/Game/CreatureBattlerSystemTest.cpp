@@ -180,7 +180,7 @@ SCENARIO("Creature Entity with BattlerStatus then update StatusRestrictionOption
         auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
 
         WHEN("update entities") {
-            app.update(0.1f);
+            app.update(CreatureBattlerSystemApplication::FAKE_TIMEDELTA);
 
             THEN("StatusRestrictionOption is AtkAll") {
                 CHECK(creature_battler->status_restriction == +data::StatusRestrictionOption::AtkAll);

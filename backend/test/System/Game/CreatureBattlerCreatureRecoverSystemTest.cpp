@@ -67,7 +67,7 @@ SCENARIO("Creature Entity with low hp mp emit recover-Event to heal hp mp") {
         WHEN("emit recover-Event") {
             app.emit_event<gameevent::CreatureRecoverEvent>(entity);
 
-            AND_WHEN("update manager") {
+            AND_WHEN("update entities") {
                 app.update(app.FAKE_TIMEDELTA);
 
                 REQUIRE(app.eventlistenermockup->emitevent);

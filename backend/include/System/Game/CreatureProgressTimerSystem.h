@@ -55,6 +55,8 @@ class CreatureProgressTimerSystem : public System {
                                        gamecomp::CreatureActivity activity);
 
     public:
+    CreatureProgressTimerSystem() = default;
+
     void setIgnoreTimer(bool ignortimer) { this->ignortimer_ = ignortimer; }
     bool isIgnoreTimer() const { return this->ignortimer_; }
 

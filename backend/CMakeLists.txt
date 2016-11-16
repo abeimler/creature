@@ -106,6 +106,7 @@ target_include_directories(${PROJECT_NAME}_test SYSTEM PRIVATE ${CREATURE_BACKEN
 target_include_directories(${PROJECT_NAME}_test PRIVATE ${CREATURE_BACKEND_TEST_PATH})
 
 target_compile_options(${PROJECT_NAME}_test PRIVATE -fexceptions)
+target_link_libraries (${PROJECT_NAME}_test PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 
 
 enable_testing ()
