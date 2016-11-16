@@ -193,7 +193,7 @@ double CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
 }
 
 void CreatureProgressTimerSystem::update(EntityManager& entities,
-                                         EventBus& events, TimeDelta  /*dt*/) {
+                                         EventBus& events, TimeDelta /*dt*/) {
     gameentity::Component<gamecomp::CreatureProgressTimersComponent>
         creatureprogresstimers;
 

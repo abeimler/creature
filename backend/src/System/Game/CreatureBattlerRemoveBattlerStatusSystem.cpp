@@ -60,7 +60,7 @@ void CreatureBattlerRemoveBattlerStatusSystem::removeStartBattlerStatusTurn(
 
 void CreatureBattlerRemoveBattlerStatusSystem::update(
     const gameevent::CreatureRemoveBattlerStatusEvent& event,
-    EntityManager& entities, EventBus&  /*events*/, TimeDelta  /*dt*/) {
+    EntityManager& entities, EventBus& /*events*/, TimeDelta /*dt*/) {
     Component<gamecomp::BattlerStatusesComponent> battlerstatuses;
 
     for (auto entity : entities.entities_with_components(battlerstatuses)) {
@@ -71,4 +71,4 @@ void CreatureBattlerRemoveBattlerStatusSystem::update(
         sortBattlerStatuses(battlerstatuses->statuses_name);
     }
 }
-}  // namespace gamesystem
+} // namespace gamesystem

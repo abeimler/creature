@@ -25,4 +25,4 @@ SkillDataManager::SkillDataManager() : DataManagerBase(findDataByName) {}
 
 CreatureStarterDataManager::CreatureStarterDataManager()
     : DataManagerBase(findDataByName) {}
-}  // namespace gameentity
+} // namespace gameentity

@@ -28,7 +28,7 @@ Creature::Creature() {
     }
 }
 
-Creature::Creature(Battler  battler) : Battler(std::move(battler)) {
+Creature::Creature(Battler battler) : Battler(std::move(battler)) {
     for (size_t i = 0; i < this->genderdistribution_.size(); i++) {
         this->genderdistribution_[i] = [&]() {
             auto index = CreatureGender::_from_integral_nothrow(i);

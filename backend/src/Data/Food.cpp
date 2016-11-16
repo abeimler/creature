@@ -2,6 +2,6 @@
 
 namespace data {
 
-Food::Food(UseItem  item) : UseItem(std::move(item)) {}
+Food::Food(UseItem item) : UseItem(std::move(item)) {}
 
 } // namespace data

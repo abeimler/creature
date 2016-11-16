@@ -59,4 +59,4 @@ std::chrono::nanoseconds Timer::getTimeNanosec() const {
     return (this->isstart_) ? time : std::chrono::nanoseconds::zero();
 }
 
-}  // namespace data
+} // namespace data

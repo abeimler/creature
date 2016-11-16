@@ -13,9 +13,9 @@ class RecoverEventListenerMockup
 
     RecoverEventListenerMockup() = default;
 
-    void update(const gameevent::CreatureRecoverEvent&  /*event*/,
-                EntityManager&  /*entities*/, EventBus&  /*events*/,
-                TimeDelta  /*dt*/) override {
+    void update(const gameevent::CreatureRecoverEvent& /*event*/,
+                EntityManager& /*entities*/, EventBus& /*events*/,
+                TimeDelta /*dt*/) override {
         this->emitevent = true;
     }
 };
@@ -27,18 +27,19 @@ class CreatureBattlerCreatureRecoverSystemApplication
         std::make_shared<RecoverEventListenerMockup>();
 
     std::shared_ptr<gamesystem::CreatureBattlerCreatureRecoverSystem>
-        creatureBattlerCreatureRecoverSystem =
-            std::make_shared<gamesystem::CreatureBattlerCreatureRecoverSystem>();
+        creatureBattlerCreatureRecoverSystem = std::make_shared<
+            gamesystem::CreatureBattlerCreatureRecoverSystem>();
 
     CreatureBattlerCreatureRecoverSystemApplication() {
-        this->addListener<gameevent::CreatureRecoverEvent>(this->eventlistenermockup);
+        this->addListener<gameevent::CreatureRecoverEvent>(
+            this->eventlistenermockup);
 
-        this->addListener<gameevent::CreatureRecoverEvent>(this->creatureBattlerCreatureRecoverSystem);
+        this->addListener<gameevent::CreatureRecoverEvent>(
+            this->creatureBattlerCreatureRecoverSystem);
     }
 
 
-    void
-    init_Entity_withLowHPMP(gameentity::Entity entity) {
+    void init_Entity_withLowHPMP(gameentity::Entity entity) {
         auto creature_battler =
             entity.component<gamecomp::CreatureBattlerComponent>();
 
@@ -72,9 +73,13 @@ SCENARIO("Creature Entity with low hp mp emit recover-Event to heal hp mp") {
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("hp is recover") { CHECK(creature_battler->hp == CreatureTestData::MAXHP); }
+                THEN("hp is recover") {
+                    CHECK(creature_battler->hp == CreatureTestData::MAXHP);
+                }
 
-                THEN("mp is recover") { CHECK(creature_battler->mp == CreatureTestData::MAXMP); }
+                THEN("mp is recover") {
+                    CHECK(creature_battler->mp == CreatureTestData::MAXMP);
+                }
             }
         }
     }

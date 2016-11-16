@@ -184,8 +184,8 @@ void CreatureBattlerSystem::updateCreatureStatusRestriction(
 
 
 
-void CreatureBattlerSystem::update(EntityManager& entities, EventBus&  /*events*/,
-                                   TimeDelta  /*dt*/) {
+void CreatureBattlerSystem::update(EntityManager& entities,
+                                   EventBus& /*events*/, TimeDelta /*dt*/) {
 
     Component<gamecomp::CreatureDataComponent> creature_data;
     Component<gamecomp::CreatureBattlerComponent> creature_battler;

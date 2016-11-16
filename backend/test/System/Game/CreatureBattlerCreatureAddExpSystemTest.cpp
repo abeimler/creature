@@ -13,9 +13,9 @@ class AddExpEventListenerMockup
 
     AddExpEventListenerMockup() = default;
 
-    void update(const gameevent::CreatureAddExpEvent&  /*event*/,
-                EntityManager&  /*entities*/, EventBus&  /*events*/,
-                TimeDelta  /*dt*/) override {
+    void update(const gameevent::CreatureAddExpEvent& /*event*/,
+                EntityManager& /*entities*/, EventBus& /*events*/,
+                TimeDelta /*dt*/) override {
         this->emitevent = true;
     }
 };
@@ -25,7 +25,7 @@ class CreatureBattlerCreatureAddExpSystemApplication
     public:
     std::shared_ptr<AddExpEventListenerMockup> eventlistenermockup =
         std::make_shared<AddExpEventListenerMockup>();
-        
+
     std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpSystem>
         creatureBattlerCreatureAddExpSystem =
             std::make_shared<gamesystem::CreatureBattlerCreatureAddExpSystem>();

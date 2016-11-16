@@ -23,7 +23,8 @@ class CreatureBattlerSystemApplication : public gamesystem::Application {
     void init_BattlerStatus_Confuse_AtkAll() {
 
         this->confuse_status_.setName("Confuse");
-        this->confuse_status_.setRestriction(data::StatusRestrictionOption::AtkAll);
+        this->confuse_status_.setRestriction(
+            data::StatusRestrictionOption::AtkAll);
 
         this->datamanager.saveCreatureBattlerStatus(this->confuse_status_);
     }
@@ -53,10 +54,11 @@ class CreatureBattlerSystemApplication : public gamesystem::Application {
     }
 
 
-    void init_Entity_withBattlerStatusRestrictionOptionAtkAll(gameentity::Entity entity){
-        auto creature_battlerstatuses = 
+    void init_Entity_withBattlerStatusRestrictionOptionAtkAll(
+        gameentity::Entity entity) {
+        auto creature_battlerstatuses =
             entity.component<gamecomp::BattlerStatusesComponent>();
-        
+
         creature_battlerstatuses->statuses_name.push_back(
             this->confuse_status_.getName());
     }
@@ -165,25 +167,27 @@ SCENARIO("Creature Entity update EvaRate") {
 
 
 
-
-SCENARIO("Creature Entity with BattlerStatus then update StatusRestrictionOption to AtkAll") {
+SCENARIO("Creature Entity with BattlerStatus then update "
+         "StatusRestrictionOption to AtkAll") {
     GIVEN("Creature Entity") {
         CreatureBattlerSystemApplication app;
         auto& entities = app.getEntityManager();
 
         // auto time = CreatureTestData::make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
-        
+
         app.init_Entity_withBattlerStatusRestrictionOptionAtkAll(entity);
 
         // auto timers = entity.component<gamecomp::CreatureProgressTimers>();
-        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+        auto creature_battler =
+            entity.component<gamecomp::CreatureBattlerComponent>();
 
         WHEN("update entities") {
             app.update(CreatureBattlerSystemApplication::FAKE_TIMEDELTA);
 
             THEN("StatusRestrictionOption is AtkAll") {
-                CHECK(creature_battler->status_restriction == +data::StatusRestrictionOption::AtkAll);
+                CHECK(creature_battler->status_restriction ==
+                      +data::StatusRestrictionOption::AtkAll);
             }
         }
     }
