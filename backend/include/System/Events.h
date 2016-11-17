@@ -13,6 +13,7 @@
 
 #include "System/Event/CreatureBattlerSystemEvents.h"
 #include "System/Event/CreatureProgressTimerSystemEvents.h"
+#include "System/Event/CreatureSystemEvents.h"
 
 namespace gameevent {
 
@@ -22,7 +23,17 @@ using EventBus = eventpp::Bus<
 
     ProgressTimerCallbackEvent, ProgressTimerIncrementEvent,
     ProgressTimerStarvationPhaseEvent, ProgressTimerShortTermMemoryEvent,
-    ProgressTimerMediumTermMemoryEvent>;
+    ProgressTimerMediumTermMemoryEvent,
+    
+    CreatureAddStatusEvent,
+    CreatureRemoveStatusEvent,
+    CreatureDoNotingEvent,
+    CreatureMakeDeadEvent,
+    CreatureMakeRunAwayEvent,
+    CreatureRemoveRunAwayEvent,
+    CreatureDoActivityEvent,
+    CreatureHasLevelUpEvent
+    >;
 
 } // namespace gameevent
 

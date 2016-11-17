@@ -37,12 +37,12 @@ struct CreatureRecoverEvent {
 
 struct CreatureAddExpEvent {
     gameentity::Entity entity;
-    int exp;
+    data::attr_t exp;
 
-    explicit CreatureAddExpEvent(gameentity::Entity p_entity, int p_exp)
+    explicit CreatureAddExpEvent(gameentity::Entity p_entity, data::attr_t p_exp)
         : entity(p_entity), exp(p_exp) {}
 };
 
 } // namespace gameevent
 
-#endif // SYSTEM_GAME_CREATUREBATTLERSYSTEM_HPP_
+#endif // SYSTEM_EVENT_CREATUREBATTLERSYSTEMEVENTS_H_
