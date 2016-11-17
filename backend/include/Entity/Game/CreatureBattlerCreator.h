@@ -15,8 +15,8 @@ namespace gameentity {
 
 class CreatureBattlerCreator {
     private:
-    static constexpr double MIN_INFLATION = 33.0;
-    static constexpr double MAX_INFLATION = 131.0;
+    static constexpr data::attr_t MIN_INFLATION = 33;
+    static constexpr data::attr_t MAX_INFLATION = 131;
 
     public:
     static bool
@@ -25,13 +25,13 @@ class CreatureBattlerCreator {
     static bool isSkillLearned(const std::vector<std::string>& skills,
                                std::string skill_name);
 
-    static int getAttr(const gamecomp::CreatureBattlerComponent& battler,
+    static data::attr_t getAttr(const gamecomp::CreatureBattlerComponent& battler,
                        data::Attribute attr);
 
-    static void setHP(int value, gamecomp::CreatureBattlerComponent& battler);
-    static void setMP(int value, gamecomp::CreatureBattlerComponent& battler);
+    static void setHP(data::attr_t value, gamecomp::CreatureBattlerComponent& battler);
+    static void setMP(data::attr_t value, gamecomp::CreatureBattlerComponent& battler);
 
-    static void setAttr(data::Attribute attr, int value,
+    static void setAttr(data::Attribute attr, data::attr_t value,
                         gamecomp::CreatureBattlerComponent& battler);
 
 
@@ -39,13 +39,13 @@ class CreatureBattlerCreator {
                              const data::Creature& creature);
 
     static void setEXP(gamecomp::CreatureBattlerComponent& battler,
-                       const data::Creature& creature, int exp);
+                       const data::Creature& creature, data::attr_t exp);
 
     static void setLvL(gamecomp::CreatureBattlerComponent& battler,
-                       const data::Creature& creature, int lvl);
+                       const data::Creature& creature, data::lvl_t lvl);
 
-    static constexpr double getMinInflation() { return MIN_INFLATION; }
-    static constexpr double getMaxInflation() { return MAX_INFLATION; }
+    static constexpr data::attr_t getMinInflation() { return MIN_INFLATION; }
+    static constexpr data::attr_t getMaxInflation() { return MAX_INFLATION; }
 
     /**
     * @param minlvl Minimal Level
@@ -61,8 +61,9 @@ class CreatureBattlerCreator {
     *       attr[i] = n
     */
     template <class T>
-    static std::vector<T> genAttrs(int minlvl, int maxlvl, int basic, int inf,
-                                   int boni_inf, double boni_factor) {
+    static std::vector<T> genAttrs(data::lvl_t minlvl, data::lvl_t maxlvl, 
+                                   data::attr_t basic, data::attr_t inf,
+                                   data::attr_t boni_inf, data::attr_factor_t boni_factor) {
         size_t minlvli = static_cast<size_t>(std::max<int>(0, minlvl));
         size_t maxlvli = static_cast<size_t>(std::max<int>(0, maxlvl));
         size_t attrs_size =
@@ -72,10 +73,10 @@ class CreatureBattlerCreator {
         attrs.resize(attrs_size);
         std::fill(std::begin(attrs), std::end(attrs), 0);
 
-        double mininf = getMinInflation();
-        double maxinf = getMaxInflation();
+        auto mininf = getMinInflation();
+        auto maxinf = getMaxInflation();
 
-        double powi = 1 + (mininf / maxinf) + (inf + boni_inf) / mininf;
+        auto powi = 1 + (mininf / maxinf) + (inf + boni_inf) / mininf;
         double n = 0.0;
         for (size_t i = minlvli; i <= maxlvli; i++) {
             if (basic != 0 && inf != 0) {
@@ -93,12 +94,12 @@ class CreatureBattlerCreator {
     template <class T>
     static std::vector<T> genAttrs(const data::Creature& creature,
                                    data::Attribute attr) {
-        int minlvl = creature.getMinLvL();
-        int maxlvl = creature.getMaxLvL();
-        int inf = creature.getAttrInflation(attr);
-        int basic = creature.getAttrBasis(attr);
-        int boni_inf = 0;
-        float boni_factor = 1.0f;
+        auto minlvl = creature.getMinLvL();
+        auto maxlvl = creature.getMaxLvL();
+        auto inf = creature.getAttrInflation(attr);
+        auto basic = creature.getAttrBasis(attr);
+        data::attr_t boni_inf = 0;
+        data::attr_factor_t boni_factor = 1.0;
 
         return genAttrs<T>(minlvl, maxlvl, basic, inf, boni_inf, boni_factor);
     }
@@ -109,12 +110,12 @@ class CreatureBattlerCreator {
     genAttrs(const data::Creature& creature,
              const gamecomp::CreatureBattlerGeneComponent& gene,
              data::Attribute attr) {
-        int minlvl = creature.getMinLvL();
-        int maxlvl = creature.getMaxLvL();
-        int inf = creature.getAttrInflation(attr);
-        int basic = creature.getAttrBasis(attr);
-        int boni_inf = earr::enum_array_at(gene.boniattrinflation, attr);
-        double boni_factor = earr::enum_array_at(gene.boniattrfactor, attr);
+        auto minlvl = creature.getMinLvL();
+        auto maxlvl = creature.getMaxLvL();
+        auto inf = creature.getAttrInflation(attr);
+        auto basic = creature.getAttrBasis(attr);
+        auto boni_inf = earr::enum_array_at(gene.boniattrinflation, attr);
+        auto boni_factor = earr::enum_array_at(gene.boniattrfactor, attr);
 
         return genAttrs<T>(minlvl, maxlvl, basic, inf, boni_inf, boni_factor);
     }
@@ -141,13 +142,13 @@ class CreatureBattlerCreator {
     void loadCreatureBattler(
         gamecomp::CreatureBattlerComponent& battler,
         const data::Creature& creature,
-        const gamecomp::CreatureBattlerGeneComponent& gene, int lvl);
+        const gamecomp::CreatureBattlerGeneComponent& gene, data::lvl_t lvl);
 
     inline void loadCreatureBattler(
         gamecomp::CreatureBattlerComponent& battler,
         const data::Creature& creature,
         const gamecomp::CreatureBattlerGeneComponent& battlergene) {
-        int start_lvl = creature.getStartLvL();
+        auto start_lvl = creature.getStartLvL();
         loadCreatureBattler(battler, creature, battlergene, start_lvl);
     }
 

@@ -10,13 +10,13 @@ BETTER_ENUM(FoodType, size_t, Eat, Drink)
 /// Food/Drink Item
 class Food : public UseItem {
     private:
-    double luck_ = 0.0;
-    double disc_ = 0.0;
-    double hungry_ = 0.0;
-    double thirsty_ = 0.0;
-    double weight_ = 0.0;
+    luck_t luck_ = 0.0;
+    disc_t disc_ = 0.0;
+    hungry_t hungry_ = 0.0;
+    thirsty_t thirsty_ = 0.0;
+    weight_t weight_ = 0.0;
 
-    double calories_ = 0.0;
+    calories_t calories_ = 0.0;
 
     FoodType foodtype_ = FoodType::Eat;
 
@@ -40,7 +40,7 @@ class Food : public UseItem {
     public:
     Food() = default;
 
-    explicit Food(UseItem  item);
+    explicit Food(UseItem item);
 
     /// Boni for luck
     double getLuck() const { return this->luck_; }

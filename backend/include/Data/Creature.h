@@ -112,15 +112,15 @@ BETTER_ENUM(CreatureGender, size_t, None,
 /// Condition to Evolution
 class EvolutionCondition {
     private:
-    double weight_ = 0.0;
-    double luck_ = 0.0;
-    double disc_ = 0.0;
+    weight_t weight_ = 0.0;
+    luck_t luck_ = 0.0;
+    disc_t disc_ = 0.0;
     bool wasnotill_ = false;
     bool wasnothurt_ = false;
 
-    int mustevolveatlevel_ = MUSTEVOLVEATLEVEL_NONE;
+    lvl_t mustevolveatlevel_ = MUSTEVOLVEATLEVEL_NONE;
 
-    earr::enum_array<Attribute, int> attr_;
+    earr::enum_array<Attribute, attr_t> attr_;
 
     earr::enum_array<CreatureTrainTime, bool> traintime_;
 
@@ -142,7 +142,7 @@ class EvolutionCondition {
 
 
     public:
-    static constexpr int MUSTEVOLVEATLEVEL_NONE = -1;
+    static constexpr lvl_t MUSTEVOLVEATLEVEL_NONE = -1;
 
     EvolutionCondition();
 
@@ -150,13 +150,13 @@ class EvolutionCondition {
     void setTrainTimeEveryDay();
 
     /// minimal weight
-    double getWeight() const { return this->weight_; }
+    weight_t getWeight() const { return this->weight_; }
 
     /// minimal luck
-    double getLuck() const { return this->luck_; }
+    luck_t getLuck() const { return this->luck_; }
 
     /// minimal discipline
-    double getDisc() const { return this->disc_; }
+    disc_t getDisc() const { return this->disc_; }
 
     /// true when was not ill
     bool wasNotIll() const { return this->wasnotill_; }
@@ -165,10 +165,10 @@ class EvolutionCondition {
     bool wasNotHurt() const { return this->wasnothurt_; }
 
     /// must evolve at Level (-1 = ignore)
-    int getMustEvolveAtLevel() const { return this->mustevolveatlevel_; }
+    lvl_t getMustEvolveAtLevel() const { return this->mustevolveatlevel_; }
 
     /// minimal Attributes
-    const earr::enum_array<Attribute, int>& getAttr() const {
+    const earr::enum_array<Attribute, attr_t>& getAttr() const {
         return this->attr_;
     }
 
@@ -181,7 +181,7 @@ class EvolutionCondition {
      * @param attr Attribute
      * @return minimal Attribute
      */
-    int getAttr(Attribute attr) const {
+    attr_t getAttr(Attribute attr) const {
         return earr::enum_array_at(this->attr_, attr);
     }
 
@@ -193,19 +193,19 @@ class EvolutionCondition {
         return earr::enum_array_at(this->traintime_, traintime);
     }
 
-    void setWeight(double weight) { this->weight_ = weight; }
+    void setWeight(weight_t weight) { this->weight_ = weight; }
 
-    void setLuck(double luck) { this->luck_ = luck; }
+    void setLuck(luck_t luck) { this->luck_ = luck; }
 
-    void setDisc(double disc) { this->disc_ = disc; }
+    void setDisc(disc_t disc) { this->disc_ = disc; }
 
     void setWasNotIll(bool wasnotill) { this->wasnotill_ = wasnotill; }
 
     void setWasNotHurt(bool wasnothurt) { this->wasnothurt_ = wasnothurt; }
 
-    void setMustEvolveAtLevel(int level) { this->mustevolveatlevel_ = level; }
+    void setMustEvolveAtLevel(lvl_t level) { this->mustevolveatlevel_ = level; }
 
-    void setAttr(const earr::enum_array<Attribute, int>& attr) {
+    void setAttr(const earr::enum_array<Attribute, attr_t>& attr) {
         this->attr_ = attr;
     }
 
@@ -214,7 +214,7 @@ class EvolutionCondition {
      * @param value Attribute value
      * @brief set minimal Attributes
      */
-    void setAttr(Attribute attr, int value) {
+    void setAttr(Attribute attr, attr_t value) {
         earr::enum_array_set(this->attr_, attr, value);
     }
 
@@ -244,10 +244,10 @@ class Creature : public Battler {
 
     std::string creaturetype_;
 
-    double minweight_ = 0.1;
-    double maxweight_ = 0.1;
-    double minbodysize_ = 0.1;
-    double maxbodysize_ = 0.1;
+    weight_t minweight_ = 0.1;
+    weight_t maxweight_ = 0.1;
+    bodysize_t minbodysize_ = 0.1;
+    bodysize_t maxbodysize_ = 0.1;
 
     std::vector<std::string> nextcreatures_;
     std::vector<std::string> prevcreatures_;
@@ -255,7 +255,7 @@ class Creature : public Battler {
 
     EvolutionCondition evolcondition_;
 
-    earr::enum_array<CreatureGender, double> genderdistribution_;
+    earr::enum_array<CreatureGender, distribution_factor_t> genderdistribution_;
 
     public:
     template <class Archive>
@@ -284,7 +284,7 @@ class Creature : public Battler {
     public:
     Creature();
 
-    explicit Creature(Battler  battler);
+    explicit Creature(Battler battler);
 
     /// Creature Level
     CreatureLevel getCreatureLevel() const { return this->creaturelevel_; }
@@ -319,19 +319,19 @@ class Creature : public Battler {
     std::string getCreatureType() const { return this->creaturetype_; }
 
     /// minimal weight
-    double getMinWeight() const { return this->minweight_; }
+    weight_t getMinWeight() const { return this->minweight_; }
 
     /// maximal weight
-    double getMaxWeight() const { return this->maxweight_; }
+    weight_t getMaxWeight() const { return this->maxweight_; }
 
     /// minimal bodysize
-    double getBodySize() const { return this->minbodysize_; }
+    bodysize_t getBodySize() const { return this->minbodysize_; }
 
     /// minimal bodysize
-    double getMinBodySize() const { return this->minbodysize_; }
+    bodysize_t getMinBodySize() const { return this->minbodysize_; }
 
     /// maximal bodysize
-    double getMaxBodySize() const { return this->maxbodysize_; }
+    bodysize_t getMaxBodySize() const { return this->maxbodysize_; }
 
     /// next Creature Evolution
     const std::vector<std::string>& getNextCreatures() const {
@@ -354,7 +354,7 @@ class Creature : public Battler {
     }
 
     /// Creature Gender distribution in %
-    const earr::enum_array<CreatureGender, double>&
+    const earr::enum_array<CreatureGender, distribution_factor_t>&
     getGenderDistribution() const {
         return this->genderdistribution_;
     }
@@ -363,7 +363,7 @@ class Creature : public Battler {
      * @param gender Creature Gender
      * @return Creature Gender distribution in %
      */
-    double getGenderDistribution(CreatureGender gender) const {
+    distribution_factor_t getGenderDistribution(CreatureGender gender) const {
         return earr::enum_array_at(this->genderdistribution_, gender);
     }
 
@@ -404,7 +404,7 @@ class Creature : public Battler {
      * @param value Creature Gender distribution in %
      * @brief set Creature Gender distribution
      */
-    void setGenderDistribution(CreatureGender gender, double value) {
+    void setGenderDistribution(CreatureGender gender, distribution_factor_t value) {
         earr::enum_array_set(this->genderdistribution_, gender, value);
     }
 
@@ -449,19 +449,19 @@ class Creature : public Battler {
      * @param weight minimal weight
      * @brief set minimal weight
      */
-    void setMinWeight(double weight) { this->minweight_ = weight; }
+    void setMinWeight(weight_t weight) { this->minweight_ = weight; }
 
     /**
      * @param weight maximal weight
      * @brief set maximal weight
      */
-    void setMaxWeight(double weight) { this->maxweight_ = weight; }
+    void setMaxWeight(weight_t weight) { this->maxweight_ = weight; }
 
     /**
      * @param bodysize bodysize
      * @brief set minimal and maximal bodysize
      */
-    void setBodySize(double bodysize) {
+    void setBodySize(bodysize_t bodysize) {
         this->setBodySizeMin(bodysize);
         this->setBodySizeMax(bodysize);
     }
@@ -470,13 +470,13 @@ class Creature : public Battler {
      * @param bodysize minimal bodysize
      * @brief set minimal bodysize
      */
-    void setBodySizeMin(double bodysize) { this->minbodysize_ = bodysize; }
+    void setBodySizeMin(bodysize_t bodysize) { this->minbodysize_ = bodysize; }
 
     /**
      * @param bodysize maximal bodysize
      * @brief set maximal bodysize
      */
-    void setBodySizeMax(double bodysize) { this->maxbodysize_ = bodysize; }
+    void setBodySizeMax(bodysize_t bodysize) { this->maxbodysize_ = bodysize; }
 };
 
 

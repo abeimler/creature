@@ -5,13 +5,16 @@
 
 namespace comp {
 
+using timertime_t = std::chrono::nanoseconds;
+using ticks_t = std::chrono::milliseconds;
+
 /// Simple Timer
 struct Timer {
     bool isstart = false;
     bool ispause = false;
 
-    std::chrono::nanoseconds starttime;
-    std::chrono::nanoseconds pausetime;
+    timertime_t starttime;
+    timertime_t pausetime;
 };
 
 /**
@@ -30,13 +33,13 @@ struct DateTimer {
 
     /// realTime, wird benutzt um die starttime und pausetime zu setzen,
     /// Millisekunden (millisec) seit 01.01.1970 (UTC)
-    std::chrono::milliseconds realtime;
+    ticks_t realtime;
 
     /// realTime Faktor, realTime += timer_time * realTimeFactor
     double realtime_factor = 1.0;
 
-    std::chrono::milliseconds starttime;
-    std::chrono::milliseconds pausetime;
+    ticks_t starttime;
+    ticks_t pausetime;
 };
 } // namespace comp
 

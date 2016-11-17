@@ -6,14 +6,15 @@
 #include "Data/Skill.h"
 #include "Data/UseItem.h"
 
-#include "Component/Basic.h"
+#include "Component/Game/Basic.h"
 
 namespace gamecomp {
 
+
 /// Damage/Hit Info
 struct BattlerDamage {
-    int hpdamage = 0;            ///< damage of HP
-    int mpdamage = 0;            ///< damage of MP
+    data::attr_t hpdamage = 0;            ///< damage of HP
+    data::attr_t mpdamage = 0;            ///< damage of MP
     bool ismiss = false;         ///< is attack Miss
     bool iseva = false;          ///< is Enemy evade
     bool isimmune = false;       ///< is Enemy Immune (Elements)
@@ -26,12 +27,12 @@ struct BattlerDamage {
 
 struct BattlerStatusTurn {
     std::string battlerstatus_name;
-    int turn = 0;
+    data::turns_t turn = 0;
 
     BattlerStatusTurn() = default;
     explicit BattlerStatusTurn(std::string p_battlerstatus_name)
         : battlerstatus_name(p_battlerstatus_name) {}
-    BattlerStatusTurn(std::string p_battlerstatus_name, int p_turn)
+    BattlerStatusTurn(std::string p_battlerstatus_name, data::turns_t p_turn)
         : battlerstatus_name(p_battlerstatus_name), turn(p_turn) {}
 };
 
@@ -63,9 +64,10 @@ struct BattlerStatusesComponent {
         data::StatusRestrictionOption::None;
 };
 
+
 struct BattlerBattleStateComponent {
     /// current Battle turn to count turn for recover BattlerStatus after Turn
-    size_t turn = 0;
+    data::turns_t turn = 0;
 
     /// Battler Option
     earr::enum_array<data::BattlerOption, bool> option;

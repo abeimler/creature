@@ -62,21 +62,21 @@ void CreatureBattlerSystem::updateCreatureHitRate(
 
     const data::Creature& creature = creature_data->creature;
 
-    int basehitrate = creature.getHitRate();
+    auto basehitrate = creature.getHitRate();
 
     auto& battlerstatuses = battler_statuses->statuses_name;
 
     auto sum_battlerstatuses_hitrate_func = [&](
-        const int& init, const std::string& status_name) {
+        const auto& init, const std::string& status_name) {
         auto status = this->datamanager_.findCreatureBattlerStatus(status_name);
         return init * ((status) ? status->getHitRate() : 1.0);
     };
 
-    int status_sum_hitrate =
+    auto status_sum_hitrate =
         std::accumulate(std::begin(battlerstatuses), std::end(battlerstatuses),
                         0, sum_battlerstatuses_hitrate_func);
 
-    int status_avg_hitrate = (!battlerstatuses.empty())
+    auto status_avg_hitrate = (!battlerstatuses.empty())
                                  ? status_sum_hitrate / battlerstatuses.size()
                                  : basehitrate;
 
@@ -91,21 +91,21 @@ void CreatureBattlerSystem::updateCreatureCriticalHitRate(
 
     const data::Creature& creature = creature_data->creature;
 
-    int basecritical_hitrate = creature.getCriticalHitRate();
+    auto basecritical_hitrate = creature.getCriticalHitRate();
 
     auto& battlerstatuses = battler_statuses->statuses_name;
 
     auto sum_battlerstatuses_critical_hitrate_func = [&](
-        const int& init, const std::string& status_name) {
+        const auto& init, const std::string& status_name) {
         auto status = this->datamanager_.findCreatureBattlerStatus(status_name);
         return init * ((status) ? status->getCriticalHitRate() : 1.0);
     };
 
-    int status_sum_critical_hitrate =
+    auto status_sum_critical_hitrate =
         std::accumulate(std::begin(battlerstatuses), std::end(battlerstatuses),
                         0, sum_battlerstatuses_critical_hitrate_func);
 
-    int status_avg_hitrate =
+    auto status_avg_hitrate =
         (!battlerstatuses.empty())
             ? status_sum_critical_hitrate / battlerstatuses.size()
             : basecritical_hitrate;
@@ -122,21 +122,21 @@ void CreatureBattlerSystem::updateCreatureEvaRate(
 
     const data::Creature& creature = creature_data->creature;
 
-    int baseevarate = creature.getEvaRate();
+    auto baseevarate = creature.getEvaRate();
 
     auto& battlerstatuses = battler_statuses->statuses_name;
 
     auto sum_battlerstatuses_evarate_func = [&](
-        const int& init, const std::string& status_name) {
+        const auto& init, const std::string& status_name) {
         auto status = this->datamanager_.findCreatureBattlerStatus(status_name);
         return init * ((status) ? status->getEvaRate() : 1.0);
     };
 
-    int status_sum_evarate =
+    auto status_sum_evarate =
         std::accumulate(std::begin(battlerstatuses), std::end(battlerstatuses),
                         0, sum_battlerstatuses_evarate_func);
 
-    int status_avg_evarate = (!battlerstatuses.empty())
+    auto status_avg_evarate = (!battlerstatuses.empty())
                                  ? status_sum_evarate / battlerstatuses.size()
                                  : baseevarate;
 

@@ -2,10 +2,10 @@
 
 namespace gamesystem {
 
-double CreatureProgressTimerSystem::updateCallbackTimer(
+gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateCallbackTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
     data::CreatureLevel level, gamecomp::CreatureProgressTimerCallback type) {
-    double ret = updateTimer(timer.base, level);
+    auto ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
         if (!util::iszero(timer.base.value - timer.oldvalue)) {
@@ -28,13 +28,13 @@ double CreatureProgressTimerSystem::updateCallbackTimer(
     return ret;
 }
 
-double CreatureProgressTimerSystem::updateIncrementTimer(
+gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateIncrementTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerIncrement& timer,
     data::CreatureLevel level, gamecomp::CreatureProgressTimerIncrement type) {
-    double ret = updateTimer(timer.base, level);
+    auto ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
-        double addvalue = ret;
+        auto addvalue = ret;
         addvalue *= timer.addvalue_per_percent;
 
         if (!util::iszero(addvalue)) {
@@ -50,10 +50,10 @@ double CreatureProgressTimerSystem::updateIncrementTimer(
     return ret;
 }
 
-double CreatureProgressTimerSystem::updateStarvationPhaseTimer(
+gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateStarvationPhaseTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
     data::CreatureLevel level, gamecomp::StarvationPhase type) {
-    double ret = updateTimer(timer.base, level);
+    auto ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
         if (!util::iszero(timer.base.value - timer.oldvalue)) {
@@ -71,10 +71,10 @@ double CreatureProgressTimerSystem::updateStarvationPhaseTimer(
     return ret;
 }
 
-double CreatureProgressTimerSystem::updateShortTermMemoryTimer(
+gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateShortTermMemoryTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
     data::CreatureLevel level, gamecomp::CreatureActivity activity) {
-    double ret = updateTimer(timer.base, level);
+    auto ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
         if (!util::iszero(timer.base.value - timer.oldvalue)) {
@@ -92,10 +92,10 @@ double CreatureProgressTimerSystem::updateShortTermMemoryTimer(
     return ret;
 }
 
-double CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
+gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
     data::CreatureLevel level, gamecomp::CreatureActivity activity) {
-    double ret = updateTimer(timer.base, level);
+    auto ret = updateTimer(timer.base, level);
 
     if (timer.base.timer.isstart && !timer.base.timer.ispause) {
         if (!util::iszero(timer.base.value - timer.oldvalue)) {
@@ -114,8 +114,9 @@ double CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
 }
 
 
-double CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
-                                                data::CreatureLevel level) {
+gamecomp::progresstimer_percent_t 
+CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
+                                         data::CreatureLevel level) {
     datetimer_util_.update(timer.timer, this->ignortimer_);
     datetimer_util_.update(timer.fulltimer, this->ignortimer_);
 
@@ -123,10 +124,10 @@ double CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
         return 0.0;
     }
 
-    double addValue = 0.0;
-    auto waitTime_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+    gamecomp::progresstimer_percent_t addValue = 0.0;
+    auto waitTime_ms = std::chrono::duration_cast<gamecomp::waittime_t>(
         earr::enum_array_at(timer.waittime, level));
-    auto timer_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+    auto timer_ms = std::chrono::duration_cast<gamecomp::waittime_t>(
         datetimer_util_.getTime(timer.timer));
 
     /// t/100 => damit min. jedes 1% überprüft wird
@@ -138,7 +139,7 @@ double CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
         // double cant storage 64 bit integer
         // nanosec chrono: A signed integral type of at least 64 bits
         // millisec chrono: A signed integral type of at least 45 bits
-        double addValue_percent =
+        auto addValue_percent =
             (static_cast<double>(timer_ms.count()) * 100.0) /
             static_cast<double>(waitTime_ms.count());
         addValue = addValue_percent * timer.factor;
@@ -149,10 +150,9 @@ double CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
             if (!timer.isfull) {
                 datetimer_util_.start(timer.fulltimer);
 
-                double ticks_ms_f = static_cast<double>(waitTime_ms.count()) *
+                auto ticks_ms_f = static_cast<double>(waitTime_ms.count()) *
                                     ((timer.value - 100.0) / 100.0);
-                std::chrono::milliseconds addTm_ms(
-                    static_cast<int64_t>(ticks_ms_f));
+                std::chrono::milliseconds addTm_ms(static_cast<int64_t>(ticks_ms_f));
 
                 datetimer_util_.addTime(timer.fulltimer, addTm_ms);
             }
@@ -177,7 +177,7 @@ double CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
                 std::chrono::duration_cast<std::chrono::milliseconds>(
                     datetimer_util_.getTime(timer.fulltimer));
 
-            double fullValue_percent =
+            auto fullValue_percent =
                 (static_cast<double>(fulltimer_ms.count()) * 100.0) /
                 static_cast<double>(waitTime_ms.count());
             timer.overlayvalue += fullValue_percent * timer.factor;
@@ -197,8 +197,7 @@ void CreatureProgressTimerSystem::update(EntityManager& entities,
     gameentity::Component<gamecomp::CreatureProgressTimersComponent>
         creatureprogresstimers;
 
-    for (auto entity :
-         entities.entities_with_components(creatureprogresstimers)) {
+    for (auto entity : entities.entities_with_components(creatureprogresstimers)) {
         data::CreatureLevel level = creatureprogresstimers->creaturelevel;
 
         datetimer_util_.update(creatureprogresstimers->lifetimer);

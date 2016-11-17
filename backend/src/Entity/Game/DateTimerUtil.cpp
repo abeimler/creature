@@ -88,17 +88,17 @@ void DateTimerUtil::update(comp::DateTimer& datetimer, bool ignortimer) {
     if (!util::iszero(datetimer.realtime_factor)) {
         std::chrono::milliseconds add_ms(0);
         if (!ignortimer) {
-            std::chrono::milliseconds realtimer_ms(0);
-            realtimer_ms =
+            std::chrono::milliseconds realtimer_ms =
                 std::chrono::duration_cast<std::chrono::milliseconds>(
                     timer_util_.getTime(datetimer.realtimer));
-            double add_ms_f = static_cast<double>(realtimer_ms.count()) *
+                    
+            auto add_ms_f = static_cast<double>(realtimer_ms.count()) *
                               static_cast<double>(datetimer.realtime_factor);
             add_ms = std::chrono::milliseconds(static_cast<int64_t>(add_ms_f));
         } else {
             std::chrono::milliseconds realtimer_ms(0);
 
-            double realTimeFactor_ms_f =
+            auto realTimeFactor_ms_f =
                 static_cast<double>(datetimer.realtime_factor) *
                 std::chrono::milliseconds::period::den;
 

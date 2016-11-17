@@ -2,7 +2,7 @@
 
 namespace data {
 
-LearnSkill::LearnSkill(int lvl, const Skill& skill)
+LearnSkill::LearnSkill(lvl_t lvl, const Skill& skill)
     : lvl_(lvl), skill_name_(skill.getName()) {}
 
 Battler::Battler() {

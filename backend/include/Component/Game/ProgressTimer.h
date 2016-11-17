@@ -5,6 +5,8 @@
 
 #include "Component/DateTimer.h"
 
+#include "Component/Game/Basic.h"
+
 namespace gamecomp {
 
 /**
@@ -15,14 +17,15 @@ struct ProgressTimer {
     comp::DateTimer timer;     ///< Timer für den Process
     comp::DateTimer fulltimer; ///< Timer für den Proces nach 100% erreicht hat
     bool isfull = false;       ///< true, wenn 100%
-    double value = 0.0;        ///< Proccesswerte
-    double overlayvalue = 0.0; ///< Proccesswerte der über 100% liegt
+
+    progresstimer_percent_t value = 0.0;        ///< Proccesswerte
+    progresstimer_percent_t overlayvalue = 0.0; ///< Proccesswerte der über 100% liegt
 
     /**
      * Wartezeit die vergangen werden muss damit 100% erreicht wurde
      * Wartezeit abhännig vom Level
      */
-    earr::enum_array<data::CreatureLevel, std::chrono::milliseconds> waittime;
+    earr::enum_array<data::CreatureLevel, waittime_t> waittime;
 
     /**
     * Proccesswerte faktor,
@@ -30,7 +33,7 @@ struct ProgressTimer {
     * oder langsamer (< 1.0) füllt.
     * Bei 0.0 wird der Proccesswerte nicht gefüllt (pausiert)
     */
-    double factor = 1.0;
+    progresstimer_factor_t factor = 1.0;
 };
 } // namespace gamecomp
 

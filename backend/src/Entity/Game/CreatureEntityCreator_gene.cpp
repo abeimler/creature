@@ -2,10 +2,10 @@
 
 namespace gameentity {
 
-double
+data::bmi_t
 CreatureEntityCreator::getBMI(const gamecomp::CreatureGeneComponent& gene,
-                              double minweight, double maxweight, double weight,
-                              double bodysize) {
+                              data::weight_t min_weight, data::weight_t max_weight, data::weight_t weight,
+                              data::bodysize_t bodysize) {
     /*
     s    : Größe
     g    : Gewicht
@@ -42,22 +42,19 @@ CreatureEntityCreator::getBMI(const gamecomp::CreatureGeneComponent& gene,
     m = (sqrt(s*g + gmin) - bmi) / (- (gmin * (bmin/2/bmax)))
     */
 
-    double s = bodysize;
-    double g = weight;
-    double gmin = minweight;
-    double gmax = maxweight;
-    double bmin = gene.min_bmi;
-    double bmax = gene.max_bmi;
-    double m = gene.bodymass;
+    auto min_bmi = gene.min_bmi;
+    auto max_bmi = gene.max_bmi;
+    auto bodymass = gene.bodymass;
 
-    return (bmin > 0.0 && gmin > 0.0 && bmax > 0.0 && gmin <= gmax)
-               ? std::sqrt(s * g + gmin) + (gmin * (bmin / 2.0 / bmax)) * m
+    return (min_bmi > 0.0 && min_weight > 0.0 && max_bmi > 0.0 && min_weight <= max_weight)
+               ? std::sqrt(bodysize * weight + min_weight) + (min_weight * (min_bmi / 2.0 / max_bmi)) * bodymass
                : 0.0;
 }
 
-double CreatureEntityCreator::getBodyMass(double s, double g, double mg,
-                                          double ibmi, double minbmi,
-                                          double maxbmi) {
+data::bodymass_t 
+CreatureEntityCreator::getBodyMass(data::bodysize_t bodysize, data::weight_t weight, data::weight_t min_weight, 
+                                   data::bmi_t ideal_bmi,
+                                   data::bmi_t min_bmi, data::bmi_t max_bmi) {
     /*
     s    : Größe
     g    : Gewicht
@@ -70,22 +67,23 @@ double CreatureEntityCreator::getBodyMass(double s, double g, double mg,
     Ideal Masse errechnen:
     m = (sqrt(s*g + gmin) - ibmi) / (-(gmin * (bmin/2/bmax)))
 
-    es dürfen keine nevativen Werte rauskommen
+    es dürfen keine negativen Werte rauskommen
     bei mass < 0 : mass = 1 / abs(mass)
 
     see CreatureEntityCreator::getBMI()
     */
 
-    double mass =
-        (std::sqrt(s * g + mg) - ibmi) / (-(mg * (minbmi / 2.0 / maxbmi)));
+    auto bodymass =
+        (std::sqrt(bodysize * weight + min_weight) - ideal_bmi) / (-(min_weight * (min_bmi / 2.0 / max_bmi)));
 
-    return (mass < 0.0) ? 1.0 / std::abs(mass) : mass;
+    return (bodymass < 0.0) ? 1.0 / std::abs(bodymass) : bodymass;
 }
 
-double CreatureEntityCreator::getBodySize(double minbmi, double maxbmi,
-                                          double bmi, double mass,
-                                          double minweight, double maxweight,
-                                          double weight) {
+data::bodysize_t 
+CreatureEntityCreator::getBodySize(data::bmi_t minbmi, data::bmi_t maxbmi, data::bmi_t bmi,
+                                   data::bodymass_t mass, 
+                                   data::weight_t minweight, data::weight_t maxweight,
+                                   data::weight_t weight) {
     /*
     s    : Größe
     g    : Gewicht
@@ -98,63 +96,55 @@ double CreatureEntityCreator::getBodySize(double minbmi, double maxbmi,
     s = ((bmi -(gmin * (bmin/2/bmax)) * m)^2 - gmin)/g
     */
 
-    double g = weight;
-    double gmin = minweight;
-    double gmax = maxweight;
-    double bmin = minbmi;
-    double bmax = maxbmi;
-    double m = mass;
-
-    return (bmin > 0.0 && gmin > 0.0 && bmax > 0.0 && gmin <= gmax &&
-            !util::iszero(g))
-               ? (std::pow(bmi - (gmin * (bmin / 2.0 / bmax)) * m, 2.0) -
-                  gmin) /
-                     g
+    return (minbmi > 0.0 && minweight > 0.0 && maxbmi > 0.0 && minweight <= maxweight &&
+            !util::iszero(weight))
+               ? (std::pow(bmi - (minweight * (minbmi / 2.0 / maxbmi)) * mass, 2.0) -
+                  minweight) / weight
                : 0.0;
 }
 
 
 
-double
+data::bmi_t
 CreatureEntityCreator::getBMI(const data::Creature& creature,
                               const gamecomp::CreatureGeneComponent& gene,
-                              double weight) {
-    double bodysize = creature.getBodySize();
-    double minweight = creature.getMinWeight();
-    double maxweight = creature.getMaxWeight();
+                              data::weight_t weight) {
+    auto bodysize = creature.getBodySize();
+    auto minweight = creature.getMinWeight();
+    auto maxweight = creature.getMaxWeight();
 
     return getBMI(gene, minweight, maxweight, weight, bodysize);
 }
 
 
-double CreatureEntityCreator::getBodyMass(
+data::bodymass_t CreatureEntityCreator::getBodyMass(
     const data::Creature& creature,
     const gamecomp::CreatureGeneComponent& gene) {
-    double s = creature.getBodySize();
-    double g =
+
+    auto s = creature.getBodySize();
+    auto g =
         creature.getMinWeight() * ((!util::iszero(gene.max_bmi))
                                        ? (1.0 + (gene.ideal_bmi / gene.max_bmi))
                                        : 1.0);
-    double mg = creature.getMinWeight();
+    auto mg = creature.getMinWeight();
 
     return getBodyMass(gene, s, g, mg);
 }
 
-double
+data::bodymass_t
 CreatureEntityCreator::getBodyMass(const gamecomp::CreatureGeneComponent& gene,
-                                   double s, double g, double mg) {
-    double ibmi = gene.ideal_bmi;
-    double maxbmi = gene.max_bmi;
-    double minbmi = gene.min_bmi;
-    return getBodyMass(s, g, mg, ibmi, minbmi, maxbmi);
+                                   data::bodysize_t bodysize, data::weight_t weight, data::weight_t min_weight) {
+    auto ibmi = gene.ideal_bmi;
+    auto maxbmi = gene.max_bmi;
+    auto minbmi = gene.min_bmi;
+    return getBodyMass(bodysize, weight, min_weight, ibmi, minbmi, maxbmi);
 }
 
 
 
-gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimer>
+gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimer>
 CreatureEntityCreator::createTimerWaitTime(data::CreatureLevel creature_level) {
-    gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureProgressTimer>
-        ret;
+    gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimer> ret;
 
     switch (creature_level) {
         case data::CreatureLevel::Egg:
@@ -256,13 +246,10 @@ CreatureEntityCreator::createTimerWaitTime(data::CreatureLevel creature_level) {
 }
 
 
-gamecomp::CreatureGeneWaitTime::waittime_t<
-    gamecomp::CreatureProgressTimerCallback>
+gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerCallback>
 CreatureEntityCreator::createCallbackWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::CreatureGeneWaitTime::waittime_t<
-        gamecomp::CreatureProgressTimerCallback>
-        ret;
+    gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerCallback> ret;
 
     switch (creature_level) {
         case data::CreatureLevel::Egg:
@@ -425,14 +412,11 @@ CreatureEntityCreator::createCallbackWaitTime(
 }
 
 
-gamecomp::CreatureGeneWaitTime::waittime_t<
-    gamecomp::CreatureProgressTimerIncrement>
+gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerIncrement>
 CreatureEntityCreator::createIncrementWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::CreatureGeneWaitTime::waittime_t<
-        gamecomp::CreatureProgressTimerIncrement>
-        ret;
 
+    gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerIncrement> ret;
 
     switch (creature_level) {
         case data::CreatureLevel::Egg:
@@ -606,10 +590,10 @@ CreatureEntityCreator::createIncrementWaitTime(
 }
 
 
-gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::StarvationPhase>
+gamecomp::gene_waittime_t<gamecomp::StarvationPhase>
 CreatureEntityCreator::createStarvationWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::StarvationPhase> ret;
+    gamecomp::gene_waittime_t<gamecomp::StarvationPhase> ret;
 
     switch (creature_level) {
         case data::CreatureLevel::Egg:
@@ -678,10 +662,10 @@ CreatureEntityCreator::createStarvationWaitTime(
     return ret;
 }
 
-gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureActivity>
+gamecomp::gene_waittime_t<gamecomp::CreatureActivity>
 CreatureEntityCreator::createShortTermMemoryWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureActivity> ret;
+    gamecomp::gene_waittime_t<gamecomp::CreatureActivity> ret;
 
     switch (creature_level) {
         case data::CreatureLevel::Egg:
@@ -719,10 +703,10 @@ CreatureEntityCreator::createShortTermMemoryWaitTime(
     return ret;
 }
 
-gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureActivity>
+gamecomp::gene_waittime_t<gamecomp::CreatureActivity>
 CreatureEntityCreator::createMediumTermMemoryWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::CreatureGeneWaitTime::waittime_t<gamecomp::CreatureActivity> ret;
+    gamecomp::gene_waittime_t<gamecomp::CreatureActivity> ret;
 
     switch (creature_level) {
         case data::CreatureLevel::Egg:
@@ -770,14 +754,15 @@ CreatureEntityCreator::createCreatureGene(const data::Creature& creature) {
     ret.min_weight = creature.getMinWeight();
     ret.max_weight = creature.getMaxWeight();
 
-    double ideal_weight = ret.min_weight * 2.5;
-    double ideal_bodysize = creature.getMinBodySize() * 1.43;
+    auto ideal_weight = ret.min_weight * 2.5;
+    auto ideal_bodysize = creature.getMinBodySize() * 1.43;
 
-    double pseudomass_dif = -(ret.min_weight * (MIN_BMI / 2.0 / MAX_BMI));
-    double pseudomass =
+    auto pseudomass_dif = -(ret.min_weight * (MIN_BMI / 2.0 / MAX_BMI));
+    auto pseudomass =
         (std::sqrt(ideal_bodysize * ideal_weight + ret.min_weight) -
          IDEAL_BMI) /
         pseudomass_dif;
+        
     if (pseudomass < 0) {
         ret.min_bmi = HIGH_MIN_BMI;
         ret.ideal_bmi = HIGH_IDEAL_BMI;

@@ -5,6 +5,7 @@
 
 #include "Component/DateTimer.h"
 
+#include "Component/Game/Basic.h"
 #include "Component/Game/ProgressTimer.h"
 #include "Component/Game/ProgressTimerCallback.h"
 #include "Component/Game/ProgressTimerIncrement.h"

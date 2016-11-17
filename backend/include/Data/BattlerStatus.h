@@ -7,6 +7,7 @@
 
 namespace data {
 
+
 ///  BattlerStatus Restriction (order by smallest effect (first))
 BETTER_ENUM(StatusRestrictionOption, size_t, None,
             BEGIN = None, ///< None
@@ -24,13 +25,14 @@ BETTER_ENUM(StatusOption, size_t, EvadePhysical,
             Dead,                  ///< dead/knockout
             END)
 
+
 ///  BattlerStatus Extent (trigger to remove BattlerStatus)
 class StatusExtent {
     private:
     bool afterbattle_ = false;
     bool bydamage_ = false;
-    int turn_ = 0;
-    int rate_ = 30;
+    turns_t turn_ = 0;
+    percent_rate_t rate_ = 30;
 
     public:
     template <class Archive>
@@ -46,13 +48,13 @@ class StatusExtent {
 
     bool isAfterBattle() const { return this->afterbattle_; }
     bool isByDamage() const { return this->bydamage_; }
-    int getTurn() const { return this->turn_; }
-    int getRate() const { return this->rate_; }
+    turns_t getTurn() const { return this->turn_; }
+    percent_rate_t getRate() const { return this->rate_; }
 
     void setAfterBattle(bool afterbattle) { this->afterbattle_ = afterbattle; }
     void setByDamage(bool bydamage) { this->bydamage_ = bydamage; }
-    void setTurn(bool turn) { this->turn_ = turn; }
-    void setRate(int rate) { this->rate_ = rate; }
+    void setTurn(turns_t turn) { this->turn_ = turn; }
+    void setRate(percent_rate_t rate) { this->rate_ = rate; }
 };
 
 /// Damange by BattlerStatus
@@ -98,7 +100,7 @@ class BattlerStatus {
     std::string name_;
     int priority_ = 0;
 
-    earr::enum_array<Attribute, float> attr_;
+    earr::enum_array<Attribute, attr_factor_t> attr_;
 
     StatusExtent extent_;
 
@@ -111,19 +113,19 @@ class BattlerStatus {
     /// loop)
     std::vector<std::string> removestatuses_;
 
-    int noskillatk_ = -1;
-    int noskillint_ = -1;
+    noskill_t noskillatk_ = -1;
+    noskill_t noskillint_ = -1;
 
 
-    double hitrate_ = 1.0;
-    double critical_hitrate_ = 1.0;
-    double evarate_ = 1.0;
+    factor_rate_t hitrate_ = 1.0;
+    factor_rate_t critical_hitrate_ = 1.0;
+    factor_rate_t evarate_ = 1.0;
 
     StatusDamage hpdamage_;
     StatusDamage mpdamage_;
     StatusRestrictionOption restriction_ = StatusRestrictionOption::None;
     earr::enum_array<StatusOption, bool> option_;
-    earr::enum_array<Resist, int> sensitivity_;
+    earr::enum_array<Resist, sensitivity_t> sensitivity_;
 
 
     public:
@@ -182,7 +184,7 @@ class BattlerStatus {
     std::string getName() const { return this->name_; }
 
     /// Attribute Boni
-    const earr::enum_array<Attribute, float>& getAttr() const {
+    const earr::enum_array<Attribute, attr_factor_t>& getAttr() const {
         return this->attr_;
     }
 
@@ -190,7 +192,7 @@ class BattlerStatus {
      * @param attr Attribute
      * @return Attribute Boni
      */
-    float getAttr(Attribute attr) const {
+    attr_factor_t getAttr(Attribute attr) const {
         return earr::enum_array_at(this->attr_, attr);
     }
 
@@ -223,22 +225,22 @@ class BattlerStatus {
     }
 
     /// skills with X atk or more can't be use (disabled = -1)
-    int getNoSkillATK() const { return this->noskillatk_; }
+    noskill_t getNoSkillATK() const { return this->noskillatk_; }
 
     /// skills with X int or more can't be use (disabled = -1)
-    int getNoSkillINT() const { return this->noskillint_; }
+    noskill_t getNoSkillINT() const { return this->noskillint_; }
 
     /// BattlerStatus priority
     int getPriority() const { return this->priority_; }
 
     /// Boni HitRate factor
-    double getHitRate() const { return this->hitrate_; }
+    factor_rate_t getHitRate() const { return this->hitrate_; }
 
     /// Boni Critical HitRate factor
-    double getCriticalHitRate() const { return this->critical_hitrate_; }
+    factor_rate_t getCriticalHitRate() const { return this->critical_hitrate_; }
 
     /// Boni EvaRate factor
-    double getEvaRate() const { return this->evarate_; }
+    factor_rate_t getEvaRate() const { return this->evarate_; }
 
     /// HP damage
     const StatusDamage& getHPDamage() const { return this->hpdamage_; }
@@ -265,7 +267,7 @@ class BattlerStatus {
     }
 
     /// BattlerStatus sensitivity (Resist value)
-    const earr::enum_array<Resist, int>& getSensitivity() const {
+    const earr::enum_array<Resist, sensitivity_t>& getSensitivity() const {
         return this->sensitivity_;
     }
 
@@ -273,17 +275,17 @@ class BattlerStatus {
      * @param resist Resist
      * @return BattlerStatus sensitivity (Resist value)
      */
-    int getSensitivity(Resist resist) const {
+    sensitivity_t getSensitivity(Resist resist) const {
         return earr::enum_array_at(this->sensitivity_, resist);
     }
 
     void setName(std::string name) { this->name_ = name; }
 
-    void setAttr(const earr::enum_array<Attribute, float>& attr) {
+    void setAttr(const earr::enum_array<Attribute, attr_factor_t>& attr) {
         this->attr_ = attr;
     }
 
-    void setAttr(Attribute attr, float value) {
+    void setAttr(Attribute attr, attr_factor_t value) {
         earr::enum_array_set(this->attr_, attr, value);
     }
 
@@ -299,19 +301,19 @@ class BattlerStatus {
 
     void clearRemoveStatuses() { this->removestatuses_.clear(); }
 
-    void setNoSkillATK(int value) { this->noskillatk_ = value; }
+    void setNoSkillATK(noskill_t value) { this->noskillatk_ = value; }
 
-    void setNoSkillINT(int value) { this->noskillint_ = value; }
+    void setNoSkillINT(noskill_t value) { this->noskillint_ = value; }
 
     void setPriority(int priority) { this->priority_ = priority; }
 
-    void setHitRate(double hitrate) { this->hitrate_ = hitrate; }
+    void setHitRate(factor_rate_t hitrate) { this->hitrate_ = hitrate; }
 
     void setCriticalHitRate(double critical_hitrate) {
         this->critical_hitrate_ = critical_hitrate;
     }
 
-    void setEvaRate(double evarate) { this->evarate_ = evarate; }
+    void setEvaRate(factor_rate_t evarate) { this->evarate_ = evarate; }
 
     void setHPDamage(const StatusDamage& damage) { this->hpdamage_ = damage; }
 
@@ -338,7 +340,7 @@ class BattlerStatus {
         this->restriction_ = restriction;
     }
 
-    void setSensitivity(const earr::enum_array<Resist, int>& sensitivity) {
+    void setSensitivity(const earr::enum_array<Resist, sensitivity_t>& sensitivity) {
         this->sensitivity_ = sensitivity;
     }
 
@@ -347,7 +349,7 @@ class BattlerStatus {
      * @param value Resist value
      * @brief set BattlerStatus resist value
      */
-    void setSensitivity(Resist resist, int value) {
+    void setSensitivity(Resist resist, sensitivity_t value) {
         earr::enum_array_set(this->sensitivity_, resist, value);
     }
 

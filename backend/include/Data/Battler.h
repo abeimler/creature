@@ -42,10 +42,11 @@ BETTER_ENUM(BattlerOption, size_t, LessDamage,
             END)
 
 
+
 /// Learn Skill
 class LearnSkill {
     private:
-    int lvl_ = 0;
+    lvl_t lvl_ = 0;
     std::string skill_name_;
 
     public:
@@ -64,7 +65,7 @@ class LearnSkill {
      * @param skill Skill
      * @brief set required Level and learn Skill
      */
-    LearnSkill(int lvl, const Skill& skill);
+    LearnSkill(lvl_t lvl, const Skill& skill);
 
     /// learn Skill
     std::string getSkill() const { return this->skill_name_; }
@@ -73,7 +74,7 @@ class LearnSkill {
     /// required Level
     int getLvL() const { return this->lvl_; }
 
-    void setLvL(int lvl) { this->lvl_ = lvl; }
+    void setLvL(lvl_t lvl) { this->lvl_ = lvl; }
 
     void setSkill(const Skill& skill) { this->skill_name_ = skill.getName(); }
 };
@@ -81,12 +82,12 @@ class LearnSkill {
 /// DataBattler Class
 class Battler {
     private:
-    earr::enum_array<Attribute, int> attrbasis_;
-    earr::enum_array<Attribute, int> attrinflation_;
+    earr::enum_array<Attribute, attr_t> attrbasis_;
+    earr::enum_array<Attribute, attr_t> attrinflation_;
 
-    int startlvl_ = 0;
-    int minlvl_ = 0;
-    int maxlvl_ = 0;
+    lvl_t startlvl_ = 0;
+    lvl_t minlvl_ = 0;
+    lvl_t maxlvl_ = 0;
 
     std::vector<LearnSkill> skills_;
 
@@ -100,9 +101,9 @@ class Battler {
 
     std::string name_;
 
-    int hitrate_ = 0;
-    int criticalhitrate_ = 0;
-    int evarate_ = 0;
+    percent_rate_t hitrate_ = 0;
+    percent_rate_t criticalhitrate_ = 0;
+    percent_rate_t evarate_ = 0;
 
     public:
     template <class Archive>
@@ -139,7 +140,7 @@ class Battler {
     /// Basis value
     /// of all
     /// Attibutes
-    const earr::enum_array<Attribute, int>& getAttrBasis() const {
+    const earr::enum_array<Attribute, attr_t>& getAttrBasis() const {
         return this->attrbasis_;
     }
 
@@ -147,12 +148,12 @@ class Battler {
      * @param attr Attribute
      * @return Basis value of Attibute
      */
-    int getAttrBasis(Attribute attr) const {
+    attr_t getAttrBasis(Attribute attr) const {
         return earr::enum_array_at(this->attrbasis_, attr);
     }
 
     /// Inflation value of all Attibutes
-    const earr::enum_array<Attribute, int>& getAttrInflation() const {
+    const earr::enum_array<Attribute, attr_t>& getAttrInflation() const {
         return this->attrinflation_;
     }
 
@@ -160,18 +161,18 @@ class Battler {
      * @param attr Attribute
      * @return Inflation value of Attibute
      */
-    int getAttrInflation(Attribute attr) const {
+    attr_t getAttrInflation(Attribute attr) const {
         return earr::enum_array_at(this->attrinflation_, attr);
     }
 
     /// Start Level
-    int getStartLvL() const { return this->startlvl_; }
+    lvl_t getStartLvL() const { return this->startlvl_; }
 
     /// minimal Level
-    int getMinLvL() const { return this->minlvl_; }
+    lvl_t getMinLvL() const { return this->minlvl_; }
 
     /// maximal Level
-    int getMaxLvL() const { return this->maxlvl_; }
+    lvl_t getMaxLvL() const { return this->maxlvl_; }
 
     /// learn Skills
     const std::vector<LearnSkill>& getSkills() const { return this->skills_; }
@@ -237,13 +238,13 @@ class Battler {
     std::string getName() const { return this->name_; }
 
     /// Basis Normal HitRate (without Equip, Boni, ...)
-    int getHitRate() const { return this->hitrate_; }
+    percent_rate_t getHitRate() const { return this->hitrate_; }
 
     /// Basis Critical HitRate (without Equip, Boni, ...)
-    int getCriticalHitRate() const { return this->criticalhitrate_; }
+    percent_rate_t getCriticalHitRate() const { return this->criticalhitrate_; }
 
     /// Basis EvadeRate (without Equip, Boni, ...)
-    int getEvaRate() const { return this->evarate_; }
+    percent_rate_t getEvaRate() const { return this->evarate_; }
 
     void setSkills(const std::vector<LearnSkill>& skills) {
         this->skills_ = skills;
@@ -316,13 +317,17 @@ class Battler {
 
     void setName(std::string name) { this->name_ = name; }
 
-    void setHitRate(int hitrate) { this->hitrate_ = hitrate; }
+    void setHitRate(percent_rate_t hitrate) { 
+        this->hitrate_ = hitrate; 
+    }
 
-    void setCriticalHitRate(int criticalhit) {
+    void setCriticalHitRate(percent_rate_t criticalhit) {
         this->criticalhitrate_ = criticalhit;
     }
 
-    void setEvaRate(int evarate) { this->evarate_ = evarate; }
+    void setEvaRate(percent_rate_t evarate) { 
+        this->evarate_ = evarate; 
+    }
 };
 } // namespace data
 

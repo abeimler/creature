@@ -8,7 +8,7 @@ namespace gamecomp {
 struct ProgressTimerCallback {
     ProgressTimer base;
 
-    double oldvalue = 0.0;
+    progresstimer_percent_t oldvalue = 0.0;
     bool isendless = false;
 };
 } // namespace gamecomp

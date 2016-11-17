@@ -7,6 +7,7 @@
 
 #include "Component/DateTimer.h"
 
+#include "Component/Game/Basic.h"
 #include "Component/Game/CreatureBattler.h"
 #include "Component/Game/ProgressTimer.h"
 #include "Component/Game/ProgressTimerCallback.h"
@@ -41,9 +42,10 @@ BETTER_ENUM(CauseOfRunAway, size_t, NotRunAway,
             END)
 
 
+
 struct CreatureHungerComponent {
     StarvationPhase starvationphase = StarvationPhase::None; ///< Hungerphasen
-    int digestionheap = 0; ///< Anzahl der Haufen (nicht weggeräumt)
+    counter_t digestionheap = 0; ///< Anzahl der Haufen (nicht weggeräumt)
 };
 
 struct CreatureSleepComponent {
@@ -56,7 +58,7 @@ struct CreatureTrainingComponent {
     /// Einfacher Timer um zu ermitteln wie lang schon trainiert wird
     comp::DateTimer trainingtimer;
 
-    std::chrono::milliseconds traintime; ///< Trainigszeit
+    traintime_t traintime; ///< Trainigszeit
 
     /// Trainings Zeitpunkt
     data::CreatureTrainTime creaturetraintime = data::CreatureTrainTime::Noon;
@@ -74,33 +76,33 @@ struct CreatureTrainingComponent {
     earr::enum_array<data::Attribute, bool> lasttrainattrs;
 
     /// Werte die beim letzen Training erreicht wurden
-    earr::enum_array<data::Attribute, int> attrparam_aftertrain;
+    earr::enum_array<data::Attribute, data::attr_t> attrparam_aftertrain;
 
     /// Werte vor dem letzen Training
-    earr::enum_array<data::Attribute, int> attrparam_befortrain;
+    earr::enum_array<data::Attribute, data::attr_t> attrparam_befortrain;
 
     /// Anzahl der Trainingseinheiten an bestimmten Zeiten
-    earr::enum_array<data::CreatureTrainTime, int> trainingcounter;
+    earr::enum_array<data::CreatureTrainTime, counter_t> trainingcounter;
 
     /// Zeitpunkt an den am meisten Trainiert wurde
     data::CreatureTrainTime mosttraintime = data::CreatureTrainTime::Noon;
 };
 
 struct CreatureBodilyStateComponent {
-    int hurtcount = 0; ///< Anzahl der überstanden Verletzungen
-    int illcount = 0;  ///< Anzahl der überstanden Krankheiten
+    counter_t hurtcount = 0; ///< Anzahl der überstanden Verletzungen
+    counter_t illcount = 0;  ///< Anzahl der überstanden Krankheiten
 };
 
 struct CreatureBodyComponent {
-    double weight = 0.0;   ///< Gewicht in g/kg
-    double bodysize = 0.0; ///< Körpergröße in m
-    double bmi = 0.0;      ///< Body Mass Index
-    double calories = 0.0; ///< Eated Calories
+    data::weight_t weight = 0.0;   ///< Gewicht in g/kg
+    data::bodysize_t bodysize = 0.0; ///< Körpergröße in m
+    data::bmi_t bmi = 0.0;      ///< Body Mass Index
+    data::calories_t calories = 0.0; ///< Eated Calories
 };
 
 struct CreaturePsycheComponent {
-    double luck = 0.0; ///< Glück
-    double disc = 0.0; ///< Disziplin
+    data::luck_t luck = 0.0; ///< Glück
+    data::disc_t disc = 0.0; ///< Disziplin
 };
 
 struct CreatureEvolveComponent {
@@ -110,6 +112,7 @@ struct CreatureEvolveComponent {
     /// Evolution-Traking Zusatzinfo
     std::deque<EvolutionTrakingInfo> evolutiontrakinginfo;
 };
+
 
 struct CreatureLifeComponent {
     std::string name; ///< Creaturename
@@ -134,26 +137,26 @@ struct CreatureLifeComponent {
     bool isdead = false;
 
     /// Maximale Lebensdauer (Lebenserwartung)
-    std::chrono::milliseconds maxlifetime;
+    lifetime_t maxlifetime;
 
     /// Zeit die einem Alter entspricht
-    std::chrono::milliseconds ageingtime;
+    lifetime_t ageingtime;
 
     /// Alter, lifetime/ageingtime
-    int age = 0;
+    age_t age = 0;
 
     /// Geburtstag/Schlüpftag
-    std::chrono::system_clock::time_point birthday;
+    birthday_t birthday;
 
     /// Lebensdauer
-    std::chrono::milliseconds lifetime;
+    lifetime_t lifetime;
 
     /// Zeit in der die Creature geupdated werden sollte
     std::chrono::milliseconds needrefreshin_ms;
 
     /// Vorheriges Level,
     /// zum überprüfen falls ein LevelUp erreicht wurde
-    int oldlevel = 0;
+    data::lvl_t oldlevel = 0;
 
     /// hat Creature bestimmten Status
     earr::enum_array<data::CreatureStatus, bool> hasstatus;

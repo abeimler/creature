@@ -29,16 +29,20 @@ class Skill {
 
     std::string description_;
     earr::enum_array<SkillOption, bool> option_;
-    int mpcost_ = 0;
+
+    attr_t mpcost_ = 0;
     bool inpercent_ = false;
+
     TargetOption target_ = TargetOption::OneEnemy;
+
     int atknumbers_ = 1;
-    int hitrate_ = 100;
-    int basehpdamage_ = 0;
-    int basempdamage_ = 0;
-    int variance_ = 0;
-    int atk_ = 0;
-    int inte_ = 0;
+    percent_rate_t hitrate_ = 100;
+
+    attr_t basehpdamage_ = 0;
+    attr_t basempdamage_ = 0;
+    attr_t variance_ = 0;
+    attr_t atk_ = 0;
+    attr_t inte_ = 0;
 
     std::vector<std::string> addstatuses_;
     std::vector<std::string> removestatuses_;
@@ -87,16 +91,19 @@ class Skill {
         return earr::enum_array_at(this->option_, option);
     }
 
-    int getMPCost() const { return this->mpcost_; }
+    attr_t getMPCost() const { return this->mpcost_; }
     bool isMPCostInPercent() const { return this->inpercent_; }
+
     TargetOption getTarget() const { return this->target_; }
+
     int getAtkNumbers() const { return this->atknumbers_; }
-    int getHitRate() const { return this->hitrate_; }
-    int getBaseHPDamage() const { return this->basehpdamage_; }
-    int getBaseMPDamage() const { return this->basempdamage_; }
-    int getVariance() const { return this->variance_; }
-    int getATK() const { return this->atk_; }
-    int getINT() const { return this->inte_; }
+    percent_rate_t getHitRate() const { return this->hitrate_; }
+
+    attr_t getBaseHPDamage() const { return this->basehpdamage_; }
+    attr_t getBaseMPDamage() const { return this->basempdamage_; }
+    attr_t getVariance() const { return this->variance_; }
+    attr_t getATK() const { return this->atk_; }
+    attr_t getINT() const { return this->inte_; }
 
     const std::vector<std::string>& getAddStatuses() const {
         return this->addstatuses_;
@@ -123,20 +130,24 @@ class Skill {
         earr::enum_array_set(this->option_, option, active);
     }
 
-    void setMPCost(int mpcost) { this->mpcost_ = mpcost; }
+    void setMPCost(attr_t mpcost) { this->mpcost_ = mpcost; }
+
     void setIsMPCostInpercent(bool inpercent) { this->inpercent_ = inpercent; }
+
     void setTarget(TargetOption target) { this->target_ = target; }
+
     void setAtkNumbers(int atknumbers) { this->atknumbers_ = atknumbers; }
-    void setHitRate(int hitrate) { this->hitrate_ = hitrate; }
-    void setBaseHPDamage(int basehpdamage) {
+    void setHitRate(percent_rate_t hitrate) { this->hitrate_ = hitrate; }
+
+    void setBaseHPDamage(attr_t basehpdamage) {
         this->basehpdamage_ = basehpdamage;
     }
-    void setBaseMPDamage(int basempdamage) {
+    void setBaseMPDamage(attr_t basempdamage) {
         this->basempdamage_ = basempdamage;
     }
-    void setVariance(int variance) { this->variance_ = variance; }
-    void setATK(int atk) { this->atk_ = atk; }
-    void setINT(int inte) { this->inte_ = inte; }
+    void setVariance(attr_t variance) { this->variance_ = variance; }
+    void setATK(attr_t atk) { this->atk_ = atk; }
+    void setINT(attr_t inte) { this->inte_ = inte; }
 
     void addAddStatus(const BattlerStatus& battlerstatus) {
         this->addstatuses_.push_back(battlerstatus.getName());

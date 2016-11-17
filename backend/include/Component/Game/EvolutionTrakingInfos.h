@@ -5,6 +5,8 @@
 
 #include "Component/DateTimer.h"
 
+#include "Component/Game/Basic.h"
+
 namespace gamecomp {
 
 /// Rückgabewert von evolution
@@ -21,7 +23,7 @@ struct EvolutionTrakingInfoDetail {
     std::chrono::system_clock::time_point datetime;
 
     /// Lebenszeit der Entwicklung
-    std::chrono::milliseconds lifetime;
+    lifetime_t lifetime;
 };
 
 /// Evolution-Traking Infos

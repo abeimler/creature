@@ -2,6 +2,8 @@
 
 namespace gameentity {
 
+CreatureBattlerCreator::CreatureBattlerCreator() = default;
+
 bool CreatureBattlerCreator::isSkillLearned(
     const std::vector<std::shared_ptr<data::Skill>>& skills,
     std::string skill_name) {
@@ -23,31 +25,31 @@ bool CreatureBattlerCreator::isSkillLearned(
            std::end(skills);
 }
 
-CreatureBattlerCreator::CreatureBattlerCreator() = default;
 
-int CreatureBattlerCreator::getAttr(
+data::attr_t CreatureBattlerCreator::getAttr(
     const gamecomp::CreatureBattlerComponent& battler, data::Attribute attr) {
-    int attr_base_value = earr::enum_array_at(battler.attrbase, attr);
-    int attr_plus_value = earr::enum_array_at(battler.attrplus, attr);
+    auto attr_base_value = earr::enum_array_at(battler.attrbase, attr);
+    auto attr_plus_value = earr::enum_array_at(battler.attrplus, attr);
     return attr_base_value + attr_plus_value;
 }
 
 void CreatureBattlerCreator::setHP(
-    int value, gamecomp::CreatureBattlerComponent& battler) {
+    data::attr_t value, gamecomp::CreatureBattlerComponent& battler) {
     battler.hp = clamp(value, 0, getAttr(battler, data::Attribute::MaxMP));
 }
 
 void CreatureBattlerCreator::setMP(
-    int value, gamecomp::CreatureBattlerComponent& battler) {
+    data::attr_t value, gamecomp::CreatureBattlerComponent& battler) {
     battler.mp = clamp(value, 0, getAttr(battler, data::Attribute::MaxMP));
 }
 
 
 void CreatureBattlerCreator::setAttr(
-    data::Attribute attr, int value,
+    data::Attribute attr, data::attr_t value,
     gamecomp::CreatureBattlerComponent& battler) {
     earr::enum_array_at(battler.attrplus, attr) =
         value - earr::enum_array_at(battler.attrbase, attr);
+
     earr::enum_array_at(battler.attr, attr) = value;
 
     if (attr == +data::Attribute::MaxHP) {
@@ -61,8 +63,8 @@ void CreatureBattlerCreator::setAttr(
 void CreatureBattlerCreator::updateNewLvL(
     gamecomp::CreatureBattlerComponent& battler,
     const data::Creature& creature) {
-    battler.lvl = std::max<int>(battler.lvl, creature.getMinLvL());
-    battler.lvl = std::min<int>(battler.lvl, creature.getMaxLvL());
+    battler.lvl = std::max<data::lvl_t>(battler.lvl, creature.getMinLvL());
+    battler.lvl = std::min<data::lvl_t>(battler.lvl, creature.getMaxLvL());
 
     for (const auto& lskill : creature.getSkills()) {
         if (battler.lvl >= lskill.getLvL()) {
@@ -76,14 +78,15 @@ void CreatureBattlerCreator::updateNewLvL(
     if (battler.lvl >= 0) {
         for (auto index : earr::Enum<data::Attribute>()) {
             auto& params = earr::enum_array_at(battler.attrparam, index);
-            if (battler.lvl >= 0 &&
-                static_cast<size_t>(battler.lvl) < params.size()) {
-                earr::enum_array_at(battler.attrbase, index) =
-                    params[static_cast<size_t>(battler.lvl)];
+            if (battler.lvl >= 0) {
+                size_t lvl_index = static_cast<size_t>(battler.lvl);
+                if(lvl_index < params.size()) {
+                    earr::enum_array_at(battler.attrbase, index) = params[lvl_index];
 
-                earr::enum_array_at(battler.attr, index) =
-                    earr::enum_array_at(battler.attrbase, index) +
-                    earr::enum_array_at(battler.attrplus, index);
+                    earr::enum_array_at(battler.attr, index) =
+                        earr::enum_array_at(battler.attrbase, index) +
+                        earr::enum_array_at(battler.attrplus, index);
+                }
             }
         }
     }
@@ -93,44 +96,57 @@ void CreatureBattlerCreator::updateNewLvL(
 }
 
 void CreatureBattlerCreator::setEXP(gamecomp::CreatureBattlerComponent& battler,
-                                    const data::Creature& creature, int exp) {
+                                    const data::Creature& creature, 
+                                    data::attr_t exp) {
     size_t battler_exp_size =
         earr::enum_array_at(battler.attrparam, +data::Attribute::Exp).size();
-    if (battler.lvl >= 0 &&
-        static_cast<size_t>(battler.lvl) < battler_exp_size) {
-        battler.exp = exp;
-        battler.lvl = creature.getMinLvL();
-        auto& attrBaseExp =
-            earr::enum_array_at(battler.attrbase, +data::Attribute::Exp);
-        auto& attrParamExp =
-            earr::enum_array_at(battler.attrparam, +data::Attribute::Exp);
 
-        attrBaseExp = (battler.lvl >= 0)
-                          ? attrParamExp[static_cast<size_t>(battler.lvl)]
-                          : 0;
-        while (battler.lvl <= creature.getMaxLvL() &&
-               battler.exp >= getAttr(battler, +data::Attribute::Exp)) {
-            battler.lvl++;
-            if (battler.lvl >= 0 &&
-                static_cast<size_t>(battler.lvl) < attrParamExp.size()) {
-                attrBaseExp = attrParamExp[static_cast<size_t>(battler.lvl)];
+    if (battler.lvl >= 0) {
+        size_t lvl_index = static_cast<size_t>(battler.lvl);
+        if(lvl_index < battler_exp_size) {
+            battler.exp = exp;
+            battler.lvl = creature.getMinLvL();
+
+            auto& attrBaseExp =
+                earr::enum_array_at(battler.attrbase, +data::Attribute::Exp);
+            auto& attrParamExp =
+                earr::enum_array_at(battler.attrparam, +data::Attribute::Exp);
+
+            attrBaseExp = (battler.lvl >= 0)
+                            ? attrParamExp[static_cast<size_t>(battler.lvl)]
+                            : 0;
+
+            while (battler.lvl <= creature.getMaxLvL() &&
+                battler.exp >= getAttr(battler, +data::Attribute::Exp)) {
+                battler.lvl++;
+                if (battler.lvl >= 0) {
+                    size_t new_lvl_index = static_cast<size_t>(battler.lvl);
+                    if(new_lvl_index < attrParamExp.size()) {
+                        attrBaseExp = attrParamExp[new_lvl_index];
+                    }
+                }
             }
+
+            earr::enum_array_at(battler.attr, +data::Attribute::Exp) =
+                earr::enum_array_at(battler.attrbase, +data::Attribute::Exp) +
+                earr::enum_array_at(battler.attrplus, +data::Attribute::Exp);
+
+            updateNewLvL(battler, creature);
         }
-
-        earr::enum_array_at(battler.attr, +data::Attribute::Exp) =
-            earr::enum_array_at(battler.attrbase, +data::Attribute::Exp) +
-            earr::enum_array_at(battler.attrplus, +data::Attribute::Exp);
-
-        updateNewLvL(battler, creature);
     }
 }
 
 void CreatureBattlerCreator::setLvL(gamecomp::CreatureBattlerComponent& battler,
-                                    const data::Creature& creature, int lvl) {
+                                    const data::Creature& creature, 
+                                    data::lvl_t lvl) {
     auto& attrParamExp =
         earr::enum_array_at(battler.attrparam, +data::Attribute::Exp);
-    if (lvl > 0 && (static_cast<size_t>(lvl) - 1) < attrParamExp.size()) {
-        setEXP(battler, creature, attrParamExp[static_cast<size_t>(lvl) - 1]);
+
+    if (lvl > 0){
+        size_t lvl_index = static_cast<size_t>(lvl);
+        if(lvl_index < attrParamExp.size()) {
+            setEXP(battler, creature, attrParamExp[lvl_index - 1]);
+        }
     } else {
         battler.exp = 0;
     }
@@ -192,7 +208,6 @@ gamecomp::BattlerResistsComponent
 CreatureBattlerCreator::createBattlerResists(const data::Creature& creature) {
     gamecomp::BattlerResistsComponent ret;
 
-
     ret.atk_elements_name = creature.getElements();
 
     const auto& data_element_resist = creature.getElementResist();
@@ -215,12 +230,14 @@ CreatureBattlerCreator::createBattlerResists(const data::Creature& creature) {
 }
 
 void CreatureBattlerCreator::loadCreatureBattler(
-    gamecomp::CreatureBattlerComponent& battler, const data::Creature& creature,
-    const gamecomp::CreatureBattlerGeneComponent& gene, int lvl) {
+    gamecomp::CreatureBattlerComponent& battler, 
+    const data::Creature& creature,
+    const gamecomp::CreatureBattlerGeneComponent& gene, 
+    data::lvl_t lvl) {
 
     for (auto index : earr::Enum<data::Attribute>()) {
         earr::enum_array_at(battler.attrparam, index) =
-            genAttrs<int>(creature, gene, index);
+            genAttrs<data::attr_t>(creature, gene, index);
     }
 
     for (auto index : earr::Enum<data::Attribute>()) {

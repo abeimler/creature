@@ -1,7 +1,8 @@
 #ifndef COMPONENT_GAME_CREATUREMEMORY_H_
 #define COMPONENT_GAME_CREATUREMEMORY_H_
 
-#include "Component/Basic.h"
+
+#include "Component/Game/Basic.h"
 
 namespace gamecomp {
 
@@ -50,11 +51,15 @@ BETTER_ENUM(CreatureActivity, size_t, Noting,
             /// Toilette)
             END)
 
+using memory_value_t = int;
+using long_memory_value_t = double;
+using memory_factor_t = double;
+
 /// Mittelzeit Erinnerung der GameCreature (Bei Timer abgelaufen
 /// verbessen)
 struct CreatureActivityShort {
     /// Erinnerungswert, > 0 : gute Erinnerung, < 0 : schlechte Erinnerung
-    int value = 0;
+    memory_value_t value = 0;
 };
 
 
@@ -65,11 +70,11 @@ struct CreatureMemoryDeepMemory {
     CreatureActivityShort medium_memory;
 
     /// Langzeitgedächnis
-    double long_memory = 0.0;
+    long_memory_value_t long_memory = 0.0;
 
     /// Erinnerungswert als factor
-    double goodmemoryfactor = 1.0;
-    double badmemoryfactor = 1.0;
+    memory_factor_t goodmemoryfactor = 1.0;
+    memory_factor_t badmemoryfactor = 1.0;
 };
 
 /// GameCreature Gedächnis
@@ -88,28 +93,28 @@ struct CreatureMemoryComponent {
 /// GameCreature Persönlichkeit
 struct CreaturePersonalityComponent {
     /// Erinnerung an die Geburt
-    double rememberborn = 1.0;
+    long_memory_value_t rememberborn = 1.0;
 
     /// oftmals Verletzt oder Krank
-    double oftenhurtill = 1.0;
+    long_memory_value_t oftenhurtill = 1.0;
 
     /// Erinnerung an Weglaufen
-    double rememberrunaway = 1.0;
+    long_memory_value_t rememberrunaway = 1.0;
 
     /// Erinnerung an Krankenaus besuch
-    double rememberhospitalvisit = 1.0;
+    long_memory_value_t rememberhospitalvisit = 1.0;
 
     /// Likes
-    double likesleep = 1.0;
-    double likehospital = 1.0;
-    double liketraining = 1.0;
-    double likeeat = 1.0;
-    double likedrink = 1.0;
+    long_memory_value_t likesleep = 1.0;
+    long_memory_value_t likehospital = 1.0;
+    long_memory_value_t liketraining = 1.0;
+    long_memory_value_t likeeat = 1.0;
+    long_memory_value_t likedrink = 1.0;
 
-    double remembergototoilet = 1.0;
+    long_memory_value_t remembergototoilet = 1.0;
 
     /// Langeweile
-    double bored = 1.0;
+    long_memory_value_t bored = 1.0;
 };
 
 

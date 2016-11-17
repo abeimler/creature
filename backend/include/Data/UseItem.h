@@ -27,12 +27,13 @@ BETTER_ENUM(UseItemOption, size_t, CanUseinBattle,
 /// UseItem Item
 class UseItem : public Item {
     private:
-    int canuse_ = 1;
+    item_use_t canuse_ = CAN_USE_ITEM_ONCE;
     TargetOption target_ = TargetOption::OneEnemy;
+
     int atknumbers_ = 1;
     earr::enum_array<UseItemOption, bool> option_;
 
-    earr::enum_array<Attribute, int> attr_;
+    earr::enum_array<Attribute, attr_t> attr_;
 
     int rehp_ = 0;
     bool rehp_inpercent_ = false;
@@ -80,10 +81,13 @@ class UseItem : public Item {
 
     public:
     /// constant for "can't use" @see UseItem.canuse_
-    static constexpr int CANT_USE_ITEM = 0;
+    static constexpr item_use_t CANT_USE_ITEM = 0;
 
     /// constant for "can use unlimited" @see UseItem.canuse_
-    static constexpr int CAN_USE_UNLIMITED = -1;
+    static constexpr item_use_t CAN_USE_UNLIMITED = -1;
+
+    /// constant for "can use once" @see UseItem.canuse_
+    static constexpr item_use_t CAN_USE_ITEM_ONCE = 1;
 
     UseItem();
 
@@ -116,7 +120,7 @@ class UseItem : public Item {
     }
 
     /// Boni Attributes
-    const earr::enum_array<Attribute, int>& getAttr() const {
+    const earr::enum_array<Attribute, attr_t>& getAttr() const {
         return this->attr_;
     }
 
@@ -198,10 +202,10 @@ class UseItem : public Item {
         earr::enum_array_set(this->option_, option, active);
     }
 
-    void setAttr(const earr::enum_array<Attribute, int>& attr) {
+    void setAttr(const earr::enum_array<Attribute, attr_t>& attr) {
         this->attr_ = attr;
     }
-    void setAttr(Attribute attr, int value) {
+    void setAttr(Attribute attr, attr_t value) {
         earr::enum_array_set(this->attr_, attr, value);
     }
 

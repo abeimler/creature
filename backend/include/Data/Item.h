@@ -13,7 +13,7 @@ class Item {
     std::string icon_filename_;
     std::string description_;
 
-    int price_ = 0;
+    money_t price_ = 0;
 
     public:
     template <class Archive>
@@ -27,9 +27,10 @@ class Item {
 
     protected:
     /// item type (UseItem, Weapon, Armor, ...)
-    ItemType itype_ = ItemType::Basis;
+    ItemType itype_;
 
     explicit Item(ItemType itype);
+    explicit Item(const Item& baseitem, ItemType itype_);
 
     public:
     Item();
@@ -53,7 +54,7 @@ class Item {
     std::string getDescription() { return this->description_; }
 
     /// Price
-    int getPrice() { return this->price_; }
+    money_t getPrice() { return this->price_; }
 
     void setName(std::string name) { this->name_ = name; }
 
@@ -65,7 +66,7 @@ class Item {
         this->description_ = description;
     }
 
-    void setPrice(int price) { this->price_ = price; }
+    void setPrice(money_t price) { this->price_ = price; }
 };
 
 } // namespace data

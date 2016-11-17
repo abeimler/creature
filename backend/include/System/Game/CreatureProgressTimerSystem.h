@@ -24,32 +24,32 @@ class CreatureProgressTimerSystem : public System {
 
     bool ignortimer_ = false;
 
-    double updateTimer(gamecomp::ProgressTimer& timer,
+    gamecomp::progresstimer_percent_t updateTimer(gamecomp::ProgressTimer& timer,
                        data::CreatureLevel level);
 
 
 
-    double updateCallbackTimer(EventBus& events, Entity entity,
+    gamecomp::progresstimer_percent_t updateCallbackTimer(EventBus& events, Entity entity,
                                gamecomp::ProgressTimerCallback& timer,
                                data::CreatureLevel level,
                                gamecomp::CreatureProgressTimerCallback type);
 
-    double updateIncrementTimer(EventBus& events, Entity entity,
+    gamecomp::progresstimer_percent_t updateIncrementTimer(EventBus& events, Entity entity,
                                 gamecomp::ProgressTimerIncrement& timer,
                                 data::CreatureLevel level,
                                 gamecomp::CreatureProgressTimerIncrement type);
 
-    double updateStarvationPhaseTimer(EventBus& events, Entity entity,
+    gamecomp::progresstimer_percent_t updateStarvationPhaseTimer(EventBus& events, Entity entity,
                                       gamecomp::ProgressTimerCallback& timer,
                                       data::CreatureLevel level,
                                       gamecomp::StarvationPhase type);
 
-    double updateShortTermMemoryTimer(EventBus& events, Entity entity,
+    gamecomp::progresstimer_percent_t updateShortTermMemoryTimer(EventBus& events, Entity entity,
                                       gamecomp::ProgressTimerCallback& timer,
                                       data::CreatureLevel level,
                                       gamecomp::CreatureActivity activity);
 
-    double updateMediumTermMemoryTimer(EventBus& events, Entity entity,
+    gamecomp::progresstimer_percent_t updateMediumTermMemoryTimer(EventBus& events, Entity entity,
                                        gamecomp::ProgressTimerCallback& timer,
                                        data::CreatureLevel level,
                                        gamecomp::CreatureActivity activity);
