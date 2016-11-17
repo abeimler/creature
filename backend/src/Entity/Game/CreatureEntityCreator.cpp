@@ -33,10 +33,12 @@ gamecomp::CreatureBodyComponent CreatureEntityCreator::createCreatureBody(
     const gamecomp::CreatureGeneComponent& gene) {
     gamecomp::CreatureBodyComponent ret;
 
-    ret.weight = 5.0;
-    ret.bodysize = 0.3;
-    ret.bmi = getBMI(gene, 2, 40, ret.weight, ret.bodysize);
+    //ret.weight = 5.0;
+    //ret.bodysize = 0.3;
+    //ret.bmi = getBMI(gene, 2, 40, ret.weight, ret.bodysize);
 
+
+    ret.bodysize = creature_data.getMinBodySize();
 
     auto weight = creature_data.getEvolCondition().getWeight() * 1.3;
     if (creature_data.getEvolCondition().getWeight() <= 0.0 ||
