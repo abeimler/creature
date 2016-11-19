@@ -152,7 +152,7 @@ struct CreatureLifeComponent {
     lifetime_t lifetime;
 
     /// Zeit in der die Creature geupdated werden sollte
-    std::chrono::milliseconds needrefreshin_ms;
+    waittime_t needrefreshin;
 
     /// Vorheriges Level,
     /// zum überprüfen falls ein LevelUp erreicht wurde

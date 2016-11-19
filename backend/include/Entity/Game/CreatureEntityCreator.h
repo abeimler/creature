@@ -34,10 +34,10 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
 
     CreatureBattlerCreator creaturebattler_creator_;
 
-    std::chrono::seconds min_needrefreshin_ = DEFAULT_MIN_NEEDREFRESHIN;
-    std::chrono::seconds max_needrefreshin_ = DEFAULT_MAX_NEEDREFRESHIN;
-    std::chrono::seconds min_totallifetime_ = DEFAULT_MIN_TOTALLIFETIME;
-    std::chrono::seconds ageingtime_ = DEFAULT_AGEINGTIME;
+    gamecomp::waittime_t min_needrefreshin_ = DEFAULT_MIN_NEEDREFRESHIN;
+    gamecomp::waittime_t max_needrefreshin_ = DEFAULT_MAX_NEEDREFRESHIN;
+    gamecomp::waittime_t min_totallifetime_ = DEFAULT_MIN_TOTALLIFETIME;
+    gamecomp::waittime_t ageingtime_ = DEFAULT_AGEINGTIME;
     size_t max_short_memorysize_ = DEFAULT_MAX_SHORT_MEMORYSIZE;
     int max_short_memorysize_variance_ = DEFAULT_MAX_SHORT_MEMORYSIZE_VARIANCE;
 
@@ -129,13 +129,13 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
                                         data::bodysize_t bodysize, data::weight_t weight, data::weight_t min_weight);
 
 
-    static constexpr std::chrono::seconds DEFAULT_MIN_NEEDREFRESHIN =
+    static constexpr gamecomp::waittime_t DEFAULT_MIN_NEEDREFRESHIN =
         std::chrono::seconds(1);
-    static constexpr std::chrono::seconds DEFAULT_MAX_NEEDREFRESHIN =
+    static constexpr gamecomp::waittime_t DEFAULT_MAX_NEEDREFRESHIN =
         std::chrono::hours(24) * 7;
-    static constexpr std::chrono::seconds DEFAULT_MIN_TOTALLIFETIME =
+    static constexpr gamecomp::waittime_t DEFAULT_MIN_TOTALLIFETIME =
         std::chrono::hours(24) * 365 * 3;
-    static constexpr std::chrono::seconds DEFAULT_AGEINGTIME =
+    static constexpr gamecomp::waittime_t DEFAULT_AGEINGTIME =
         DEFAULT_MIN_TOTALLIFETIME / 100;
 
     static constexpr size_t DEFAULT_MAX_SHORT_MEMORYSIZE = 7;
@@ -221,16 +221,16 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
 
     CreatureEntityCreator() = default;
 
-    std::chrono::seconds getMinNeedRefreshIn() const {
+    gamecomp::waittime_t getMinNeedRefreshIn() const {
         return this->min_needrefreshin_;
     }
-    std::chrono::seconds getMaxNeedRefreshIn() const {
+    gamecomp::waittime_t getMaxNeedRefreshIn() const {
         return this->max_needrefreshin_;
     }
-    std::chrono::seconds getMinTotalLifetime() const {
+    gamecomp::waittime_t getMinTotalLifetime() const {
         return this->min_totallifetime_;
     }
-    std::chrono::seconds getAgeingTime() const { return this->ageingtime_; }
+    gamecomp::waittime_t getAgeingTime() const { return this->ageingtime_; }
 
     size_t getMaxShortMemorySize() const { return this->max_short_memorysize_; }
     int getMaxShortMemorySizeVariance() const {

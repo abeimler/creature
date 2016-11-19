@@ -3,10 +3,10 @@
 namespace gameentity {
 
 
-constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_MIN_NEEDREFRESHIN;
-constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_MAX_NEEDREFRESHIN;
-constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_MIN_TOTALLIFETIME;
-constexpr std::chrono::seconds CreatureEntityCreator::DEFAULT_AGEINGTIME;
+constexpr gamecomp::waittime_t CreatureEntityCreator::DEFAULT_MIN_NEEDREFRESHIN;
+constexpr gamecomp::waittime_t CreatureEntityCreator::DEFAULT_MAX_NEEDREFRESHIN;
+constexpr gamecomp::waittime_t CreatureEntityCreator::DEFAULT_MIN_TOTALLIFETIME;
+constexpr gamecomp::waittime_t CreatureEntityCreator::DEFAULT_AGEINGTIME;
 
 constexpr size_t CreatureEntityCreator::DEFAULT_MAX_SHORT_MEMORYSIZE;
 constexpr int CreatureEntityCreator::DEFAULT_MAX_SHORT_MEMORYSIZE_VARIANCE;
@@ -87,7 +87,7 @@ gamecomp::CreatureLifeComponent CreatureEntityCreator::createCreatureLife(
     }
 
 
-    ret.needrefreshin_ms = min_needrefreshin_;
+    ret.needrefreshin = min_needrefreshin_;
 
     ret.oldlevel = battler.lvl;
 

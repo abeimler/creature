@@ -39,29 +39,29 @@ class CreatureBattlerSystem : public System {
 
 
     void updateCreatureBattlerAttribute(
-        Component<gamecomp::CreatureBattlerComponent>& creature_battler,
-        Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
-        Component<gamecomp::CreatureDataComponent>& creature_data);
+        gamecomp::CreatureBattlerComponent& creature_battler,
+        gamecomp::BattlerStatusesComponent& battler_statuses,
+        gamecomp::CreatureDataComponent& creature_data);
 
     void updateCreatureHitRate(
-        Component<gamecomp::CreatureBattlerComponent>& creature_battler,
-        Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
-        Component<gamecomp::CreatureDataComponent>& creature_data);
+        gamecomp::CreatureBattlerComponent& creature_battler,
+        gamecomp::BattlerStatusesComponent& battler_statuses,
+        gamecomp::CreatureDataComponent& creature_data);
 
     void updateCreatureCriticalHitRate(
-        Component<gamecomp::CreatureBattlerComponent>& creature_battler,
-        Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
-        Component<gamecomp::CreatureDataComponent>& creature_data);
+        gamecomp::CreatureBattlerComponent& creature_battler,
+        gamecomp::BattlerStatusesComponent& battler_statuses,
+        gamecomp::CreatureDataComponent& creature_data);
 
     void updateCreatureEvaRate(
-        Component<gamecomp::CreatureBattlerComponent>& creature_battler,
-        Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
-        Component<gamecomp::CreatureDataComponent>& creature_data);
+        gamecomp::CreatureBattlerComponent& creature_battler,
+        gamecomp::BattlerStatusesComponent& battler_statuses,
+        gamecomp::CreatureDataComponent& creature_data);
 
     void updateCreatureStatusRestriction(
-        Component<gamecomp::CreatureBattlerComponent>& creature_battler,
-        Component<gamecomp::BattlerStatusesComponent>& battler_statuses,
-        Component<gamecomp::CreatureDataComponent>& creature_data);
+        gamecomp::CreatureBattlerComponent& creature_battler,
+        gamecomp::BattlerStatusesComponent& battler_statuses,
+        gamecomp::CreatureDataComponent& creature_data);
 
     void update(EntityManager& entities, EventBus& events,
                 TimeDelta dt) override;
