@@ -2,7 +2,8 @@
 
 namespace gamesystem {
 
-gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateCallbackTimer(
+gamecomp::progresstimer_percent_t
+CreatureProgressTimerSystem::updateCallbackTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
     data::CreatureLevel level, gamecomp::CreatureProgressTimerCallback type) {
     auto ret = updateTimer(timer.base, level);
@@ -28,7 +29,8 @@ gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateCallbackTim
     return ret;
 }
 
-gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateIncrementTimer(
+gamecomp::progresstimer_percent_t
+CreatureProgressTimerSystem::updateIncrementTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerIncrement& timer,
     data::CreatureLevel level, gamecomp::CreatureProgressTimerIncrement type) {
     auto ret = updateTimer(timer.base, level);
@@ -50,7 +52,8 @@ gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateIncrementTi
     return ret;
 }
 
-gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateStarvationPhaseTimer(
+gamecomp::progresstimer_percent_t
+CreatureProgressTimerSystem::updateStarvationPhaseTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
     data::CreatureLevel level, gamecomp::StarvationPhase type) {
     auto ret = updateTimer(timer.base, level);
@@ -71,7 +74,8 @@ gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateStarvationP
     return ret;
 }
 
-gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateShortTermMemoryTimer(
+gamecomp::progresstimer_percent_t
+CreatureProgressTimerSystem::updateShortTermMemoryTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
     data::CreatureLevel level, gamecomp::CreatureActivity activity) {
     auto ret = updateTimer(timer.base, level);
@@ -92,7 +96,8 @@ gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateShortTermMe
     return ret;
 }
 
-gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
+gamecomp::progresstimer_percent_t
+CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
     EventBus& events, Entity entity, gamecomp::ProgressTimerCallback& timer,
     data::CreatureLevel level, gamecomp::CreatureActivity activity) {
     auto ret = updateTimer(timer.base, level);
@@ -114,7 +119,7 @@ gamecomp::progresstimer_percent_t CreatureProgressTimerSystem::updateMediumTermM
 }
 
 
-gamecomp::progresstimer_percent_t 
+gamecomp::progresstimer_percent_t
 CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
                                          data::CreatureLevel level) {
     datetimer_util_.update(timer.timer, this->ignortimer_);
@@ -151,8 +156,9 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
                 datetimer_util_.start(timer.fulltimer);
 
                 auto ticks_ms_f = static_cast<double>(waitTime_ms.count()) *
-                                    ((timer.value - 100.0) / 100.0);
-                std::chrono::milliseconds addTm_ms(static_cast<int64_t>(ticks_ms_f));
+                                  ((timer.value - 100.0) / 100.0);
+                std::chrono::milliseconds addTm_ms(
+                    static_cast<int64_t>(ticks_ms_f));
 
                 datetimer_util_.addTime(timer.fulltimer, addTm_ms);
             }
@@ -197,7 +203,8 @@ void CreatureProgressTimerSystem::update(EntityManager& entities,
     gameentity::Component<gamecomp::CreatureProgressTimersComponent>
         creatureprogresstimers;
 
-    for (auto entity : entities.entities_with_components(creatureprogresstimers)) {
+    for (auto entity :
+         entities.entities_with_components(creatureprogresstimers)) {
         data::CreatureLevel level = creatureprogresstimers->creaturelevel;
 
         datetimer_util_.update(creatureprogresstimers->lifetimer);

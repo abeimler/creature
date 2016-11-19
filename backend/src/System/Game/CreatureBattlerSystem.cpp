@@ -13,12 +13,11 @@ void CreatureBattlerSystem::updateCreatureBattlerAttribute(
 
     const auto& creature = creature_data.creature;
 
-    creature_battler.lvl = clamp(creature_battler.lvl, creature.getMinLvL(),
-                                  creature.getMaxLvL());
+    creature_battler.lvl =
+        clamp(creature_battler.lvl, creature.getMinLvL(), creature.getMaxLvL());
 
     for (auto attr : earr::Enum<data::Attribute>()) {
-        auto& baseattrs =
-            earr::enum_array_at(creature_battler.attrparam, attr);
+        auto& baseattrs = earr::enum_array_at(creature_battler.attrparam, attr);
 
         if (creature_battler.lvl >= 0) {
             size_t lvl_index = static_cast<size_t>(creature_battler.lvl);
@@ -77,8 +76,8 @@ void CreatureBattlerSystem::updateCreatureHitRate(
                         0, sum_battlerstatuses_hitrate_func);
 
     auto status_avg_hitrate = (!battlerstatuses.empty())
-                                 ? status_sum_hitrate / battlerstatuses.size()
-                                 : basehitrate;
+                                  ? status_sum_hitrate / battlerstatuses.size()
+                                  : basehitrate;
 
     creature_battler.hitrate = (basehitrate + status_avg_hitrate) / 2;
 }
@@ -137,8 +136,8 @@ void CreatureBattlerSystem::updateCreatureEvaRate(
                         0, sum_battlerstatuses_evarate_func);
 
     auto status_avg_evarate = (!battlerstatuses.empty())
-                                 ? status_sum_evarate / battlerstatuses.size()
-                                 : baseevarate;
+                                  ? status_sum_evarate / battlerstatuses.size()
+                                  : baseevarate;
 
     creature_battler.evarate = (baseevarate + status_avg_evarate) / 2;
 }
@@ -193,20 +192,25 @@ void CreatureBattlerSystem::update(EntityManager& entities,
 
     for (auto entity : entities.entities_with_components(
              creature_data, creature_battler, battler_statuses)) {
-        this->updateCreatureBattlerAttribute(*creature_battler.get(), *battler_statuses.get(),
+        this->updateCreatureBattlerAttribute(*creature_battler.get(),
+                                             *battler_statuses.get(),
                                              *creature_data.get());
 
-        this->updateCreatureHitRate(*creature_battler.get(), *battler_statuses.get(),
+        this->updateCreatureHitRate(*creature_battler.get(),
+                                    *battler_statuses.get(),
                                     *creature_data.get());
 
-        this->updateCreatureCriticalHitRate(*creature_battler.get(), *battler_statuses.get(),
+        this->updateCreatureCriticalHitRate(*creature_battler.get(),
+                                            *battler_statuses.get(),
                                             *creature_data.get());
 
-        this->updateCreatureEvaRate(*creature_battler.get(), *battler_statuses.get(),
+        this->updateCreatureEvaRate(*creature_battler.get(),
+                                    *battler_statuses.get(),
                                     *creature_data.get());
 
         this->updateCreatureStatusRestriction(*creature_battler.get(),
-                                              *battler_statuses.get(), *creature_data.get());
+                                              *battler_statuses.get(),
+                                              *creature_data.get());
     }
 }
 

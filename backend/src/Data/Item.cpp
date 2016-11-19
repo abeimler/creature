@@ -3,9 +3,7 @@
 namespace data {
 
 
-Item::Item(const Item& baseitem, ItemType itype)
-    : Item(baseitem)
-{
+Item::Item(const Item& baseitem, ItemType itype) : Item(baseitem) {
     this->itype_ = std::move(itype);
 }
 

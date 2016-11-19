@@ -1,8 +1,8 @@
 #include "benchpress/benchpress.hpp"
 
+#include <algorithm>
 #include <array>
 #include <vector>
-#include <algorithm>
 
 #include "basic.h"
 #include "enum_array.h"
@@ -24,9 +24,11 @@ class CreatureMemoryDeepMemoryEnumArrayBenchmark {
     }
 
     static earr::enum_array<gamecomp::CreatureActivity,
-                         gamecomp::CreatureMemoryDeepMemory> make_enum_array_CreatureMemoryDeepMemory() {
+                            gamecomp::CreatureMemoryDeepMemory>
+    make_enum_array_CreatureMemoryDeepMemory() {
         earr::enum_array<gamecomp::CreatureActivity,
-                         gamecomp::CreatureMemoryDeepMemory> deep_memory;
+                         gamecomp::CreatureMemoryDeepMemory>
+            deep_memory;
         auto enum_creatureactivity = earr::Enum<gamecomp::CreatureActivity>();
 
         for (auto index : enum_creatureactivity) {
@@ -41,28 +43,32 @@ class CreatureMemoryDeepMemoryEnumArrayBenchmark {
 
 
 
-BENCHMARK("gamecomp::CreatureMemory.deep_memory as enum_array", [](benchpress::context* ctx) {
-    // not working, why ?? compile error: macro "BENCHMARK" passed 3 arguments, but takes just 2
-    /*
-    earr::enum_array<gamecomp::CreatureActivity, gamecomp::CreatureMemoryDeepMemory> deep_memory;
+BENCHMARK("gamecomp::CreatureMemory.deep_memory as enum_array",
+          [](benchpress::context* ctx) {
+              // not working, why ?? compile error: macro "BENCHMARK" passed 3
+              // arguments, but takes just 2
+              /*
+              earr::enum_array<gamecomp::CreatureActivity,
+              gamecomp::CreatureMemoryDeepMemory> deep_memory;
 
-    CreatureMemoryDeepMemoryEnumArrayBenchmark::init_enum_array_CreatureMemoryDeepMemory(deep_memory);
-    */
-    auto deep_memory = CreatureMemoryDeepMemoryEnumArrayBenchmark::make_enum_array_CreatureMemoryDeepMemory();
+              CreatureMemoryDeepMemoryEnumArrayBenchmark::init_enum_array_CreatureMemoryDeepMemory(deep_memory);
+              */
+              auto deep_memory = CreatureMemoryDeepMemoryEnumArrayBenchmark::
+                  make_enum_array_CreatureMemoryDeepMemory();
 
-    gamecomp::CreatureActivity find_key =
-        +gamecomp::CreatureActivity::MakeDigestionHeapToilet;
+              gamecomp::CreatureActivity find_key =
+                  +gamecomp::CreatureActivity::MakeDigestionHeapToilet;
 
-    ctx->reset_timer();
-    for (size_t i = 0; i < ctx->num_iterations(); ++i) {
-        auto find_func = [find_key](
-            const gamecomp::CreatureMemoryDeepMemory& memory) {
-            return memory.activity == find_key;
-        };
+              ctx->reset_timer();
+              for (size_t i = 0; i < ctx->num_iterations(); ++i) {
+                  auto find_func = [find_key](
+                      const gamecomp::CreatureMemoryDeepMemory& memory) {
+                      return memory.activity == find_key;
+                  };
 
-        auto it = std::find_if(std::begin(deep_memory),
-                                std::end(deep_memory), find_func);
+                  auto it = std::find_if(std::begin(deep_memory),
+                                         std::end(deep_memory), find_func);
 
-        benchpress::escape(&it);
-    }        
-})
+                  benchpress::escape(&it);
+              }
+          })

@@ -33,7 +33,7 @@ class EntityXBenchmark {
                             ComflabulationComponent>;
 
     // bignumber to avoid alloc error, benchmark a lot of enteties
-    static constexpr size_t INITIAL_CAPACITY = 16384; 
+    static constexpr size_t INITIAL_CAPACITY = 16384;
     using EntityManager = entityx::EntityX<
         GameComponents,
         entityx::ColumnStorage<GameComponents, INITIAL_CAPACITY>>;
@@ -81,7 +81,7 @@ class EntityXBenchmark {
         public:
         ComflabSystem() = default;
 
-        void update(EntityManager& es, double  /*dt*/) override {
+        void update(EntityManager& es, double /*dt*/) override {
             Component<ComflabulationComponent> comflab;
 
             for (Entity entity :

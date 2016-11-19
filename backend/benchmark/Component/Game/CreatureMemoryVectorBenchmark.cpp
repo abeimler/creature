@@ -1,8 +1,8 @@
 #include "benchpress/benchpress.hpp"
 
+#include <algorithm>
 #include <array>
 #include <vector>
-#include <algorithm>
 
 #include "basic.h"
 #include "enum_array.h"
@@ -11,7 +11,6 @@
 
 class CreatureMemoryDeepMemoryVectorBenchmark {
     public:
-
     static void init_vector_CreatureMemoryDeepMemory(
         std::vector<gamecomp::CreatureMemoryDeepMemory>& deep_memory) {
         auto enum_creatureactivity = earr::Enum<gamecomp::CreatureActivity>();
@@ -23,10 +22,7 @@ class CreatureMemoryDeepMemoryVectorBenchmark {
             deep_memory.push_back(memory);
         }
     }
-
 };
-
-
 
 
 
@@ -34,7 +30,8 @@ BENCHMARK("gamecomp::CreatureMemory.deep_memory as vector",
           [](benchpress::context* ctx) {
               std::vector<gamecomp::CreatureMemoryDeepMemory> deep_memory;
 
-              CreatureMemoryDeepMemoryVectorBenchmark::init_vector_CreatureMemoryDeepMemory(deep_memory);
+              CreatureMemoryDeepMemoryVectorBenchmark::
+                  init_vector_CreatureMemoryDeepMemory(deep_memory);
 
               gamecomp::CreatureActivity find_key =
                   +gamecomp::CreatureActivity::MakeDigestionHeapToilet;
@@ -52,4 +49,3 @@ BENCHMARK("gamecomp::CreatureMemory.deep_memory as vector",
                   benchpress::escape(&it);
               }
           })
-

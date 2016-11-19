@@ -247,7 +247,8 @@ void DataCreatureMaker::makeDataCreature(
 
     bool issettraintime = false;
     for (auto index : earr::Enum<data::CreatureTrainTime>()) {
-        issettraintime |= static_cast<int>(data_creature_evolCondition.getTrainTime(index));
+        issettraintime |=
+            static_cast<int>(data_creature_evolCondition.getTrainTime(index));
     }
     if (!issettraintime) {
         data_creature_evolCondition.setTrainTimeEveryDay();

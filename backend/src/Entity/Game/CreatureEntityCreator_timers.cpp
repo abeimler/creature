@@ -4,7 +4,8 @@ namespace gameentity {
 
 gamecomp::CreatureProgressTimersComponent
 CreatureEntityCreator::createCreatureProgressTimers(
-    std::chrono::system_clock::time_point time, gamecomp::progresstimer_factor_t realtime_factor) {
+    std::chrono::system_clock::time_point time,
+    gamecomp::progresstimer_factor_t realtime_factor) {
     gamecomp::CreatureProgressTimersComponent ret;
 
     datetimer_util_.init(ret.lifetimer, time, realtime_factor);
@@ -33,7 +34,8 @@ CreatureEntityCreator::createCreatureProgressTimers(
 
 void CreatureEntityCreator::setCreatureProgressTimersRealTime(
     gamecomp::CreatureProgressTimersComponent& timers,
-    std::chrono::system_clock::time_point time, gamecomp::progresstimer_factor_t realtime_factor) {
+    std::chrono::system_clock::time_point time,
+    gamecomp::progresstimer_factor_t realtime_factor) {
     datetimer_util_.setRealTime(timers.lifetimer, time, realtime_factor);
 
     for (auto& timer : timers.timer) {
@@ -60,7 +62,8 @@ void CreatureEntityCreator::setCreatureProgressTimersRealTime(
 
 void CreatureEntityCreator::setCreatureProgressTimersRealTimeFromLifetimer(
     gamecomp::CreatureProgressTimersComponent& timers) {
-    auto time = std::chrono::system_clock::time_point() + timers.lifetimer.realtime;
+    auto time =
+        std::chrono::system_clock::time_point() + timers.lifetimer.realtime;
     auto factor = timers.lifetimer.realtime_factor;
 
     setCreatureProgressTimersRealTime(timers, time, factor);
@@ -68,7 +71,8 @@ void CreatureEntityCreator::setCreatureProgressTimersRealTimeFromLifetimer(
 
 gamecomp::CreatureProgressTimersComponent
 CreatureEntityCreator::createCreatureProgressTimersCreature(
-    std::chrono::system_clock::time_point time, gamecomp::progresstimer_factor_t realtime_factor) {
+    std::chrono::system_clock::time_point time,
+    gamecomp::progresstimer_factor_t realtime_factor) {
     auto timers = createCreatureProgressTimers(time, realtime_factor);
 
     datetimer_util_.restart(timers.lifetimer);
@@ -86,11 +90,11 @@ void CreatureEntityCreator::setupCreatureProgressTimers(
     const gamecomp::CreatureBodyComponent& body) {
     timers.creaturelevel = life.creaturelevel;
 
-    auto maxbodysize =
-        std::min<data::bodysize_t>(gene.max_bodysize, creature.getMaxBodySize());
+    auto maxbodysize = std::min<data::bodysize_t>(gene.max_bodysize,
+                                                  creature.getMaxBodySize());
 
-    auto& growing_timer = earr::enum_array_at(timers.increment, 
-        +gamecomp::CreatureProgressTimerIncrement::Growing);
+    auto& growing_timer = earr::enum_array_at(
+        timers.increment, +gamecomp::CreatureProgressTimerIncrement::Growing);
 
     growing_timer.addvalue_per_percent = (maxbodysize - body.bodysize) / 100.0;
 

@@ -7,7 +7,7 @@ CreatureEntityCreator::createCreatureMemory() {
     gamecomp::CreatureMemoryComponent ret;
 
     auto variance = util::random(-this->max_short_memorysize_variance_,
-                                this->max_short_memorysize_variance_);
+                                 this->max_short_memorysize_variance_);
 
     auto memorySize = static_cast<int>(this->max_short_memorysize_) + variance;
 

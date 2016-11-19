@@ -169,7 +169,6 @@ BENCHMARK("dateutil::date_part 1991-07-08T12:13:14 Month",
 
 
 
-
 BENCHMARK("dateutil::date_part 1991-07-08T12:13:14 Day",
           [](benchpress::context* ctx) {
               int year = 1991;

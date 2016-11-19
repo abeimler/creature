@@ -33,9 +33,9 @@ gamecomp::CreatureBodyComponent CreatureEntityCreator::createCreatureBody(
     const gamecomp::CreatureGeneComponent& gene) {
     gamecomp::CreatureBodyComponent ret;
 
-    //ret.weight = 5.0;
-    //ret.bodysize = 0.3;
-    //ret.bmi = getBMI(gene, 2, 40, ret.weight, ret.bodysize);
+    // ret.weight = 5.0;
+    // ret.bodysize = 0.3;
+    // ret.bmi = getBMI(gene, 2, 40, ret.weight, ret.bodysize);
 
 
     ret.bodysize = creature_data.getMinBodySize();
@@ -67,8 +67,7 @@ CreatureEntityCreator::createCreaturePsyche() {
 }
 
 gamecomp::CreatureLifeComponent CreatureEntityCreator::createCreatureLife(
-    const data::Creature& creature,
-    gamecomp::birthday_t birthday,
+    const data::Creature& creature, gamecomp::birthday_t birthday,
     const gamecomp::CreatureBattlerComponent& battler,
     const gamecomp::CreatureGeneComponent& gene) {
     gamecomp::CreatureLifeComponent ret;
@@ -136,7 +135,7 @@ void CreatureEntityCreator::create(Entity& entity) {
 
 void CreatureEntityCreator::create(
     Entity& entity, const data::Creature& creature,
-    std::chrono::system_clock::time_point realtime, 
+    std::chrono::system_clock::time_point realtime,
     gamecomp::progresstimer_factor_t realtime_factor) {
     auto timers =
         createCreatureProgressTimersCreature(realtime, realtime_factor);
