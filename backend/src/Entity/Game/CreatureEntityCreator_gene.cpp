@@ -120,6 +120,15 @@ CreatureEntityCreator::getBMI(const data::Creature& creature,
 }
 
 
+data::bmi_t
+CreatureEntityCreator::getBMI(const data::Creature& creature,
+                              const gamecomp::CreatureGeneComponent& gene,
+                              const gamecomp::CreatureBodyComponent& body) {
+    getBMI(creature, gene, body.weight);
+}
+
+
+
 data::bodymass_t CreatureEntityCreator::getBodyMass(
     const data::Creature& creature,
     const gamecomp::CreatureGeneComponent& gene) {

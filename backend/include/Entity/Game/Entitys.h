@@ -41,8 +41,11 @@ using GameComponents = entityx::Components<
     gamecomp::CreatureBodilyStateComponent, gamecomp::CreatureBodyComponent,
     gamecomp::CreaturePsycheComponent, gamecomp::CreatureLifeComponent>;
 
+
+constexpr size_t COLUMNSTORAGE_CAPACITY = 20480;
+
 using EntityManager =
-    entityx::EntityX<GameComponents, entityx::ColumnStorage<GameComponents>>;
+    entityx::EntityX<GameComponents, entityx::ColumnStorage<GameComponents, COLUMNSTORAGE_CAPACITY>>;
 template <typename C>
 using Component = EntityManager::Component<C>;
 using Entity = EntityManager::Entity;

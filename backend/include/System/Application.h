@@ -1,5 +1,5 @@
-#ifndef APPLICATION_GAME_SYSTEM_H_
-#define APPLICATION_GAME_SYSTEM_H_
+#ifndef SYSTEM_APPLICATION_H_
+#define SYSTEM_APPLICATION_H_
 
 #include "basic.h"
 
@@ -46,16 +46,28 @@ class Application {
         this->addSystem<Event>(listener);
     }
 
-    template<typename T, typename... Args>
+    template<class T, typename... Args>
     void makeSystem(Args&&... args) {
         auto system = std::make_shared<T>( std::forward<Args>(args)... );
         this->addSystem(system);
     }
 
-    template<typename T, typename... Args>
+    template<class T>
+    void makeSystem() {
+        auto system = std::make_shared<T>();
+        this->addSystem(system);
+    }
+
+    template<class T, class Event, typename... Args>
     void makeListener(Args&&... args) {
         auto listener = std::make_shared<T>( std::forward<Args>(args)... );
-        this->addListener(listener);
+        this->addListener<Event>(listener);
+    }
+
+    template<class T, class Event>
+    void makeListener() {
+        auto listener = std::make_shared<T>();
+        this->addListener<Event>(listener);
     }
 
     /*
@@ -92,4 +104,4 @@ class Application {
 } // namespace gamesystem
 
 
-#endif // APPLICATION_GAME_SYSTEM_H_
+#endif // SYSTEM_APPLICATION_H_
