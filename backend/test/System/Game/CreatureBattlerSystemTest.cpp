@@ -72,7 +72,7 @@ class CreatureBattlerSystemApplication : public gamesystem::Application {
 SCENARIO("Creature Entity update HitRate") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
-        
+
         CreatureBattlerSystemApplication app;
         auto& entities = app.getEntityManager();
 
@@ -179,7 +179,7 @@ SCENARIO("Creature Entity with BattlerStatus then update "
          "StatusRestrictionOption to AtkAll") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
-        
+
         CreatureBattlerSystemApplication app;
         auto& entities = app.getEntityManager();
 

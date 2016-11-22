@@ -74,7 +74,7 @@ SCENARIO("Creature Entity emit addExp-Event to gain exp") {
 SCENARIO("Creature Entity emit addExp-Event to level up") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
-        
+
         CreatureBattlerCreatureAddExpSystemApplication app;
         auto& entities = app.getEntityManager();
 
