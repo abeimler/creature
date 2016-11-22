@@ -44,10 +44,12 @@ class CreatureBattlerCreatureAddExpSystemApplication
 
 SCENARIO("Creature Entity emit addExp-Event to gain exp") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+
         CreatureBattlerCreatureAddExpSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         auto creature_battler =
@@ -71,17 +73,19 @@ SCENARIO("Creature Entity emit addExp-Event to gain exp") {
 
 SCENARIO("Creature Entity emit addExp-Event to level up") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+        
         CreatureBattlerCreatureAddExpSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         auto creature_battler =
             entity.component<gamecomp::CreatureBattlerComponent>();
 
-        int old_current_lvl = CreatureTestData::LVL;
-        int add_exp = CreatureTestData::EXP;
+        int old_current_lvl = creatureTestData.LVL;
+        int add_exp = creatureTestData.EXP;
 
         WHEN("emit addExp-Event") {
             app.emit_event<gameevent::CreatureAddExpEvent>(entity, add_exp);
@@ -104,19 +108,21 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
 SCENARIO(
     "Creature Entity emit addExp-Event to level up and Attributes has up") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+
         CreatureBattlerCreatureAddExpSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         auto creature_battler =
             entity.component<gamecomp::CreatureBattlerComponent>();
 
-        int old_current_lvl = CreatureTestData::LVL;
-        int old_current_maxhp = CreatureTestData::MAXHP;
-        int old_current_maxmp = CreatureTestData::MAXMP;
-        int add_exp = CreatureTestData::EXP;
+        int old_current_lvl = creatureTestData.LVL;
+        int old_current_maxhp = creatureTestData.MAXHP;
+        int old_current_maxmp = creatureTestData.MAXMP;
+        int add_exp = creatureTestData.EXP;
 
         WHEN("emit addExp-Event") {
             app.emit_event<gameevent::CreatureAddExpEvent>(entity, add_exp);

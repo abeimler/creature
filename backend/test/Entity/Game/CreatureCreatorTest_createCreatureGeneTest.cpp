@@ -6,10 +6,11 @@
 
 
 TEST_CASE("create CreatureGene Component with DataCreature") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureEntityCreator creaturecreator;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
     auto creature_data = creaturebattler_creator.createCreatureData(creature);
     auto gene = creaturecreator.createCreatureGene(creature_data);
 
@@ -43,66 +44,66 @@ TEST_CASE("create CreatureGene Component with DataCreature") {
 
     SUBCASE("needSleepinPercent is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.needsleepinpercent > 0);
     }
 
     SUBCASE("needRestInHospitalinPercent is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.needrestinhospitalinpercent > 0);
     }
 
 
     SUBCASE("maxHungryOverlayvalueInTraining is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.training.max_hungryoverlay_intraining > 0.0f);
     }
 
     SUBCASE("maxThirstyOverlayvalueInTraining is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.training.max_thirstyoverlay_intraining > 0.0f);
     }
 
     SUBCASE("maxTiredOverlayvalueInTraining is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.training.max_tiredoverlay_intraining > 0.0f);
     }
 
 
     SUBCASE("minTrainTime is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.training.min_trainitime >
               std::chrono::seconds::zero());
     }
 
     SUBCASE("middleTrainTime is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.training.middle_trainitime >
               std::chrono::seconds::zero());
     }
 
     SUBCASE("goodTrainTime is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.training.good_trainitime >
               std::chrono::seconds::zero());
     }
 
     SUBCASE("runAwayTime by unluck is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         CHECK(perevolution.runawaytime_unluck > std::chrono::seconds::zero());
     }
 
     SUBCASE("ProgressTimer Hungry is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         const auto& waittime =
             earr::enum_array_at(perevolution.waittime.timer,
                                 +gamecomp::CreatureProgressTimer::Hungry);
@@ -112,7 +113,7 @@ TEST_CASE("create CreatureGene Component with DataCreature") {
 
     SUBCASE("CallbackProgressTimer Digestion is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         const auto& waittime = earr::enum_array_at(
             perevolution.waittime.callback,
             +gamecomp::CreatureProgressTimerCallback::Digestion);
@@ -122,7 +123,7 @@ TEST_CASE("create CreatureGene Component with DataCreature") {
 
     SUBCASE("ProgressTimerIncrement LostWeightTimerHungry is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         const auto& waittime = earr::enum_array_at(
             perevolution.waittime.increment,
             +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerHungry);
@@ -132,7 +133,7 @@ TEST_CASE("create CreatureGene Component with DataCreature") {
 
     SUBCASE("ProgressTimerCallback Startvation Phase1 is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         const auto& waittime =
             earr::enum_array_at(perevolution.waittime.starvation,
                                 +gamecomp::StarvationPhase::Phase1);
@@ -142,7 +143,7 @@ TEST_CASE("create CreatureGene Component with DataCreature") {
 
     SUBCASE("ProgressTimerCallback ShortTermMemory Eat is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         const auto& waittime =
             earr::enum_array_at(perevolution.waittime.shorttermmemory,
                                 +gamecomp::CreatureActivity::Eat);
@@ -152,7 +153,7 @@ TEST_CASE("create CreatureGene Component with DataCreature") {
 
     SUBCASE("ProgressTimerCallback MediumTermMemory Eat is set") {
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
         const auto& waittime =
             earr::enum_array_at(perevolution.waittime.mediumtermmemory,
                                 +gamecomp::CreatureActivity::Eat);

@@ -6,12 +6,13 @@
 
 
 TEST_CASE("setup CreatureProgressTimers with Gene") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureEntityCreator creaturecreator;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto time = CreatureTestData::make_time_point_01_01_2000();
+    auto time = creatureTestData.make_time_point_01_01_2000();
 
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
     auto creature_data = creaturebattler_creator.createCreatureData(creature);
     auto creature_battler = creaturebattler_creator.createCreatureBattler();
     auto gene = creaturecreator.createCreatureGene(creature_data);
@@ -118,11 +119,11 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
         std::chrono::milliseconds timer_waittime = gameentity::
             CreatureEntityCreator::getCreatureProgressTimersWaitTime(
                 timers.timer, +gamecomp::CreatureProgressTimer::Hungry,
-                CreatureTestData::CREATURELEVEL);
+                creatureTestData.CREATURELEVEL);
 
 
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
 
         std::chrono::milliseconds gene_waittime =
             earr::enum_array_at(perevolution.waittime.timer,
@@ -136,11 +137,11 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
             CreatureEntityCreator::getCreatureProgressTimersWaitTime(
                 timers.callback,
                 +gamecomp::CreatureProgressTimerCallback::Digestion,
-                CreatureTestData::CREATURELEVEL);
+                creatureTestData.CREATURELEVEL);
 
 
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
 
         std::chrono::milliseconds gene_waittime = earr::enum_array_at(
             perevolution.waittime.callback,
@@ -154,11 +155,11 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
             CreatureEntityCreator::getCreatureProgressTimersWaitTime(
                 timers.increment,
                 +gamecomp::CreatureProgressTimerIncrement::Growing,
-                CreatureTestData::CREATURELEVEL);
+                creatureTestData.CREATURELEVEL);
 
 
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
 
         std::chrono::milliseconds gene_waittime = earr::enum_array_at(
             perevolution.waittime.increment,
@@ -172,11 +173,11 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
         std::chrono::milliseconds timer_waittime = gameentity::
             CreatureEntityCreator::getCreatureProgressTimersWaitTime(
                 timers.starvation, +gamecomp::StarvationPhase::Phase1,
-                CreatureTestData::CREATURELEVEL);
+                creatureTestData.CREATURELEVEL);
 
 
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
 
         std::chrono::milliseconds gene_waittime =
             earr::enum_array_at(perevolution.waittime.starvation,
@@ -192,11 +193,11 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
                 .shortterm;
         std::chrono::milliseconds timer_waittime =
             earr::enum_array_at(shortterm_memory_timer.base.waittime,
-                                CreatureTestData::CREATURELEVEL);
+                                creatureTestData.CREATURELEVEL);
 
 
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
 
         std::chrono::milliseconds gene_waittime =
             earr::enum_array_at(perevolution.waittime.shorttermmemory,
@@ -212,11 +213,11 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
                 .mediumterm;
         std::chrono::milliseconds timer_waittime =
             earr::enum_array_at(mediumterm_memory_timer.base.waittime,
-                                CreatureTestData::CREATURELEVEL);
+                                creatureTestData.CREATURELEVEL);
 
 
         auto& perevolution = earr::enum_array_at(
-            gene.perevolution, CreatureTestData::CREATURELEVEL);
+            gene.perevolution, creatureTestData.CREATURELEVEL);
 
         std::chrono::milliseconds gene_waittime =
             earr::enum_array_at(perevolution.waittime.mediumtermmemory,

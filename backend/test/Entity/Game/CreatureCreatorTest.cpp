@@ -256,11 +256,12 @@ TEST_CASE("create empty Creature Entity") {
 
 
 TEST_CASE("create Creature Entity with Creatue Data") {
+    CreatureTestData creatureTestData;
     gameentity::EntityManager manager;
     gameentity::CreatureEntityCreator creaturecreator;
 
-    auto creature = CreatureTestData::make_DataCreature();
-    auto time = CreatureTestData::make_time_point_01_01_2000();
+    auto creature = creatureTestData.make_DataCreature();
+    auto time = creatureTestData.make_time_point_01_01_2000();
 
     auto entity = manager.create();
 

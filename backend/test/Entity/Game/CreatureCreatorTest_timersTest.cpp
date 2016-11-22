@@ -6,8 +6,9 @@
 
 
 TEST_CASE("create CreatePrograssTimers with time 01.01.2000") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureEntityCreator creaturecreator;
-    auto time = CreatureTestData::make_time_point_01_01_2000();
+    auto time = creatureTestData.make_time_point_01_01_2000();
     float factor = 1.0f;
 
     auto timers = creaturecreator.createCreatureProgressTimers(time, factor);
@@ -24,8 +25,9 @@ TEST_CASE("create CreatePrograssTimers with time 01.01.2000") {
 }
 
 TEST_CASE("create empty CreatePrograssTimers and set with time 01.01.2000") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureEntityCreator creaturecreator;
-    auto time = CreatureTestData::make_time_point_01_01_2000();
+    auto time = creatureTestData.make_time_point_01_01_2000();
     float factor = 1.0f;
 
     gamecomp::CreatureProgressTimersComponent timers;
@@ -43,9 +45,10 @@ TEST_CASE("create empty CreatePrograssTimers and set with time 01.01.2000") {
 }
 
 TEST_CASE("create CreatePrograssTimers and setup with lifetimer") {
+    CreatureTestData creatureTestData;
     computil::DateTimerUtil datetimer_util;
     gameentity::CreatureEntityCreator creaturecreator;
-    auto time = CreatureTestData::make_time_point_01_01_2000();
+    auto time = creatureTestData.make_time_point_01_01_2000();
     float factor = 1.0f;
 
     gamecomp::CreatureProgressTimersComponent timers;

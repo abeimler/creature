@@ -45,7 +45,7 @@ BETTER_ENUM(CauseOfRunAway, size_t, NotRunAway,
 
 struct CreatureHungerComponent {
     StarvationPhase starvationphase = StarvationPhase::None; ///< Hungerphasen
-    counter_t digestionheap = 0; ///< Anzahl der Haufen (nicht weggeräumt)
+    counter_t poopstack = 0; ///< Anzahl der Haufen (nicht weggeräumt)
 };
 
 struct CreatureSleepComponent {

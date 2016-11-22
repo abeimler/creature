@@ -54,10 +54,12 @@ class CreatureBattlerCreatureRecoverSystemApplication
 
 SCENARIO("Creature Entity with low hp mp emit recover-Event to heal hp mp") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+
         CreatureBattlerCreatureRecoverSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         app.init_Entity_withLowHPMP(entity);
@@ -74,11 +76,11 @@ SCENARIO("Creature Entity with low hp mp emit recover-Event to heal hp mp") {
                 REQUIRE(app.eventlistenermockup->emitevent);
 
                 THEN("hp is recover") {
-                    CHECK(creature_battler->hp == CreatureTestData::MAXHP);
+                    CHECK(creature_battler->hp == creatureTestData.MAXHP);
                 }
 
                 THEN("mp is recover") {
-                    CHECK(creature_battler->mp == CreatureTestData::MAXMP);
+                    CHECK(creature_battler->mp == creatureTestData.MAXMP);
                 }
             }
         }

@@ -71,10 +71,12 @@ class CreatureBattlerSystemApplication : public gamesystem::Application {
 
 SCENARIO("Creature Entity update HitRate") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+        
         CreatureBattlerSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         // auto timers = entity.component<gamecomp::CreatureProgressTimers>();
@@ -85,7 +87,7 @@ SCENARIO("Creature Entity update HitRate") {
             app.update(CreatureBattlerSystemApplication::FAKE_TIMEDELTA);
 
             THEN("hitrate is set") {
-                CHECK(creature_battler->hitrate == CreatureTestData::HITRATE);
+                CHECK(creature_battler->hitrate == creatureTestData.HITRATE);
             }
         }
     }
@@ -93,10 +95,12 @@ SCENARIO("Creature Entity update HitRate") {
 
 SCENARIO("Creature Entity with BattlerStatus and update HitRate to Half") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+
         CreatureBattlerSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         app.init_Entity_withBattlerStatusHalfHitRateFactor(entity);
@@ -110,7 +114,7 @@ SCENARIO("Creature Entity with BattlerStatus and update HitRate to Half") {
 
             THEN("hitrate is set") {
                 CHECK(creature_battler->hitrate ==
-                      CreatureTestData::HITRATE_HALF);
+                      creatureTestData.HITRATE_HALF);
             }
         }
     }
@@ -120,10 +124,12 @@ SCENARIO("Creature Entity with BattlerStatus and update HitRate to Half") {
 
 SCENARIO("Creature Entity update Critical HitRate") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+
         CreatureBattlerSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         // auto timers = entity.component<gamecomp::CreatureProgressTimers>();
@@ -135,7 +141,7 @@ SCENARIO("Creature Entity update Critical HitRate") {
 
             THEN("critical hitrate is set") {
                 CHECK(creature_battler->critical_hitrate ==
-                      CreatureTestData::CRITICAL_HITRATE);
+                      creatureTestData.CRITICAL_HITRATE);
             }
         }
     }
@@ -145,10 +151,12 @@ SCENARIO("Creature Entity update Critical HitRate") {
 
 SCENARIO("Creature Entity update EvaRate") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+
         CreatureBattlerSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         // auto timers = entity.component<gamecomp::CreatureProgressTimers>();
@@ -159,7 +167,7 @@ SCENARIO("Creature Entity update EvaRate") {
             app.update(CreatureBattlerSystemApplication::FAKE_TIMEDELTA);
 
             THEN("evarate is set") {
-                CHECK(creature_battler->evarate == CreatureTestData::EVARATE);
+                CHECK(creature_battler->evarate == creatureTestData.EVARATE);
             }
         }
     }
@@ -170,10 +178,12 @@ SCENARIO("Creature Entity update EvaRate") {
 SCENARIO("Creature Entity with BattlerStatus then update "
          "StatusRestrictionOption to AtkAll") {
     GIVEN("Creature Entity") {
+        CreatureTestData creatureTestData;
+        
         CreatureBattlerSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        // auto time = CreatureTestData::make_time_point_01_01_2000();
+        // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         app.init_Entity_withBattlerStatusRestrictionOptionAtkAll(entity);

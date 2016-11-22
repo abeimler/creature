@@ -17,9 +17,10 @@
 
 
 TEST_CASE("data::Creature serial json") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureEntityCreator creaturecreator;
 
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
 
     auto& data = creature;
 
@@ -47,9 +48,10 @@ TEST_CASE("data::Creature serial json") {
 
 
 TEST_CASE("data::Creature serial json as file") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureEntityCreator creaturecreator;
 
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
 
     auto& data = creature;
 

@@ -6,12 +6,13 @@
 
 
 TEST_CASE("create CreatureLife Component") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureEntityCreator creaturecreator;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
     auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto realtime = CreatureTestData::make_time_point_01_01_2000();
+    auto realtime = creatureTestData.make_time_point_01_01_2000();
     auto battler = creaturebattler_creator.createCreatureBattler();
     auto gene = creaturecreator.createCreatureGene(creature_data);
 
@@ -19,7 +20,7 @@ TEST_CASE("create CreatureLife Component") {
                                                    battler, gene);
 
     SUBCASE("Creature name is set") {
-        CHECK(CreatureTestData::CREATURENAME == life.name);
+        CHECK(creatureTestData.CREATURENAME == life.name);
     }
 
     SUBCASE("CreatureLevel is set") {
@@ -49,7 +50,7 @@ TEST_CASE("create CreatureLife Component") {
     }
 
     SUBCASE("Creature is born (not Egg)") {
-        REQUIRE(CreatureTestData::CREATURELEVEL != +data::CreatureLevel::Egg);
+        REQUIRE(creatureTestData.CREATURELEVEL != +data::CreatureLevel::Egg);
         CHECK(life.born);
     }
 

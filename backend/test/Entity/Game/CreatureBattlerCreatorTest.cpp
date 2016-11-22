@@ -109,9 +109,10 @@ TEST_CASE("create empty CreatureBattler") {
 
 
 TEST_CASE("create BattlerBattleState with DataCreature") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
 
     auto creature_data = creaturebattler_creator.createCreatureData(creature);
     auto creaturebattlestate =
@@ -125,9 +126,10 @@ TEST_CASE("create BattlerBattleState with DataCreature") {
 
 
 TEST_CASE("create BattlerResists with DataCreature") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
 
     auto creature_data = creaturebattler_creator.createCreatureData(creature);
     auto battlerresists =
@@ -151,8 +153,9 @@ TEST_CASE("create BattlerResists with DataCreature") {
 
 
 TEST_CASE("create and load CreatureBattler with start Level") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
     auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
     int lvl = creature.getStartLvL();
@@ -239,8 +242,9 @@ TEST_CASE("create and load CreatureBattler with start Level") {
 
 
 TEST_CASE("create and load CreatureBattler with Level 5") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
     auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
     int lvl = 5;
@@ -311,8 +315,9 @@ TEST_CASE("create and load CreatureBattler with Level 5") {
 
 
 TEST_CASE("load CreatureBattler with Max Level") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
     auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
     int lvl = creature.getMaxLvL();
@@ -383,8 +388,9 @@ TEST_CASE("load CreatureBattler with Max Level") {
 
 
 TEST_CASE("create load and transform CreatureBattler with Level 5") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
     auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
     int lvl = 5;
@@ -458,8 +464,9 @@ TEST_CASE("create load and transform CreatureBattler with Level 5") {
 
 
 TEST_CASE("create load and (re)load again CreatureBattler with Level 5") {
+    CreatureTestData creatureTestData;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = CreatureTestData::make_DataCreature();
+    auto creature = creatureTestData.make_DataCreature();
     auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
     int start_lvl = creature.getStartLvL();
