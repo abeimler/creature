@@ -3,8 +3,7 @@
 namespace gamesystem {
 
 
-CreatureDeadSystem::CreatureDeadSystem(gameentity::DataManager& datamanager)
-    : datamanager_(datamanager) {}
+CreatureDeadSystem::CreatureDeadSystem() {}
 
 
 void CreatureDeadSystem::makeCreatureDead(

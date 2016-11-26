@@ -23,7 +23,7 @@ void GameApplication::initSystems() {
 
     this->makeSystem<gamesystem::CreatureBattlerSystem>(this->datamanager_);
     this->makeListener<gamesystem::CreatureDeadSystem,
-                       gameevent::CreatureMakeDeadEvent>(this->datamanager_);
+                       gameevent::CreatureMakeDeadEvent>();
     this->makeListener<gamesystem::CreatureRunAwaySystem,
                        gameevent::CreatureMakeRunAwayEvent>(this->datamanager_);
     this->makeSystem<gamesystem::CreatureProgressTimerSystem>();

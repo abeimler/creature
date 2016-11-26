@@ -17,13 +17,12 @@ class CreatureDeadSystem : public Listener<gameevent::CreatureMakeDeadEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
-    gameentity::DataManager& datamanager_;
     gamecomputil::ProgressTimerUtil progresstimer_util_;
     computil::DateTimerUtil datetimer_util_;
 
     public:
 
-    CreatureDeadSystem(gameentity::DataManager& datamanager);
+    CreatureDeadSystem();
 
     void makeCreatureDead(EventBus& events, Entity entity,
         gamecomp::CreatureProgressTimersComponent& timers,

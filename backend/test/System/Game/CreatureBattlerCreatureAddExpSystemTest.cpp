@@ -106,7 +106,7 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
 }
 
 SCENARIO(
-    "Creature Entity emit addExp-Event to level up and Attributes has up") {
+    "Creature Entity emit addExp-Event to has Attributes go up") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
 
@@ -132,11 +132,7 @@ SCENARIO(
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("has gain exp") { CHECK(creature_battler->exp > 0); }
 
-                THEN("has level up") {
-                    CHECK(creature_battler->lvl > old_current_lvl);
-                }
 
                 THEN("MaxHP Attributes has up") {
                     CHECK(earr::enum_array_at(creature_battler->attr,

@@ -52,7 +52,7 @@ class CreatureBattlerCreatureRecoverSystemApplication
 
 
 
-SCENARIO("Creature Entity with low hp mp emit recover-Event to heal hp mp") {
+SCENARIO("Creature Entity with low hp mp when emit recover-Event then heal hp mp") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
 

@@ -12,24 +12,22 @@
 namespace gamesystem {
 
 
-class CreatureDoNotingSystem : public Listener<gameevent::CreatureDoNotingEvent> {
+class CreatureDoNotingSystem : public System {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
-    gameentity::DataManager& datamanager_;
     gamecomputil::ProgressTimerUtil progresstimer_util_;
     computil::DateTimerUtil datetimer_util_;
 
     public:
 
-    CreatureDoNotingSystem(gameentity::DataManager& datamanager);
+    CreatureDoNotingSystem();
 
     void updateDoNothing(EventBus& events, Entity entity,
                          gamecomp::CreatureProgressTimersComponent& timers,
                          gamecomp::CreatureLifeComponent& life);
     
-    void update(const gameevent::CreatureDoNotingEvent& event,
-                EntityManager& entities, EventBus& events,
+    void update(EntityManager& entities, EventBus& events,
                 TimeDelta dt) override;
 
 };

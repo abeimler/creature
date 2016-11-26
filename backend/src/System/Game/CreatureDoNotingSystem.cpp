@@ -3,9 +3,7 @@
 namespace gamesystem {
 
 
-CreatureDoNotingSystem::CreatureDoNotingSystem(
-    gameentity::DataManager& datamanager)
-    : datamanager_(datamanager) {}
+CreatureDoNotingSystem::CreatureDoNotingSystem() {}
 
 
 void CreatureDoNotingSystem::updateDoNothing(
@@ -47,7 +45,7 @@ void CreatureDoNotingSystem::updateDoNothing(
 
 
 void CreatureDoNotingSystem::update(
-    const gameevent::CreatureDoNotingEvent& event, EntityManager& entities,
+    EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
     Component<gamecomp::CreatureProgressTimersComponent> timers;
     Component<gamecomp::CreatureLifeComponent> life;
