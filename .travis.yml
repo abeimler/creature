@@ -1,0 +1,99 @@
+sudo: required
+dist: xenial
+language: cpp
+
+
+
+matrix:
+  include:
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - boost-latest/ppa
+            - george-edison55/cmake-3.x
+          packages:
+            - g++-5
+      env: 
+        global:
+          - COMPILER_NAME=gcc 
+          - CXX=g++-5 
+          - CC=gcc-5
+          - COMPILER=/usr/bin/g++-5
+        matrix:
+          - CMAKE_BUILD_TYPE=Debug
+          - CMAKE_BUILD_TYPE=Release
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - boost-latest/ppa
+            - george-edison55/cmake-3.x
+          packages:
+            - g++-6
+      env: 
+        global:
+          - COMPILER_NAME=gcc 
+          - CXX=g++-6
+          - CC=gcc-6
+          - COMPILER=/usr/bin/g++-6
+        matrix:
+          - CMAKE_BUILD_TYPE=Debug
+          - CMAKE_BUILD_TYPE=Release
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.8
+            - boost-latest/ppa
+            - george-edison55/cmake-3.x
+          packages:
+            - clang-3.8
+      env: 
+        global:
+          - COMPILER_NAME=clang 
+          - CXX=clang++-3.8
+          - CC=clang-3.8
+          - COMPILER=/usr/bin/clang++-3.8
+        matrix:
+          - CMAKE_BUILD_TYPE=Debug
+          - CMAKE_BUILD_TYPE=Release
+
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y python-pip python-dev build-essential 
+  - sudo pip install --upgrade pip
+  - sudo pip install cpp-coveralls
+  - sudo apt-get install -y libopencv-dev
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install -y git
+  - sudo apt-get install -y doxygen
+  - sudo apt-get install -y make cmake cmake-data
+  - sudo apt-get install -y libgtest-dev libunittest++-dev
+  - sudo apt-get install -y libicu-dev
+  - sudo apt-get install -y libboost-all-dev
+
+before_script:
+  - cd $TRAVIS_BUILD_DIR
+  - ./deps.sh
+  - mkdir -p $TRAVIS_BUILD_DIR/build
+  - cd $TRAVIS_BUILD_DIR/build
+  - cmake -H$TRAVIS_BUILD_DIR -B$TRAVIS_BUILD_DIR/build
+    -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE 
+    -DBUILD_SHARED_LIBS=FALSE -DBUILD_TESTING=OFF -DBuildTests=OFF 
+    -DCXXOPTS_BUILD_EXAMPLES=OFF -DCXXOPTS_BUILD_TESTS=OFF 
+    -DENTITYX_BUILD_TESTING=OFF -DENTITYX_RUN_BENCHMARKS=OFF 
+    -DSKIP_PORTABILITY_TEST=ON -DTHREAD_SAFE=ON -DWITH_CPP11=ON
+    -Dgtest_build_samples=OFF -Dgtest_build_tests=OFF
+
+script: 
+  - cd ${TRAVIS_BUILD_DIR}/build
+  - make creature_backend_test
+  - cd ${TRAVIS_BUILD_DIR}/build/backend
+  - ctest
