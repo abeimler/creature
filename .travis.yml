@@ -1,28 +1,12 @@
 sudo: required
 dist: xenial
 language: cpp
-
-
-addons:
-  apt:
-    sources:
-      - llvm-toolchain-xenial
-      - boost-latest/ppa
-      - ubuntu-toolchain-r-test
-      - george-edison55/cmake-3.x
-    packages:
-      - g++-5
-      - gcc-5
-      - g++-6
-      - gcc-6
-      - clang-3.8
-  env: 
-    matrix:
-      - COMPILER=g++-5
-      - COMPILER=g++-6
-      - COMPILER=clang++-3.8
-      - CMAKE_BUILD_TYPE=Debug
-      - CMAKE_BUILD_TYPE=Release
+compiler:
+  - gcc
+env:
+  matrix:
+    - GCC_VER="5"
+    - GCC_VER="6"
 
 
 
@@ -34,18 +18,19 @@ before_install:
   - sudo apt-get install -y libopencv-dev
   - wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo add-apt-repository ppa:boost-latest/ppa -y
+  - sudo add-apt-repository ppa:george-edison55/cmake-3.x -y
   - sudo apt-get update -qq
-  - sudo apt-get install -qq g++-5 g++-6 clang++-3.8
-  - export CXX=$COMPILER
-
-install:
+  - sudo apt-get install -qq g++-$GCC_VER
+  - export CXX="g++-$GCC_VER" CC="gcc-$GCC_VER" GCOV="gcov-$GCC_VER"
   - sudo apt-get install -y git
   - sudo apt-get install -y doxygen
   - sudo apt-get install -y make cmake cmake-data
+
+install:
   - sudo apt-get install -y libgtest-dev libunittest++-dev
   - sudo apt-get install -y libicu-dev
   - sudo apt-get install -y libboost-all-dev
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 
 before_script:
   - cd $TRAVIS_BUILD_DIR
