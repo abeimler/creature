@@ -91,7 +91,7 @@ struct CreatureGeneComponent {
     data::CreatureGender gender = data::CreatureGender::None;
 
     /// Nummer der Generation
-    size_t generationnr = 0;
+    counter_t generationnr = 0;
 
     data::bmi_t min_bmi = 0.0;      ///< minimal BMI
     data::bmi_t ideal_bmi = 0.0;    ///< Ideal BMI
@@ -105,7 +105,10 @@ struct CreatureGeneComponent {
     progresstimer_percent_t cangosleep_at_tired = 0.0;
 
     /// maximale Haufen die es aufeinmal legen kann
-    int max_digestionheap = 0;
+    counter_t max_poopstack = 0;
+
+    data::percent_rate_t rate_ill_by_max_poopstack = 0;
+
 
     /// Mehr Eigenschaften pro CreatureLevel
     earr::enum_array<data::CreatureLevel, CreatureGenePerEvolution>
@@ -113,7 +116,7 @@ struct CreatureGeneComponent {
 
 
     /// Maximale Lebensdauer (Lebenserwartung)
-    std::chrono::milliseconds totalmaxlifetime;
+    lifetime_t totalmaxlifetime;
 };
 
 } // namespace gamecomp

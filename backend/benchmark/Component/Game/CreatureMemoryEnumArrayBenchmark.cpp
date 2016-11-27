@@ -57,7 +57,7 @@ BENCHMARK("gamecomp::CreatureMemory.deep_memory as enum_array",
                   make_enum_array_CreatureMemoryDeepMemory();
 
               gamecomp::CreatureActivity find_key =
-                  +gamecomp::CreatureActivity::MakeDigestionHeapToilet;
+                  +gamecomp::CreatureActivity::MakePoopInToilet;
 
               ctx->reset_timer();
               for (size_t i = 0; i < ctx->num_iterations(); ++i) {

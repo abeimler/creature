@@ -275,7 +275,7 @@ CreatureEntityCreator::createCallbackWaitTime(
                 std::chrono::hours(8));
             setCreatureGeneWaitTime(
                 ret,
-                +gamecomp::CreatureProgressTimerCallback::FullDigestionHeap,
+                +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
                 std::chrono::hours(24 * 3));
             setCreatureGeneWaitTime(
                 ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
@@ -312,7 +312,7 @@ CreatureEntityCreator::createCallbackWaitTime(
                 std::chrono::hours(12));
             setCreatureGeneWaitTime(
                 ret,
-                +gamecomp::CreatureProgressTimerCallback::FullDigestionHeap,
+                +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
                 std::chrono::hours(24 * 5));
             setCreatureGeneWaitTime(
                 ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
@@ -349,7 +349,7 @@ CreatureEntityCreator::createCallbackWaitTime(
                 std::chrono::hours(20));
             setCreatureGeneWaitTime(
                 ret,
-                +gamecomp::CreatureProgressTimerCallback::FullDigestionHeap,
+                +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
                 std::chrono::hours(24 * 15));
             setCreatureGeneWaitTime(
                 ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
@@ -389,7 +389,7 @@ CreatureEntityCreator::createCallbackWaitTime(
                 std::chrono::hours(28));
             setCreatureGeneWaitTime(
                 ret,
-                +gamecomp::CreatureProgressTimerCallback::FullDigestionHeap,
+                +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
                 std::chrono::hours(24 * 20));
             setCreatureGeneWaitTime(
                 ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
@@ -793,7 +793,8 @@ CreatureEntityCreator::createCreatureGene(const data::Creature& creature) {
 
 
     ret.cangosleep_at_tired = CANGOSLEEP_AT_TIRED;
-    ret.max_digestionheap = MAX_DIGESTIONHEAP;
+    ret.max_poopstack = MAX_POOPSTACK;
+    ret.rate_ill_by_max_poopstack = RATE_ILL_BY_MAXPOOPSTACK;
 
     ret.totalmaxlifetime = min_totallifetime_;
 

@@ -46,8 +46,8 @@ BETTER_ENUM(CreatureActivity, size_t, Noting,
             Drink,        ///< Hat gerade etwas getrunken
             WillNotDrink, ///< Will nicht trinken
 
-            MakeDigestionHeap,       ///< Hat gerade ein Haufen gelegt
-            MakeDigestionHeapToilet, ///< Hat gerade ein Haufen gelegt (auf der
+            MakePoop,       ///< Hat gerade ein Haufen gelegt
+            MakePoopInToilet, ///< Hat gerade ein Haufen gelegt (auf der
             /// Toilette)
             END)
 
@@ -92,6 +92,8 @@ struct CreatureMemoryComponent {
 
 /// GameCreature Persönlichkeit
 struct CreaturePersonalityComponent {
+    std::string nickname;
+
     /// Erinnerung an die Geburt
     long_memory_value_t rememberborn = 1.0;
 

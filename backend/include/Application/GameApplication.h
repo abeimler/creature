@@ -15,6 +15,7 @@
 #include "System/Game/CreatureBattlerRemoveBattlerStatusSystem.h"
 #include "System/Game/CreatureBattlerSystem.h"
 #include "System/Game/CreatureDeadSystem.h"
+#include "System/Game/CreatureDigestionCallbackSystem.h"
 #include "System/Game/CreatureDoNotingSystem.h"
 #include "System/Game/CreatureProgressTimerSystem.h"
 #include "System/Game/CreatureRemoveStatusSystem.h"

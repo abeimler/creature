@@ -145,10 +145,10 @@ void CreatureEntityCreator::setupCreatureProgressTimers(
         +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry);
     pauseDigestionHungry_timer.isendless = true;
 
-    auto& fullDigestionHeap_timer = earr::enum_array_at(
+    auto& fullPoopStack_timer = earr::enum_array_at(
         timers.callback,
-        +gamecomp::CreatureProgressTimerCallback::FullDigestionHeap);
-    fullDigestionHeap_timer.isendless = true;
+        +gamecomp::CreatureProgressTimerCallback::FullPoopStack);
+    fullPoopStack_timer.isendless = true;
 
 
     for (auto creature_level : earr::Enum<data::CreatureLevel>()) {

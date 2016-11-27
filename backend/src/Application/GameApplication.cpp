@@ -22,12 +22,18 @@ void GameApplication::initSystems() {
         this->datamanager_);
 
     this->makeSystem<gamesystem::CreatureBattlerSystem>(this->datamanager_);
+
+    this->makeSystem<gamesystem::CreatureProgressTimerSystem>();
+
     this->makeListener<gamesystem::CreatureDeadSystem,
                        gameevent::CreatureMakeDeadEvent>();
     this->makeListener<gamesystem::CreatureRunAwaySystem,
                        gameevent::CreatureMakeRunAwayEvent>(this->datamanager_);
-    this->makeSystem<gamesystem::CreatureProgressTimerSystem>();
+                       
     this->makeSystem<gamesystem::CreatureSystem>(this->datamanager_);
+
+    this->makeListener<gameevent::ProgressTimerCallbackEvent, 
+                       gamesystem::CreatureDigestionCallbackSystem>();
 }
 
 } // namespace gamesystem

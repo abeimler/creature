@@ -32,7 +32,10 @@ using EventBus = eventpp::Bus<
     CreatureMakeRunAwayEvent,
     CreatureRemoveRunAwayEvent,
     CreatureDoActivityEvent,
-    CreatureHasLevelUpEvent
+    CreatureHasLevelUpEvent,
+
+    CreatureUseToiletEvent,
+    CreatureMakePoopEvent
     >;
 
 } // namespace gameevent

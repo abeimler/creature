@@ -31,12 +31,12 @@ void CreatureDoNotingSystem::updateDoNothing(
     if (!isrunaway && !issleep && !isinhospital && !isrestinhospital &&
         !isrest && !istraining) {
         life.isbusy = false;
-        emit_event<gameevent::CreatureDoNotingEvent>(events, entity);
     } else {
         life.isbusy = true;
     }
 
-    if (!life.isbusy && bored_progresstimer.timer.isstart) {
+    if (!life.isbusy && !bored_progresstimer.timer.isstart) {
+        emit_event<gameevent::CreatureDoNotingEvent>(events, entity);
         progresstimer_util_.start(bored_progresstimer);
     } else {
         progresstimer_util_.stop(bored_progresstimer);

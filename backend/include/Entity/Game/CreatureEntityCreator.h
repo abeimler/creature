@@ -142,7 +142,8 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     static constexpr int DEFAULT_MAX_SHORT_MEMORYSIZE_VARIANCE = 2;
 
     static constexpr gamecomp::progresstimer_percent_t CANGOSLEEP_AT_TIRED = 88;
-    static constexpr gamecomp::counter_t MAX_DIGESTIONHEAP = 3;
+    static constexpr gamecomp::counter_t MAX_POOPSTACK = 3;
+    static constexpr data::percent_rate_t RATE_ILL_BY_MAXPOOPSTACK = 80;
 
     static constexpr data::bmi_t MIN_BMI = 18;
     static constexpr data::bmi_t IDEAL_BMI = 26;

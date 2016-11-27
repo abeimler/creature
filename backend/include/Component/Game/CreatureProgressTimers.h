@@ -38,7 +38,7 @@ BETTER_ENUM(
     CreatureProgressTimerCallback, size_t, Digestion,
     BEGIN = Digestion,    ///< Prozess für die Verdauung
     PauseDigestionHungry, ///< Pausiert Verdauung wenn Hunger zu lang geht
-    FullDigestionHeap,    ///< wenn X haufen nicht aufgeräumt wurden, Krankheit
+    FullPoopStack,    ///< wenn X haufen nicht aufgeräumt wurden, Krankheit
     IllbyOverweight,      ///< Timer für Krankheit durch Übergewicht
     GoSleep,              ///< Timer fürs einschlafen
     Inhospital,           ///< Verlauf für Krankenhausbesuch
