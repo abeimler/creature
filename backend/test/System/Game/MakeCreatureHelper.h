@@ -215,7 +215,7 @@ class MakeCreatureHelper {
         ret.bodymass = creatureTestData.BODYMASS;
 
         ret.cangosleep_at_tired = creatureTestData.CANGOSLEEP_AT_TIRED;
-        ret.max_digestionheap = creatureTestData.MAX_DIGESTIONHEAP;
+        ret.max_poopstack = creatureTestData.MAX_POOPSTACK;
 
         auto& perevolution = earr::enum_array_at(ret.perevolution, creaturelevel);
 

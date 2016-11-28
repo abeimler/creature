@@ -61,7 +61,7 @@ class CreatureTestData {
 
     const int CANGOSLEEP_AT_TIRED = 88;
 
-    const size_t MAX_DIGESTIONHEAP = 3;
+    const size_t MAX_POOPSTACK = 3;
 
     const int NEEDSLEEPINPERCENT = 70;
     const int NEEDRESTINHOSPITALINPERCENT = 100;

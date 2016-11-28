@@ -11,6 +11,24 @@ constexpr gamecomp::waittime_t CreatureEntityCreator::DEFAULT_AGEINGTIME;
 constexpr size_t CreatureEntityCreator::DEFAULT_MAX_SHORT_MEMORYSIZE;
 constexpr int CreatureEntityCreator::DEFAULT_MAX_SHORT_MEMORYSIZE_VARIANCE;
 
+constexpr gamecomp::progresstimer_percent_t CreatureEntityCreator::CANGOSLEEP_AT_TIRED;
+constexpr gamecomp::counter_t CreatureEntityCreator::MAX_POOPSTACK;
+constexpr data::percent_rate_t CreatureEntityCreator::ILL_BY_MAXPOOPSTACK_RATE;
+constexpr gamecomp::progresstimer_percent_t CreatureEntityCreator::POOP_AT_DIGESTIONS_VALUE;
+
+constexpr data::bmi_t CreatureEntityCreator::MIN_BMI;
+constexpr data::bmi_t CreatureEntityCreator::IDEAL_BMI;
+constexpr data::bmi_t CreatureEntityCreator::MAX_BMI;
+
+constexpr data::bmi_t CreatureEntityCreator::LOW_MIN_BMI;
+constexpr data::bmi_t CreatureEntityCreator::LOW_IDEAL_BMI;
+constexpr data::bmi_t CreatureEntityCreator::LOW_MAX_BMI;
+
+constexpr data::bmi_t CreatureEntityCreator::HIGH_MIN_BMI;
+constexpr data::bmi_t CreatureEntityCreator::HIGH_IDEAL_BMI;
+constexpr data::bmi_t CreatureEntityCreator::HIGH_MAX_BMI;
+
+
 gamecomp::CreatureTrainingComponent
 CreatureEntityCreator::createCreatureTraining() {
     gamecomp::CreatureTrainingComponent ret;

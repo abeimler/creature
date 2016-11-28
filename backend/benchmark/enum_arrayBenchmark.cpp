@@ -70,6 +70,9 @@ BENCHMARK("earr::enum_array_set", [](benchpress::context* ctx) {
     }
 })
 
+//
+//
+//
 BENCHMARK("earr::enum_to_index", [](benchpress::context* ctx) {
     auto key = +TestKeys::Key3;
 
@@ -80,6 +83,8 @@ BENCHMARK("earr::enum_to_index", [](benchpress::context* ctx) {
     }
 })
 
+//
+//
 BENCHMARK("earr::enum_array_fill", [](benchpress::context* ctx) {
     auto arr = make_test_enum_array();
     int value = make_value();

@@ -17,6 +17,8 @@ void unused_variables_func_opt(int a, double b, std::string c, int /*ua*/,
     c = "Hallo Welt!";
 }
 
+//
+//
 BENCHMARK("unused variables function with unused parameters",
           [](benchpress::context* ctx) {
               for (size_t i = 0; i < ctx->num_iterations(); ++i) {

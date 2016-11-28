@@ -11,19 +11,19 @@ namespace gameevent {
 
 
 struct CreatureUseToiletEvent {
-    entityx::Entity entity;
+    gameentity::Entity entity;
 
-    explicit CreatureUseToiletEvent(entityx::Entity p_entity)
+    explicit CreatureUseToiletEvent(gameentity::Entity p_entity)
         : entity(p_entity) {}
 };
 
 struct CreatureMakePoopEvent {
-    entityx::Entity entity;
-    int newpoop;
+    gameentity::Entity entity;
+    int newpoopstack;
 
-    explicit CreatureMakePoopEvent(entityx::Entity p_entity, int p_newpoop)
+    explicit CreatureMakePoopEvent(gameentity::Entity p_entity, int p_newpoopstack)
         : entity(p_entity)
-        , newpoop(p_newpoop){}
+        , newpoopstack(p_newpoopstack){}
 };
 
 

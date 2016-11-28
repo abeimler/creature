@@ -12,6 +12,7 @@
 #include "Data/Basic.h"
 
 #include "System/Event/CreatureBattlerSystemEvents.h"
+#include "System/Event/CreatureDigestionSystemEvents.h"
 #include "System/Event/CreatureProgressTimerSystemEvents.h"
 #include "System/Event/CreatureSystemEvents.h"
 

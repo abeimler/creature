@@ -1,5 +1,5 @@
-#ifndef SYSTEM_GAME_CREATURERUNAWAYSYSTEM_H_
-#define SYSTEM_GAME_CREATUREEUNAWAYSYSTEM_H_
+#ifndef SYSTEM_GAME_CREATUREDIGESTIONCALLBACKSYSTEM_H_
+#define SYSTEM_GAME_CREATUREDIGESTIONCALLBACKSYSTEM_H_
 
 #include "basic.h"
 
@@ -21,11 +21,11 @@ class CreatureDigestionCallbackSystem : public Listener<gameevent::ProgressTimer
     computil::DateTimerUtil datetimer_util_;
 
     public:
-    constexpr gamecomp::counter_t RATE_UNLUCK_BY_MORETHENMAXPOOPSTACK = 60;
-    constexpr data::luck_t UNLUCK_BY_MORETHENMAXPOOPSTACK = 5.0;
-    constexpr data::luck_t UNLUCK_BY_MAXPOOPSTACK = 5.0;
-    constexpr data::disc_t UNDISC_BY_MAXPOOPSTACK = 5.0;
-    constexpr gamecomp::progresstimer_percent_t PAUSE_DIGISTATION_BY_HUNGRY_OVERLAYVALUE = 200.0;
+    static constexpr gamecomp::counter_t RATE_UNLUCK_BY_MORETHENMAXPOOPSTACK = 60;
+    static constexpr data::luck_t UNLUCK_BY_MORETHENMAXPOOPSTACK = 5.0;
+    static constexpr data::luck_t UNLUCK_BY_MAXPOOPSTACK = 5.0;
+    static constexpr data::disc_t UNDISC_BY_MAXPOOPSTACK = 5.0;
+    static constexpr gamecomp::progresstimer_percent_t PAUSE_DIGESTION_BY_HUNGRY_OVERLAYVALUE = 200.0;
 
     CreatureDigestionCallbackSystem();
 
@@ -47,15 +47,15 @@ class CreatureDigestionCallbackSystem : public Listener<gameevent::ProgressTimer
     void pauseDigestionbyHunger(
         gamecomp::CreatureProgressTimersComponent& timers);
 
-    void illByFullPoopStack(Entity entity, EventBus& events);
+    void illByFullPoopStack(Entity entity, EventBus& events, gamecomp::CreatureGeneComponent& gene);
 
 
     
-    void update(const gameevent::CreatureMakeRunAwayEvent& event,
+    void update(const gameevent::ProgressTimerCallbackEvent& event,
                 EntityManager& entities, EventBus& events,
                 TimeDelta dt) override;
 
 };
 } // namespace gamesystem
 
-#endif // SYSTEM_GAME_CREATUREEUNAWAYSYSTEM_H_
+#endif // SYSTEM_GAME_CREATUREDIGESTIONCALLBACKSYSTEM_H_

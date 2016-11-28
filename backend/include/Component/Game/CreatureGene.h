@@ -107,7 +107,8 @@ struct CreatureGeneComponent {
     /// maximale Haufen die es aufeinmal legen kann
     counter_t max_poopstack = 0;
 
-    data::percent_rate_t rate_ill_by_max_poopstack = 0;
+    data::percent_rate_t ill_by_max_poopstack_rate = 0;
+    progresstimer_percent_t poop_at_digestion_value = 0;
 
 
     /// Mehr Eigenschaften pro CreatureLevel

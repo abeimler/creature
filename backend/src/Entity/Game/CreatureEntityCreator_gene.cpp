@@ -124,7 +124,7 @@ data::bmi_t
 CreatureEntityCreator::getBMI(const data::Creature& creature,
                               const gamecomp::CreatureGeneComponent& gene,
                               const gamecomp::CreatureBodyComponent& body) {
-    getBMI(creature, gene, body.weight);
+    return getBMI(creature, gene, body.weight);
 }
 
 
@@ -794,7 +794,8 @@ CreatureEntityCreator::createCreatureGene(const data::Creature& creature) {
 
     ret.cangosleep_at_tired = CANGOSLEEP_AT_TIRED;
     ret.max_poopstack = MAX_POOPSTACK;
-    ret.rate_ill_by_max_poopstack = RATE_ILL_BY_MAXPOOPSTACK;
+    ret.ill_by_max_poopstack_rate = ILL_BY_MAXPOOPSTACK_RATE;
+    ret.poop_at_digestion_value = POOP_AT_DIGESTIONS_VALUE; 
 
     ret.totalmaxlifetime = min_totallifetime_;
 

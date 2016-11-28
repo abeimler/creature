@@ -107,12 +107,12 @@ TEST_CASE("setup CreatureProgressTimers with Gene") {
         SUBCASE("is endless") { CHECK(pauseDigestionHungry_timer.isendless); }
     }
 
-    SUBCASE("FullDigestionHeap Timer is set") {
-        auto& fullDigestionHeap_timer = earr::enum_array_at(
+    SUBCASE("FullPoopStack Timer is set") {
+        auto& fullPoopStack_timer = earr::enum_array_at(
             timers.callback,
-            +gamecomp::CreatureProgressTimerCallback::FullDigestionHeap);
+            +gamecomp::CreatureProgressTimerCallback::FullPoopStack);
 
-        SUBCASE("is endless") { CHECK(fullDigestionHeap_timer.isendless); }
+        SUBCASE("is endless") { CHECK(fullPoopStack_timer.isendless); }
     }
 
     SUBCASE("Hungry Timer waittime is set") {

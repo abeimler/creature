@@ -143,7 +143,8 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
 
     static constexpr gamecomp::progresstimer_percent_t CANGOSLEEP_AT_TIRED = 88;
     static constexpr gamecomp::counter_t MAX_POOPSTACK = 3;
-    static constexpr data::percent_rate_t RATE_ILL_BY_MAXPOOPSTACK = 80;
+    static constexpr data::percent_rate_t ILL_BY_MAXPOOPSTACK_RATE = 80;
+    static constexpr gamecomp::progresstimer_percent_t POOP_AT_DIGESTIONS_VALUE = 90;
 
     static constexpr data::bmi_t MIN_BMI = 18;
     static constexpr data::bmi_t IDEAL_BMI = 26;
