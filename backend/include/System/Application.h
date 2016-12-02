@@ -70,6 +70,16 @@ class Application {
         this->addListener<Event>(listener);
     }
 
+    template<class T, typename... Args>
+    void makeListener(Args&&... args) {
+        this->makeListener<T::event_t>( std::forward<Args>(args)... );
+    }
+
+    template<class T>
+    void makeListener() {
+        this->makeListener<T::event_t>();
+    }
+
     /*
     template<class Event>
     void add(const std::shared_ptr<Listener<Event>>& listener) {

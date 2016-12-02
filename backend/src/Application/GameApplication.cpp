@@ -32,6 +32,7 @@ void GameApplication::initSystems() {
                        
     this->makeSystem<gamesystem::CreatureSystem>(this->datamanager_);
 
+    this->makeSystem<gamesystem::CreatureDigestionSystem>();
     this->makeListener<gamesystem::CreatureDigestionCallbackSystem, 
                        gameevent::ProgressTimerCallbackEvent>();
 }

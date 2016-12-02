@@ -46,6 +46,8 @@ class Listener : public System {
     std::vector<Event> events_;
 
     public:
+    typedef Event event_t;
+
     Listener() = default;
     virtual ~Listener() = default;
     Listener(const Listener&) = default;
