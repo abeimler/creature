@@ -63,6 +63,11 @@ struct CreatureGeneTraining {
     /// trainigszeit die erreicht werden muss um ein gutes training
     /// abzuschliesen
     traintime_t good_trainitime;
+
+
+    progresstimer_percent_t cantrain_with_max_hungry = 0.0;
+    progresstimer_percent_t cantrain_with_max_thirsty = 0.0;
+    progresstimer_percent_t cantrain_with_max_tired = 0.0;
 };
 
 struct CreatureGenePerEvolution {

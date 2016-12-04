@@ -136,6 +136,8 @@ struct CreatureLifeComponent {
     /// true, BattlerStatus ist Tot und die Creature vollkommen tot
     bool isdead = false;
 
+    bool inbattle = false;
+
     /// Maximale Lebensdauer (Lebenserwartung)
     lifetime_t maxlifetime;
 

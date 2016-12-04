@@ -18,7 +18,7 @@ void CreatureRemoveStatusSystem::removeCreatureStatus(
         removecreaturestatus);
 
     if (removestatus) {
-        emit_event<gameevent::CreatureAddBattlerStatusEvent>(events, entity,
+        emit_event<gameevent::CreatureRemoveBattlerStatusEvent>(events, entity,
                                                              *removestatus);
     }
 }

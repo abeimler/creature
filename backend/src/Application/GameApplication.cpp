@@ -10,10 +10,12 @@ void GameApplication::initSystems() {
     this->makeListener<gamesystem::CreatureBattlerAddBattlerStatusSystem,
                        gameevent::CreatureAddBattlerStatusEvent>(
         this->datamanager_);
+
     this->makeListener<gamesystem::CreatureBattlerCreatureRecoverSystem,
                        gameevent::CreatureRecoverEvent>();
     this->makeListener<gamesystem::CreatureBattlerCreatureAddExpSystem,
                        gameevent::CreatureAddExpEvent>();
+
     this->makeListener<gamesystem::CreatureRemoveStatusSystem,
                        gameevent::CreatureRemoveStatusEvent>(
         this->datamanager_);
@@ -27,8 +29,10 @@ void GameApplication::initSystems() {
 
     this->makeListener<gamesystem::CreatureDeadSystem,
                        gameevent::CreatureMakeDeadEvent>();
-    this->makeListener<gamesystem::CreatureRunAwaySystem,
-                       gameevent::CreatureMakeRunAwayEvent>(this->datamanager_);
+    this->makeListener<gamesystem::CreatureMakeRunAwaySystem,
+                       gameevent::CreatureMakeRunAwayEvent>();
+    this->makeListener<gamesystem::CreatureRemoveRunAwaySystem,
+                       gameevent::CreatureRemoveRunAwayEvent>();
                        
     this->makeSystem<gamesystem::CreatureSystem>(this->datamanager_);
 

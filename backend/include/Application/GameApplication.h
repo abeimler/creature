@@ -20,7 +20,8 @@
 #include "System/Game/CreatureDoNotingSystem.h"
 #include "System/Game/CreatureProgressTimerSystem.h"
 #include "System/Game/CreatureRemoveStatusSystem.h"
-#include "System/Game/CreatureRunAwaySystem.h"
+#include "System/Game/CreatureMakeRunAwaySystem.h"
+#include "System/Game/CreatureRemoveRunAwaySystem.h"
 #include "System/Game/CreatureSystem.h"
 
 

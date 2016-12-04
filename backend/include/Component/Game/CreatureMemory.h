@@ -15,6 +15,7 @@ BETTER_ENUM(CreatureActivity, size_t, Noting,
             Hurt,    ///< Wurde gerade Verletzt
             Ill,     ///< Wurde gerade Krank
             RunAway, ///< Is gerade weggelaufen
+            ComeBackFromRunAway, ///< is gerade vom weglaufen zurück gekommen
 
             Asleep,             ///< eingeschlafen
             AsleepWithLight,    ///< eingeschlafen mit Licht an

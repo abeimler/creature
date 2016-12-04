@@ -1,20 +1,19 @@
-#include "System/Game/CreatureRunAwaySystem.h"
+#include "System/Game/CreatureMakeRunAwaySystem.h"
 
 namespace gamesystem {
 
 
-CreatureRunAwaySystem::CreatureRunAwaySystem(
-    gameentity::DataManager& datamanager)
-    : datamanager_(datamanager) {}
+CreatureMakeRunAwaySystem::CreatureMakeRunAwaySystem() {}
 
 
-void CreatureRunAwaySystem::makeCreaturerRunAway(
+void CreatureMakeRunAwaySystem::makeCreaturerRunAway(
     EventBus& events, Entity entity,
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureLifeComponent& life,
     gamecomp::CauseOfRunAway causeofrunaway, gamecomp::waittime_t waittime) {
     bool isrunaway =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway);
+
 
     if (!isrunaway) {
         emit_event<gameevent::CreatureAddStatusEvent>(
@@ -33,7 +32,7 @@ void CreatureRunAwaySystem::makeCreaturerRunAway(
     }
 }
 
-void CreatureRunAwaySystem::update(
+void CreatureMakeRunAwaySystem::update(
     const gameevent::CreatureMakeRunAwayEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
     Component<gamecomp::CreatureProgressTimersComponent> timers;

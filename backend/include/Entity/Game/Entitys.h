@@ -49,6 +49,17 @@ using EntityManager =
 template <typename C>
 using Component = EntityManager::Component<C>;
 using Entity = EntityManager::Entity;
+using EntityId = entityx::Id;
+
+typedef std::uint64_t entity_id_t;
+
+inline EntityId to_EntityId(entity_id_t id) {
+    return EntityId(id);
+}
+
+inline entity_id_t to_EntityId(const EntityId& eid) {
+    return eid.id();
+}
 
 } // namespace gameentity
 

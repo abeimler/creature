@@ -142,6 +142,9 @@ void CreatureSystem::updateLifeAttribute(
 
     life.creaturelevel = creature.getCreatureLevel();
 
+    auto& gene_perevolution = earr::enum_array_at(gene.perevolution, life.creaturelevel);
+    auto& gene_training = gene_perevolution.training;
+
 
     if (life.oldlevel != creature_battler.lvl) {
         emit_event<gameevent::CreatureHasLevelUpEvent>(
@@ -162,12 +165,11 @@ void CreatureSystem::updateLifeAttribute(
                    ? static_cast<gamecomp::age_t>(lifetime_ms / ageingtime_ms)
                    : 0;
 
-
     if (!life.isdead) {
         if (life.lifetime > life.maxlifetime) {
             emit_event<gameevent::CreatureMakeDeadEvent>(
                 events, entity, gamecomp::CauseOfDeath::Senility);
-        } else if (creature_battler.hp <= 0) {
+        } else if (creature_battler.hp <= 0 && !life.inbattle) {
             emit_event<gameevent::CreatureMakeDeadEvent>(
                 events, entity, gamecomp::CauseOfDeath::ZeroHP);
         }
@@ -196,8 +198,9 @@ void CreatureSystem::updateLifeAttribute(
         !life.isbusy && !life.isdead && life.born &&
         !earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Ill) &&
         !earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Hurt) &&
-        tired_value < gene.cangosleep_at_tired && hungry_value < 90 &&
-        thirsty_value < 90;
+        hungry_value <= gene_training.cantrain_with_max_hungry &&
+        thirsty_value <= gene_training.cantrain_with_max_thirsty &&
+        tired_value <= gene_training.cantrain_with_max_tired;
 }
 
 
@@ -412,6 +415,8 @@ void CreatureSystem::update(EntityManager& entities, EventBus& events,
     for (auto entity : entities.entities_with_components(
              timers, psyche, life, body, gene, sleep, creature_data,
              creature_battler, battler_statuses)) {
+        updateCreatureTimers(*timers.get(), *life.get());
+        updateCreatureTimersFactor(*timers.get(), *life.get());
 
         updateHasStatuses(*battler_statuses.get(), *life.get());
         updateBMI(*body.get(), *gene.get(), *creature_data.get());
@@ -421,8 +426,6 @@ void CreatureSystem::update(EntityManager& entities, EventBus& events,
         updateLifeAttribute(events, entity, *timers.get(), *life.get(),
                             *gene.get(), *creature_battler.get(),
                             *creature_data.get());
-        updateCreatureTimers(*timers.get(), *life.get());
-        updateCreatureTimersFactor(*timers.get(), *life.get());
     }
 }
 

@@ -12,11 +12,13 @@ void CreatureDeadSystem::makeCreatureDead(
     gamecomp::CreatureLifeComponent& life,
     gamecomp::CreatureBattlerComponent& creature_battler,
     gamecomp::CauseOfDeath causeofdeath) {
+
+    std::cout << "make dead" << '\n';
+
     if (!life.isdead &&
         !earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Dead)) {
         emit_event<gameevent::CreatureRemoveRunAwayEvent>(events, entity);
-        emit_event<gameevent::CreatureAddStatusEvent>(
-            events, entity, data::CreatureStatus::Dead);
+        emit_event<gameevent::CreatureAddStatusEvent>(events, entity, data::CreatureStatus::Dead);
 
         for (auto& timer : timers.timer) {
             this->progresstimer_util_.pause(timer);

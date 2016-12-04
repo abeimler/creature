@@ -1,17 +1,96 @@
+# Based on https://github.com/Microsoft/GSL/blob/master/.travis.yml
+
 sudo: required
 dist: xenial
-
 language: cpp
-compiler:
-  - gcc
-  - clang
 
-env:
-  matrix:
-    - COMPILER="g++-5"
-    - COMPILER="g++-6"
-    - COMPILER="clang++-3.8"
 
+cache:
+  directories:
+    - ${TRAVIS_BUILD_DIR}/deps/cmake
+    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.5.2/install
+    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.6.2/install
+    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.7.1/install
+    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.8.1/install
+    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.9.0/install
+
+matrix:
+  include:
+    - env: CLANG_VERSION=3.6 BUILD_TYPE=Debug
+      os: linux
+      addons: &clang36
+        apt:
+          packages:
+            - clang-3.6
+            - g++-5
+          sources: &sources
+            - george-edison55/cmake-3.x
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
+    - env: CLANG_VERSION=3.6 BUILD_TYPE=Release
+      os: linux
+      addons: *clang36
+    - env: CLANG_VERSION=3.7 BUILD_TYPE=Debug
+      os: linux
+      addons: &clang37
+        apt:
+          packages:
+            - clang-3.7
+            - g++-5
+          sources: &sources
+            - george-edison55/cmake-3.x
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+    - env: CLANG_VERSION=3.7 BUILD_TYPE=Release
+      os: linux
+      addons: *clang37
+    - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug
+      os: linux
+      addons: &clang38
+        apt:
+          packages:
+            - clang-3.8
+            - g++-5
+          sources: &sources
+            - george-edison55/cmake-3.x
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.8
+    - env: CLANG_VERSION=3.8 BUILD_TYPE=Release
+      os: linux
+      addons: *clang38
+    - env: GCC_VERSION=5 BUILD_TYPE=Debug
+      os: linux
+      addons: &gcc5
+        apt:
+          packages: g++-5
+          sources: *sources
+    - env: GCC_VERSION=5 BUILD_TYPE=Release
+      os: linux
+      addons: *gcc5
+    - env: GCC_VERSION=6 BUILD_TYPE=Debug
+      os: linux
+      addons: &gcc6
+        apt:
+          packages: g++-6
+          sources: *sources
+    - env: GCC_VERSION=6 BUILD_TYPE=Release
+      os: linux
+      addons: *gcc6
+    - env: GCC_VERSION=arm-linux-gnueabihf BUILD_TYPE=Debug
+      os: linux
+      addons: &gccarm-linux-gnueabihf
+        apt:
+          packages: 
+            - build-essential
+            - g++-arm-linux-gnueabihf
+            - gcc-arm-linux-gnueabi
+            - gdb-multiarch
+            - lib32ncurses5 
+            - lib32z1
+          sources: *sources
+    - env: GCC_VERSION=arm-linux-gnueabihf BUILD_TYPE=Release
+      os: linux
+      addons: *gccarm-linux-gnueabihf
 
 
 before_install:
@@ -20,39 +99,80 @@ before_install:
   - sudo pip install --upgrade pip
   - sudo pip install cpp-coveralls
   - sudo apt-get install -y libopencv-dev
-  - wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo add-apt-repository ppa:george-edison55/cmake-3.x -y
-  - sudo apt-get update -qq
-  - sudo apt-get install -y $COMPILER
   - sudo apt-get install -y git
   #- sudo apt-get install -y doxygen
-  - sudo apt-get install -y make cmake cmake-data
-  - if [ "$COMPILER" = "clang++-3.8" ]; then sudo apt-get install -y libc++-dev; fi
 
 install:
-  - if [ "$COMPILER" = "g++-5" ]; then export CXX="g++-5" CC="gcc-5"; fi
-  - if [ "$COMPILER" = "g++-6" ]; then export CXX="g++-6" CC="gcc-6"; fi
-  - if [ "$COMPILER" = "clang++-3.8" ]; then export CXX="clang++-3.8" CC="clang-3.8"; fi
-  - sudo apt-get install -y libgtest-dev libunittest++-dev
-  - sudo apt-get install -y libicu-dev
-  - sudo apt-get install -y libboost-all-dev
+  - if [[ -n "$CLANG_VERSION" ]]; then export CXX=clang++-$CLANG_VERSION CC=clang-$CLANG_VERSION; fi
+  - if [[ -n "$GCC_VERSION" ]]; then export CXX=g++-$GCC_VERSION CC=gcc-$GCC_VERSION; fi
+  - JOBS=2
+  - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+  - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
+  ############################################################################
+  # Install a recent CMake (unless already installed on OS X)
+  ############################################################################
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      if [[ -z "$(ls -A ${DEPS_DIR}/cmake/bin)" ]]; then
+        CMAKE_URL="https://cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz"
+        mkdir -p cmake && travis_retry wget --no-check-certificate --quiet -O - "${CMAKE_URL}" | tar --strip-components=1 -xz -C cmake
+      fi
+      export PATH="${DEPS_DIR}/cmake/bin:${PATH}"
+    else
+      if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
+    fi
+  ############################################################################
+  # [linux]: Install the right version of libc++
+  ############################################################################
+  - |
+    if [[ -n "$CLANG_VERSION" && "${TRAVIS_OS_NAME}" == "linux" && "${STDLIB}" != "libstdc++" ]]; then
+      if [[ "$CLANG_VERSION" == "3.5" ]]; then LLVM_VERSION="3.5.2"; fi
+      if [[ "$CLANG_VERSION" == "3.6" ]]; then LLVM_VERSION="3.6.2"; fi
+      if [[ "$CLANG_VERSION" == "3.7" ]]; then LLVM_VERSION="3.7.1"; fi
+      if [[ "$CLANG_VERSION" == "3.8" ]]; then LLVM_VERSION="3.8.1"; fi
+      if [[ "$CLANG_VERSION" == "3.9" ]]; then LLVM_VERSION="3.9.0"; fi
+      LLVM_ROOT="${DEPS_DIR}/llvm-${LLVM_VERSION}"
+      LLVM_URL="http://llvm.org/releases/${LLVM_VERSION}/llvm-${LLVM_VERSION}.src.tar.xz"
+      LIBCXX_URL="http://llvm.org/releases/${LLVM_VERSION}/libcxx-${LLVM_VERSION}.src.tar.xz"
+      LIBCXXABI_URL="http://llvm.org/releases/${LLVM_VERSION}/libcxxabi-${LLVM_VERSION}.src.tar.xz"
+      if [[ -z "$(ls -A ${LLVM_ROOT}/install/include)" ]]; then
+        mkdir -p "${LLVM_ROOT}" "${LLVM_ROOT}/build" "${LLVM_ROOT}/projects/libcxx" "${LLVM_ROOT}/projects/libcxxabi"
+        travis_retry wget --quiet -O - "${LLVM_URL}" | tar --strip-components=1 -xJ -C "${LLVM_ROOT}"
+        travis_retry wget --quiet -O - "${LIBCXX_URL}" | tar --strip-components=1 -xJ -C "${LLVM_ROOT}/projects/libcxx"
+        travis_retry wget --quiet -O - "${LIBCXXABI_URL}" | tar --strip-components=1 -xJ -C "${LLVM_ROOT}/projects/libcxxabi"
+        (cd "${LLVM_ROOT}/build" && cmake .. -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="${LLVM_ROOT}/install" -DCMAKE_BUILD_TYPE=$BUILD_TYPE)
+        (cd "${LLVM_ROOT}/build/projects/libcxx" && make install -j$JOBS)
+        (cd "${LLVM_ROOT}/build/projects/libcxxabi" && make install -j$JOBS)
+      fi
+      export CXXFLAGS="-I ${LLVM_ROOT}/install/include/c++/v1"
+      export LDFLAGS="-L ${LLVM_ROOT}/install/lib -lc++ -lc++abi"
+      export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${LLVM_ROOT}/install/lib"
+    fi
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      ./install-deps.sh
+    fi
+
+
 
 before_script:
-  - cd $TRAVIS_BUILD_DIR
-  - mkdir -p $TRAVIS_BUILD_DIR/build
-  - cd $TRAVIS_BUILD_DIR/build
-  - cmake -H$TRAVIS_BUILD_DIR -B$TRAVIS_BUILD_DIR/build
-    -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE 
+  - cd "${TRAVIS_BUILD_DIR}"
+  - cmake . -Bbuild
+    -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
     -DBUILD_SHARED_LIBS=FALSE -DBUILD_TESTING=OFF -DBuildTests=OFF 
     -DCXXOPTS_BUILD_EXAMPLES=OFF -DCXXOPTS_BUILD_TESTS=OFF 
     -DENTITYX_BUILD_TESTING=OFF -DENTITYX_RUN_BENCHMARKS=OFF 
-    -DSKIP_PORTABILITY_TEST=ON -DTHREAD_SAFE=ON -DWITH_CPP11=ON
+    -DSKIP_PORTABILITY_TEST=ON -DTHREAD_SAFE=ON 
     -Dgtest_build_samples=OFF -Dgtest_build_tests=OFF
     -DUTPP_AMPLIFY_WARNINGS=OFF -DUTPP_INCLUDE_TESTS_IN_BUILD=OFF
+    -DENABLE_TESTS=OFF
+    -DBoost_USE_STATIC_LIBS=ON
+  - cmake --build build -- -j$JOBS
 
 script: 
-  - cd ${TRAVIS_BUILD_DIR}/build
-  - make creature_backend_test
-  - cd ${TRAVIS_BUILD_DIR}/build/backend
-  - ctest
+  - cd "${TRAVIS_BUILD_DIR}"
+  - cd build/backend
+  - ctest --output-on-failure -j$JOBS
+
+notifications:
+  email: false

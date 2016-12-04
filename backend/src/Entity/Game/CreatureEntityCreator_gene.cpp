@@ -887,6 +887,30 @@ CreatureEntityCreator::createCreatureGene(const data::Creature& creature) {
     perevolution_ultimate.runawaytime_unluck = std::chrono::hours(22);
 
 
+    perevolution_egg.training.cantrain_with_max_hungry = 50;
+    perevolution_baby.training.cantrain_with_max_hungry = 50;
+    perevolution_baby2.training.cantrain_with_max_hungry = 60;
+    perevolution_child.training.cantrain_with_max_hungry = 70;
+    perevolution_adult.training.cantrain_with_max_hungry = 85;
+    perevolution_perfect.training.cantrain_with_max_hungry = 90;
+    perevolution_ultimate.training.cantrain_with_max_hungry = 90;
+
+    perevolution_egg.training.cantrain_with_max_thirsty = 50;
+    perevolution_baby.training.cantrain_with_max_thirsty = 50;
+    perevolution_baby2.training.cantrain_with_max_thirsty = 60;
+    perevolution_child.training.cantrain_with_max_thirsty = 70;
+    perevolution_adult.training.cantrain_with_max_thirsty = 85;
+    perevolution_perfect.training.cantrain_with_max_thirsty = 90;
+    perevolution_ultimate.training.cantrain_with_max_thirsty = 90;
+
+    perevolution_egg.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
+    perevolution_baby.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
+    perevolution_baby2.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
+    perevolution_child.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
+    perevolution_adult.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
+    perevolution_perfect.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
+    perevolution_ultimate.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
+
 
     perevolution_egg.waittime.timer =
         createTimerWaitTime(data::CreatureLevel::Egg);

@@ -15,6 +15,8 @@ class System {
     public:
     using EntityManager = gameentity::EntityManager;
     using Entity = gameentity::Entity;
+    using EntityId = gameentity::EntityId;
+    using entity_id_t = gameentity::entity_id_t;
 
     template <typename C>
     using Component = gameentity::Component<C>;

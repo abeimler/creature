@@ -1,3 +1,5 @@
+#include <thread>
+
 #include "doctest.h"
 
 #include "System/Application.h"
@@ -9,43 +11,27 @@
 #include "System/Game/CreatureBattlerRemoveBattlerStatusSystem.h"
 #include "System/Game/CreatureRemoveStatusSystem.h"
 #include "System/Game/CreatureSystem.h"
+#include "System/Game/CreatureDeadSystem.h"
+#include "System/Game/CreatureProgressTimerSystem.h"
 
 
-class CreatureAddRemoveStatusSystemApplication : public gamesystem::Application {
+class CreatureAddRemoveStatusDeadSystemApplication : public gamesystem::Application {
     private:
 
     std::vector<data::CreatureBattlerStatus>
     getCreatureStatusList() {
-        /*
-            Normal = BEGIN, ///< Normal Status (no Statuses)
-            Dead,           ///< Dead
-            RunAway,        ///< Run Away
-            Sleep,          ///< Sleep
-            InHospital,     ///< In Hospital
-            RestInHospital, ///< Rest in Hospital
-            Rest,           ///< Rest
-            Hurt,           ///< Hurt
-            Ill,            ///< Ill
-            Training,       ///< In Training
-            Unhappy,        ///< Unhappy
-            Happy,          ///< Happy
-            Hungry,         ///< Hungry
-            Thirsty,        ///< Thirsty
-            Replete,        ///< Replete
-            Tired,          ///< Tired
-        */
-
         std::vector<data::CreatureBattlerStatus> statuses;
 
-        data::CreatureBattlerStatus dead ("Dead", data::CreatureStatus::Dead);
+        data::CreatureBattlerStatus dead (DEAD_STATUS_NAME, data::CreatureStatus::Dead);
         dead.setPriority(100);
+        dead.setOption(data::StatusOption::Dead, true);
         statuses.push_back(dead);
 
         data::CreatureBattlerStatus runaway ("RunAway", data::CreatureStatus::RunAway);
         runaway.setPriority(95);
         statuses.push_back(runaway);
 
-        data::CreatureBattlerStatus sleep ("Sleep", data::CreatureStatus::Sleep);
+        data::CreatureBattlerStatus sleep (SLEEP_STATUS_NAME, data::CreatureStatus::Sleep);
         sleep.setPriority(90);
         statuses.push_back(sleep);
 
@@ -65,7 +51,7 @@ class CreatureAddRemoveStatusSystemApplication : public gamesystem::Application 
         hurt.setPriority(85);
         statuses.push_back(hurt);
 
-        data::CreatureBattlerStatus ill ("Ill", data::CreatureStatus::Ill);
+        data::CreatureBattlerStatus ill (ILL_STATUS_NAME, data::CreatureStatus::Ill);
         ill.setPriority(85);
         statuses.push_back(ill);
 
@@ -109,6 +95,9 @@ class CreatureAddRemoveStatusSystemApplication : public gamesystem::Application 
 
     public:
     const char* HUNGRY_STATUS_NAME = "Hungry";
+    const char* SLEEP_STATUS_NAME = "Sleep";
+    const char* ILL_STATUS_NAME = "Ill";
+    const char* DEAD_STATUS_NAME = "Dead";
 
     gameentity::DataManager datamanager;
 
@@ -116,9 +105,11 @@ class CreatureAddRemoveStatusSystemApplication : public gamesystem::Application 
     std::shared_ptr<gamesystem::CreatureRemoveStatusSystem> creatureRemoveStatusSystem;
     std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusSystem> creatureBattlerAddBattlerStatusSystem;
     std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusSystem> creatureBattlerRemoveBattlerStatusSystem;
+    std::shared_ptr<gamesystem::CreatureProgressTimerSystem> creatureProgressTimerSystem;
     std::shared_ptr<gamesystem::CreatureSystem> creatureSystem;
+    std::shared_ptr<gamesystem::CreatureDeadSystem> creatureDeadSystem;
 
-    CreatureAddRemoveStatusSystemApplication() {
+    CreatureAddRemoveStatusDeadSystemApplication() {
         init_DataManager_AllCreatureStatuses(datamanager);
 
         this->creatureAddStatusSystem =
@@ -133,21 +124,27 @@ class CreatureAddRemoveStatusSystemApplication : public gamesystem::Application 
         this->creatureBattlerRemoveBattlerStatusSystem =
             std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusSystem>(
                 this->datamanager);
+        this->creatureProgressTimerSystem =
+                std::make_shared<gamesystem::CreatureProgressTimerSystem>();
         this->creatureSystem =
             std::make_shared<gamesystem::CreatureSystem>(
                 this->datamanager);
+        this->creatureDeadSystem =
+            std::make_shared<gamesystem::CreatureDeadSystem>();
 
+        this->addSystem(this->creatureProgressTimerSystem);
+        this->addSystem(this->creatureSystem);
+        this->addListener<gameevent::CreatureMakeDeadEvent>(this->creatureDeadSystem);
         this->addListener<gameevent::CreatureAddStatusEvent>(this->creatureAddStatusSystem);
         this->addListener<gameevent::CreatureRemoveStatusEvent>(this->creatureRemoveStatusSystem);
         this->addListener<gameevent::CreatureAddBattlerStatusEvent>(this->creatureBattlerAddBattlerStatusSystem);
         this->addListener<gameevent::CreatureRemoveBattlerStatusEvent>(this->creatureBattlerRemoveBattlerStatusSystem);
-        this->addSystem(this->creatureSystem);
     }
 
 
 
     void init_Entity_withHungryStatus(gameentity::Entity entity) {
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+        //gamecomputil::ProgressTimerUtil progresstimer_util;
 
         auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
         gamecomp::ProgressTimer& hungry_timer = earr::enum_array_at(timers->timer, 
@@ -209,7 +206,7 @@ class CreatureAddRemoveStatusSystemApplication : public gamesystem::Application 
     }
 
     void init_Entity_withOneHPMP(gameentity::Entity entity) {
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+        //gamecomputil::ProgressTimerUtil progresstimer_util;
 
         auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
 
@@ -217,45 +214,79 @@ class CreatureAddRemoveStatusSystemApplication : public gamesystem::Application 
         creature_battler->mp = 1;
     }
 
+    void
+    init_Entity_withStartedLifeTimer(gameentity::Entity entity) {
+        CreatureTestData creatureTestData;
+        computil::DateTimerUtil datetimer_util_;
+
+        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+
+        auto time = creatureTestData.make_time_point_01_01_2000();
+        datetimer_util_.init(timers->lifetimer, time, 1.0f);
+        datetimer_util_.start(timers->lifetimer);
+    }
+
     static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
 };
 
 
 
-SCENARIO("Creature Entity emit addStatus-Event Hungry to set "
-         "status Hungry") {
-    GIVEN("Creature Entity") {
+
+SCENARIO("Creature Entity with small maxlifetime when life to long then die") {
+    GIVEN("Creature Entity with small maxlifetime") {
         CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusSystemApplication app;
+        CreatureAddRemoveStatusDeadSystemApplication app;
         auto& entities = app.getEntityManager();
 
-        auto time = creatureTestData.make_time_point_01_01_2000();
+        //auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
         // auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        auto battlerstatuses = entity.component<gamecomp::BattlerStatusesComponent>();
+        //auto battlerstatuses = entity.component<gamecomp::BattlerStatusesComponent>();
         auto life = entity.component<gamecomp::CreatureLifeComponent>();
+        //auto bodlystate = entity.component<gamecomp::CreatureBodilyStateComponent>();
 
-        WHEN("emit addStatus-Event Hungry") {
-            app.emit_event<gameevent::CreatureAddStatusEvent>(entity, +data::CreatureStatus::Hungry);
+        app.init_Entity_withStartedLifeTimer(entity);
 
-            AND_WHEN("update manager") {
-                app.update(app.FAKE_TIMEDELTA);
-                //app.update(app.FAKE_TIMEDELTA);
+        auto waittime = std::chrono::milliseconds(100);
+        life->maxlifetime = std::chrono::milliseconds(50);
 
-                THEN("has hungry status") {
-                    CHECK(earr::enum_array_at(life->hasstatus, +data::CreatureStatus::Hungry));
-                }
+        WHEN("update manager") {
+            std::this_thread::sleep_for(waittime);
+            app.update(app.FAKE_TIMEDELTA);
 
-                THEN("battler statuses is not empty") {
-                    REQUIRE_FALSE(battlerstatuses->statuses_name.empty());
+            THEN("is dead") {
+                CHECK(life->isdead);
+            }
+        }
+    }
+}
 
-                    auto& status_name = battlerstatuses->statuses_name.front();
+SCENARIO("Creature Entity with zero hp to make dead with updateLifeAttribute") {
+    GIVEN("Creature Entity with new attrplus value") {
+        CreatureTestData creatureTestData;
+        CreatureAddRemoveStatusDeadSystemApplication app;
+        auto& entities = app.getEntityManager();
 
-                    AND_THEN("battler status is hungry") {
-                        CHECK(app.HUNGRY_STATUS_NAME == status_name);
-                    }
-                }
+        //auto time = creatureTestData.make_time_point_01_01_2000();
+        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+
+        // auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+        //auto battlerstatuses = entity.component<gamecomp::BattlerStatusesComponent>();
+        auto life = entity.component<gamecomp::CreatureLifeComponent>();
+        //auto bodlystate = entity.component<gamecomp::CreatureBodilyStateComponent>();
+        //auto sleep = entity.component<gamecomp::CreatureSleepComponent>();
+        //auto psyche = entity.component<gamecomp::CreaturePsycheComponent>();
+        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+
+        life->inbattle = false;
+        creature_battler->hp = 0;
+
+        WHEN("update manager") {
+            app.update(app.FAKE_TIMEDELTA);
+
+            THEN("is dead") {
+                CHECK(life->isdead);
             }
         }
     }

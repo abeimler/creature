@@ -1,5 +1,5 @@
-#ifndef SYSTEM_GAME_CREATURERUNAWAYSYSTEM_H_
-#define SYSTEM_GAME_CREATUREEUNAWAYSYSTEM_H_
+#ifndef SYSTEM_GAME_CREATUREMAKERUNAWAYSYSTEM_H_
+#define SYSTEM_GAME_CREATUREMAKERUNAWAYSYSTEM_H_
 
 #include "basic.h"
 
@@ -13,17 +13,16 @@ namespace gamesystem {
 
 
 
-class CreatureRunAwaySystem : public Listener<gameevent::CreatureMakeRunAwayEvent> {
+class CreatureMakeRunAwaySystem : public Listener<gameevent::CreatureMakeRunAwayEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
-    gameentity::DataManager& datamanager_;
     gamecomputil::ProgressTimerUtil progresstimer_util_;
     computil::DateTimerUtil datetimer_util_;
 
     public:
 
-    CreatureRunAwaySystem(gameentity::DataManager& datamanager);
+    CreatureMakeRunAwaySystem();
 
     void makeCreaturerRunAway(EventBus& events, Entity entity,
                               gamecomp::CreatureProgressTimersComponent& timers,
@@ -38,4 +37,4 @@ class CreatureRunAwaySystem : public Listener<gameevent::CreatureMakeRunAwayEven
 };
 } // namespace gamesystem
 
-#endif // SYSTEM_GAME_CREATUREEUNAWAYSYSTEM_H_
+#endif // SYSTEM_GAME_CREATUREMAKERUNAWAYSYSTEM_H_
