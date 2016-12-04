@@ -70,3 +70,19 @@ TEST_CASE("more then 100% wins") { CHECK(util::randomRate(101)); }
 TEST_CASE("100% wins") { CHECK(util::randomRate(100)); }
 
 TEST_CASE("0% loses") { CHECK_FALSE(util::randomRate(0)); }
+
+
+TEST_CASE("random value of range 0-100 with gen seed 'Spike the Dragon'") {
+    int min = 0;
+    int max = 100;
+
+    std::string seedstr = "Spike the Dragon";
+    auto gen = util::genseed(seedstr);
+
+    int value = util::random(min, max, gen);
+
+    SUBCASE("value is ") { 
+        CHECK(value == 43); 
+    }
+}
+

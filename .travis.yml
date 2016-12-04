@@ -1,8 +1,8 @@
 # Based on https://github.com/Microsoft/GSL/blob/master/.travis.yml
 
+language: cpp
 sudo: required
 dist: xenial
-language: cpp
 
 
 cache:
@@ -23,6 +23,7 @@ matrix:
           packages:
             - clang-3.6
             - g++-5
+            - gcc-5
           sources: &sources
             - george-edison55/cmake-3.x
             - ubuntu-toolchain-r-test
@@ -37,6 +38,7 @@ matrix:
           packages:
             - clang-3.7
             - g++-5
+            - gcc-5
           sources: &sources
             - george-edison55/cmake-3.x
             - ubuntu-toolchain-r-test
@@ -51,6 +53,7 @@ matrix:
           packages:
             - clang-3.8
             - g++-5
+            - gcc-5
           sources: &sources
             - george-edison55/cmake-3.x
             - ubuntu-toolchain-r-test
@@ -62,7 +65,9 @@ matrix:
       os: linux
       addons: &gcc5
         apt:
-          packages: g++-5
+          packages: 
+            - g++-5
+            - gcc-5
           sources: *sources
     - env: GCC_VERSION=5 BUILD_TYPE=Release
       os: linux
@@ -71,7 +76,9 @@ matrix:
       os: linux
       addons: &gcc6
         apt:
-          packages: g++-6
+          packages: 
+            - g++-6
+            - gcc-6
           sources: *sources
     - env: GCC_VERSION=6 BUILD_TYPE=Release
       os: linux
@@ -83,7 +90,7 @@ matrix:
           packages: 
             - build-essential
             - g++-arm-linux-gnueabihf
-            - gcc-arm-linux-gnueabi
+            - gcc-arm-linux-gnueabihf
             - gdb-multiarch
             - lib32ncurses5 
             - lib32z1

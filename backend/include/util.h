@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 
+#include <string>
 #include <random>
 #include <type_traits>
 
@@ -68,6 +69,11 @@ class util {
         return dis(gen);
     }
 
+    template <class Generator>
+    static double rand(Generator& gen) {
+        return random(0.0, 1.0, gen);
+    }
+
     template <typename T>
     static bool randomRate(T percent) {
         if (percent >= 100.0) {
@@ -93,6 +99,8 @@ class util {
     static float random(float lowest_number, float highest_number);
     static double random(double lowest_number, double highest_number);
     static bool randomOdds(int wins, int losses);
+
+    static std::mt19937 genseed(std::string seedstr);
 
     private:
     static unsigned int rdseed();
