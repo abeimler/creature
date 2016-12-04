@@ -18,21 +18,21 @@ TEST_CASE("create print with CreatureFootPrintCreator") {
 
     // bodysize
     // double min_bodysize = 0.62f;
-    double max_bodysize = 1.52f;
+    //double max_bodysize = 1.52f;
     double bodysize = 1.4f;
 
     // body weight
-    double min_weight = 4;
-    double max_weight = 80;
-    double weight = 10;
+    //double min_weight = 4;
+    //double max_weight = 80;
+    //double weight = 10;
 
     // bmi
-    double min_bmi = 10;
-    double max_bmi = 40;
-    double ideal_bmi = 22;
+    //double min_bmi = 10;
+    //double max_bmi = 40;
+    //double ideal_bmi = 22;
 
-    double high_weight = 30;
-    double low_weight = 5;
+    //double high_weight = 30;
+    //double low_weight = 5;
 
     /*
     double ideal_mass = creaturecreator.getBodyMass(

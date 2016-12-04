@@ -39,12 +39,12 @@ void CreatureDigestionSystem::updateFullPoopStack(
     gamecomp::CreatureGeneComponent& gene) {
 
     if (hunger.poopstack < gene.max_poopstack) {
-        auto& full_digistation_timer = earr::enum_array_at(timers.callback,
+        auto& full_poop_stack_timer = earr::enum_array_at(timers.callback,
             +gamecomp::CreatureProgressTimerCallback::FullPoopStack);
-        gamecomp::ProgressTimer& full_digistation_progresstimer =
-            full_digistation_timer.base;
+        gamecomp::ProgressTimer& full_poop_stack_progresstimer =
+            full_poop_stack_timer.base;
 
-        progresstimer_util_.stop(full_digistation_progresstimer);
+        progresstimer_util_.stop(full_poop_stack_progresstimer);
     } else {
         // start progresstimer by event, see CreatureDigestionCallbackSystem::fullPoopStack
     }
