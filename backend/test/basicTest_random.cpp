@@ -81,8 +81,5 @@ TEST_CASE("random value of range 0-100 with gen seed 'Spike the Dragon'") {
 
     int value = util::random(min, max, gen);
 
-    SUBCASE("value is ") { 
-        CHECK(value == 43); 
-    }
+    SUBCASE("value is ") { CHECK(value == 43); }
 }
-

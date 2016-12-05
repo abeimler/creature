@@ -1,6 +1,6 @@
 #include <fstream>
-#include <string>
 #include <iostream>
+#include <string>
 
 #include "doctest.h"
 
@@ -18,21 +18,21 @@ TEST_CASE("create print with CreatureFootPrintCreator") {
 
     // bodysize
     // double min_bodysize = 0.62f;
-    //double max_bodysize = 1.52f;
+    // double max_bodysize = 1.52f;
     double bodysize = 1.4f;
 
     // body weight
-    //double min_weight = 4;
-    //double max_weight = 80;
-    //double weight = 10;
+    // double min_weight = 4;
+    // double max_weight = 80;
+    // double weight = 10;
 
     // bmi
-    //double min_bmi = 10;
-    //double max_bmi = 40;
-    //double ideal_bmi = 22;
+    // double min_bmi = 10;
+    // double max_bmi = 40;
+    // double ideal_bmi = 22;
 
-    //double high_weight = 30;
-    //double low_weight = 5;
+    // double high_weight = 30;
+    // double low_weight = 5;
 
     /*
     double ideal_mass = creaturecreator.getBodyMass(
@@ -40,25 +40,20 @@ TEST_CASE("create print with CreatureFootPrintCreator") {
     */
     double ideal_mass = 35.51;
 
-    std::string expectedPrint = 
-        "******\n"
-        "******\n"
-        "  **  \n"
-        "  **  \n"
-        "******\n"
-        "******\n"
-        "******\n"
-        "******\n";
+    std::string expectedPrint = "******\n"
+                                "******\n"
+                                "  **  \n"
+                                "  **  \n"
+                                "******\n"
+                                "******\n"
+                                "******\n"
+                                "******\n";
 
 
     SUBCASE("generate print") {
-        std::string print = printcreator.createPrintString(creature_name, creature_level, ideal_mass, bodysize);
+        std::string print = printcreator.createPrintString(
+            creature_name, creature_level, ideal_mass, bodysize);
 
-        SUBCASE("print is right") {
-            CHECK(expectedPrint == print);
-        }
+        SUBCASE("print is right") { CHECK(expectedPrint == print); }
     }
 }
-
-
-

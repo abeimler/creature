@@ -3,11 +3,12 @@
 namespace gamesystem {
 
 
-void CreatureBattlerCreatureRecoverListener::recover(gamecomp::CreatureBattlerComponent& creature_battler) {
-    creature_battler.hp = earr::enum_array_at(creature_battler.attr,
-                                              +data::Attribute::MaxHP);
-    creature_battler.mp = earr::enum_array_at(creature_battler.attr,
-                                              +data::Attribute::MaxMP);
+void CreatureBattlerCreatureRecoverListener::recover(
+    gamecomp::CreatureBattlerComponent& creature_battler) {
+    creature_battler.hp =
+        earr::enum_array_at(creature_battler.attr, +data::Attribute::MaxHP);
+    creature_battler.mp =
+        earr::enum_array_at(creature_battler.attr, +data::Attribute::MaxMP);
 }
 
 void CreatureBattlerCreatureRecoverListener::update(

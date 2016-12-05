@@ -3,8 +3,9 @@
 namespace gamesystem {
 
 
-CreatureBattlerAddBattlerStatusListener::CreatureBattlerAddBattlerStatusListener(
-    gameentity::DataManager& datamanager)
+CreatureBattlerAddBattlerStatusListener::
+    CreatureBattlerAddBattlerStatusListener(
+        gameentity::DataManager& datamanager)
     : datamanager_(datamanager) {}
 
 void CreatureBattlerAddBattlerStatusListener::sortBattlerStatuses(

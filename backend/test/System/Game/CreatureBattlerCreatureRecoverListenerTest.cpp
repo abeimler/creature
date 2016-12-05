@@ -24,11 +24,14 @@ class CreatureBattlerCreatureRecoverSystemApplication
     : public gamesystem::Application {
     public:
     std::shared_ptr<RecoverEventListenerMockup> eventlistenermockup;
-    std::shared_ptr<gamesystem::CreatureBattlerCreatureRecoverListener> creatureBattlerCreatureRecoverListener;
+    std::shared_ptr<gamesystem::CreatureBattlerCreatureRecoverListener>
+        creatureBattlerCreatureRecoverListener;
 
     CreatureBattlerCreatureRecoverSystemApplication() {
-        this->eventlistenermockup = std::make_shared<RecoverEventListenerMockup>();
-        this->creatureBattlerCreatureRecoverListener = std::make_shared<gamesystem::CreatureBattlerCreatureRecoverListener>();
+        this->eventlistenermockup =
+            std::make_shared<RecoverEventListenerMockup>();
+        this->creatureBattlerCreatureRecoverListener = std::make_shared<
+            gamesystem::CreatureBattlerCreatureRecoverListener>();
 
         this->addListener(this->eventlistenermockup);
         this->addListener(this->creatureBattlerCreatureRecoverListener);
@@ -48,7 +51,8 @@ class CreatureBattlerCreatureRecoverSystemApplication
 
 
 
-SCENARIO("Creature Entity with low hp mp when emit recover-Event then heal hp mp") {
+SCENARIO(
+    "Creature Entity with low hp mp when emit recover-Event then heal hp mp") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
 

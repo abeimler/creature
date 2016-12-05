@@ -274,8 +274,7 @@ CreatureEntityCreator::createCallbackWaitTime(
                 +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
                 std::chrono::hours(8));
             setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
+                ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
                 std::chrono::hours(24 * 3));
             setCreatureGeneWaitTime(
                 ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
@@ -311,8 +310,7 @@ CreatureEntityCreator::createCallbackWaitTime(
                 +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
                 std::chrono::hours(12));
             setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
+                ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
                 std::chrono::hours(24 * 5));
             setCreatureGeneWaitTime(
                 ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
@@ -348,8 +346,7 @@ CreatureEntityCreator::createCallbackWaitTime(
                 +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
                 std::chrono::hours(20));
             setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
+                ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
                 std::chrono::hours(24 * 15));
             setCreatureGeneWaitTime(
                 ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
@@ -388,8 +385,7 @@ CreatureEntityCreator::createCallbackWaitTime(
                 +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
                 std::chrono::hours(28));
             setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
+                ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
                 std::chrono::hours(24 * 20));
             setCreatureGeneWaitTime(
                 ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
@@ -795,7 +791,7 @@ CreatureEntityCreator::createCreatureGene(const data::Creature& creature) {
     ret.cangosleep_at_tired = CANGOSLEEP_AT_TIRED;
     ret.max_poopstack = MAX_POOPSTACK;
     ret.ill_by_max_poopstack_rate = ILL_BY_MAXPOOPSTACK_RATE;
-    ret.poop_at_digestion_value = POOP_AT_DIGESTIONS_VALUE; 
+    ret.poop_at_digestion_value = POOP_AT_DIGESTIONS_VALUE;
 
     ret.totalmaxlifetime = min_totallifetime_;
 
@@ -904,12 +900,18 @@ CreatureEntityCreator::createCreatureGene(const data::Creature& creature) {
     perevolution_ultimate.training.cantrain_with_max_thirsty = 90;
 
     perevolution_egg.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
-    perevolution_baby.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
-    perevolution_baby2.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
-    perevolution_child.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
-    perevolution_adult.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
-    perevolution_perfect.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
-    perevolution_ultimate.training.cantrain_with_max_tired = ret.cangosleep_at_tired;
+    perevolution_baby.training.cantrain_with_max_tired =
+        ret.cangosleep_at_tired;
+    perevolution_baby2.training.cantrain_with_max_tired =
+        ret.cangosleep_at_tired;
+    perevolution_child.training.cantrain_with_max_tired =
+        ret.cangosleep_at_tired;
+    perevolution_adult.training.cantrain_with_max_tired =
+        ret.cangosleep_at_tired;
+    perevolution_perfect.training.cantrain_with_max_tired =
+        ret.cangosleep_at_tired;
+    perevolution_ultimate.training.cantrain_with_max_tired =
+        ret.cangosleep_at_tired;
 
 
     perevolution_egg.waittime.timer =

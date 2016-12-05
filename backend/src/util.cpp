@@ -65,12 +65,12 @@ std::mt19937 util::genseed(std::string seedstr) {
 
     int seed = 0;
 
-    for(size_t i = 0;i < seedstr.size();i+=2) {
-        auto character1 = (i < seedstr.size())? seedstr[i] : '\0';
-        auto character2 = (i+1 < seedstr.size())? seedstr[i+1] : '\0';
+    for (size_t i = 0; i < seedstr.size(); i += 2) {
+        auto character1 = (i < seedstr.size()) ? seedstr[i] : '\0';
+        auto character2 = (i + 1 < seedstr.size()) ? seedstr[i + 1] : '\0';
         int h = (character1 << 8) | character2;
         seed ^= h;
     }
 
-    return std::mt19937 (seed);
+    return std::mt19937(seed);
 }

@@ -20,19 +20,19 @@ class CreatureMakeDeadEventListenerMockup
     }
 };
 
-class CreatureDeadSystemApplication
-    : public gamesystem::Application {
+class CreatureDeadSystemApplication : public gamesystem::Application {
     public:
     std::shared_ptr<CreatureMakeDeadEventListenerMockup> eventlistenermockup;
-    std::shared_ptr<gamesystem::CreatureMakeDeadListener> creatureMakeDeadListener;
+    std::shared_ptr<gamesystem::CreatureMakeDeadListener>
+        creatureMakeDeadListener;
 
     CreatureDeadSystemApplication() {
         this->eventlistenermockup =
             std::make_shared<CreatureMakeDeadEventListenerMockup>();
 
         this->creatureMakeDeadListener =
-                std::make_shared<gamesystem::CreatureMakeDeadListener>();
-                
+            std::make_shared<gamesystem::CreatureMakeDeadListener>();
+
         this->addListener(this->eventlistenermockup);
         this->addListener(this->creatureMakeDeadListener);
     }
@@ -42,8 +42,8 @@ class CreatureDeadSystemApplication
 
 
 
-
-SCENARIO("Creature Entity emit dead-Event to make creature dead and pause lifetimer") {
+SCENARIO("Creature Entity emit dead-Event to make creature dead and pause "
+         "lifetimer") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
 
@@ -53,24 +53,30 @@ SCENARIO("Creature Entity emit dead-Event to make creature dead and pause lifeti
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        //auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+        // auto timers =
+        // entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto creature_battler =
+            entity.component<gamecomp::CreatureBattlerComponent>();
         auto life = entity.component<gamecomp::CreatureLifeComponent>();
 
         WHEN("emit dead-Event") {
-            app.emit_event<gameevent::CreatureMakeDeadEvent>(entity, gamecomp::CauseOfDeath::Unknown);
+            app.emit_event<gameevent::CreatureMakeDeadEvent>(
+                entity, gamecomp::CauseOfDeath::Unknown);
 
             AND_WHEN("update manager") {
                 app.update(app.FAKE_TIMEDELTA);
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("has zero hp") { CHECK(util::iszero(creature_battler->hp)); }
+                THEN("has zero hp") {
+                    CHECK(util::iszero(creature_battler->hp));
+                }
 
-                THEN("has zero mp") { CHECK(util::iszero(creature_battler->mp)); }
+                THEN("has zero mp") {
+                    CHECK(util::iszero(creature_battler->mp));
+                }
 
                 THEN("is dead") { CHECK(life->isdead); }
-
             }
         }
     }
@@ -87,21 +93,25 @@ SCENARIO("Creature Entity emit dead-Event to pause lifetimer") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        //auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
-        //auto life = entity.component<gamecomp::CreatureLifeComponent>();
+        auto timers =
+            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        // auto creature_battler =
+        // entity.component<gamecomp::CreatureBattlerComponent>();
+        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
 
         WHEN("emit dead-Event") {
-            app.emit_event<gameevent::CreatureMakeDeadEvent>(entity, gamecomp::CauseOfDeath::Unknown);
+            app.emit_event<gameevent::CreatureMakeDeadEvent>(
+                entity, gamecomp::CauseOfDeath::Unknown);
 
             AND_WHEN("update manager") {
                 app.update(app.FAKE_TIMEDELTA);
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("lifetimer is paused") { CHECK(timers->lifetimer.ispause); }
+                THEN("lifetimer is paused") {
+                    CHECK(timers->lifetimer.ispause);
+                }
             }
         }
     }
 }
-

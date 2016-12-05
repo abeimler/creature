@@ -24,11 +24,14 @@ class CreatureBattlerCreatureAddExpListenerApplication
     : public gamesystem::Application {
     public:
     std::shared_ptr<AddExpEventListenerMockup> eventlistenermockup;
-    std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpListener> creatureBattlerCreatureAddExpListener;
+    std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpListener>
+        creatureBattlerCreatureAddExpListener;
 
     CreatureBattlerCreatureAddExpListenerApplication() {
-        this->eventlistenermockup = std::make_shared<AddExpEventListenerMockup>();
-        this->creatureBattlerCreatureAddExpListener = std::make_shared<gamesystem::CreatureBattlerCreatureAddExpListener>();
+        this->eventlistenermockup =
+            std::make_shared<AddExpEventListenerMockup>();
+        this->creatureBattlerCreatureAddExpListener = std::make_shared<
+            gamesystem::CreatureBattlerCreatureAddExpListener>();
 
         this->addListener(this->eventlistenermockup);
         this->addListener(this->creatureBattlerCreatureAddExpListener);
@@ -102,8 +105,7 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
     }
 }
 
-SCENARIO(
-    "Creature Entity emit addExp-Event to has Attributes go up") {
+SCENARIO("Creature Entity emit addExp-Event to has Attributes go up") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
 
@@ -116,7 +118,7 @@ SCENARIO(
         auto creature_battler =
             entity.component<gamecomp::CreatureBattlerComponent>();
 
-        //int old_current_lvl = creatureTestData.LVL;
+        // int old_current_lvl = creatureTestData.LVL;
         int old_current_maxhp = creatureTestData.MAXHP;
         int old_current_maxmp = creatureTestData.MAXMP;
         int add_exp = creatureTestData.EXP;

@@ -81,9 +81,6 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
 
 
 
-
-
-
 TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
     gameentity::CreatureEntityCreator creaturecreator;
 
@@ -111,9 +108,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
 
         // CAPTURE(ideal_mass);
 
-        SUBCASE("got body mass") { 
-            CHECK(ideal_mass > 0.0f); 
-        }
+        SUBCASE("got body mass") { CHECK(ideal_mass > 0.0f); }
 
         gamecomp::CreatureGeneComponent gene;
         gene.bodymass = ideal_mass;
@@ -346,19 +341,17 @@ TEST_CASE("create Creature Entity with Creatue Data") {
 
 
 
-
-
 TEST_CASE("get Mass right from CreatureCreator with quite very big values") {
     gameentity::CreatureEntityCreator creaturecreator;
 
     // bodysize
     // double min_bodysize = 8.4f;
-    //double max_bodysize = 20.4;
+    // double max_bodysize = 20.4;
     double bodysize = 18.0;
 
     // body weight
     double min_weight = 16;
-    //double max_weight = 320;
+    // double max_weight = 320;
     double weight = 50;
 
     // bmi
@@ -372,8 +365,8 @@ TEST_CASE("get Mass right from CreatureCreator with quite very big values") {
 
         // CAPTURE(ideal_mass);
 
-        SUBCASE("got body mass") { 
-            CHECK(ideal_mass == doctest::Approx(0.24).epsilon(0.01)); 
+        SUBCASE("got body mass") {
+            CHECK(ideal_mass == doctest::Approx(0.24).epsilon(0.01));
         }
     }
 }
@@ -384,12 +377,12 @@ TEST_CASE("get Mass right from CreatureCreator with big values") {
 
     // bodysize
     // double min_bodysize = 4.1f;
-    //double max_bodysize = 10.2;
+    // double max_bodysize = 10.2;
     double bodysize = 8.0;
 
     // body weight
     double min_weight = 8;
-    //double max_weight = 160;
+    // double max_weight = 160;
     double weight = 30;
 
     // bmi
@@ -403,8 +396,8 @@ TEST_CASE("get Mass right from CreatureCreator with big values") {
 
         // CAPTURE(ideal_mass);
 
-        SUBCASE("got body mass") { 
-            CHECK(ideal_mass == doctest::Approx(6.25).epsilon(0.01)); 
+        SUBCASE("got body mass") {
+            CHECK(ideal_mass == doctest::Approx(6.25).epsilon(0.01));
         }
     }
 }
@@ -415,12 +408,12 @@ TEST_CASE("get Mass right from CreatureCreator with normal values") {
 
     // bodysize
     // double min_bodysize = 0.8f;
-    //double max_bodysize = 2.0;
+    // double max_bodysize = 2.0;
     double bodysize = 1.75;
 
     // body weight
     double min_weight = 6;
-    //double max_weight = 120;
+    // double max_weight = 120;
     double weight = 20;
 
     // bmi
@@ -434,8 +427,8 @@ TEST_CASE("get Mass right from CreatureCreator with normal values") {
 
         // CAPTURE(ideal_mass);
 
-        SUBCASE("got body mass") { 
-            CHECK(ideal_mass == doctest::Approx(20.79).epsilon(0.01)); 
+        SUBCASE("got body mass") {
+            CHECK(ideal_mass == doctest::Approx(20.79).epsilon(0.01));
         }
     }
 }
@@ -446,12 +439,12 @@ TEST_CASE("get Mass right from CreatureCreator with small values") {
 
     // bodysize
     // double min_bodysize = 0.6f;
-    //double max_bodysize = 1.5;
+    // double max_bodysize = 1.5;
     double bodysize = 1.0;
 
     // body weight
     double min_weight = 4;
-    //double max_weight = 80;
+    // double max_weight = 80;
     double weight = 10;
 
     // bmi
@@ -465,8 +458,8 @@ TEST_CASE("get Mass right from CreatureCreator with small values") {
 
         // CAPTURE(ideal_mass);
 
-        SUBCASE("got body mass") { 
-            CHECK(ideal_mass == doctest::Approx(36.51).epsilon(0.01)); 
+        SUBCASE("got body mass") {
+            CHECK(ideal_mass == doctest::Approx(36.51).epsilon(0.01));
         }
     }
 }
@@ -476,12 +469,12 @@ TEST_CASE("get Mass right from CreatureCreator with very small values") {
 
     // bodysize
     // double min_bodysize = 0.14f;
-    //double max_bodysize = 0.34;
+    // double max_bodysize = 0.34;
     double bodysize = 0.30;
 
     // body weight
     double min_weight = 2;
-    //double max_weight = 40;
+    // double max_weight = 40;
     double weight = 5;
 
     // bmi
@@ -495,8 +488,8 @@ TEST_CASE("get Mass right from CreatureCreator with very small values") {
 
         // CAPTURE(ideal_mass);
 
-        SUBCASE("got body mass") { 
-            CHECK(ideal_mass == doctest::Approx(80.51).epsilon(0.01)); 
+        SUBCASE("got body mass") {
+            CHECK(ideal_mass == doctest::Approx(80.51).epsilon(0.01));
         }
     }
 }
@@ -507,12 +500,12 @@ TEST_CASE("get Mass right from CreatureCreator with max values") {
 
     // bodysize
     // double min_bodysize = 8.4f;
-    //double max_bodysize = 20.4;
+    // double max_bodysize = 20.4;
     double bodysize = 20.4;
 
     // body weight
     double min_weight = 16;
-    //double max_weight = 320;
+    // double max_weight = 320;
     double weight = 320;
 
     // bmi
@@ -526,9 +519,7 @@ TEST_CASE("get Mass right from CreatureCreator with max values") {
 
         // CAPTURE(ideal_mass);
 
-        SUBCASE("got body mass") { 
-            CHECK(ideal_mass >= 0.01); 
-        }
+        SUBCASE("got body mass") { CHECK(ideal_mass >= 0.01); }
     }
 }
 
@@ -537,12 +528,12 @@ TEST_CASE("get Mass right from CreatureCreator with very min values") {
 
     // bodysize
     // double min_bodysize = 0.21f;
-    //double max_bodysize = 0.51;
+    // double max_bodysize = 0.51;
     double bodysize = 0.21;
 
     // body weight
     double min_weight = 2;
-    //double max_weight = 40;
+    // double max_weight = 40;
     double weight = 2;
 
     // bmi
@@ -556,8 +547,6 @@ TEST_CASE("get Mass right from CreatureCreator with very min values") {
 
         // CAPTURE(ideal_mass);
 
-        SUBCASE("got body mass") { 
-            CHECK(ideal_mass <= 100); 
-        }
+        SUBCASE("got body mass") { CHECK(ideal_mass <= 100); }
     }
 }

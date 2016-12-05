@@ -44,9 +44,8 @@ void CreatureDoNotingSystem::updateDoNothing(
 }
 
 
-void CreatureDoNotingSystem::update(
-    EntityManager& entities,
-    EventBus& events, TimeDelta /*dt*/) {
+void CreatureDoNotingSystem::update(EntityManager& entities, EventBus& events,
+                                    TimeDelta /*dt*/) {
     Component<gamecomp::CreatureProgressTimersComponent> timers;
     Component<gamecomp::CreatureLifeComponent> life;
 

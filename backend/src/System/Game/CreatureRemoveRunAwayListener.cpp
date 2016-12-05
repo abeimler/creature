@@ -14,7 +14,7 @@ void CreatureRemoveRunAwayListener::removeCreaturerRunAway(
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway);
 
 
-    if(isrunaway){
+    if (isrunaway) {
         emit_event<gameevent::CreatureRemoveStatusEvent>(
             events, entity, +data::CreatureStatus::RunAway);
         life.causeofrunaway = gamecomp::CauseOfRunAway::NotRunAway;

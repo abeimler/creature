@@ -142,7 +142,8 @@ void CreatureSystem::updateLifeAttribute(
 
     life.creaturelevel = creature.getCreatureLevel();
 
-    auto& gene_perevolution = earr::enum_array_at(gene.perevolution, life.creaturelevel);
+    auto& gene_perevolution =
+        earr::enum_array_at(gene.perevolution, life.creaturelevel);
     auto& gene_training = gene_perevolution.training;
 
 
