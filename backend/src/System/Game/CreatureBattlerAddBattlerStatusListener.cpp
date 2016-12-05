@@ -1,13 +1,13 @@
-#include "System/Game/CreatureBattlerAddBattlerStatusSystem.h"
+#include "System/Game/CreatureBattlerAddBattlerStatusListener.h"
 
 namespace gamesystem {
 
 
-CreatureBattlerAddBattlerStatusSystem::CreatureBattlerAddBattlerStatusSystem(
+CreatureBattlerAddBattlerStatusListener::CreatureBattlerAddBattlerStatusListener(
     gameentity::DataManager& datamanager)
     : datamanager_(datamanager) {}
 
-void CreatureBattlerAddBattlerStatusSystem::sortBattlerStatuses(
+void CreatureBattlerAddBattlerStatusListener::sortBattlerStatuses(
     std::vector<std::string>& statuses_name) {
     auto sort_func = [&](const std::string& a, const std::string& b) {
         auto status_a = this->datamanager_.findCreatureBattlerStatus(a);
@@ -23,7 +23,7 @@ void CreatureBattlerAddBattlerStatusSystem::sortBattlerStatuses(
     std::sort(std::begin(statuses_name), std::end(statuses_name), sort_func);
 }
 
-void CreatureBattlerAddBattlerStatusSystem::update(
+void CreatureBattlerAddBattlerStatusListener::update(
     const gameevent::CreatureAddBattlerStatusEvent& event,
     EntityManager& entities, EventBus& events, TimeDelta /*dt*/) {
     Component<gamecomp::BattlerStatusesComponent> battlerstatuses;

@@ -1,5 +1,5 @@
-#ifndef SYSTEM_GAME_CREATUREBATTLERCREATURERECOVERSYSTEM_H_
-#define SYSTEM_GAME_CREATUREBATTLERCREATURERECOVERSYSTEM_H_
+#ifndef SYSTEM_GAME_CREATUREBATTLERCREATURERECOVERLISTENER_H_
+#define SYSTEM_GAME_CREATUREBATTLERCREATURERECOVERLISTENER_H_
 
 
 #include "basic.h"
@@ -13,10 +13,12 @@
 namespace gamesystem {
 
 
-class CreatureBattlerCreatureRecoverSystem
+class CreatureBattlerCreatureRecoverListener
     : public Listener<gameevent::CreatureRecoverEvent> {
     public:
-    CreatureBattlerCreatureRecoverSystem() = default;
+    CreatureBattlerCreatureRecoverListener() = default;
+
+    void recover(gamecomp::CreatureBattlerComponent& creature_battler);
 
     void update(const gameevent::CreatureRecoverEvent& event,
                 EntityManager& entities, EventBus& events,
@@ -26,4 +28,4 @@ class CreatureBattlerCreatureRecoverSystem
 
 } // namespace gamesystem
 
-#endif // SYSTEM_GAME_CREATUREBATTLERCREATURERECOVERSYSTEM_H_
+#endif // SYSTEM_GAME_CREATUREBATTLERCREATURERECOVERLISTENER_H_

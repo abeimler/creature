@@ -1,12 +1,12 @@
-#include "System/Game/CreatureMakeRunAwaySystem.h"
+#include "System/Game/CreatureMakeRunAwayListener.h"
 
 namespace gamesystem {
 
 
-CreatureMakeRunAwaySystem::CreatureMakeRunAwaySystem() {}
+CreatureMakeRunAwayListener::CreatureMakeRunAwayListener() {}
 
 
-void CreatureMakeRunAwaySystem::makeCreaturerRunAway(
+void CreatureMakeRunAwayListener::makeCreaturerRunAway(
     EventBus& events, Entity entity,
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureLifeComponent& life,
@@ -32,7 +32,7 @@ void CreatureMakeRunAwaySystem::makeCreaturerRunAway(
     }
 }
 
-void CreatureMakeRunAwaySystem::update(
+void CreatureMakeRunAwayListener::update(
     const gameevent::CreatureMakeRunAwayEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
     Component<gamecomp::CreatureProgressTimersComponent> timers;

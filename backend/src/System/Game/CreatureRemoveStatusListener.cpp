@@ -1,14 +1,14 @@
-#include "System/Game/CreatureRemoveStatusSystem.h"
+#include "System/Game/CreatureRemoveStatusListener.h"
 
 namespace gamesystem {
 
 
-CreatureRemoveStatusSystem::CreatureRemoveStatusSystem(
+CreatureRemoveStatusListener::CreatureRemoveStatusListener(
     gameentity::DataManager& datamanager)
     : datamanager_(datamanager) {}
 
 
-void CreatureRemoveStatusSystem::removeCreatureStatus(
+void CreatureRemoveStatusListener::removeCreatureStatus(
     EventBus& events, Entity entity,
     gamecomp::BattlerStatusesComponent& battlerstatuses,
     gamecomp::CreatureBodilyStateComponent& bodilystate,
@@ -23,7 +23,7 @@ void CreatureRemoveStatusSystem::removeCreatureStatus(
     }
 }
 
-void CreatureRemoveStatusSystem::update(
+void CreatureRemoveStatusListener::update(
     const gameevent::CreatureRemoveStatusEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
     Component<gamecomp::BattlerStatusesComponent> battlerstatuses;

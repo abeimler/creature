@@ -1,19 +1,17 @@
-#include "System/Game/CreatureDeadSystem.h"
+#include "System/Game/CreatureMakeDeadListener.h"
 
 namespace gamesystem {
 
 
-CreatureDeadSystem::CreatureDeadSystem() {}
+CreatureMakeDeadListener::CreatureMakeDeadListener() {}
 
 
-void CreatureDeadSystem::makeCreatureDead(
+void CreatureMakeDeadListener::makeCreatureDead(
     EventBus& events, Entity entity,
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureLifeComponent& life,
     gamecomp::CreatureBattlerComponent& creature_battler,
     gamecomp::CauseOfDeath causeofdeath) {
-
-    std::cout << "make dead" << '\n';
 
     if (!life.isdead &&
         !earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Dead)) {
@@ -40,7 +38,7 @@ void CreatureDeadSystem::makeCreatureDead(
 }
 
 
-void CreatureDeadSystem::update(const gameevent::CreatureMakeDeadEvent& event,
+void CreatureMakeDeadListener::update(const gameevent::CreatureMakeDeadEvent& event,
                                 EntityManager& entities, EventBus& events,
                                 TimeDelta /*dt*/) {
     Component<gamecomp::CreatureProgressTimersComponent> timers;

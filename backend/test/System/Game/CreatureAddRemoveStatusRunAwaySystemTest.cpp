@@ -4,13 +4,13 @@
 
 #include "System/Game/MakeCreatureHelper.h"
 
-#include "System/Game/CreatureAddStatusSystem.h"
-#include "System/Game/CreatureBattlerAddBattlerStatusSystem.h"
-#include "System/Game/CreatureBattlerRemoveBattlerStatusSystem.h"
-#include "System/Game/CreatureRemoveStatusSystem.h"
+#include "System/Game/CreatureAddStatusListener.h"
+#include "System/Game/CreatureBattlerAddBattlerStatusListener.h"
+#include "System/Game/CreatureBattlerRemoveBattlerStatusListener.h"
+#include "System/Game/CreatureRemoveStatusListener.h"
 #include "System/Game/CreatureSystem.h"
-#include "System/Game/CreatureMakeRunAwaySystem.h"
-#include "System/Game/CreatureRemoveRunAwaySystem.h"
+#include "System/Game/CreatureMakeRunAwayListener.h"
+#include "System/Game/CreatureRemoveRunAwayListener.h"
 
 
 class CreatureAddRemoveStatusRunAwaySystemApplication : public gamesystem::Application {
@@ -99,43 +99,46 @@ class CreatureAddRemoveStatusRunAwaySystemApplication : public gamesystem::Appli
 
     gameentity::DataManager datamanager;
 
-    std::shared_ptr<gamesystem::CreatureAddStatusSystem> creatureAddStatusSystem;
-    std::shared_ptr<gamesystem::CreatureRemoveStatusSystem> creatureRemoveStatusSystem;
-    std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusSystem> creatureBattlerAddBattlerStatusSystem;
-    std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusSystem> creatureBattlerRemoveBattlerStatusSystem;
+    std::shared_ptr<gamesystem::CreatureAddStatusListener> creatureAddStatusListener;
+    std::shared_ptr<gamesystem::CreatureRemoveStatusListener> creatureRemoveStatusListener;
+    std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusListener> creatureBattlerAddBattlerStatusListener;
+    std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusListener> creatureBattlerRemoveBattlerStatusListener;
+    
     std::shared_ptr<gamesystem::CreatureSystem> creatureSystem;
-    std::shared_ptr<gamesystem::CreatureMakeRunAwaySystem> creatureMakeRunAwaySystem;
-    std::shared_ptr<gamesystem::CreatureRemoveRunAwaySystem> creatureRemoveRunAwaySystem;
+    std::shared_ptr<gamesystem::CreatureMakeRunAwayListener> creatureMakeRunAwayListener;
+    std::shared_ptr<gamesystem::CreatureRemoveRunAwayListener> creatureRemoveRunAwayListener;
 
     CreatureAddRemoveStatusRunAwaySystemApplication() {
         init_DataManager_AllCreatureStatuses(datamanager);
 
-        this->creatureAddStatusSystem =
-            std::make_shared<gamesystem::CreatureAddStatusSystem>(
+        this->creatureAddStatusListener =
+            std::make_shared<gamesystem::CreatureAddStatusListener>(
                 this->datamanager);
-        this->creatureRemoveStatusSystem =
-            std::make_shared<gamesystem::CreatureRemoveStatusSystem>(
+        this->creatureRemoveStatusListener =
+            std::make_shared<gamesystem::CreatureRemoveStatusListener>(
                 this->datamanager);
-        this->creatureBattlerAddBattlerStatusSystem =
-            std::make_shared<gamesystem::CreatureBattlerAddBattlerStatusSystem>(
+        this->creatureBattlerAddBattlerStatusListener =
+            std::make_shared<gamesystem::CreatureBattlerAddBattlerStatusListener>(
                 this->datamanager);
-        this->creatureBattlerRemoveBattlerStatusSystem =
-            std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusSystem>(
+        this->creatureBattlerRemoveBattlerStatusListener =
+            std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusListener>(
                 this->datamanager);
+
         this->creatureSystem =
             std::make_shared<gamesystem::CreatureSystem>(
                 this->datamanager);
-        this->creatureMakeRunAwaySystem =
-            std::make_shared<gamesystem::CreatureMakeRunAwaySystem>();
-        this->creatureRemoveRunAwaySystem =
-            std::make_shared<gamesystem::CreatureRemoveRunAwaySystem>();
 
-        this->addListener<gameevent::CreatureMakeRunAwayEvent>(this->creatureMakeRunAwaySystem);
-        this->addListener<gameevent::CreatureRemoveRunAwayEvent>(this->creatureRemoveRunAwaySystem);
-        this->addListener<gameevent::CreatureAddStatusEvent>(this->creatureAddStatusSystem);
-        this->addListener<gameevent::CreatureRemoveStatusEvent>(this->creatureRemoveStatusSystem);
-        this->addListener<gameevent::CreatureAddBattlerStatusEvent>(this->creatureBattlerAddBattlerStatusSystem);
-        this->addListener<gameevent::CreatureRemoveBattlerStatusEvent>(this->creatureBattlerRemoveBattlerStatusSystem);
+        this->creatureMakeRunAwayListener =
+            std::make_shared<gamesystem::CreatureMakeRunAwayListener>();
+        this->creatureRemoveRunAwayListener =
+            std::make_shared<gamesystem::CreatureRemoveRunAwayListener>();
+
+        this->addListener(this->creatureMakeRunAwayListener);
+        this->addListener(this->creatureRemoveRunAwayListener);
+        this->addListener(this->creatureAddStatusListener);
+        this->addListener(this->creatureRemoveStatusListener);
+        this->addListener(this->creatureBattlerAddBattlerStatusListener);
+        this->addListener(this->creatureBattlerRemoveBattlerStatusListener);
         this->addSystem(this->creatureSystem);
     }
 

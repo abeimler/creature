@@ -128,16 +128,12 @@ class CreatureProgressTimerSystemApplication : public gamesystem::Application {
 
     CreatureProgressTimerSystemApplication() {
         this->addSystem(this->creatureProgressTimerSystem);
-        this->addListener<gameevent::ProgressTimerCallbackEvent>(
-            this->callback_eventlistenermockup);
-        this->addListener<gameevent::ProgressTimerIncrementEvent>(
-            this->increment_eventlistenermockup);
-        this->addListener<gameevent::ProgressTimerStarvationPhaseEvent>(
-            this->starvation_eventlistenermockup);
-        this->addListener<gameevent::ProgressTimerShortTermMemoryEvent>(
-            this->shortmemory_eventlistenermockup);
-        this->addListener<gameevent::ProgressTimerMediumTermMemoryEvent>(
-            this->mediummemory_eventlistenermockup);
+
+        this->addListener(this->callback_eventlistenermockup);
+        this->addListener(this->increment_eventlistenermockup);
+        this->addListener(this->starvation_eventlistenermockup);
+        this->addListener(this->shortmemory_eventlistenermockup);
+        this->addListener(this->mediummemory_eventlistenermockup);
     }
 
 

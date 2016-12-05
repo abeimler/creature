@@ -1,5 +1,5 @@
-#ifndef SYSTEM_GAME_CREATUREDIGESTIONCALLBACKSYSTEM_H_
-#define SYSTEM_GAME_CREATUREDIGESTIONCALLBACKSYSTEM_H_
+#ifndef SYSTEM_GAME_CREATUREDIGESTIONCALLBACKLISTENER_H_
+#define SYSTEM_GAME_CREATUREDIGESTIONCALLBACKLISTENER_H_
 
 #include "basic.h"
 
@@ -13,7 +13,7 @@ namespace gamesystem {
 
 
 
-class CreatureDigestionCallbackSystem : public Listener<gameevent::ProgressTimerCallbackEvent> {
+class CreatureDigestionCallbackListener : public Listener<gameevent::ProgressTimerCallbackEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
@@ -27,7 +27,7 @@ class CreatureDigestionCallbackSystem : public Listener<gameevent::ProgressTimer
     static constexpr data::disc_t UNDISC_BY_MAXPOOPSTACK = 5.0;
     static constexpr gamecomp::progresstimer_percent_t PAUSE_DIGESTION_BY_HUNGRY_OVERLAYVALUE = 200.0;
 
-    CreatureDigestionCallbackSystem();
+    CreatureDigestionCallbackListener();
 
     void makePoop(EventBus& events, Entity entity,
                     gamecomp::CreatureProgressTimersComponent& timers,
@@ -58,4 +58,4 @@ class CreatureDigestionCallbackSystem : public Listener<gameevent::ProgressTimer
 };
 } // namespace gamesystem
 
-#endif // SYSTEM_GAME_CREATUREDIGESTIONCALLBACKSYSTEM_H_
+#endif // SYSTEM_GAME_CREATUREDIGESTIONCALLBACKLISTENER_H_

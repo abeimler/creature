@@ -7,7 +7,7 @@
 #include "System/Game/MakeCreatureHelper.h"
 
 #include "System/Game/CreatureDigestionSystem.h"
-#include "System/Game/CreatureDigestionCallbackSystem.h"
+#include "System/Game/CreatureDigestionCallbackListener.h"
 #include "System/Game/CreatureProgressTimerSystem.h"
 
 
@@ -17,19 +17,19 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
     public:
 
     std::shared_ptr<gamesystem::CreatureProgressTimerSystem> creatureProgressTimerSystem;
-    std::shared_ptr<gamesystem::CreatureDigestionCallbackSystem> creatureDigestionCallbackSystem;
+    std::shared_ptr<gamesystem::CreatureDigestionCallbackListener> creatureDigestionCallbackListener;
     std::shared_ptr<gamesystem::CreatureDigestionSystem> creatureDigestionSystem;
 
     CreatureDigestionSystemApplication() {
         this->creatureProgressTimerSystem =
                 std::make_shared<gamesystem::CreatureProgressTimerSystem>();
-        this->creatureDigestionCallbackSystem =
-            std::make_shared<gamesystem::CreatureDigestionCallbackSystem>();
+        this->creatureDigestionCallbackListener =
+            std::make_shared<gamesystem::CreatureDigestionCallbackListener>();
         this->creatureDigestionSystem =
             std::make_shared<gamesystem::CreatureDigestionSystem>();
 
         this->addSystem(this->creatureProgressTimerSystem);
-        this->addListener<gameevent::ProgressTimerCallbackEvent>(this->creatureDigestionCallbackSystem);
+        this->addListener(this->creatureDigestionCallbackListener);
         this->addSystem(this->creatureDigestionSystem);
     }
 
@@ -130,7 +130,7 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
 
         hungry_progresstimer.value = 100.0f;
         hungry_progresstimer.isfull = true;
-        hungry_progresstimer.overlayvalue = gamesystem::CreatureDigestionCallbackSystem::PAUSE_DIGESTION_BY_HUNGRY_OVERLAYVALUE;
+        hungry_progresstimer.overlayvalue = gamesystem::CreatureDigestionCallbackListener::PAUSE_DIGESTION_BY_HUNGRY_OVERLAYVALUE;
     }
 
     void

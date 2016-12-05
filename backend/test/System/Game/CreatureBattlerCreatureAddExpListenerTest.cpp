@@ -4,7 +4,7 @@
 
 #include "System/Game/MakeCreatureHelper.h"
 
-#include "System/Game/CreatureBattlerCreatureAddExpSystem.h"
+#include "System/Game/CreatureBattlerCreatureAddExpListener.h"
 
 class AddExpEventListenerMockup
     : public gamesystem::Listener<gameevent::CreatureAddExpEvent> {
@@ -20,21 +20,18 @@ class AddExpEventListenerMockup
     }
 };
 
-class CreatureBattlerCreatureAddExpSystemApplication
+class CreatureBattlerCreatureAddExpListenerApplication
     : public gamesystem::Application {
     public:
-    std::shared_ptr<AddExpEventListenerMockup> eventlistenermockup =
-        std::make_shared<AddExpEventListenerMockup>();
+    std::shared_ptr<AddExpEventListenerMockup> eventlistenermockup;
+    std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpListener> creatureBattlerCreatureAddExpListener;
 
-    std::shared_ptr<gamesystem::CreatureBattlerCreatureAddExpSystem>
-        creatureBattlerCreatureAddExpSystem =
-            std::make_shared<gamesystem::CreatureBattlerCreatureAddExpSystem>();
+    CreatureBattlerCreatureAddExpListenerApplication() {
+        this->eventlistenermockup = std::make_shared<AddExpEventListenerMockup>();
+        this->creatureBattlerCreatureAddExpListener = std::make_shared<gamesystem::CreatureBattlerCreatureAddExpListener>();
 
-    CreatureBattlerCreatureAddExpSystemApplication() {
-        this->addListener<gameevent::CreatureAddExpEvent>(
-            this->eventlistenermockup);
-        this->addListener<gameevent::CreatureAddExpEvent>(
-            this->creatureBattlerCreatureAddExpSystem);
+        this->addListener(this->eventlistenermockup);
+        this->addListener(this->creatureBattlerCreatureAddExpListener);
     }
 
     static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
@@ -46,7 +43,7 @@ SCENARIO("Creature Entity emit addExp-Event to gain exp") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
 
-        CreatureBattlerCreatureAddExpSystemApplication app;
+        CreatureBattlerCreatureAddExpListenerApplication app;
         auto& entities = app.getEntityManager();
 
         // auto time = creatureTestData.make_time_point_01_01_2000();
@@ -75,7 +72,7 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
 
-        CreatureBattlerCreatureAddExpSystemApplication app;
+        CreatureBattlerCreatureAddExpListenerApplication app;
         auto& entities = app.getEntityManager();
 
         // auto time = creatureTestData.make_time_point_01_01_2000();
@@ -110,7 +107,7 @@ SCENARIO(
     GIVEN("Creature Entity") {
         CreatureTestData creatureTestData;
 
-        CreatureBattlerCreatureAddExpSystemApplication app;
+        CreatureBattlerCreatureAddExpListenerApplication app;
         auto& entities = app.getEntityManager();
 
         // auto time = creatureTestData.make_time_point_01_01_2000();
@@ -119,7 +116,7 @@ SCENARIO(
         auto creature_battler =
             entity.component<gamecomp::CreatureBattlerComponent>();
 
-        int old_current_lvl = creatureTestData.LVL;
+        //int old_current_lvl = creatureTestData.LVL;
         int old_current_maxhp = creatureTestData.MAXHP;
         int old_current_maxmp = creatureTestData.MAXMP;
         int add_exp = creatureTestData.EXP;

@@ -6,10 +6,10 @@
 
 #include "System/Game/MakeCreatureHelper.h"
 
-#include "System/Game/CreatureAddStatusSystem.h"
-#include "System/Game/CreatureBattlerAddBattlerStatusSystem.h"
-#include "System/Game/CreatureBattlerRemoveBattlerStatusSystem.h"
-#include "System/Game/CreatureRemoveStatusSystem.h"
+#include "System/Game/CreatureAddStatusListener.h"
+#include "System/Game/CreatureBattlerAddBattlerStatusListener.h"
+#include "System/Game/CreatureBattlerRemoveBattlerStatusListener.h"
+#include "System/Game/CreatureRemoveStatusListener.h"
 #include "System/Game/CreatureSystem.h"
 #include "System/Game/CreatureBattlerSystem.h"
 #include "System/Game/CreatureProgressTimerSystem.h"
@@ -100,10 +100,10 @@ class CreatureAddRemoveStatusBattlerCreatureSystemApplication : public gamesyste
 
     gameentity::DataManager datamanager;
 
-    std::shared_ptr<gamesystem::CreatureAddStatusSystem> creatureAddStatusSystem;
-    std::shared_ptr<gamesystem::CreatureRemoveStatusSystem> creatureRemoveStatusSystem;
-    std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusSystem> creatureBattlerAddBattlerStatusSystem;
-    std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusSystem> creatureBattlerRemoveBattlerStatusSystem;
+    std::shared_ptr<gamesystem::CreatureAddStatusListener> creatureAddStatusListener;
+    std::shared_ptr<gamesystem::CreatureRemoveStatusListener> creatureRemoveStatusListener;
+    std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusListener> creatureBattlerAddBattlerStatusListener;
+    std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusListener> creatureBattlerRemoveBattlerStatusListener;
     std::shared_ptr<gamesystem::CreatureBattlerSystem> creatureBattlerSystem;
     std::shared_ptr<gamesystem::CreatureProgressTimerSystem> creatureProgressTimerSystem;
     std::shared_ptr<gamesystem::CreatureSystem> creatureSystem;
@@ -111,18 +111,19 @@ class CreatureAddRemoveStatusBattlerCreatureSystemApplication : public gamesyste
     CreatureAddRemoveStatusBattlerCreatureSystemApplication() {
         init_DataManager_AllCreatureStatuses(datamanager);
 
-        this->creatureAddStatusSystem =
-            std::make_shared<gamesystem::CreatureAddStatusSystem>(
+        this->creatureAddStatusListener =
+            std::make_shared<gamesystem::CreatureAddStatusListener>(
                 this->datamanager);
-        this->creatureRemoveStatusSystem =
-            std::make_shared<gamesystem::CreatureRemoveStatusSystem>(
+        this->creatureRemoveStatusListener =
+            std::make_shared<gamesystem::CreatureRemoveStatusListener>(
                 this->datamanager);
-        this->creatureBattlerAddBattlerStatusSystem =
-            std::make_shared<gamesystem::CreatureBattlerAddBattlerStatusSystem>(
+        this->creatureBattlerAddBattlerStatusListener =
+            std::make_shared<gamesystem::CreatureBattlerAddBattlerStatusListener>(
                 this->datamanager);
-        this->creatureBattlerRemoveBattlerStatusSystem =
-            std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusSystem>(
+        this->creatureBattlerRemoveBattlerStatusListener =
+            std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusListener>(
                 this->datamanager);
+
         this->creatureProgressTimerSystem =
                 std::make_shared<gamesystem::CreatureProgressTimerSystem>();
         this->creatureSystem =
@@ -132,10 +133,10 @@ class CreatureAddRemoveStatusBattlerCreatureSystemApplication : public gamesyste
             std::make_shared<gamesystem::CreatureBattlerSystem>(
                 this->datamanager);
 
-        this->addListener<gameevent::CreatureAddStatusEvent>(this->creatureAddStatusSystem);
-        this->addListener<gameevent::CreatureRemoveStatusEvent>(this->creatureRemoveStatusSystem);
-        this->addListener<gameevent::CreatureAddBattlerStatusEvent>(this->creatureBattlerAddBattlerStatusSystem);
-        this->addListener<gameevent::CreatureRemoveBattlerStatusEvent>(this->creatureBattlerRemoveBattlerStatusSystem);
+        this->addListener(this->creatureAddStatusListener);
+        this->addListener(this->creatureRemoveStatusListener);
+        this->addListener(this->creatureBattlerAddBattlerStatusListener);
+        this->addListener(this->creatureBattlerRemoveBattlerStatusListener);
         
         this->addSystem(this->creatureBattlerSystem);
         this->addSystem(this->creatureProgressTimerSystem);

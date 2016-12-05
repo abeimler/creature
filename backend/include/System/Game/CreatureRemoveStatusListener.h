@@ -1,5 +1,5 @@
-#ifndef SYSTEM_GAME_CREATUREREMOVESTATUSSYSTEM_H_
-#define SYSTEM_GAME_CREATUREREMOVESTATUSSYSTEM_H_
+#ifndef SYSTEM_GAME_CREATUREREMOVESTATUSLISTENER_H_
+#define SYSTEM_GAME_CREATUREREMOVESTATUSLISTENER_H_
 
 #include "basic.h"
 
@@ -13,7 +13,7 @@ namespace gamesystem {
 
 
 
-class CreatureRemoveStatusSystem : public Listener<gameevent::CreatureRemoveStatusEvent> {
+class CreatureRemoveStatusListener : public Listener<gameevent::CreatureRemoveStatusEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
@@ -23,7 +23,7 @@ class CreatureRemoveStatusSystem : public Listener<gameevent::CreatureRemoveStat
 
     public:
 
-    CreatureRemoveStatusSystem(gameentity::DataManager& datamanager_);
+    CreatureRemoveStatusListener(gameentity::DataManager& datamanager_);
 
     void removeCreatureStatus(EventBus& events, Entity entity,
                               gamecomp::BattlerStatusesComponent& battlerstatuses,
@@ -37,4 +37,4 @@ class CreatureRemoveStatusSystem : public Listener<gameevent::CreatureRemoveStat
 };
 } // namespace gamesystem
 
-#endif // SYSTEM_GAME_CREATUREREMOVESTATUSSYSTEM_H_
+#endif // SYSTEM_GAME_CREATUREREMOVESTATUSLISTENER_H_

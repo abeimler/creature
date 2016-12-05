@@ -1,14 +1,14 @@
-#include "System/Game/CreatureBattlerRemoveBattlerStatusSystem.h"
+#include "System/Game/CreatureBattlerRemoveBattlerStatusListener.h"
 
 namespace gamesystem {
 
 
-CreatureBattlerRemoveBattlerStatusSystem::
-    CreatureBattlerRemoveBattlerStatusSystem(
+CreatureBattlerRemoveBattlerStatusListener::
+    CreatureBattlerRemoveBattlerStatusListener(
         gameentity::DataManager& datamanager)
     : datamanager_(datamanager) {}
 
-void CreatureBattlerRemoveBattlerStatusSystem::sortBattlerStatuses(
+void CreatureBattlerRemoveBattlerStatusListener::sortBattlerStatuses(
     std::vector<std::string>& statuses_name) {
     auto sort_func = [&](const std::string& a, const std::string& b) {
         auto status_a = this->datamanager_.findCreatureBattlerStatus(a);
@@ -24,7 +24,7 @@ void CreatureBattlerRemoveBattlerStatusSystem::sortBattlerStatuses(
     std::sort(std::begin(statuses_name), std::end(statuses_name), sort_func);
 }
 
-void CreatureBattlerRemoveBattlerStatusSystem::removeBattlerStatus(
+void CreatureBattlerRemoveBattlerStatusListener::removeBattlerStatus(
     const gameevent::CreatureRemoveBattlerStatusEvent& event,
     Component<gamecomp::BattlerStatusesComponent>& battlerstatuses) {
     const data::BattlerStatus& removestatus = event.removestatus;
@@ -39,7 +39,7 @@ void CreatureBattlerRemoveBattlerStatusSystem::removeBattlerStatus(
     }
 }
 
-void CreatureBattlerRemoveBattlerStatusSystem::removeStartBattlerStatusTurn(
+void CreatureBattlerRemoveBattlerStatusListener::removeStartBattlerStatusTurn(
     const gameevent::CreatureRemoveBattlerStatusEvent& event,
     Component<gamecomp::BattlerStatusesComponent>& battlerstatuses) {
     const data::BattlerStatus& removestatus = event.removestatus;
@@ -58,7 +58,7 @@ void CreatureBattlerRemoveBattlerStatusSystem::removeStartBattlerStatusTurn(
         std::end(battlerstatuses->startstatusturns));
 }
 
-void CreatureBattlerRemoveBattlerStatusSystem::update(
+void CreatureBattlerRemoveBattlerStatusListener::update(
     const gameevent::CreatureRemoveBattlerStatusEvent& event,
     EntityManager& entities, EventBus& /*events*/, TimeDelta /*dt*/) {
     Component<gamecomp::BattlerStatusesComponent> battlerstatuses;

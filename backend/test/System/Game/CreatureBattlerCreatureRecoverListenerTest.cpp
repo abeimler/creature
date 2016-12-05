@@ -4,7 +4,7 @@
 
 #include "System/Game/MakeCreatureHelper.h"
 
-#include "System/Game/CreatureBattlerCreatureRecoverSystem.h"
+#include "System/Game/CreatureBattlerCreatureRecoverListener.h"
 
 class RecoverEventListenerMockup
     : public gamesystem::Listener<gameevent::CreatureRecoverEvent> {
@@ -23,19 +23,15 @@ class RecoverEventListenerMockup
 class CreatureBattlerCreatureRecoverSystemApplication
     : public gamesystem::Application {
     public:
-    std::shared_ptr<RecoverEventListenerMockup> eventlistenermockup =
-        std::make_shared<RecoverEventListenerMockup>();
-
-    std::shared_ptr<gamesystem::CreatureBattlerCreatureRecoverSystem>
-        creatureBattlerCreatureRecoverSystem = std::make_shared<
-            gamesystem::CreatureBattlerCreatureRecoverSystem>();
+    std::shared_ptr<RecoverEventListenerMockup> eventlistenermockup;
+    std::shared_ptr<gamesystem::CreatureBattlerCreatureRecoverListener> creatureBattlerCreatureRecoverListener;
 
     CreatureBattlerCreatureRecoverSystemApplication() {
-        this->addListener<gameevent::CreatureRecoverEvent>(
-            this->eventlistenermockup);
+        this->eventlistenermockup = std::make_shared<RecoverEventListenerMockup>();
+        this->creatureBattlerCreatureRecoverListener = std::make_shared<gamesystem::CreatureBattlerCreatureRecoverListener>();
 
-        this->addListener<gameevent::CreatureRecoverEvent>(
-            this->creatureBattlerCreatureRecoverSystem);
+        this->addListener(this->eventlistenermockup);
+        this->addListener(this->creatureBattlerCreatureRecoverListener);
     }
 
 

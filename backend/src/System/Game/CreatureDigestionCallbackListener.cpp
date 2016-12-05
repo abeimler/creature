@@ -1,17 +1,17 @@
-#include "System/Game/CreatureDigestionCallbackSystem.h"
+#include "System/Game/CreatureDigestionCallbackListener.h"
 
 namespace gamesystem {
 
-constexpr gamecomp::counter_t CreatureDigestionCallbackSystem::RATE_UNLUCK_BY_MORETHENMAXPOOPSTACK;
-constexpr data::luck_t CreatureDigestionCallbackSystem::UNLUCK_BY_MORETHENMAXPOOPSTACK;
-constexpr data::luck_t CreatureDigestionCallbackSystem::UNLUCK_BY_MAXPOOPSTACK;
-constexpr data::disc_t CreatureDigestionCallbackSystem::UNDISC_BY_MAXPOOPSTACK;
-constexpr gamecomp::progresstimer_percent_t CreatureDigestionCallbackSystem::PAUSE_DIGESTION_BY_HUNGRY_OVERLAYVALUE;
+constexpr gamecomp::counter_t CreatureDigestionCallbackListener::RATE_UNLUCK_BY_MORETHENMAXPOOPSTACK;
+constexpr data::luck_t CreatureDigestionCallbackListener::UNLUCK_BY_MORETHENMAXPOOPSTACK;
+constexpr data::luck_t CreatureDigestionCallbackListener::UNLUCK_BY_MAXPOOPSTACK;
+constexpr data::disc_t CreatureDigestionCallbackListener::UNDISC_BY_MAXPOOPSTACK;
+constexpr gamecomp::progresstimer_percent_t CreatureDigestionCallbackListener::PAUSE_DIGESTION_BY_HUNGRY_OVERLAYVALUE;
 
-CreatureDigestionCallbackSystem::CreatureDigestionCallbackSystem() {}
+CreatureDigestionCallbackListener::CreatureDigestionCallbackListener() {}
 
 
-void CreatureDigestionCallbackSystem::makePoop(EventBus& events, Entity entity,
+void CreatureDigestionCallbackListener::makePoop(EventBus& events, Entity entity,
                 gamecomp::CreatureProgressTimersComponent& timers,
                 gamecomp::CreatureHungerComponent& hunger,
                 gamecomp::CreatureGeneComponent& gene, gamecomp::CreatureBodyComponent& body,
@@ -62,7 +62,7 @@ void CreatureDigestionCallbackSystem::makePoop(EventBus& events, Entity entity,
     }
 }
 
-void CreatureDigestionCallbackSystem::lostWeightbyStool(
+void CreatureDigestionCallbackListener::lostWeightbyStool(
     gamecomp::CreatureBodyComponent& body, gamecomp::CreatureGeneComponent& gene) {
     auto ideal_bmi_percent =
         (!util::iszero(gene.max_bmi)) ? gene.ideal_bmi / gene.max_bmi : 0.0;
@@ -71,7 +71,7 @@ void CreatureDigestionCallbackSystem::lostWeightbyStool(
     body.weight -= sub_weight;
 }
 
-void CreatureDigestionCallbackSystem::fullPoopStack(
+void CreatureDigestionCallbackListener::fullPoopStack(
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureHungerComponent& hunger,
     gamecomp::CreatureGeneComponent& gene,
@@ -91,7 +91,7 @@ void CreatureDigestionCallbackSystem::fullPoopStack(
     }
 }
 
-void CreatureDigestionCallbackSystem::pauseDigestionbyHunger(
+void CreatureDigestionCallbackListener::pauseDigestionbyHunger(
     gamecomp::CreatureProgressTimersComponent& timers) {
 
     auto& hungry_timer = earr::enum_array_at(timers.timer, 
@@ -117,7 +117,7 @@ void CreatureDigestionCallbackSystem::pauseDigestionbyHunger(
     }
 }
 
-void CreatureDigestionCallbackSystem::illByFullPoopStack(Entity entity, EventBus& events, 
+void CreatureDigestionCallbackListener::illByFullPoopStack(Entity entity, EventBus& events, 
     gamecomp::CreatureGeneComponent& gene) {
     if (util::randomRate(gene.ill_by_max_poopstack_rate)) {
         emit_event<gameevent::CreatureAddStatusEvent>(events, entity, data::CreatureStatus::Ill);
@@ -126,7 +126,7 @@ void CreatureDigestionCallbackSystem::illByFullPoopStack(Entity entity, EventBus
 
 
 
-void CreatureDigestionCallbackSystem::update(const gameevent::ProgressTimerCallbackEvent& event,
+void CreatureDigestionCallbackListener::update(const gameevent::ProgressTimerCallbackEvent& event,
                                 EntityManager& entities, EventBus& events,
                                 TimeDelta /*dt*/) {
     Component<gamecomp::CreatureProgressTimersComponent> timers;

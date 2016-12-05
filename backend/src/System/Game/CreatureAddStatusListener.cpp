@@ -1,14 +1,14 @@
-#include "System/Game/CreatureAddStatusSystem.h"
+#include "System/Game/CreatureAddStatusListener.h"
 
 namespace gamesystem {
 
 
-CreatureAddStatusSystem::CreatureAddStatusSystem(
+CreatureAddStatusListener::CreatureAddStatusListener(
     gameentity::DataManager& datamanager)
     : datamanager_(datamanager) {}
 
 
-void CreatureAddStatusSystem::addCreatureStatus(
+void CreatureAddStatusListener::addCreatureStatus(
     EventBus& events, Entity entity,
     gamecomp::BattlerStatusesComponent& battlerstatuses,
     gamecomp::CreatureBodilyStateComponent& bodilystate,
@@ -43,7 +43,7 @@ void CreatureAddStatusSystem::addCreatureStatus(
     }
 }
 
-void CreatureAddStatusSystem::update(
+void CreatureAddStatusListener::update(
     const gameevent::CreatureAddStatusEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
     Component<gamecomp::BattlerStatusesComponent> battlerstatuses;

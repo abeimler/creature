@@ -4,7 +4,7 @@
 
 #include "System/Game/MakeCreatureHelper.h"
 
-#include "System/Game/CreatureDeadSystem.h"
+#include "System/Game/CreatureMakeDeadListener.h"
 
 class CreatureMakeDeadEventListenerMockup
     : public gamesystem::Listener<gameevent::CreatureMakeDeadEvent> {
@@ -23,18 +23,18 @@ class CreatureMakeDeadEventListenerMockup
 class CreatureDeadSystemApplication
     : public gamesystem::Application {
     public:
-    std::shared_ptr<CreatureMakeDeadEventListenerMockup> eventlistenermockup =
-        std::make_shared<CreatureMakeDeadEventListenerMockup>();
-
-    std::shared_ptr<gamesystem::CreatureDeadSystem>
-        creatureDeadSystem =
-            std::make_shared<gamesystem::CreatureDeadSystem>();
+    std::shared_ptr<CreatureMakeDeadEventListenerMockup> eventlistenermockup;
+    std::shared_ptr<gamesystem::CreatureMakeDeadListener> creatureMakeDeadListener;
 
     CreatureDeadSystemApplication() {
-        this->addListener<gameevent::CreatureMakeDeadEvent>(
-            this->eventlistenermockup);
-        this->addListener<gameevent::CreatureMakeDeadEvent>(
-            this->creatureDeadSystem);
+        this->eventlistenermockup =
+            std::make_shared<CreatureMakeDeadEventListenerMockup>();
+
+        this->creatureMakeDeadListener =
+                std::make_shared<gamesystem::CreatureMakeDeadListener>();
+                
+        this->addListener(this->eventlistenermockup);
+        this->addListener(this->creatureMakeDeadListener);
     }
 
     static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
@@ -53,14 +53,9 @@ SCENARIO("Creature Entity emit dead-Event to make creature dead and pause lifeti
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
-
-        auto life =
-            entity.component<gamecomp::CreatureLifeComponent>();
-
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        //auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+        auto life = entity.component<gamecomp::CreatureLifeComponent>();
 
         WHEN("emit dead-Event") {
             app.emit_event<gameevent::CreatureMakeDeadEvent>(entity, gamecomp::CauseOfDeath::Unknown);
@@ -92,14 +87,9 @@ SCENARIO("Creature Entity emit dead-Event to pause lifetimer") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
-
-        auto life =
-            entity.component<gamecomp::CreatureLifeComponent>();
-
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+        //auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
+        //auto life = entity.component<gamecomp::CreatureLifeComponent>();
 
         WHEN("emit dead-Event") {
             app.emit_event<gameevent::CreatureMakeDeadEvent>(entity, gamecomp::CauseOfDeath::Unknown);

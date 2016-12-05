@@ -1,5 +1,5 @@
-#ifndef SYSTEM_GAME_CREATUREADDSTATUSSYSTEM_H_
-#define SYSTEM_GAME_CREATUREADDSTATUSSYSTEM_H_
+#ifndef SYSTEM_GAME_CREATUREADDSTATUSLISTENER_H_
+#define SYSTEM_GAME_CREATUREADDSTATUSLISTENER_H_
 
 #include "basic.h"
 
@@ -13,7 +13,7 @@ namespace gamesystem {
 
 
 
-class CreatureAddStatusSystem : public Listener<gameevent::CreatureAddStatusEvent> {
+class CreatureAddStatusListener : public Listener<gameevent::CreatureAddStatusEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
@@ -23,7 +23,7 @@ class CreatureAddStatusSystem : public Listener<gameevent::CreatureAddStatusEven
 
     public:
 
-    CreatureAddStatusSystem(gameentity::DataManager& datamanager);
+    CreatureAddStatusListener(gameentity::DataManager& datamanager);
 
     void addCreatureStatus(EventBus& events, Entity entity,
                            gamecomp::BattlerStatusesComponent& battlerstatuses,
@@ -37,4 +37,4 @@ class CreatureAddStatusSystem : public Listener<gameevent::CreatureAddStatusEven
 };
 } // namespace gamesystem
 
-#endif // SYSTEM_GAME_CREATUREADDSTATUSSYSTEM_H_
+#endif // SYSTEM_GAME_CREATUREADDSTATUSLISTENER_H_

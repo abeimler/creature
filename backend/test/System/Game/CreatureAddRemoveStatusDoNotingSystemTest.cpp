@@ -4,10 +4,10 @@
 
 #include "System/Game/MakeCreatureHelper.h"
 
-#include "System/Game/CreatureAddStatusSystem.h"
-#include "System/Game/CreatureBattlerAddBattlerStatusSystem.h"
-#include "System/Game/CreatureBattlerRemoveBattlerStatusSystem.h"
-#include "System/Game/CreatureRemoveStatusSystem.h"
+#include "System/Game/CreatureAddStatusListener.h"
+#include "System/Game/CreatureBattlerAddBattlerStatusListener.h"
+#include "System/Game/CreatureBattlerRemoveBattlerStatusListener.h"
+#include "System/Game/CreatureRemoveStatusListener.h"
 #include "System/Game/CreatureSystem.h"
 #include "System/Game/CreatureDoNotingSystem.h"
 
@@ -97,38 +97,40 @@ class CreatureAddRemoveStatusDoNotingSystemApplication : public gamesystem::Appl
 
     gameentity::DataManager datamanager;
 
-    std::shared_ptr<gamesystem::CreatureAddStatusSystem> creatureAddStatusSystem;
-    std::shared_ptr<gamesystem::CreatureRemoveStatusSystem> creatureRemoveStatusSystem;
-    std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusSystem> creatureBattlerAddBattlerStatusSystem;
-    std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusSystem> creatureBattlerRemoveBattlerStatusSystem;
+    std::shared_ptr<gamesystem::CreatureAddStatusListener> creatureAddStatusListener;
+    std::shared_ptr<gamesystem::CreatureRemoveStatusListener> creatureRemoveStatusListener;
+    std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusListener> creatureBattlerAddBattlerStatusListener;
+    std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusListener> creatureBattlerRemoveBattlerStatusListener;
+
     std::shared_ptr<gamesystem::CreatureSystem> creatureSystem;
     std::shared_ptr<gamesystem::CreatureDoNotingSystem> creatureDoNotingSystem;
 
     CreatureAddRemoveStatusDoNotingSystemApplication() {
         init_DataManager_AllCreatureStatuses(datamanager);
 
-        this->creatureAddStatusSystem =
-            std::make_shared<gamesystem::CreatureAddStatusSystem>(
+        this->creatureAddStatusListener =
+            std::make_shared<gamesystem::CreatureAddStatusListener>(
                 this->datamanager);
-        this->creatureRemoveStatusSystem =
-            std::make_shared<gamesystem::CreatureRemoveStatusSystem>(
+        this->creatureRemoveStatusListener =
+            std::make_shared<gamesystem::CreatureRemoveStatusListener>(
                 this->datamanager);
-        this->creatureBattlerAddBattlerStatusSystem =
-            std::make_shared<gamesystem::CreatureBattlerAddBattlerStatusSystem>(
+        this->creatureBattlerAddBattlerStatusListener =
+            std::make_shared<gamesystem::CreatureBattlerAddBattlerStatusListener>(
                 this->datamanager);
-        this->creatureBattlerRemoveBattlerStatusSystem =
-            std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusSystem>(
+        this->creatureBattlerRemoveBattlerStatusListener =
+            std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusListener>(
                 this->datamanager);
+
         this->creatureSystem =
             std::make_shared<gamesystem::CreatureSystem>(
                 this->datamanager);
         this->creatureDoNotingSystem =
             std::make_shared<gamesystem::CreatureDoNotingSystem>();
 
-        this->addListener<gameevent::CreatureAddStatusEvent>(this->creatureAddStatusSystem);
-        this->addListener<gameevent::CreatureRemoveStatusEvent>(this->creatureRemoveStatusSystem);
-        this->addListener<gameevent::CreatureAddBattlerStatusEvent>(this->creatureBattlerAddBattlerStatusSystem);
-        this->addListener<gameevent::CreatureRemoveBattlerStatusEvent>(this->creatureBattlerRemoveBattlerStatusSystem);
+        this->addListener(this->creatureAddStatusListener);
+        this->addListener(this->creatureRemoveStatusListener);
+        this->addListener(this->creatureBattlerAddBattlerStatusListener);
+        this->addListener(this->creatureBattlerRemoveBattlerStatusListener);
         this->addSystem(this->creatureSystem);
         this->addSystem(this->creatureDoNotingSystem);
     }

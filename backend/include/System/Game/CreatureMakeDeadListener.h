@@ -1,5 +1,5 @@
-#ifndef SYSTEM_GAME_CREATUREDEADSYSTEM_H_
-#define SYSTEM_GAME_CREATUREDEADSYSTEM_H_
+#ifndef SYSTEM_GAME_CREATUREMAKEDEADLISTENER_H_
+#define SYSTEM_GAME_CREATUREMAKEDEADLISTENER_H_
 
 #include "basic.h"
 
@@ -13,7 +13,7 @@ namespace gamesystem {
 
 
 
-class CreatureDeadSystem : public Listener<gameevent::CreatureMakeDeadEvent> {
+class CreatureMakeDeadListener : public Listener<gameevent::CreatureMakeDeadEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
@@ -22,7 +22,7 @@ class CreatureDeadSystem : public Listener<gameevent::CreatureMakeDeadEvent> {
 
     public:
 
-    CreatureDeadSystem();
+    CreatureMakeDeadListener();
 
     void makeCreatureDead(EventBus& events, Entity entity,
         gamecomp::CreatureProgressTimersComponent& timers,
@@ -37,4 +37,4 @@ class CreatureDeadSystem : public Listener<gameevent::CreatureMakeDeadEvent> {
 };
 } // namespace gamesystem
 
-#endif // SYSTEM_GAME_CREATUREADDSTATUSSYSTEM_H_
+#endif // SYSTEM_GAME_CREATUREMAKEDEADLISTENER_H_

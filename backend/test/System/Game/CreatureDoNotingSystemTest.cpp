@@ -34,8 +34,7 @@ class CreatureDoNotingSystemApplication
 
     CreatureDoNotingSystemApplication() {
         this->addSystem(this->creatureDoNotingSystem);
-        this->addListener<gameevent::CreatureDoNotingEvent>(
-            this->eventlistenermockup);
+        this->addListener(this->eventlistenermockup);
     }
 
     void init_Entity_withHungryStatus(gameentity::Entity entity) {

@@ -30,7 +30,6 @@ class Application {
     System::EventBus& getEventBus() { return this->events_; }
     const System::EventBus& getEventBus() const { return this->events_; }
 
-
     void addSystem(const std::shared_ptr<System>& system) {
         this->systems_.push_back(system);
     }
@@ -43,41 +42,53 @@ class Application {
 
     template <class Event>
     void addListener(const std::shared_ptr<Listener<Event>>& listener) {
-        this->addSystem<Event>(listener);
-    }
-
-    template<class T, typename... Args>
-    void makeSystem(Args&&... args) {
-        auto system = std::make_shared<T>( std::forward<Args>(args)... );
-        this->addSystem(system);
+        addSystem<Event>(listener);
     }
 
     template<class T>
-    void makeSystem() {
+    void addListener(const std::shared_ptr<T>& listener) {
+        addListener<typename T::event_t>(listener);
+    }
+
+
+
+
+    template<class T, typename... Args>
+    std::shared_ptr<T> makeSystem(Args&&... args) {
+        auto system = std::make_shared<T>( std::forward<Args>(args)... );
+        addSystem(system);
+        return system;
+    }
+
+    template<class T>
+    std::shared_ptr<T> makeSystem() {
         auto system = std::make_shared<T>();
-        this->addSystem(system);
+        addSystem(system);
+        return system;
     }
 
     template<class T, class Event, typename... Args>
-    void makeListener(Args&&... args) {
+    std::shared_ptr<T> makeListener(Args&&... args) {
         auto listener = std::make_shared<T>( std::forward<Args>(args)... );
-        this->addListener<Event>(listener);
+        addListener<Event>(listener);
+        return listener;
     }
 
     template<class T, class Event>
-    void makeListener() {
+    std::shared_ptr<T> makeListener() {
         auto listener = std::make_shared<T>();
-        this->addListener<Event>(listener);
+        addListener<Event>(listener);
+        return listener;
     }
 
     template<class T, typename... Args>
-    void makeListener(Args&&... args) {
-        this->makeListener<T::event_t>( std::forward<Args>(args)... );
+    std::shared_ptr<T> makeListener(Args&&... args) {
+        return makeListener<T, typename T::event_t>( std::forward<Args>(args)... );
     }
 
     template<class T>
-    void makeListener() {
-        this->makeListener<T::event_t>();
+    std::shared_ptr<T> makeListener() {
+        return makeListener<T, typename T::event_t>();
     }
 
     /*

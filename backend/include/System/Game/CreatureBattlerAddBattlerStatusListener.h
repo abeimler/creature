@@ -1,5 +1,5 @@
-#ifndef SYSTEM_GAME_CREATUREBATTLERCREATUREADDSTATUSSYSTEM_H_
-#define SYSTEM_GAME_CREATUREBATTLERCREATUREADDSTATUSSYSTEM_H_
+#ifndef SYSTEM_GAME_CREATUREBATTLERCREATUREADDSTATUSLISTENER_H_
+#define SYSTEM_GAME_CREATUREBATTLERCREATUREADDSTATUSLISTENER_H_
 
 
 #include "basic.h"
@@ -13,7 +13,7 @@
 namespace gamesystem {
 
 
-class CreatureBattlerAddBattlerStatusSystem
+class CreatureBattlerAddBattlerStatusListener
     : public Listener<gameevent::CreatureAddBattlerStatusEvent> {
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
@@ -23,7 +23,7 @@ class CreatureBattlerAddBattlerStatusSystem
     void sortBattlerStatuses(std::vector<std::string>& statuses_name);
 
     public:
-    CreatureBattlerAddBattlerStatusSystem(gameentity::DataManager& datamanager);
+    CreatureBattlerAddBattlerStatusListener(gameentity::DataManager& datamanager);
 
     void update(const gameevent::CreatureAddBattlerStatusEvent& event,
                 EntityManager& entities, EventBus& events,
@@ -33,4 +33,4 @@ class CreatureBattlerAddBattlerStatusSystem
 
 } // namespace gamesystem
 
-#endif // SYSTEM_GAME_CREATUREBATTLERCREATUREADDSTATUSSYSTEM_H_
+#endif // SYSTEM_GAME_CREATUREBATTLERCREATUREADDSTATUSLISTENER_H_

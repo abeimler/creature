@@ -6,12 +6,12 @@
 
 #include "System/Game/MakeCreatureHelper.h"
 
-#include "System/Game/CreatureAddStatusSystem.h"
-#include "System/Game/CreatureBattlerAddBattlerStatusSystem.h"
-#include "System/Game/CreatureBattlerRemoveBattlerStatusSystem.h"
-#include "System/Game/CreatureRemoveStatusSystem.h"
+#include "System/Game/CreatureAddStatusListener.h"
+#include "System/Game/CreatureBattlerAddBattlerStatusListener.h"
+#include "System/Game/CreatureBattlerRemoveBattlerStatusListener.h"
+#include "System/Game/CreatureRemoveStatusListener.h"
 #include "System/Game/CreatureSystem.h"
-#include "System/Game/CreatureDeadSystem.h"
+#include "System/Game/CreatureMakeDeadListener.h"
 #include "System/Game/CreatureProgressTimerSystem.h"
 
 
@@ -101,44 +101,41 @@ class CreatureAddRemoveStatusDeadSystemApplication : public gamesystem::Applicat
 
     gameentity::DataManager datamanager;
 
-    std::shared_ptr<gamesystem::CreatureAddStatusSystem> creatureAddStatusSystem;
-    std::shared_ptr<gamesystem::CreatureRemoveStatusSystem> creatureRemoveStatusSystem;
-    std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusSystem> creatureBattlerAddBattlerStatusSystem;
-    std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusSystem> creatureBattlerRemoveBattlerStatusSystem;
+    std::shared_ptr<gamesystem::CreatureAddStatusListener> creatureAddStatusListener;
+    std::shared_ptr<gamesystem::CreatureRemoveStatusListener> creatureRemoveStatusListener;
+    std::shared_ptr<gamesystem::CreatureBattlerAddBattlerStatusListener> creatureBattlerAddBattlerStatusListener;
+    std::shared_ptr<gamesystem::CreatureBattlerRemoveBattlerStatusListener> creatureBattlerRemoveBattlerStatusListener;
+    
     std::shared_ptr<gamesystem::CreatureProgressTimerSystem> creatureProgressTimerSystem;
     std::shared_ptr<gamesystem::CreatureSystem> creatureSystem;
-    std::shared_ptr<gamesystem::CreatureDeadSystem> creatureDeadSystem;
+    std::shared_ptr<gamesystem::CreatureMakeDeadListener> creatureMakeDeadListener;
 
     CreatureAddRemoveStatusDeadSystemApplication() {
         init_DataManager_AllCreatureStatuses(datamanager);
 
-        this->creatureAddStatusSystem =
-            std::make_shared<gamesystem::CreatureAddStatusSystem>(
-                this->datamanager);
-        this->creatureRemoveStatusSystem =
-            std::make_shared<gamesystem::CreatureRemoveStatusSystem>(
-                this->datamanager);
-        this->creatureBattlerAddBattlerStatusSystem =
-            std::make_shared<gamesystem::CreatureBattlerAddBattlerStatusSystem>(
-                this->datamanager);
-        this->creatureBattlerRemoveBattlerStatusSystem =
-            std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusSystem>(
-                this->datamanager);
+        this->creatureAddStatusListener =
+            std::make_shared<gamesystem::CreatureAddStatusListener>(this->datamanager);
+        this->creatureRemoveStatusListener =
+            std::make_shared<gamesystem::CreatureRemoveStatusListener>(this->datamanager);
+        this->creatureBattlerAddBattlerStatusListener =
+            std::make_shared<gamesystem::CreatureBattlerAddBattlerStatusListener>(this->datamanager);
+        this->creatureBattlerRemoveBattlerStatusListener =
+            std::make_shared<gamesystem::CreatureBattlerRemoveBattlerStatusListener>(this->datamanager);
+
         this->creatureProgressTimerSystem =
-                std::make_shared<gamesystem::CreatureProgressTimerSystem>();
+            std::make_shared<gamesystem::CreatureProgressTimerSystem>();
         this->creatureSystem =
-            std::make_shared<gamesystem::CreatureSystem>(
-                this->datamanager);
-        this->creatureDeadSystem =
-            std::make_shared<gamesystem::CreatureDeadSystem>();
+            std::make_shared<gamesystem::CreatureSystem>(this->datamanager);
+        this->creatureMakeDeadListener =
+            std::make_shared<gamesystem::CreatureMakeDeadListener>();
 
         this->addSystem(this->creatureProgressTimerSystem);
         this->addSystem(this->creatureSystem);
-        this->addListener<gameevent::CreatureMakeDeadEvent>(this->creatureDeadSystem);
-        this->addListener<gameevent::CreatureAddStatusEvent>(this->creatureAddStatusSystem);
-        this->addListener<gameevent::CreatureRemoveStatusEvent>(this->creatureRemoveStatusSystem);
-        this->addListener<gameevent::CreatureAddBattlerStatusEvent>(this->creatureBattlerAddBattlerStatusSystem);
-        this->addListener<gameevent::CreatureRemoveBattlerStatusEvent>(this->creatureBattlerRemoveBattlerStatusSystem);
+        this->addListener(this->creatureMakeDeadListener);
+        this->addListener(this->creatureAddStatusListener);
+        this->addListener(this->creatureRemoveStatusListener);
+        this->addListener(this->creatureBattlerAddBattlerStatusListener);
+        this->addListener(this->creatureBattlerRemoveBattlerStatusListener);
     }
 
 
