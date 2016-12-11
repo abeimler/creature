@@ -88,6 +88,12 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
                                         data::weight_t minweight, data::weight_t maxweight,
                                         data::weight_t weight);
 
+
+
+    static data::bmi_t getBMI(data::bmi_t min_bmi, data::bmi_t max_bmi, data::bodymass_t bodymass,
+                              data::weight_t minweight, data::weight_t maxweight, data::weight_t weight,
+                              data::bodysize_t bodysize);
+
     static data::bmi_t getBMI(const gamecomp::CreatureGeneComponent& gene,
                               data::weight_t minweight, data::weight_t maxweight, data::weight_t weight,
                               data::bodysize_t bodysize);

@@ -3,10 +3,11 @@
 namespace gameentity {
 
 data::bmi_t
-CreatureEntityCreator::getBMI(const gamecomp::CreatureGeneComponent& gene,
+CreatureEntityCreator::getBMI(data::bmi_t min_bmi, data::bmi_t max_bmi, data::bodymass_t bodymass,
                               data::weight_t min_weight,
                               data::weight_t max_weight, data::weight_t weight,
                               data::bodysize_t bodysize) {
+
     /*
     s    : Größe
     g    : Gewicht
@@ -43,15 +44,26 @@ CreatureEntityCreator::getBMI(const gamecomp::CreatureGeneComponent& gene,
     m = (sqrt(s*g + gmin) - bmi) / (- (gmin * (bmin/2/bmax)))
     */
 
-    auto min_bmi = gene.min_bmi;
-    auto max_bmi = gene.max_bmi;
-    auto bodymass = gene.bodymass;
-
     return (min_bmi > 0.0 && min_weight > 0.0 && max_bmi > 0.0 &&
             min_weight <= max_weight)
                ? std::sqrt(bodysize * weight + min_weight) +
                      (min_weight * (min_bmi / 2.0 / max_bmi)) * bodymass
                : 0.0;
+}
+
+data::bmi_t
+CreatureEntityCreator::getBMI(const gamecomp::CreatureGeneComponent& gene,
+                              data::weight_t min_weight,
+                              data::weight_t max_weight, data::weight_t weight,
+                              data::bodysize_t bodysize) {
+    
+
+    auto min_bmi = gene.min_bmi;
+    auto max_bmi = gene.max_bmi;
+    auto bodymass = gene.bodymass;
+
+    return getBMI(min_bmi, max_bmi, bodymass,
+                  min_weight, max_weight, weight, bodysize);
 }
 
 data::bodymass_t CreatureEntityCreator::getBodyMass(
