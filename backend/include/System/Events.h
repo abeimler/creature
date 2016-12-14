@@ -15,6 +15,7 @@
 #include "System/Event/CreatureDigestionSystemEvents.h"
 #include "System/Event/CreatureProgressTimerSystemEvents.h"
 #include "System/Event/CreatureSystemEvents.h"
+#include "System/Event/CreatureEvolutionSystemEvents.h"
 
 namespace gameevent {
 
@@ -36,7 +37,14 @@ using EventBus = eventpp::Bus<
     CreatureHasLevelUpEvent,
 
     CreatureUseToiletEvent,
-    CreatureMakePoopEvent
+    CreatureMakePoopEvent,
+
+    CreatureReadyToEvolveEvent,
+    CreatureBornEvent,
+    CreatureIsBornEvent,
+    CreatureTryToEvolveEvent,
+    CreatureEvolveEvent,
+    CreatureIsEvolveFinishEvent
     >;
 
 } // namespace gameevent
