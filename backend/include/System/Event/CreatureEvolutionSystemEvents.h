@@ -40,9 +40,8 @@ struct CreatureEvolveEvent {
     bool goodevolve;
     data::Creature newcreature;
 
-    CreatureEvolveEvent(
-        gameentity::Entity p_entity, bool p_goodevolve,
-        const data::Creature& p_newcreature)
+    CreatureEvolveEvent(gameentity::Entity p_entity, bool p_goodevolve,
+                        const data::Creature& p_newcreature)
         : entity(p_entity)
         , goodevolve(p_goodevolve)
         , newcreature(p_newcreature) {}

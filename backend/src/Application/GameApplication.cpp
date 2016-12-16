@@ -30,6 +30,9 @@ void GameApplication::initSystems() {
 
     this->makeListener<gamesystem::CreatureDigestionCallbackListener>();
     this->makeSystem<gamesystem::CreatureDigestionSystem>();
+
+
+    this->makeListener<gamesystem::CreatureTryToEvolveListener>(this->datamanager_);
 }
 
 } // namespace gamesystem

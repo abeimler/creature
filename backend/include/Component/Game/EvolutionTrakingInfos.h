@@ -14,7 +14,7 @@ BETTER_ENUM(EvolutionStatus, size_t, Succ,
             BEGIN = Succ,      ///< Erfolgreich entwickelt
             DeadOrNotReady,    ///< Tot, nicht Bereit oder Beschäftigt
             NoneNextCreatures, ///< keine Entwicklungen vorhanden
-            Fail,              ///< keine Entwicklung geschaft
+            Fail,              ///< keine Entwicklung geschafft
             END)
 
 /// Creature Evolution Info

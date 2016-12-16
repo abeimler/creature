@@ -23,6 +23,7 @@
 #include "System/Game/CreatureMakeRunAwayListener.h"
 #include "System/Game/CreatureRemoveRunAwayListener.h"
 #include "System/Game/CreatureSystem.h"
+#include "System/Game/CreatureTryToEvolveListener.h"
 
 
 namespace game {
