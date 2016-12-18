@@ -33,15 +33,17 @@ struct EvolutionTrakingInfo {
 
     EvolutionTrakingInfoDetail evolutiontrakinginfodetail;
 
+
     EvolutionTrakingInfo() = default;
-    EvolutionTrakingInfo(
-        const std::shared_ptr<data::Creature>& p_oldcreature,
-        const std::shared_ptr<data::Creature>& p_newcreature,
-        const EvolutionTrakingInfoDetail& p_evolutiontrakinginfodetail)
-        : oldcreature_name((p_oldcreature) ? p_oldcreature->getName()
-                                           : std::string()),
-          newcreature_name((p_newcreature) ? p_newcreature->getName()
-                                           : std::string()),
+
+    EvolutionTrakingInfo(const data::Creature& p_oldcreature, const data::Creature& p_newcreature, const EvolutionTrakingInfoDetail& p_evolutiontrakinginfodetail)
+        : oldcreature_name(p_oldcreature.getName()),
+          newcreature_name(p_newcreature.getName()),
+          evolutiontrakinginfodetail(p_evolutiontrakinginfodetail) {}
+    
+    EvolutionTrakingInfo(std::string p_oldcreature, std::string p_newcreature, const EvolutionTrakingInfoDetail& p_evolutiontrakinginfodetail)
+        : oldcreature_name(p_oldcreature),
+          newcreature_name(p_newcreature),
           evolutiontrakinginfodetail(p_evolutiontrakinginfodetail) {}
 };
 } // namespace gamecomp

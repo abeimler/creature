@@ -33,6 +33,8 @@ void GameApplication::initSystems() {
 
 
     this->makeListener<gamesystem::CreatureTryToEvolveListener>(this->datamanager_);
+    this->makeListener<gamesystem::CreatureEvolveListener>(this->datamanager_);
+    this->makeListener<gamesystem::CreatureBornListener>(this->datamanager_);
 }
 
 } // namespace gamesystem
