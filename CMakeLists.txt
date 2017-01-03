@@ -26,7 +26,7 @@ RETURN()
 
 ENDIF()
 
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.1)
 project(cxxopts)
 
 enable_testing()
@@ -37,19 +37,32 @@ option(CXXOPTS_BUILD_EXAMPLES "Set to ON to build examples" ON)
 option(CXXOPTS_BUILD_TESTS "Set to ON to build tests" OFF)
 
 set(CXXOPTS_LINKER_LIBRARIES "")
-
 set(CXXOPTS_USE_UNICODE_HELP FALSE CACHE BOOL "Use ICU Unicode library")
-
 if(CXXOPTS_USE_UNICODE_HELP)
 
   find_package(PkgConfig)
 
   pkg_check_modules(ICU REQUIRED icu-uc)
 
-  set(CXXOPTS_LINKER_LIBRARIES "${ICU_LIBRARIES}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCXXOPTS_USE_UNICODE")
-
+  set(CXXOPTS_LINKER_LIBRARIES "${ICU_LDFLAGS}")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ICU_CFLAGS} -DCXXOPTS_USE_UNICODE")
 endif()
+
+add_library(cxxopts INTERFACE)
+target_sources(
+  cxxopts INTERFACE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/cxxopts.hpp
+  )
+target_include_directories(
+  cxxopts INTERFACE
+  include/
+  )
+target_link_libraries(
+  cxxopts
+  INTERFACE ${CXXOPTS_LINKER_LIBRARIES}
+  )
+
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/cxxopts.hpp DESTINATION include)
 
 add_subdirectory(src)
 add_subdirectory(test)
