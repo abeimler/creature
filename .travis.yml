@@ -113,7 +113,7 @@ install:
   - if [[ -n "$CLANG_VERSION" ]]; then export CXX=/usr/bin/clang++-$CLANG_VERSION CC=/usr/bin/clang-$CLANG_VERSION; fi
   - if [[ -n "$GCC_VERSION" ]]; then export CXX=/usr/bin/g++-$GCC_VERSION CC=/usr/bin/gcc-$GCC_VERSION; fi
   - if [[ -n "$ARM_GCC_VERSION" ]]; then export CXX=/usr/bin/$ARM_GCC_VERSION-g++ CC=/usr/bin/$ARM_GCC_VERSION-gcc; fi
-  - JOBS=2
+  - export JOBS=2
   - export DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
 
