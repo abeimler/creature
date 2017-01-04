@@ -167,9 +167,6 @@ install:
 
 before_script:
   - cd "${TRAVIS_BUILD_DIR}"
-  - if [[ -n "$CLANG_VERSION" ]]; clang++-$CLANG_VERSION --version; fi
-  - if [[ -n "$GCC_VERSION" ]]; g++-$GCC_VERSION --version; fi
-  - cmake --version
   - cmake . -Bbuild
     -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
     -DBUILD_SHARED_LIBS=FALSE -DBUILD_TESTING=OFF -DBuildTests=OFF 
