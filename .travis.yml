@@ -109,6 +109,16 @@ addons:
     - libopencv-dev
     - git
     #- doxygen
+    - binutils 
+    - libgtest-dev
+    - libunittest++-dev 
+    - libicu-dev
+    #- libboost-all-dev 
+    - libboost-serialization-dev 
+    - libssl-dev 
+    - libboost-system-dev 
+    - libboost-iostreams-dev
+    - libboost-test-dev 
 
 
 before_install:
@@ -163,10 +173,6 @@ install:
       export CXXFLAGS="-I ${LLVM_ROOT}/install/include/c++/v1"
       export LDFLAGS="-L ${LLVM_ROOT}/install/lib -lc++ -lc++abi"
       export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${LLVM_ROOT}/install/lib"
-    fi
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      cd "${TRAVIS_BUILD_DIR}" && chmod +x ./install-deps.sh && ./install-deps.sh
     fi
 
 
