@@ -1,7 +1,7 @@
 # Based on https://github.com/Microsoft/GSL/blob/master/.travis.yml
 
 language: cpp
-sudo: required
+sudo: false
 dist: xenial
 
 
@@ -100,14 +100,20 @@ matrix:
       addons: *gccarm-linux-gnueabihf
 
 
+addons:
+  apt:
+    packages:
+    - python-pip 
+    - python-dev 
+    - build-essential 
+    - libopencv-dev
+    - git
+    #- doxygen
+
+
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y python-pip python-dev build-essential 
   - sudo pip install --upgrade pip
   - sudo pip install cpp-coveralls
-  - sudo apt-get install -y libopencv-dev
-  - sudo apt-get install -y git
-  #- sudo apt-get install -y doxygen
 
 install:
   - if [[ -n "$CLANG_VERSION" ]]; then export CXX=/usr/bin/clang++-$CLANG_VERSION CC=/usr/bin/clang-$CLANG_VERSION; fi
