@@ -83,7 +83,7 @@ matrix:
     - env: GCC_VERSION=6 BUILD_TYPE=Release
       os: linux
       addons: *gcc6
-    - env: GCC_VERSION=arm-linux-gnueabihf BUILD_TYPE=Debug
+    - env: ARM_GCC_VERSION=arm-linux-gnueabihf BUILD_TYPE=Debug
       os: linux
       addons: &gccarm-linux-gnueabihf
         apt:
@@ -95,7 +95,7 @@ matrix:
             - lib32ncurses5 
             - lib32z1
           sources: *sources
-    - env: GCC_VERSION=arm-linux-gnueabihf BUILD_TYPE=Release
+    - env: ARM_GCC_VERSION=arm-linux-gnueabihf BUILD_TYPE=Release
       os: linux
       addons: *gccarm-linux-gnueabihf
 
@@ -110,11 +110,13 @@ before_install:
   #- sudo apt-get install -y doxygen
 
 install:
-  - if [[ -n "$CLANG_VERSION" ]]; then export CXX=clang++-$CLANG_VERSION CC=clang-$CLANG_VERSION; fi
-  - if [[ -n "$GCC_VERSION" ]]; then export CXX=g++-$GCC_VERSION CC=gcc-$GCC_VERSION; fi
+  - if [[ -n "$CLANG_VERSION" ]]; then export CXX=/usr/bin/clang++-$CLANG_VERSION CC=/usr/bin/clang-$CLANG_VERSION; fi
+  - if [[ -n "$GCC_VERSION" ]]; then export CXX=/usr/bin/g++-$GCC_VERSION CC=/usr/bin/gcc-$GCC_VERSION; fi
+  - if [[ -n "$ARM_GCC_VERSION" ]]; then export CXX=/usr/bin/$ARM_GCC_VERSION-g++ CC=/usr/bin/$ARM_GCC_VERSION-gcc; fi
   - JOBS=2
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
+
   ############################################################################
   # Install a recent CMake (unless already installed on OS X)
   ############################################################################
@@ -128,6 +130,7 @@ install:
     else
       if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
     fi
+    
   ############################################################################
   # [linux]: Install the right version of libc++
   ############################################################################
@@ -164,6 +167,9 @@ install:
 
 before_script:
   - cd "${TRAVIS_BUILD_DIR}"
+  - if [[ -n "$CLANG_VERSION" ]]; clang++-$CLANG_VERSION --version; fi
+  - if [[ -n "$GCC_VERSION" ]]; g++-$GCC_VERSION --version; fi
+  - cmake --version
   - cmake . -Bbuild
     -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
     -DBUILD_SHARED_LIBS=FALSE -DBUILD_TESTING=OFF -DBuildTests=OFF 
