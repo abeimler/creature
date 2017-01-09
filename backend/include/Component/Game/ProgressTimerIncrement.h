@@ -9,7 +9,7 @@ struct ProgressTimerIncrement {
     ProgressTimer base;
 
     progresstimer_percent_t addvalue_per_percent = 1.0;
-    bool isendless = false;
+    option_t isendless = false;
 };
 } // namespace gamecomp
 

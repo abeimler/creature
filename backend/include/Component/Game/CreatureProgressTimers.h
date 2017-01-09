@@ -15,7 +15,7 @@
 namespace gamecomp {
 
 /// Hungerphase
-BETTER_ENUM(StarvationPhase, size_t, None,
+BETTER_ENUM(StarvationPhase, ts::unsigned_t, None,
             BEGIN = None, ///< Nichts
             Phase1,       ///< Hungern
             Phase2,       ///< Weglaufen
@@ -25,7 +25,7 @@ BETTER_ENUM(StarvationPhase, size_t, None,
             Phase6,       ///< Tot
             END)
 
-BETTER_ENUM(CreatureProgressTimer, size_t, Hungry,
+BETTER_ENUM(CreatureProgressTimer, ts::unsigned_t, Hungry,
             BEGIN = Hungry, ///< Prozess für Hunger
             Thirsty,        ///< Prozess für Durst
             Tired,          ///< Verlauf für Müdigkeit
@@ -35,7 +35,7 @@ BETTER_ENUM(CreatureProgressTimer, size_t, Hungry,
             END)
 
 BETTER_ENUM(
-    CreatureProgressTimerCallback, size_t, Digestion,
+    CreatureProgressTimerCallback, ts::unsigned_t, Digestion,
     BEGIN = Digestion,    ///< Prozess für die Verdauung
     PauseDigestionHungry, ///< Pausiert Verdauung wenn Hunger zu lang geht
     FullPoopStack,    ///< wenn X haufen nicht aufgeräumt wurden, Krankheit
@@ -50,7 +50,7 @@ BETTER_ENUM(
     END)
 
 BETTER_ENUM(
-    CreatureProgressTimerIncrement, size_t, LostWeightTimerHungry,
+    CreatureProgressTimerIncrement, ts::unsigned_t, LostWeightTimerHungry,
     BEGIN = LostWeightTimerHungry, ///< normaler Gewichtsverlust(Hunger) in
                                    /// einer bestimmten Zeit
     LostWeightTimerThirsty,        ///< normaler Gewichtsverlust(Durst) in einer

@@ -30,16 +30,16 @@ class UseItem : public Item {
     item_use_t canuse_ = CAN_USE_ITEM_ONCE;
     TargetOption target_ = TargetOption::OneEnemy;
 
-    int atknumbers_ = 1;
+    atknumbers_t atknumbers_ = 1;
     earr::enum_array<UseItemOption, bool> option_;
 
     earr::enum_array<Attribute, attr_t> attr_;
 
-    int rehp_ = 0;
-    bool rehp_inpercent_ = false;
+    attr_t rehp_ = 0;
+    option_t rehp_inpercent_ = false;
 
-    int remp_ = 0;
-    bool remp_inpercent_ = false;
+    attr_t remp_ = 0;
+    option_t remp_inpercent_ = false;
 
     std::vector<std::string> creatures_;
     std::vector<std::string> addstatuses_;
@@ -98,13 +98,13 @@ class UseItem : public Item {
     UseItem& operator=(UseItem&&) = default;
 
     /// numbers of uses (unlimeted = -1, can't use = 0)
-    int getCanUse() const { return this->canuse_; }
+    item_use_t getCanUse() const { return this->canuse_; }
 
     /// target option
     TargetOption getTarget() const { return this->target_; }
 
     /// numbers of attack/uses at one use
-    int getAtkNumbers() const { return this->atknumbers_; }
+    atknumbers_t getAtkNumbers() const { return this->atknumbers_; }
 
     /// UseItem Options
     const earr::enum_array<UseItemOption, bool>& getOption() const {
@@ -115,7 +115,7 @@ class UseItem : public Item {
      * @param option UseItem option
      * @return useItem option
      */
-    bool getOption(UseItemOption option) const {
+    option_t getOption(UseItemOption option) const {
         return earr::enum_array_at(this->option_, option);
     }
 
@@ -128,14 +128,14 @@ class UseItem : public Item {
      * @param attr Attribute
      * @return Boni Attribute
      */
-    int getAttr(Attribute attr) const {
+    attr_t getAttr(Attribute attr) const {
         return earr::enum_array_at(this->attr_, attr);
     }
 
-    int getReHP() const { return this->rehp_; }
-    bool isReHPinPercent() const { return this->rehp_inpercent_; }
-    int getReMP() const { return this->remp_; }
-    bool isReMPinPercent() const { return this->remp_inpercent_; }
+    attr_t getReHP() const { return this->rehp_; }
+    option_t isReHPinPercent() const { return this->rehp_inpercent_; }
+    attr_t getReMP() const { return this->remp_; }
+    option_t isReMPinPercent() const { return this->remp_inpercent_; }
 
     const std::vector<std::string>& getAddStatuses() const {
         return this->addstatuses_;
@@ -145,7 +145,7 @@ class UseItem : public Item {
         return this->removestatuses_;
     }
 
-    bool canUseCreature(const Creature& creature) const {
+    ts::bool_t canUseCreature(const Creature& creature) const {
         if (this->getOption(UseItemOption::AllCanUseIt)) {
             return true;
         }
@@ -183,7 +183,7 @@ class UseItem : public Item {
                             this->removestatuses_.end(), find_byName);
     }
 
-    bool isRemoveStatusFind(std::string name) {
+    ts::bool_t isRemoveStatusFind(std::string name) {
         return getRemoveStatus(name) != std::end(this->removestatuses_);
     }
 
@@ -191,14 +191,14 @@ class UseItem : public Item {
 
     std::string getUseSkillName() const { return this->useskill_; }
 
-    void setCanUse(int canuse) { this->canuse_ = canuse; }
+    void setCanUse(item_use_t canuse) { this->canuse_ = canuse; }
     void setTarget(TargetOption target) { this->target_ = target; }
-    void setAtkNumbers(int atknumbers) { this->atknumbers_ = atknumbers; }
+    void setAtkNumbers(atknumbers_t atknumbers) { this->atknumbers_ = atknumbers; }
 
-    void setOption(const earr::enum_array<UseItemOption, bool>& option) {
+    void setOption(const earr::enum_array<UseItemOption, option_t>& option) {
         this->option_ = option;
     }
-    void setOption(UseItemOption option, bool active) {
+    void setOption(UseItemOption option, option_t active) {
         earr::enum_array_set(this->option_, option, active);
     }
 
@@ -209,19 +209,19 @@ class UseItem : public Item {
         earr::enum_array_set(this->attr_, attr, value);
     }
 
-    void setReHP(int value) { this->rehp_ = value; }
-    void setIsReHPinPercent(bool ispercent) {
+    void setReHP(attr_t value) { this->rehp_ = value; }
+    void setIsReHPinPercent(option_t ispercent) {
         this->rehp_inpercent_ = ispercent;
     }
-    void setReHPinPercent(int value) {
+    void setReHPinPercent(attr_t value) {
         this->rehp_ = value;
         this->rehp_inpercent_ = true;
     }
-    void setReMP(int value) { this->remp_ = value; }
-    void setIsReMPinPercent(bool ispercent) {
+    void setReMP(attr_t value) { this->remp_ = value; }
+    void setIsReMPinPercent(option_t ispercent) {
         this->remp_inpercent_ = ispercent;
     }
-    void setReMPinPercent(int value) {
+    void setReMPinPercent(attr_t value) {
         this->remp_ = value;
         this->remp_inpercent_ = true;
     }

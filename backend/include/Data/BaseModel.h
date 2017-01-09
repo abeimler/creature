@@ -18,6 +18,8 @@
 
 
 /// DB Models
-namespace data {} // namespace data
+namespace data {
+    namespace ts = type_safe;
+} // namespace data
 
 #endif // DATA_BASEMODEL_H_

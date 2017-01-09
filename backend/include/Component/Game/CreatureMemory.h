@@ -7,7 +7,7 @@
 namespace gamecomp {
 
 /// GameCreature Aktivitäten
-BETTER_ENUM(CreatureActivity, size_t, Noting,
+BETTER_ENUM(CreatureActivity, ts::unsigned_t, Noting,
             BEGIN = Noting, ///< Nichts tun
             Bored,          ///< gelangweilt
 
@@ -53,9 +53,9 @@ BETTER_ENUM(CreatureActivity, size_t, Noting,
             MakeNoPoop,
             END)
 
-using memory_value_t = int;
-using long_memory_value_t = double;
-using memory_factor_t = double;
+using memory_value_t = ts::int_t;
+using long_memory_value_t = ts::double_t;
+using memory_factor_t = ts::double_t;
 
 /// Mittelzeit Erinnerung der GameCreature (Bei Timer abgelaufen
 /// verbessen)
@@ -96,7 +96,7 @@ struct CreatureMemoryComponent {
 struct CreaturePersonalityComponent {
     std::string nickname;
 
-    bool housebroken = false;
+    ts::bool_t housebroken = false;
 
     /// Erinnerung an die Geburt
     long_memory_value_t rememberborn = 1.0;

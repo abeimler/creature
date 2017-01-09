@@ -21,7 +21,7 @@ struct CreatureBattlerComponent {
     data::attr_t exp = 0; ///< current EXP of Creature
 
     /// Base Attribute of Creature, attrParam[Attribute][Level]
-    earr::enum_array<data::Attribute, std::vector<int>> attrparam;
+    earr::enum_array<data::Attribute, std::vector<data::attr_t>> attrparam;
 
 
     data::attr_t hp = 0; ///< HP Value

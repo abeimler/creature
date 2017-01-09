@@ -59,6 +59,8 @@ add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/cereal)
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/GSL)
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/json)
 
+add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/type_safe)
+
 # no cmake support
 #add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/better-enums)
 #add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/clamp)
@@ -88,6 +90,7 @@ target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/clamp)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/GSL)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/json/src)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/type_safe/include)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_INCLUDE_PATH})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CREATURE_BACKEND_SRC_PATH})

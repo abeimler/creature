@@ -7,7 +7,7 @@
 namespace data {
 
 /// Skill Option
-BETTER_ENUM(SkillOption, size_t, Absorb,
+BETTER_ENUM(SkillOption, ts::unsigned_t, Absorb,
             BEGIN = Absorb,  ///< Absort
             IgnoreDefensive, ///< Ignore Defensive
             PhysicalAttack,  ///< Physical Attack
@@ -28,14 +28,14 @@ class Skill {
     std::string name_;
 
     std::string description_;
-    earr::enum_array<SkillOption, bool> option_;
+    earr::enum_array<SkillOption, option_t> option_;
 
     attr_t mpcost_ = 0;
-    bool inpercent_ = false;
+    option_t inpercent_ = false;
 
     TargetOption target_ = TargetOption::OneEnemy;
 
-    int atknumbers_ = 1;
+    atknumbers_t atknumbers_ = 1;
     percent_rate_t hitrate_ = 100;
 
     attr_t basehpdamage_ = 0;
@@ -84,19 +84,19 @@ class Skill {
     /// Descrption
     std::string getDescription() const { return this->description_; }
 
-    const earr::enum_array<SkillOption, bool>& getOption() const {
+    const earr::enum_array<SkillOption, option_t>& getOption() const {
         return this->option_;
     }
-    bool getOption(SkillOption option) const {
+    option_t getOption(SkillOption option) const {
         return earr::enum_array_at(this->option_, option);
     }
 
     attr_t getMPCost() const { return this->mpcost_; }
-    bool isMPCostInPercent() const { return this->inpercent_; }
+    atknumbers_t isMPCostInPercent() const { return this->inpercent_; }
 
     TargetOption getTarget() const { return this->target_; }
 
-    int getAtkNumbers() const { return this->atknumbers_; }
+    atknumbers_t getAtkNumbers() const { return this->atknumbers_; }
     percent_rate_t getHitRate() const { return this->hitrate_; }
 
     attr_t getBaseHPDamage() const { return this->basehpdamage_; }
@@ -123,20 +123,20 @@ class Skill {
         this->description_ = description;
     }
 
-    void setOption(const earr::enum_array<SkillOption, bool>& option) {
+    void setOption(const earr::enum_array<SkillOption, option_t>& option) {
         this->option_ = option;
     }
-    void setOption(SkillOption option, bool active) {
+    void setOption(SkillOption option, option_t active) {
         earr::enum_array_set(this->option_, option, active);
     }
 
     void setMPCost(attr_t mpcost) { this->mpcost_ = mpcost; }
 
-    void setIsMPCostInpercent(bool inpercent) { this->inpercent_ = inpercent; }
+    void setIsMPCostInpercent(option_t inpercent) { this->inpercent_ = inpercent; }
 
     void setTarget(TargetOption target) { this->target_ = target; }
 
-    void setAtkNumbers(int atknumbers) { this->atknumbers_ = atknumbers; }
+    void setAtkNumbers(atknumbers_t atknumbers) { this->atknumbers_ = atknumbers; }
     void setHitRate(percent_rate_t hitrate) { this->hitrate_ = hitrate; }
 
     void setBaseHPDamage(attr_t basehpdamage) {

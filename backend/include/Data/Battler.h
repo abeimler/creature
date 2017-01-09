@@ -9,7 +9,7 @@
 namespace data {
 
 /// Weapon Animation: Move
-BETTER_ENUM(ActionPrevMoveOption, size_t, None,
+BETTER_ENUM(ActionPrevMoveOption, ts::unsigned_t, None,
             BEGIN = None, ///< none
             StepForward,  ///< 1 step forward
             StepBackward, ///< 1 Step backward
@@ -19,7 +19,7 @@ BETTER_ENUM(ActionPrevMoveOption, size_t, None,
             END)
 
 /// Batter Animation Pose
-BETTER_ENUM(AnimationPose, size_t, Normal,
+BETTER_ENUM(AnimationPose, ts::unsigned_t, Normal,
             BEGIN = Normal, ///< Normal/Standing
             RightHand,      ///< Right Hand Attack
             LeftHand,       ///< Left hand Attack
@@ -35,7 +35,7 @@ BETTER_ENUM(AnimationPose, size_t, Normal,
             END)
 
 /// Class Option
-BETTER_ENUM(BattlerOption, size_t, LessDamage,
+BETTER_ENUM(BattlerOption, ts::unsigned_t, LessDamage,
             BEGIN = LessDamage, ///< 1/4 damage less
             HigherGuard,        ///< 1/4 damage less by defending
             DoubleItemEffect,   ///< Double Effect of UseItem, recover HP/MP
@@ -97,7 +97,7 @@ class Battler {
     /// Resist of Element (key => Element Name, value = Resist)
     std::unordered_map<std::string, Resist> elementresist_;
 
-    earr::enum_array<BattlerOption, bool> option_;
+    earr::enum_array<BattlerOption, option_t> option_;
 
     std::string name_;
 

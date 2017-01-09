@@ -13,4 +13,6 @@ git subtree pull --prefix tools/makedata/lib/cxxopts https://github.com/jarro278
 
 git subtree pull --prefix backend/lib/GSL/tests/unittest-cpp https://github.com/unittest-cpp/unittest-cpp master --squash 
 git subtree pull --prefix backend/lib/GSL https://github.com/Microsoft/GSL master --squash 
+
 git subtree pull --prefix backend/lib/type_safe https://github.com/foonathan/type_safe master --squash 
+git subtree pull --prefix backend/lib/type_safe/external/debug_assert https://github.com/foonathan/debug_assert master --squash 

@@ -11,8 +11,8 @@ namespace data {
 class Timer {
 
     private:
-    bool isstart_ = false;
-    bool ispause_ = false;
+    option_t isstart_ = false;
+    option_t ispause_ = false;
 
     std::chrono::nanoseconds starttime_;
     std::chrono::nanoseconds pausetime_;
@@ -36,10 +36,10 @@ class Timer {
     void stop();    ///< stop Timer
 
     /// is Timer started
-    bool isStarted() const { return this->isstart_; }
+    option_t isStarted() const { return this->isstart_; }
 
     /// is Timer paused
-    bool isPaused() const { return this->ispause_; }
+    option_t isPaused() const { return this->ispause_; }
 
     /// get current Time in sec
     std::chrono::seconds getTime() const {

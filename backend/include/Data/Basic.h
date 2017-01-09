@@ -10,7 +10,7 @@
 namespace data {
 
 /// Attributes of Hero/Enemy
-BETTER_ENUM(Attribute, size_t, MaxHP,
+BETTER_ENUM(Attribute, ts::unsigned_t, MaxHP,
             BEGIN = MaxHP, ///< Maximal HP
             MaxMP,         ///< Minimal MP
             Atk,           ///< Attack
@@ -21,7 +21,7 @@ BETTER_ENUM(Attribute, size_t, MaxHP,
             END)
 
 /// Resist of Element
-BETTER_ENUM(Resist, size_t, MoreSensitivity,
+BETTER_ENUM(Resist, ts::unsigned_t, MoreSensitivity,
             BEGIN = MoreSensitivity, ///< double damage, 200%
             Sensitivity,             ///< 1/2 damage more, 150%
             Normal,                  ///< normal damage, 100%
@@ -32,7 +32,7 @@ BETTER_ENUM(Resist, size_t, MoreSensitivity,
             END)
 
 /// Item Type
-BETTER_ENUM(ItemType, size_t, Basis,
+BETTER_ENUM(ItemType, ts::unsigned_t, Basis,
             BEGIN = Basis, ///< Basis Item
             Weapon,        ///< Weapon Item
             Shield,        ///< Shield (Armor) Item
@@ -43,7 +43,7 @@ BETTER_ENUM(ItemType, size_t, Basis,
             END)
 
 /// Target
-BETTER_ENUM(TargetOption, size_t, None,
+BETTER_ENUM(TargetOption, ts::unsigned_t, None,
             BEGIN = None,   ///< None
             OneEnemy,       ///< 1 Enemy
             Nenemies,       ///< (Numbers of Atk) enemies
@@ -60,32 +60,37 @@ BETTER_ENUM(TargetOption, size_t, None,
 
 
 
-using attr_t = int;
-using lvl_t = int;
-using percent_rate_t = int;
+using attr_t = ts::int_t;
+using lvl_t = ts::int_t;
+using percent_rate_t = ts::int_t;
+using damage_t = ts::int_t;
+using priority_t = ts::int_t;
 
-using turns_t = size_t;
-using attr_factor_t = double;
-using factor_rate_t = double;
-using noskill_t = int;
-using sensitivity_t = int;
+using turns_t = ts::unsigned_t;
+using attr_factor_t = ts::double_t;
+using factor_rate_t = ts::double_t;
+using noskill_t = ts::int_t;
+using sensitivity_t = ts::int_t;
 
-using bmi_t = double;
-using bodymass_t = double;
-using weight_t = double;
-using bodysize_t = double;
-using luck_t = double;
-using disc_t = double;
-using distribution_factor_t = double;
+using bmi_t = ts::double_t;
+using bodymass_t = ts::double_t;
+using weight_t = ts::double_t;
+using bodysize_t = ts::double_t;
+using luck_t = ts::double_t;
+using disc_t = ts::double_t;
+using distribution_factor_t = ts::double_t;
 
 
-using hungry_t = double;
-using thirsty_t = double;
-using calories_t = double;
+using hungry_t = ts::double_t;
+using thirsty_t = ts::double_t;
+using calories_t = ts::double_t;
 
-using money_t = int;
+using money_t = ts::int_t;
 
-using item_use_t = int;
+using item_use_t = ts::int_t;
+using atknumbers_t = ts::int_t;
+
+using option_t = ts::bool_t;
 
 } // namespace data
 

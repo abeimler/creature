@@ -16,7 +16,7 @@ namespace gamecomp {
 struct ProgressTimer {
     comp::DateTimer timer;     ///< Timer für den Process
     comp::DateTimer fulltimer; ///< Timer für den Proces nach 100% erreicht hat
-    bool isfull = false;       ///< true, wenn 100%
+    ts::bool_t isfull = false;       ///< true, wenn 100%
 
     progresstimer_percent_t value = 0.0;        ///< Proccesswerte
     progresstimer_percent_t overlayvalue = 0.0; ///< Proccesswerte der über 100% liegt

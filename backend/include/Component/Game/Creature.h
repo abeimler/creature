@@ -22,7 +22,7 @@
 namespace gamecomp {
 
 /// Grund des Todes
-BETTER_ENUM(CauseOfDeath, size_t, Alive,
+BETTER_ENUM(CauseOfDeath, ts::unsigned_t, Alive,
             BEGIN = Alive,     ///< Noch am leben
             Starved,           ///< Verhungert
             Thirst,            ///< Verdurstet
@@ -35,7 +35,7 @@ BETTER_ENUM(CauseOfDeath, size_t, Alive,
             END)
 
 /// Grund des Weglaufens
-BETTER_ENUM(CauseOfRunAway, size_t, NotRunAway,
+BETTER_ENUM(CauseOfRunAway, ts::unsigned_t, NotRunAway,
             BEGIN = NotRunAway, ///< Nicht weggelaufen
             Starved,            ///< Verhungert
             Unhappy,            ///< Unglücklich
@@ -49,9 +49,9 @@ struct CreatureHungerComponent {
 };
 
 struct CreatureSleepComponent {
-    bool lighton = false;    ///< Schlaflicht ist an/aus (gut/schlecht schlafen)
-    bool cangosleep = false; ///< Creature ist bereit Schlafen zu gehen
-    bool havegoodsleep = false; ///< hat guten schlaf
+    option_t lighton = false;    ///< Schlaflicht ist an/aus (gut/schlecht schlafen)
+    option_t cangosleep = false; ///< Creature ist bereit Schlafen zu gehen
+    option_t havegoodsleep = false; ///< hat guten schlaf
 };
 
 struct CreatureTrainingComponent {
@@ -70,10 +70,10 @@ struct CreatureTrainingComponent {
     std::chrono::system_clock::time_point end_train;
 
     /// Attribute die Trainiert werden sollen
-    earr::enum_array<data::Attribute, bool> trainattrs;
+    earr::enum_array<data::Attribute, option_t> trainattrs;
 
     /// Attribute die zulezt Trainiert wurden
-    earr::enum_array<data::Attribute, bool> lasttrainattrs;
+    earr::enum_array<data::Attribute, option_t> lasttrainattrs;
 
     /// Werte die beim letzen Training erreicht wurden
     earr::enum_array<data::Attribute, data::attr_t> attrparam_aftertrain;
@@ -131,12 +131,12 @@ struct CreatureLifeComponent {
     CauseOfRunAway causeofrunaway = CauseOfRunAway::NotRunAway;
 
     /// true, es ist geboren/geschlüpft ist
-    bool born = false;
+    option_t born = false;
 
     /// true, BattlerStatus ist Tot und die Creature vollkommen tot
-    bool isdead = false;
+    option_t isdead = false;
 
-    bool inbattle = false;
+    option_t inbattle = false;
 
     /// Maximale Lebensdauer (Lebenserwartung)
     lifetime_t maxlifetime;
@@ -161,25 +161,25 @@ struct CreatureLifeComponent {
     data::lvl_t oldlevel = 0;
 
     /// hat Creature bestimmten Status
-    earr::enum_array<data::CreatureStatus, bool> hasstatus;
+    earr::enum_array<data::CreatureStatus, option_t> hasstatus;
 
     /// Creature ist beschaeftigt
-    bool isbusy = false;
+    option_t isbusy = false;
 
     /// Gelangweilt
-    bool bored = false;
+    option_t bored = false;
 
     /// Bereicht sich zu entwickeln
-    bool readytoevolve = false;
+    option_t readytoevolve = false;
 
     /// is fähig etwas zu essen
-    bool caneat = false;
+    option_t caneat = false;
 
     /// is fähig etwas zu trinken
-    bool candrink = false;
+    option_t candrink = false;
 
     /// is fähig etwas zu trainieren
-    bool cantrain = false;
+    option_t cantrain = false;
 };
 } // namespace gamecomp
 

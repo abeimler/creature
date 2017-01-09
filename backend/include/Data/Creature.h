@@ -8,9 +8,9 @@
 namespace data {
 
 /// Creature Normal-Animation Frames
-BETTER_ENUM(CreatureAnimation, size_t,
+BETTER_ENUM(CreatureAnimation, ts::unsigned_t,
             /// start at 12, see AnimationPose
-            Standing = static_cast<size_t>(AnimationPose::END),
+            Standing = +AnimationPose::END,
             BEGIN = Standing, ///< Standing
             WalkingLeft,      ///< Walking left
             WalkingRight,     ///< Walking right
@@ -22,9 +22,9 @@ BETTER_ENUM(CreatureAnimation, size_t,
             END)
 
 /// Creature Misc-Animation Frames
-BETTER_ENUM(CreatureAnimationMisc, size_t,
+BETTER_ENUM(CreatureAnimationMisc, ts::unsigned_t,
             /// start at 20, see CreatureAnimation
-            Born = static_cast<size_t>(CreatureAnimation::END),
+            Born = +CreatureAnimation::END,
             BEGIN = Born,  ///< Is Born
             Happy = BEGIN, ///< Happy
             EvolutionFrom, ///< evolution from ...
@@ -33,9 +33,9 @@ BETTER_ENUM(CreatureAnimationMisc, size_t,
 
 
 /// Creature Status-Animation Frames
-BETTER_ENUM(CreatureStatusAnimation, size_t,
+BETTER_ENUM(CreatureStatusAnimation, ts::unsigned_t,
             /// start at 23, see CreatureAnimationMisc
-            Normal = static_cast<size_t>(CreatureAnimationMisc::END),
+            Normal = +CreatureAnimationMisc::END,
             BEGIN = Normal,
             Dead,     ///< Dead
             RunAway,  ///< Run Away
@@ -47,7 +47,7 @@ BETTER_ENUM(CreatureStatusAnimation, size_t,
 
 
 /// GameCreature Status
-BETTER_ENUM(CreatureStatus, size_t, Normal,
+BETTER_ENUM(CreatureStatus, ts::unsigned_t, Normal,
             BEGIN = Normal, ///< Normal Status (no Statuses)
             Dead,           ///< Dead
             RunAway,        ///< Run Away
@@ -67,7 +67,7 @@ BETTER_ENUM(CreatureStatus, size_t, Normal,
             END)
 
 /// Creature Level
-BETTER_ENUM(CreatureLevel, size_t, Egg,
+BETTER_ENUM(CreatureLevel, ts::unsigned_t, Egg,
             BEGIN = Egg, ///< Egg
             Baby,        ///< Baby
             Baby2,       ///< Baby2
@@ -79,7 +79,7 @@ BETTER_ENUM(CreatureLevel, size_t, Egg,
 
 /// Creature Circadian Rhythm
 BETTER_ENUM(
-    CreatureCircadianRhythm, size_t, None,
+    CreatureCircadianRhythm, ts::unsigned_t, None,
     BEGIN = None, ///< None
     Crepuscular,  ///< Crepuscular      during twilight (i.e., dawn and dusk).
     Diurnal,      ///< Diurnal          during the day and sleeping, or other
@@ -91,7 +91,7 @@ BETTER_ENUM(
     END)
 
 /// Creature TrainingTime/ActiveTime
-BETTER_ENUM(CreatureTrainTime, size_t, Morning,
+BETTER_ENUM(CreatureTrainTime, ts::unsigned_t, Morning,
             BEGIN = Morning, ///< Morning:      4 - 11 o'clock
             Noon,            ///< Noon:         12 - 16 o'clock
             AfterNoon,       ///< AfterNoon:    17 - 19 o'clock
@@ -115,14 +115,14 @@ class EvolutionCondition {
     weight_t weight_ = 0.0;
     luck_t luck_ = 0.0;
     disc_t disc_ = 0.0;
-    bool wasnotill_ = false;
-    bool wasnothurt_ = false;
+    option_t wasnotill_ = false;
+    option_t wasnothurt_ = false;
 
     lvl_t mustevolveatlevel_ = MUSTEVOLVEATLEVEL_NONE;
 
     earr::enum_array<Attribute, attr_t> attr_;
 
-    earr::enum_array<CreatureTrainTime, bool> traintime_;
+    earr::enum_array<CreatureTrainTime, option_t> traintime_;
 
     public:
     template <class Archive>
@@ -159,10 +159,10 @@ class EvolutionCondition {
     disc_t getDisc() const { return this->disc_; }
 
     /// true when was not ill
-    bool wasNotIll() const { return this->wasnotill_; }
+    option_t wasNotIll() const { return this->wasnotill_; }
 
     /// true when was not hurt
-    bool wasNotHurt() const { return this->wasnothurt_; }
+    option_t wasNotHurt() const { return this->wasnothurt_; }
 
     /// must evolve at Level (-1 = ignore)
     lvl_t getMustEvolveAtLevel() const { return this->mustevolveatlevel_; }
@@ -173,7 +173,7 @@ class EvolutionCondition {
     }
 
     /// Creature TrainingTimes/ActiveTimes
-    const earr::enum_array<CreatureTrainTime, bool>& getTrainTime() const {
+    const earr::enum_array<CreatureTrainTime, option_t>& getTrainTime() const {
         return this->traintime_;
     }
 
@@ -199,9 +199,9 @@ class EvolutionCondition {
 
     void setDisc(disc_t disc) { this->disc_ = disc; }
 
-    void setWasNotIll(bool wasnotill) { this->wasnotill_ = wasnotill; }
+    void setWasNotIll(option_t wasnotill) { this->wasnotill_ = wasnotill; }
 
-    void setWasNotHurt(bool wasnothurt) { this->wasnothurt_ = wasnothurt; }
+    void setWasNotHurt(option_t wasnothurt) { this->wasnothurt_ = wasnothurt; }
 
     void setMustEvolveAtLevel(lvl_t level) { this->mustevolveatlevel_ = level; }
 
@@ -219,7 +219,7 @@ class EvolutionCondition {
     }
 
     void
-    setTrainTime(const earr::enum_array<CreatureTrainTime, bool>& traintime) {
+    setTrainTime(const earr::enum_array<CreatureTrainTime, option_t>& traintime) {
         this->traintime_ = traintime;
     }
 
@@ -228,7 +228,7 @@ class EvolutionCondition {
      * @param value TrainingTime condition on/off
      * @brief set Creature TrainingTime/ActiveTime option
      */
-    void setTrainTime(CreatureTrainTime traintime, bool value) {
+    void setTrainTime(CreatureTrainTime traintime, option_t value) {
         earr::enum_array_set(this->traintime_, traintime, value);
     }
 };

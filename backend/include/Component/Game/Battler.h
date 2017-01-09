@@ -15,14 +15,14 @@ namespace gamecomp {
 struct BattlerDamage {
     data::attr_t hpdamage = 0;            ///< damage of HP
     data::attr_t mpdamage = 0;            ///< damage of MP
-    bool ismiss = false;         ///< is attack Miss
-    bool iseva = false;          ///< is Enemy evade
-    bool isimmune = false;       ///< is Enemy Immune (Elements)
-    bool isimmunestatus = false; ///< is Enemy Immune (BattlerStatus)
-    bool iscriticalhit = false;  ///< is Critical Hit
-    bool isabsorbhp = false;     ///< is absorb HP effect
-    bool isabsorbmp = false;     ///< is absorb MP effect
-    bool iszerodamage = false;   ///< have no Damage
+    option_t ismiss = false;         ///< is attack Miss
+    option_t iseva = false;          ///< is Enemy evade
+    option_t isimmune = false;       ///< is Enemy Immune (Elements)
+    option_t isimmunestatus = false; ///< is Enemy Immune (BattlerStatus)
+    option_t iscriticalhit = false;  ///< is Critical Hit
+    option_t isabsorbhp = false;     ///< is absorb HP effect
+    option_t isabsorbmp = false;     ///< is absorb MP effect
+    option_t iszerodamage = false;   ///< have no Damage
 };
 
 struct BattlerStatusTurn {
@@ -70,12 +70,12 @@ struct BattlerBattleStateComponent {
     data::turns_t turn = 0;
 
     /// Battler Option
-    earr::enum_array<data::BattlerOption, bool> option;
+    earr::enum_array<data::BattlerOption, option_t> option;
 
-    bool immortal = false;    ///< immortal Battler
-    bool active = true;       ///< Battler is active on BattleField
-    bool isdefending = false; ///< Battler is Definding
-    bool isescapeing = false; ///< is escapeing (in Battle)
+    option_t immortal = false;    ///< immortal Battler
+    option_t active = true;       ///< Battler is active on BattleField
+    option_t isdefending = false; ///< Battler is Definding
+    option_t isescapeing = false; ///< is escapeing (in Battle)
 };
 
 struct BattlerResistsComponent {
