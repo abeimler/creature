@@ -33,19 +33,18 @@ class CreatureTryToEvolveListener : public Listener<gameevent::CreatureTryToEvol
                                 const gamecomp::CreatureBodilyStateComponent& bodilystate,
                                 const data::EvolutionCondition& condition);
 
-    void tryEvolve(gameentity::Entity entity, EventBus& events,
+    bool tryEvolve(gameentity::Entity entity, EventBus& events,
                     gamecomp::CreatureDataComponent& creature_data,
                     gamecomp::CreatureBattlerComponent& creature_battler,
                     gamecomp::CreatureTrainingComponent& training,
                     gamecomp::CreaturePsycheComponent& psyche,
                     gamecomp::CreatureBodyComponent& body,
                     gamecomp::CreatureBodilyStateComponent& bodilystate,
-                    bool& isEvol,
                     size_t nextcreatures_index, size_t nextcreatures_size, const data::Creature& nextcreature, 
                     bool goodevolve);
 
     
-    void tryEvolveFromList(gameentity::Entity entity, EventBus& events,
+    bool tryEvolveFromList(gameentity::Entity entity, EventBus& events,
                             const std::vector<std::string>& nextcreatures,
                             gamecomp::CreatureDataComponent& creature_data,
                             gamecomp::CreatureBattlerComponent& creature_battler,
@@ -53,7 +52,7 @@ class CreatureTryToEvolveListener : public Listener<gameevent::CreatureTryToEvol
                             gamecomp::CreaturePsycheComponent& psyche,
                             gamecomp::CreatureBodyComponent& body,
                             gamecomp::CreatureBodilyStateComponent& bodilystate,
-                            bool& isEvol,
+                            bool isEvol,
                             bool goodevolve);
 
     public:

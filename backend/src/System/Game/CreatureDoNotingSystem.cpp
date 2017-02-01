@@ -11,17 +11,17 @@ void CreatureDoNotingSystem::updateDoNothing(
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureLifeComponent& life) {
 
-    bool isrunaway =
+    auto isrunaway =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway);
-    bool issleep =
+    auto issleep =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Sleep);
-    bool isinhospital =
+    auto isinhospital =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::InHospital);
-    bool isrestinhospital = earr::enum_array_at(
+    auto isrestinhospital = earr::enum_array_at(
         life.hasstatus, +data::CreatureStatus::RestInHospital);
-    bool isrest =
+    auto isrest =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Rest);
-    bool istraining =
+    auto istraining =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Training);
 
     auto& bored_timer = earr::enum_array_at(

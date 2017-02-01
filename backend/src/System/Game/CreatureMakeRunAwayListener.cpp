@@ -11,7 +11,7 @@ void CreatureMakeRunAwayListener::makeCreaturerRunAway(
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureLifeComponent& life,
     gamecomp::CauseOfRunAway causeofrunaway, gamecomp::waittime_t waittime) {
-    bool isrunaway =
+    auto isrunaway =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway);
 
 

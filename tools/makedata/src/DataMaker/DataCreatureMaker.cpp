@@ -83,12 +83,12 @@ void DataCreatureMaker::makeDataCreature(
         attrBasis = util::random(std::get<0>(rand_attrBasis),
                                  std::get<1>(rand_attrBasis));
 
-        attrBasis *= (attr == +data::Attribute::MaxHP)
-                         ? util::random(40, 55) / 10.0f
-                         : 1.0f;
-        attrBasis *= (attr == +data::Attribute::MaxMP)
-                         ? util::random(35, 45) / 10.0f
-                         : 1.0f;
+        attrBasis = attrBasis * ((attr == +data::Attribute::MaxHP)
+                         ? util::random(40, 55) / 10.0
+                         : 1.0);
+        attrBasis = attrBasis * ((attr == +data::Attribute::MaxMP)
+                         ? util::random(35, 45) / 10.0
+                         : 1.0);
     }
     data_creature.setAttrBasis(data_creature_attrBasis);
 
@@ -102,12 +102,12 @@ void DataCreatureMaker::makeDataCreature(
         attrInfla = util::random(std::get<0>(rand_attrInfla),
                                  std::get<1>(rand_attrInfla));
 
-        attrInfla *= (attr == +data::Attribute::MaxHP)
-                         ? util::random(40, 50) / 10.0f
-                         : 1.0f;
-        attrInfla *= (attr == +data::Attribute::MaxMP)
-                         ? util::random(35, 45) / 10.0f
-                         : 1.0f;
+        attrInfla = attrInfla * ((attr == +data::Attribute::MaxHP)
+                         ? util::random(40, 50) / 10.0
+                         : 1.0);
+        attrInfla = attrInfla * ((attr == +data::Attribute::MaxMP)
+                         ? util::random(35, 45) / 10.0
+                         : 1.0);
     }
     data_creature.setAttrInflation(data_creature_attrInflation);
 
@@ -130,30 +130,30 @@ void DataCreatureMaker::makeDataCreature(
         data_creature.getEvolCondition();
     data_creature_evolCondition.setWeight(evol_weight);
 
-    float min_bodysize = bodysize * 0.7f;
-    float max_bodysize = bodysize * 1.7f;
+    double min_bodysize = bodysize * 0.7;
+    double max_bodysize = bodysize * 1.7;
     data_creature.setBodySizeMin(min_bodysize);
     data_creature.setBodySizeMax(max_bodysize);
 
 
-    float min_weight = evol_weight * 0.4f;
-    float max_weight = evol_weight * 8;
+    double min_weight = evol_weight * 0.4;
+    double max_weight = evol_weight * 8;
     data_creature.setMinWeight(min_weight);
     data_creature.setMaxWeight(max_weight);
 
 
     // not used
     /*
-    float min_bmi = 18;
-    float ideal_bmi = 26;
-    float max_bmi = 50;
+    double min_bmi = 18;
+    double ideal_bmi = 26;
+    double max_bmi = 50;
     if (evol_weight >= 50 && bodysize >= 6) {
         min_bmi = 20;
         ideal_bmi = 33;
         max_bmi = 50;
     }
     */
-    // float bodymass = this->creaturecreator_.getBodyMass(bodysize,
+    // double bodymass = this->creaturecreator_.getBodyMass(bodysize,
     // evol_weight, min_weight, ideal_bmi, min_bmi, max_bmi);
 
 
@@ -273,11 +273,11 @@ void DataCreatureMaker::makeDataCreature(
     switch (creatureLevel) {
         case data::CreatureLevel::Child:
             data_creature_evolCondition.setMustEvolveAtLevel(
-                std::min<int>(lvl * 2.0f, data_creature.getMaxLvL()));
+                std::min<int>(lvl * 2.0, data_creature.getMaxLvL()));
             break;
         case data::CreatureLevel::Adult:
             data_creature_evolCondition.setMustEvolveAtLevel(
-                std::min<int>(lvl * 1.5f, data_creature.getMaxLvL()));
+                std::min<int>(lvl * 1.5, data_creature.getMaxLvL()));
             break;
         case data::CreatureLevel::Perfect:
             data_creature_evolCondition.setMustEvolveAtLevel(
@@ -316,75 +316,75 @@ void DataCreatureMaker::makeDataCreature(
             break;
         case DataCreatureClass::Warrior:
             class_attr_factor[+data::Attribute::MaxHP] = 1.023;
-            class_attr_factor[+data::Attribute::MaxMP] = 0.802f;
-            class_attr_factor[+data::Attribute::Atk] = 1.209f;
-            class_attr_factor[+data::Attribute::Def] = 1.023f;
-            class_attr_factor[+data::Attribute::Agi] = 1.267f;
-            class_attr_factor[+data::Attribute::Int] = 0.837f;
+            class_attr_factor[+data::Attribute::MaxMP] = 0.802;
+            class_attr_factor[+data::Attribute::Atk] = 1.209;
+            class_attr_factor[+data::Attribute::Def] = 1.023;
+            class_attr_factor[+data::Attribute::Agi] = 1.267;
+            class_attr_factor[+data::Attribute::Int] = 0.837;
             break;
         case DataCreatureClass::Knight:
-            class_attr_factor[+data::Attribute::MaxHP] = 1.378f;
-            class_attr_factor[+data::Attribute::MaxMP] = 0.869f;
-            class_attr_factor[+data::Attribute::Atk] = 1.029f;
-            class_attr_factor[+data::Attribute::Def] = 0.913f;
-            class_attr_factor[+data::Attribute::Agi] = 0.985f;
-            class_attr_factor[+data::Attribute::Int] = 0.913f;
+            class_attr_factor[+data::Attribute::MaxHP] = 1.378;
+            class_attr_factor[+data::Attribute::MaxMP] = 0.869;
+            class_attr_factor[+data::Attribute::Atk] = 1.029;
+            class_attr_factor[+data::Attribute::Def] = 0.913;
+            class_attr_factor[+data::Attribute::Agi] = 0.985;
+            class_attr_factor[+data::Attribute::Int] = 0.913;
             break;
         case DataCreatureClass::Starter:
-            class_attr_factor[+data::Attribute::MaxHP] = 0.948f;
-            class_attr_factor[+data::Attribute::MaxMP] = 0.991f;
-            class_attr_factor[+data::Attribute::Atk] = 0.948f;
-            class_attr_factor[+data::Attribute::Def] = 1.087f;
-            class_attr_factor[+data::Attribute::Agi] = 1.201f;
-            class_attr_factor[+data::Attribute::Int] = 0.913f;
+            class_attr_factor[+data::Attribute::MaxHP] = 0.948;
+            class_attr_factor[+data::Attribute::MaxMP] = 0.991;
+            class_attr_factor[+data::Attribute::Atk] = 0.948;
+            class_attr_factor[+data::Attribute::Def] = 1.087;
+            class_attr_factor[+data::Attribute::Agi] = 1.201;
+            class_attr_factor[+data::Attribute::Int] = 0.913;
             break;
         case DataCreatureClass::Thief:
-            class_attr_factor[+data::Attribute::MaxHP] = 0.797f;
-            class_attr_factor[+data::Attribute::MaxMP] = 0.927f;
-            class_attr_factor[+data::Attribute::Atk] = 0.797f;
-            class_attr_factor[+data::Attribute::Def] = 0.913f;
-            class_attr_factor[+data::Attribute::Agi] = 1.392f;
-            class_attr_factor[+data::Attribute::Int] = 1.087f;
+            class_attr_factor[+data::Attribute::MaxHP] = 0.797;
+            class_attr_factor[+data::Attribute::MaxMP] = 0.927;
+            class_attr_factor[+data::Attribute::Atk] = 0.797;
+            class_attr_factor[+data::Attribute::Def] = 0.913;
+            class_attr_factor[+data::Attribute::Agi] = 1.392;
+            class_attr_factor[+data::Attribute::Int] = 1.087;
             break;
         case DataCreatureClass::WarriorThief:
-            class_attr_factor[+data::Attribute::MaxHP] = 1.116f;
-            class_attr_factor[+data::Attribute::MaxMP] = 0.895f;
-            class_attr_factor[+data::Attribute::Atk] = 1.302f;
-            class_attr_factor[+data::Attribute::Def] = 1.023f;
-            class_attr_factor[+data::Attribute::Agi] = 0.988f;
-            class_attr_factor[+data::Attribute::Int] = 0.837f;
+            class_attr_factor[+data::Attribute::MaxHP] = 1.116;
+            class_attr_factor[+data::Attribute::MaxMP] = 0.895;
+            class_attr_factor[+data::Attribute::Atk] = 1.302;
+            class_attr_factor[+data::Attribute::Def] = 1.023;
+            class_attr_factor[+data::Attribute::Agi] = 0.988;
+            class_attr_factor[+data::Attribute::Int] = 0.837;
             break;
         case DataCreatureClass::Hunter:
-            class_attr_factor[+data::Attribute::MaxHP] = 1.023f;
-            class_attr_factor[+data::Attribute::MaxMP] = 0.849f;
-            class_attr_factor[+data::Attribute::Atk] = 1.116f;
-            class_attr_factor[+data::Attribute::Def] = 1.023f;
-            class_attr_factor[+data::Attribute::Agi] = 1.314f;
-            class_attr_factor[+data::Attribute::Int] = 0.837f;
+            class_attr_factor[+data::Attribute::MaxHP] = 1.023;
+            class_attr_factor[+data::Attribute::MaxMP] = 0.849;
+            class_attr_factor[+data::Attribute::Atk] = 1.116;
+            class_attr_factor[+data::Attribute::Def] = 1.023;
+            class_attr_factor[+data::Attribute::Agi] = 1.314;
+            class_attr_factor[+data::Attribute::Int] = 0.837;
             break;
         case DataCreatureClass::Wizard:
-            class_attr_factor[+data::Attribute::MaxHP] = 0.835f;
-            class_attr_factor[+data::Attribute::MaxMP] = 1.265f;
-            class_attr_factor[+data::Attribute::Atk] = 0.909f;
-            class_attr_factor[+data::Attribute::Def] = 0.835f;
-            class_attr_factor[+data::Attribute::Agi] = 0.973f;
-            class_attr_factor[+data::Attribute::Int] = 1.091f;
+            class_attr_factor[+data::Attribute::MaxHP] = 0.835;
+            class_attr_factor[+data::Attribute::MaxMP] = 1.265;
+            class_attr_factor[+data::Attribute::Atk] = 0.909;
+            class_attr_factor[+data::Attribute::Def] = 0.835;
+            class_attr_factor[+data::Attribute::Agi] = 0.973;
+            class_attr_factor[+data::Attribute::Int] = 1.091;
             break;
         case DataCreatureClass::Mage:
-            class_attr_factor[+data::Attribute::MaxHP] = 0.988f;
-            class_attr_factor[+data::Attribute::MaxMP] = 1.042f;
-            class_attr_factor[+data::Attribute::Atk] = 1.036f;
-            class_attr_factor[+data::Attribute::Def] = 1.036f;
-            class_attr_factor[+data::Attribute::Agi] = 0.970f;
-            class_attr_factor[+data::Attribute::Int] = 0.964f;
+            class_attr_factor[+data::Attribute::MaxHP] = 0.988;
+            class_attr_factor[+data::Attribute::MaxMP] = 1.042;
+            class_attr_factor[+data::Attribute::Atk] = 1.036;
+            class_attr_factor[+data::Attribute::Def] = 1.036;
+            class_attr_factor[+data::Attribute::Agi] = 0.970;
+            class_attr_factor[+data::Attribute::Int] = 0.964;
             break;
         case DataCreatureClass::Healer:
-            class_attr_factor[+data::Attribute::MaxHP] = 1.024f;
-            class_attr_factor[+data::Attribute::MaxMP] = 0.988f;
-            class_attr_factor[+data::Attribute::Atk] = 1.071f;
-            class_attr_factor[+data::Attribute::Def] = 1.024f;
-            class_attr_factor[+data::Attribute::Agi] = 0.845f;
-            class_attr_factor[+data::Attribute::Int] = 1.024f;
+            class_attr_factor[+data::Attribute::MaxHP] = 1.024;
+            class_attr_factor[+data::Attribute::MaxMP] = 0.988;
+            class_attr_factor[+data::Attribute::Atk] = 1.071;
+            class_attr_factor[+data::Attribute::Def] = 1.024;
+            class_attr_factor[+data::Attribute::Agi] = 0.845;
+            class_attr_factor[+data::Attribute::Int] = 1.024;
             break;
     }
 
@@ -408,31 +408,31 @@ void DataCreatureMaker::makeDataCreature(
                 ((lvl < 5) ? (attrs[lvl] * 0.36) : (attrs[lvl] * 0.71)) + 1;
 
             if (creatureLevel > +data::CreatureLevel::Child) {
-                min *= (index == +data::Attribute::MaxHP)
-                           ? 1 + util::random(20, 25) / 1000.0f
-                           : 1.0f;
-                max *= (index == +data::Attribute::MaxHP)
-                           ? 1 + util::random(25, 30) / 1000.0f
-                           : 1.0f;
-                min *= (index == +data::Attribute::MaxMP)
-                           ? 1 + util::random(15, 20) / 1000.0f
-                           : 1.0f;
-                max *= (index == +data::Attribute::MaxMP)
-                           ? 1 + util::random(20, 25) / 1000.0f
-                           : 1.0f;
+                min = min * ((index == +data::Attribute::MaxHP)
+                           ? 1 + util::random(20, 25) / 1000.0
+                           : 1.0);
+                max = max * ((index == +data::Attribute::MaxHP)
+                           ? 1 + util::random(25, 30) / 1000.0
+                           : 1.0);
+                min = min * ((index == +data::Attribute::MaxMP)
+                           ? 1 + util::random(15, 20) / 1000.0
+                           : 1.0);
+                max = max * ((index == +data::Attribute::MaxMP)
+                           ? 1 + util::random(20, 25) / 1000.0
+                           : 1.0);
             } else {
-                min *= (index == +data::Attribute::MaxHP)
-                           ? 1 + util::random(25, 35) / 1000.0f
-                           : 1.0f;
-                max *= (index == +data::Attribute::MaxHP)
-                           ? 1 + util::random(35, 40) / 1000.0f
-                           : 1.0f;
-                min *= (index == +data::Attribute::MaxMP)
-                           ? 1 + util::random(20, 30) / 1000.0f
-                           : 1.0f;
-                max *= (index == +data::Attribute::MaxMP)
-                           ? 1 + util::random(30, 35) / 1000.0f
-                           : 1.0f;
+                min = min * ((index == +data::Attribute::MaxHP)
+                           ? 1 + util::random(25, 35) / 1000.0
+                           : 1.0);
+                max = max * ((index == +data::Attribute::MaxHP)
+                           ? 1 + util::random(35, 40) / 1000.0
+                           : 1.0);
+                min = min * ((index == +data::Attribute::MaxMP)
+                           ? 1 + util::random(20, 30) / 1000.0
+                           : 1.0);
+                max = max * ((index == +data::Attribute::MaxMP)
+                           ? 1 + util::random(30, 35) / 1000.0
+                           : 1.0);
             }
 
             data_creature_evolCondition.setAttr(index, util::random(min, max));
@@ -528,66 +528,66 @@ void DataCreatureMaker::makeDataCreature(
 
     switch (creatureLevel) {
         case data::CreatureLevel::Baby:
-            rand_attrBasis = {5, 10};
-            rand_attrInfla = {3, 6};
-            rand_expBasis = {64, 128};
-            rand_expInfla = {2, 8};
-            minmax_lvl = {1, 50};
+            rand_attrBasis = std::make_tuple(5, 10);
+            rand_attrInfla = std::make_tuple(3, 6);
+            rand_expBasis = std::make_tuple(64, 128);
+            rand_expInfla = std::make_tuple(2, 8);
+            minmax_lvl = std::make_tuple(1, 50);
             criticalHit = 10;
             hitRate = 80;
             break;
         case data::CreatureLevel::Baby2:
-            rand_attrBasis = {5, 10};
-            rand_attrInfla = {4, 8};
-            rand_expBasis = {64, 128};
-            rand_expInfla = {2, 8};
-            minmax_lvl = {1, 80};
+            rand_attrBasis = std::make_tuple(5, 10);
+            rand_attrInfla = std::make_tuple(4, 8);
+            rand_expBasis = std::make_tuple(64, 128);
+            rand_expInfla = std::make_tuple(2, 8);
+            minmax_lvl = std::make_tuple(1, 80);
             criticalHit = 10;
             hitRate = 80;
             break;
         case data::CreatureLevel::Child:
-            rand_attrBasis = {8, 15};
-            rand_attrInfla = {12, 18};
-            rand_expBasis = {64, 128};
-            rand_expInfla = {16, 32};
-            minmax_lvl = {1, 100};
+            rand_attrBasis = std::make_tuple(8, 15);
+            rand_attrInfla = std::make_tuple(12, 18);
+            rand_expBasis = std::make_tuple(64, 128);
+            rand_expInfla = std::make_tuple(16, 32);
+            minmax_lvl = std::make_tuple(1, 100);
             criticalHit = 20;
             hitRate = 90;
             break;
         case data::CreatureLevel::Adult:
-            rand_attrBasis = {13, 21};
-            rand_attrInfla = {16, 25};
-            rand_expBasis = {128, 128};
-            rand_expInfla = {128, 256};
-            minmax_lvl = {1, 100};
+            rand_attrBasis = std::make_tuple(13, 21);
+            rand_attrInfla = std::make_tuple(16, 25);
+            rand_expBasis = std::make_tuple(128, 128);
+            rand_expInfla = std::make_tuple(128, 256);
+            minmax_lvl = std::make_tuple(1, 100);
             criticalHit = 30;
             hitRate = 90;
             break;
         case data::CreatureLevel::Perfect:
-            rand_attrBasis = {18, 28};
-            rand_attrInfla = {23, 32};
-            rand_expBasis = {128, 256};
-            rand_expInfla = {128, 256};
-            minmax_lvl = {1, 128};
+            rand_attrBasis = std::make_tuple(18, 28);
+            rand_attrInfla = std::make_tuple(23, 32);
+            rand_expBasis = std::make_tuple(128, 256);
+            rand_expInfla = std::make_tuple(128, 256);
+            minmax_lvl = std::make_tuple(1, 128);
             criticalHit = 30;
             hitRate = 90;
             break;
         case data::CreatureLevel::Ultimate:
-            rand_attrBasis = {25, 32};
-            rand_attrInfla = {29, 36};
-            rand_expBasis = {128, 256};
-            rand_expInfla = {128, 256};
-            minmax_lvl = {1, 255};
+            rand_attrBasis = std::make_tuple(25, 32);
+            rand_attrInfla = std::make_tuple(29, 36);
+            rand_expBasis = std::make_tuple(128, 256);
+            rand_expInfla = std::make_tuple(128, 256);
+            minmax_lvl = std::make_tuple(1, 255);
             criticalHit = 30;
             hitRate = 90;
             break;
         case data::CreatureLevel::Egg:
         case data::CreatureLevel::END:
-            rand_attrBasis = {1, 1};
-            rand_attrInfla = {1, 1};
-            rand_expBasis = {1, 1};
-            rand_expInfla = {1, 1};
-            minmax_lvl = {1, 1};
+            rand_attrBasis = std::make_tuple(1, 1);
+            rand_attrInfla = std::make_tuple(1, 1);
+            rand_expBasis = std::make_tuple(1, 1);
+            rand_expInfla = std::make_tuple(1, 1);
+            minmax_lvl = std::make_tuple(1, 1);
             criticalHit = 0;
             hitRate = 0;
             break;

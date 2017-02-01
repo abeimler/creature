@@ -46,7 +46,7 @@ void CreatureBattlerCreatureAddExpListener::update(
 
     for (auto entity :
          entities.entities_with_components(creature_data, creature_battler)) {
-        int add_exp = event.exp;
+        auto add_exp = event.exp;
         addExp(*creature_data.get(), *creature_battler.get(), add_exp);
     }
 }

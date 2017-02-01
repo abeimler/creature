@@ -9,7 +9,7 @@ namespace data {
 
 
 ///  BattlerStatus Restriction (order by smallest effect (first))
-BETTER_ENUM(StatusRestrictionOption, ts::unsigned_t, None,
+BETTER_ENUM(StatusRestrictionOption, size_t, None,
             BEGIN = None, ///< None
             AtkEnemies,   ///< allways attack enemies
             AtkAllies,    ///< allways attack allies
@@ -19,7 +19,7 @@ BETTER_ENUM(StatusRestrictionOption, ts::unsigned_t, None,
             END)
 
 /// BattlerStatus Option
-BETTER_ENUM(StatusOption, ts::unsigned_t, EvadePhysical,
+BETTER_ENUM(StatusOption, size_t, EvadePhysical,
             BEGIN = EvadePhysical, ///< can't hit by physical attacks
             ReflectSkills,         ///< Skill reflected back to the user
             Dead,                  ///< dead/knockout
@@ -31,7 +31,7 @@ class StatusExtent {
     private:
     option_t afterbattle_ = false;
     option_t bydamage_ = false;
-    turns_t turn_ = 0;
+    turns_t turn_ = 0u;
     percent_rate_t rate_ = 30;
 
     public:
@@ -61,9 +61,9 @@ class StatusExtent {
 class StatusDamage {
     private:
     damage_t value_ = 0;
-    option_t ispercent_ = 0;
+    option_t ispercent_ = false;
 
-    damage_t damageperstep_ = false;
+    damage_t damageperstep_ = 0;
 
     public:
     template <class Archive>
@@ -100,7 +100,7 @@ class BattlerStatus {
     std::string name_;
     priority_t priority_ = 0;
 
-    earr::enum_array<Attribute, attr_factor_t> attr_;
+    earr::enum_array<Attribute, attr_factor_t> attr_factor_;
 
     StatusExtent extent_;
 
@@ -132,7 +132,7 @@ class BattlerStatus {
     template <class Archive>
     void serialize(Archive& ar) {
         ar(cereal::make_nvp("name", name_));
-        ar(cereal::make_nvp("attr", attr_));
+        ar(cereal::make_nvp("attr_factor", attr_factor_));
         ar(cereal::make_nvp("priority", priority_));
 
         ar(cereal::make_nvp("extent", extent_));
@@ -184,16 +184,16 @@ class BattlerStatus {
     std::string getName() const { return this->name_; }
 
     /// Attribute Boni
-    const earr::enum_array<Attribute, attr_factor_t>& getAttr() const {
-        return this->attr_;
+    const earr::enum_array<Attribute, attr_factor_t>& getAttrFactor() const {
+        return this->attr_factor_;
     }
 
     /**
      * @param attr Attribute
      * @return Attribute Boni
      */
-    attr_factor_t getAttr(Attribute attr) const {
-        return earr::enum_array_at(this->attr_, attr);
+    attr_factor_t getAttrFactor(Attribute attr) const {
+        return earr::enum_array_at(this->attr_factor_, attr);
     }
 
     /// BattlerStatus extent (remove condition)
@@ -281,12 +281,12 @@ class BattlerStatus {
 
     void setName(std::string name) { this->name_ = name; }
 
-    void setAttr(const earr::enum_array<Attribute, attr_factor_t>& attr) {
-        this->attr_ = attr;
+    void setAttrFactor(const earr::enum_array<Attribute, attr_factor_t>& attr) {
+        this->attr_factor_ = attr;
     }
 
-    void setAttr(Attribute attr, attr_factor_t value) {
-        earr::enum_array_set(this->attr_, attr, value);
+    void setAttrFactor(Attribute attr, attr_factor_t value) {
+        earr::enum_array_set(this->attr_factor_, attr, value);
     }
 
     void setExtent(const StatusExtent& extent) { this->extent_ = extent; }

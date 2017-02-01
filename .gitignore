@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/linux,windows,osx,cmake,c++,netbeans,visualstudio,visualstudiocode
+# Created by https://www.gitignore.io/api/linux,windows,osx,cmake,c++,netbeans,visualstudio,visualstudiocode,kdevelop4
 
 ### Linux ###
 *~
@@ -400,3 +400,10 @@ __pycache__/
 
 ### VisualStudio Patch ###
 build/
+
+
+### KDevelop4 ###
+*.kdev4
+.kdev4/
+
+# End of https://www.gitignore.io/api/kdevelop4

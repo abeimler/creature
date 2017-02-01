@@ -122,6 +122,7 @@ CreatureProgressTimerSystem::updateMediumTermMemoryTimer(
 gamecomp::progresstimer_percent_t
 CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
                                          data::CreatureLevel level) {
+                                             
     datetimer_util_.update(timer.timer, this->ignortimer_);
     datetimer_util_.update(timer.fulltimer, this->ignortimer_);
 
@@ -146,7 +147,7 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
         // millisec chrono: A signed integral type of at least 45 bits
         auto addValue_percent =
             (static_cast<double>(timer_ms.count()) * 100.0) /
-            static_cast<double>(waitTime_ms.count());
+             static_cast<double>(waitTime_ms.count());
         addValue = addValue_percent * timer.factor;
 
         timer.value += addValue;
@@ -157,8 +158,7 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
 
                 auto ticks_ms_f = static_cast<double>(waitTime_ms.count()) *
                                   ((timer.value - 100.0) / 100.0);
-                std::chrono::milliseconds addTm_ms(
-                    static_cast<int64_t>(ticks_ms_f));
+                std::chrono::milliseconds addTm_ms (static_cast<int64_t>(ticks_ms_f));
 
                 datetimer_util_.addTime(timer.fulltimer, addTm_ms);
             }
@@ -175,8 +175,8 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
                 timer.overlayvalue = 0.0;
             }
         }
-        timer.value = std::min<double>(100.0, timer.value);
-        timer.value = std::max<double>(0.0, timer.value);
+        timer.value = std::min<gamecomp::progresstimer_percent_t>(100.0, timer.value);
+        timer.value = std::max<gamecomp::progresstimer_percent_t>(0.0, timer.value);
 
         if (timer.isfull) {
             auto fulltimer_ms =
@@ -185,7 +185,7 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
 
             auto fullValue_percent =
                 (static_cast<double>(fulltimer_ms.count()) * 100.0) /
-                static_cast<double>(waitTime_ms.count());
+                 static_cast<double>(waitTime_ms.count());
             timer.overlayvalue += fullValue_percent * timer.factor;
         }
 

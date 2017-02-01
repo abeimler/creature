@@ -5,6 +5,8 @@
 
 #include "basic.h"
 
+namespace gameentity {
+
 template <class Entity>
 class EntityCreator {
     public:
@@ -17,5 +19,7 @@ class EntityCreator {
 
     virtual void create(Entity& entity) = 0;
 };
+
+} // namespace gameentity
 
 #endif // ENTITY_ENTITYCREATOR_H_

@@ -8,7 +8,7 @@
 namespace data {
 
 /// Creature Normal-Animation Frames
-BETTER_ENUM(CreatureAnimation, ts::unsigned_t,
+BETTER_ENUM(CreatureAnimation, size_t,
             /// start at 12, see AnimationPose
             Standing = +AnimationPose::END,
             BEGIN = Standing, ///< Standing
@@ -22,7 +22,7 @@ BETTER_ENUM(CreatureAnimation, ts::unsigned_t,
             END)
 
 /// Creature Misc-Animation Frames
-BETTER_ENUM(CreatureAnimationMisc, ts::unsigned_t,
+BETTER_ENUM(CreatureAnimationMisc, size_t,
             /// start at 20, see CreatureAnimation
             Born = +CreatureAnimation::END,
             BEGIN = Born,  ///< Is Born
@@ -33,7 +33,7 @@ BETTER_ENUM(CreatureAnimationMisc, ts::unsigned_t,
 
 
 /// Creature Status-Animation Frames
-BETTER_ENUM(CreatureStatusAnimation, ts::unsigned_t,
+BETTER_ENUM(CreatureStatusAnimation, size_t,
             /// start at 23, see CreatureAnimationMisc
             Normal = +CreatureAnimationMisc::END,
             BEGIN = Normal,
@@ -47,7 +47,7 @@ BETTER_ENUM(CreatureStatusAnimation, ts::unsigned_t,
 
 
 /// GameCreature Status
-BETTER_ENUM(CreatureStatus, ts::unsigned_t, Normal,
+BETTER_ENUM(CreatureStatus, size_t, Normal,
             BEGIN = Normal, ///< Normal Status (no Statuses)
             Dead,           ///< Dead
             RunAway,        ///< Run Away
@@ -67,7 +67,7 @@ BETTER_ENUM(CreatureStatus, ts::unsigned_t, Normal,
             END)
 
 /// Creature Level
-BETTER_ENUM(CreatureLevel, ts::unsigned_t, Egg,
+BETTER_ENUM(CreatureLevel, size_t, Egg,
             BEGIN = Egg, ///< Egg
             Baby,        ///< Baby
             Baby2,       ///< Baby2
@@ -79,7 +79,7 @@ BETTER_ENUM(CreatureLevel, ts::unsigned_t, Egg,
 
 /// Creature Circadian Rhythm
 BETTER_ENUM(
-    CreatureCircadianRhythm, ts::unsigned_t, None,
+    CreatureCircadianRhythm, size_t, None,
     BEGIN = None, ///< None
     Crepuscular,  ///< Crepuscular      during twilight (i.e., dawn and dusk).
     Diurnal,      ///< Diurnal          during the day and sleeping, or other
@@ -91,7 +91,7 @@ BETTER_ENUM(
     END)
 
 /// Creature TrainingTime/ActiveTime
-BETTER_ENUM(CreatureTrainTime, ts::unsigned_t, Morning,
+BETTER_ENUM(CreatureTrainTime, size_t, Morning,
             BEGIN = Morning, ///< Morning:      4 - 11 o'clock
             Noon,            ///< Noon:         12 - 16 o'clock
             AfterNoon,       ///< AfterNoon:    17 - 19 o'clock
@@ -189,7 +189,7 @@ class EvolutionCondition {
      * @param traintime TrainingTime
      * @return true, Creature TrainingTime/ActiveTime
      */
-    bool getTrainTime(CreatureTrainTime traintime) const {
+    option_t getTrainTime(CreatureTrainTime traintime) const {
         return earr::enum_array_at(this->traintime_, traintime);
     }
 
@@ -255,7 +255,9 @@ class Creature : public Battler {
 
     EvolutionCondition evolcondition_;
 
-    earr::enum_array<CreatureGender, distribution_factor_t> genderdistribution_;
+    earr::enum_array<CreatureGender, distribution_percent_t> genderdistribution_;
+
+    void initGenderDistribution();
 
     public:
     template <class Archive>
@@ -354,7 +356,7 @@ class Creature : public Battler {
     }
 
     /// Creature Gender distribution in %
-    const earr::enum_array<CreatureGender, distribution_factor_t>&
+    const earr::enum_array<CreatureGender, distribution_percent_t>&
     getGenderDistribution() const {
         return this->genderdistribution_;
     }
@@ -363,7 +365,7 @@ class Creature : public Battler {
      * @param gender Creature Gender
      * @return Creature Gender distribution in %
      */
-    distribution_factor_t getGenderDistribution(CreatureGender gender) const {
+    distribution_percent_t getGenderDistribution(CreatureGender gender) const {
         return earr::enum_array_at(this->genderdistribution_, gender);
     }
 
@@ -404,7 +406,7 @@ class Creature : public Battler {
      * @param value Creature Gender distribution in %
      * @brief set Creature Gender distribution
      */
-    void setGenderDistribution(CreatureGender gender, distribution_factor_t value) {
+    void setGenderDistribution(CreatureGender gender, distribution_percent_t value) {
         earr::enum_array_set(this->genderdistribution_, gender, value);
     }
 

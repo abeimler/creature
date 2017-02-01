@@ -9,7 +9,7 @@
 namespace data {
 
 /// Weapon Animation: Move
-BETTER_ENUM(ActionPrevMoveOption, ts::unsigned_t, None,
+BETTER_ENUM(ActionPrevMoveOption, size_t, None,
             BEGIN = None, ///< none
             StepForward,  ///< 1 step forward
             StepBackward, ///< 1 Step backward
@@ -19,7 +19,7 @@ BETTER_ENUM(ActionPrevMoveOption, ts::unsigned_t, None,
             END)
 
 /// Batter Animation Pose
-BETTER_ENUM(AnimationPose, ts::unsigned_t, Normal,
+BETTER_ENUM(AnimationPose, size_t, Normal,
             BEGIN = Normal, ///< Normal/Standing
             RightHand,      ///< Right Hand Attack
             LeftHand,       ///< Left hand Attack
@@ -35,7 +35,7 @@ BETTER_ENUM(AnimationPose, ts::unsigned_t, Normal,
             END)
 
 /// Class Option
-BETTER_ENUM(BattlerOption, ts::unsigned_t, LessDamage,
+BETTER_ENUM(BattlerOption, size_t, LessDamage,
             BEGIN = LessDamage, ///< 1/4 damage less
             HigherGuard,        ///< 1/4 damage less by defending
             DoubleItemEffect,   ///< Double Effect of UseItem, recover HP/MP
@@ -72,7 +72,7 @@ class LearnSkill {
     std::string getSkillName() const { return this->skill_name_; }
 
     /// required Level
-    int getLvL() const { return this->lvl_; }
+    lvl_t getLvL() const { return this->lvl_; }
 
     void setLvL(lvl_t lvl) { this->lvl_ = lvl; }
 
@@ -222,7 +222,7 @@ class Battler {
     }
 
     /// Battler Options
-    const earr::enum_array<BattlerOption, bool>& getOption() const {
+    const earr::enum_array<BattlerOption, option_t>& getOption() const {
         return this->option_;
     }
 
@@ -230,7 +230,7 @@ class Battler {
      * @param option BattlerOption
      * @return true, BattlerOption is ON
      */
-    bool getOption(BattlerOption option) const {
+    option_t getOption(BattlerOption option) const {
         return earr::enum_array_at(this->option_, option);
     }
 
@@ -250,7 +250,7 @@ class Battler {
         this->skills_ = skills;
     }
 
-    void setAttrBasis(const earr::enum_array<Attribute, int>& attrbasis) {
+    void setAttrBasis(const earr::enum_array<Attribute, attr_t>& attrbasis) {
         this->attrbasis_ = attrbasis;
     }
 
@@ -259,12 +259,12 @@ class Battler {
      * @param value new Basis value
      * @brief set Basic value of Attribute
      */
-    void setAttrBasis(Attribute attr, int value) {
+    void setAttrBasis(Attribute attr, attr_t value) {
         earr::enum_array_set(this->attrbasis_, attr, value);
     }
 
     void
-    setAttrInflation(const earr::enum_array<Attribute, int>& attrinflation) {
+    setAttrInflation(const earr::enum_array<Attribute, attr_t>& attrinflation) {
         this->attrinflation_ = attrinflation;
     }
 
@@ -273,15 +273,15 @@ class Battler {
      * @param value new Inflation value
      * @brief set Inflation value of Attribute
      */
-    void setAttrInflation(Attribute attr, int value) {
+    void setAttrInflation(Attribute attr, attr_t value) {
         earr::enum_array_set(this->attrinflation_, attr, value);
     }
 
-    void setStartLvL(int lvl) { this->startlvl_ = lvl; }
+    void setStartLvL(lvl_t lvl) { this->startlvl_ = lvl; }
 
-    void setMinLvL(int lvl) { this->minlvl_ = lvl; }
+    void setMinLvL(lvl_t lvl) { this->minlvl_ = lvl; }
 
-    void setMaxLvL(int lvl) { this->maxlvl_ = lvl; }
+    void setMaxLvL(lvl_t lvl) { this->maxlvl_ = lvl; }
 
     void setStatusResist(const BattlerStatus& battlerstatus, Resist resist) {
         this->statusresist_[battlerstatus.getName()] = resist;
@@ -302,7 +302,7 @@ class Battler {
     /// remove all Resist of Element
     void clearElementResist() { this->elementresist_.clear(); }
 
-    void setOption(const earr::enum_array<BattlerOption, bool>& option) {
+    void setOption(const earr::enum_array<BattlerOption, option_t>& option) {
         this->option_ = option;
     }
 
@@ -311,7 +311,7 @@ class Battler {
      * @param active Option on/off
      * @brief set Battler Option
      */
-    void setOption(BattlerOption option, bool active) {
+    void setOption(BattlerOption option, option_t active) {
         earr::enum_array_set(this->option_, option, active);
     }
 

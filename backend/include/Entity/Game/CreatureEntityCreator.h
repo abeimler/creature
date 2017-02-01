@@ -147,22 +147,22 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     static constexpr size_t DEFAULT_MAX_SHORT_MEMORYSIZE = 7;
     static constexpr int DEFAULT_MAX_SHORT_MEMORYSIZE_VARIANCE = 2;
 
-    static constexpr gamecomp::progresstimer_percent_t CANGOSLEEP_AT_TIRED = 88;
-    static constexpr gamecomp::counter_t MAX_POOPSTACK = 3;
+    static constexpr gamecomp::progresstimer_percent_t CANGOSLEEP_AT_TIRED = 88.0;
+    static constexpr gamecomp::counter_t MAX_POOPSTACK = 3u;
     static constexpr data::percent_rate_t ILL_BY_MAXPOOPSTACK_RATE = 80;
-    static constexpr gamecomp::progresstimer_percent_t POOP_AT_DIGESTIONS_VALUE = 90;
+    static constexpr gamecomp::progresstimer_percent_t POOP_AT_DIGESTIONS_VALUE = 90.0;
 
-    static constexpr data::bmi_t MIN_BMI = 18;
-    static constexpr data::bmi_t IDEAL_BMI = 26;
-    static constexpr data::bmi_t MAX_BMI = 50;
+    static constexpr data::bmi_t MIN_BMI = 18.0;
+    static constexpr data::bmi_t IDEAL_BMI = 26.0;
+    static constexpr data::bmi_t MAX_BMI = 50.0;
 
-    static constexpr data::bmi_t LOW_MIN_BMI = 14;
-    static constexpr data::bmi_t LOW_IDEAL_BMI = 22;
-    static constexpr data::bmi_t LOW_MAX_BMI = 40;
+    static constexpr data::bmi_t LOW_MIN_BMI = 14.0;
+    static constexpr data::bmi_t LOW_IDEAL_BMI = 22.0;
+    static constexpr data::bmi_t LOW_MAX_BMI = 40.0;
 
-    static constexpr data::bmi_t HIGH_MIN_BMI = 20;
-    static constexpr data::bmi_t HIGH_IDEAL_BMI = 33;
-    static constexpr data::bmi_t HIGH_MAX_BMI = 50;
+    static constexpr data::bmi_t HIGH_MIN_BMI = 20.0;
+    static constexpr data::bmi_t HIGH_IDEAL_BMI = 33.0;
+    static constexpr data::bmi_t HIGH_MAX_BMI = 50.0;
 
 
     static_assert(DEFAULT_AGEINGTIME > std::chrono::seconds::zero(),
@@ -191,7 +191,8 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
         earr::enum_array<E, gamecomp::ProgressTimerCallback>& timer, E index,
         data::CreatureLevel creature_level) {
         return earr::enum_array_at(
-            earr::enum_array_at(timer, index).base.waittime, creature_level);
+                    earr::enum_array_at(timer, index).base.waittime, 
+                    creature_level);
     }
 
     template <class E>
@@ -199,7 +200,8 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
         earr::enum_array<E, gamecomp::ProgressTimerIncrement>& timer, E index,
         data::CreatureLevel creature_level) {
         return earr::enum_array_at(
-            earr::enum_array_at(timer, index).base.waittime, creature_level);
+                    earr::enum_array_at(timer, index).base.waittime, 
+                    creature_level);
     }
 
 
@@ -207,8 +209,9 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     static const gamecomp::waittime_t& getCreatureProgressTimersWaitTime(
         const earr::enum_array<E, gamecomp::ProgressTimer>& timer, E index,
         data::CreatureLevel creature_level) {
-        return earr::enum_array_at(earr::enum_array_at(timer, index).waittime,
-                                   creature_level);
+        return earr::enum_array_at(
+                    earr::enum_array_at(timer, index).waittime,
+                    creature_level);
     }
 
     template <class E>
@@ -216,7 +219,8 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
         const earr::enum_array<E, gamecomp::ProgressTimerCallback>& timer,
         E index, data::CreatureLevel creature_level) {
         return earr::enum_array_at(
-            earr::enum_array_at(timer, index).base.waittime, creature_level);
+                    earr::enum_array_at(timer, index).base.waittime, 
+                    creature_level);
     }
 
     template <class E>
@@ -224,7 +228,8 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
         const earr::enum_array<E, gamecomp::ProgressTimerIncrement>& timer,
         E index, data::CreatureLevel creature_level) {
         return earr::enum_array_at(
-            earr::enum_array_at(timer, index).base.waittime, creature_level);
+                    earr::enum_array_at(timer, index).base.waittime, 
+                    creature_level);
     }
 
     CreatureEntityCreator() = default;

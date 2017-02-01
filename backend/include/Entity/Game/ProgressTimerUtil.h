@@ -1,5 +1,5 @@
-#ifndef ENTITY_GAME_PROGRESSTIMERUTIL_HPP_
-#define ENTITY_GAME_PROGRESSTIMERUTIL_HPP_
+#ifndef ENTITY_GAME_PROGRESSTIMERUTIL_H_
+#define ENTITY_GAME_PROGRESSTIMERUTIL_H_
 
 #include "basic.h"
 
@@ -14,6 +14,7 @@ namespace gamecomputil {
 
 class ProgressTimerUtil {
     private:
+
     // computil::TimerUtil timer_util_;
     computil::DateTimerUtil datetimer_util_;
 
@@ -113,4 +114,4 @@ class ProgressTimerUtil {
 };
 } // namespace gamecomputil
 
-#endif // ENTITY_GAME_PROGRESSTIMERUTIL_HPP_
+#endif // ENTITY_GAME_PROGRESSTIMERUTIL_H_

@@ -11,13 +11,14 @@
 
 class dateutil {
     public:
+
     struct DateTimeResult {
-        int64_t year;
-        int64_t month;
-        int64_t day;
-        int64_t hour;
-        int64_t minute;
-        int64_t second;
+        int year;
+        int month;
+        int day;
+        int hour;
+        int minute;
+        int second;
     };
 
     enum class DatePart { Year, Month, Day };
@@ -99,7 +100,7 @@ class dateutil {
         Rep result = 1; // Default to MIN_DATE parts
 
         if (ticks != Duration::zero()) {
-            std::chrono::seconds ticks_sec =
+            auto ticks_sec =
                 std::chrono::duration_cast<std::chrono::seconds>(ticks);
 
             // const auto& DIM = MONTH_DAYS;
@@ -165,7 +166,7 @@ class dateutil {
 
     template <class Duration = std::chrono::milliseconds>
     static DateTimeResult ticks_to_datetime(const Duration& ticks) {
-        std::chrono::seconds ticks_sec =
+        auto ticks_sec =
             std::chrono::duration_cast<std::chrono::seconds>(ticks);
 
         std::chrono::hours hours(ticks_sec.count() % SECONDS_PER_DAY /

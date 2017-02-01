@@ -43,19 +43,19 @@ class Food : public UseItem {
     explicit Food(UseItem item);
 
     /// Boni for luck
-    double getLuck() const { return this->luck_; }
+    luck_t getLuck() const { return this->luck_; }
 
     /// Boni for disciplin
-    double getDisc() const { return this->disc_; }
+    disc_t getDisc() const { return this->disc_; }
 
     /// Boni for hungry
-    double getHungry() const { return this->hungry_; }
+    hungry_t getHungry() const { return this->hungry_; }
 
     /// Boni for thirsty
-    double getThirsty() const { return this->thirsty_; }
+    thirsty_t getThirsty() const { return this->thirsty_; }
 
     /// Boni for weight
-    double getWeight() const { return this->weight_; }
+    weight_t getWeight() const { return this->weight_; }
 
     /// true, Food-Item is Drinkable
     bool isDrink() const { return this->foodtype_ == +FoodType::Drink; }
@@ -64,21 +64,21 @@ class Food : public UseItem {
     bool isEat() const { return this->foodtype_ == +FoodType::Eat; }
 
     /// Boni for calories
-    double getCalories() const { return this->calories_; }
+    calories_t getCalories() const { return this->calories_; }
 
-    void setLuck(double value) { this->luck_ = value; }
+    void setLuck(luck_t value) { this->luck_ = value; }
 
-    void setDisc(double value) { this->disc_ = value; }
+    void setDisc(disc_t value) { this->disc_ = value; }
 
-    void setHungry(double value) { this->hungry_ = value; }
+    void setHungry(hungry_t value) { this->hungry_ = value; }
 
-    void setThirsty(double value) { this->thirsty_ = value; }
+    void setThirsty(thirsty_t value) { this->thirsty_ = value; }
 
-    void setWeight(double value) { this->weight_ = value; }
+    void setWeight(weight_t value) { this->weight_ = value; }
 
     void setFoodType(FoodType type) { this->foodtype_ = type; }
 
-    void setCalories(double value) { this->calories_ = value; }
+    void setCalories(calories_t value) { this->calories_ = value; }
 };
 
 } // namespace data

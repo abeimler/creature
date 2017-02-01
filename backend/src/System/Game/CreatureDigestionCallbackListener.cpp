@@ -2,7 +2,7 @@
 
 namespace gamesystem {
 
-constexpr gamecomp::counter_t
+constexpr data::percent_rate_t
     CreatureDigestionCallbackListener::RATE_UNLUCK_BY_MORETHENMAXPOOPSTACK;
 constexpr data::luck_t
     CreatureDigestionCallbackListener::UNLUCK_BY_MORETHENMAXPOOPSTACK;
@@ -40,10 +40,10 @@ void CreatureDigestionCallbackListener::makePoop(
             auto morePoopStack = digestion_overlayvalue / 100;
 
             /// Anzahl der Hinzugefügten Haufen
-            auto addToPoopStack = 1 + morePoopStack;
+            int addToPoopStack = 1 + morePoopStack;
 
-            int newpoopstack = hunger.poopstack +
-                               addToPoopStack; ///< Zusätliche haufen hinzufügen
+            /// Zusätliche haufen hinzufügen
+            int newpoopstack = hunger.poopstack + addToPoopStack; 
             newpoopstack = std::max<int>(newpoopstack, 0);
             newpoopstack = std::min<int>(newpoopstack, gene.max_poopstack);
             hunger.poopstack = newpoopstack;

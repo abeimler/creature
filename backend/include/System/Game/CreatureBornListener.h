@@ -24,7 +24,7 @@ class CreatureBornListener : public Listener<gameevent::CreatureBornEvent> {
 
     public:
     
-    static constexpr gamecomp::progresstimer_percent_t GROWING_PROGRESS_AFTER_BORN_PERCENT = 80;
+    static constexpr gamecomp::progresstimer_percent_t GROWING_PROGRESS_AFTER_BORN_PERCENT = 80.0;
 
 
     CreatureBornListener(gameentity::DataManager& datamanager);

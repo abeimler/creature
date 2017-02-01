@@ -40,15 +40,20 @@ class DataCreatureMaker {
     public:
     using rand_tuple_t = std::tuple<int, int>;
     using CreatureBattlerStatus_map_t = std::unordered_map<data::CreatureStatus, data::CreatureBattlerStatus, data::CreatureStatus::hash>;
-    using attr_factor_t = std::unordered_map<data::Attribute, float, data::Attribute::hash>;
+    using attr_factor_t = std::unordered_map<data::Attribute, double, data::Attribute::hash>;
     
     // resist[ElementName] = [0: pluses ,1: minuses]
-    using resists_t = std::map<std::string, 
-        std::tuple<
+    using resists_value_t = std::tuple<
             std::vector<std::string>,
             std::vector<std::string>
-        >
+        >;
+    using resists_t = std::map<std::string, 
+        resists_value_t
     >;
+    
+    static inline resists_value_t make_resists_value(const std::vector<std::string>& a,const std::vector<std::string>& b) {
+        return std::make_tuple(a, b);
+    }
 
 
     

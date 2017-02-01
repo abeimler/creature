@@ -28,11 +28,11 @@ struct ProgressTimerIncrementEvent {
     gameentity::Entity entity;
     gamecomp::CreatureProgressTimerIncrement type;
     data::CreatureLevel level;
-    double addvalue;
+    gamecomp::progresstimer_percent_t addvalue;
 
     ProgressTimerIncrementEvent(gameentity::Entity p_entity,
                                 gamecomp::CreatureProgressTimerIncrement p_type,
-                                data::CreatureLevel p_level, double p_addvalue)
+                                data::CreatureLevel p_level, gamecomp::progresstimer_percent_t p_addvalue)
         : entity(p_entity), type(p_type), level(p_level), addvalue(p_addvalue) {
     }
 };

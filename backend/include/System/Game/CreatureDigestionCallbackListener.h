@@ -21,7 +21,7 @@ class CreatureDigestionCallbackListener : public Listener<gameevent::ProgressTim
     computil::DateTimerUtil datetimer_util_;
 
     public:
-    static constexpr gamecomp::counter_t RATE_UNLUCK_BY_MORETHENMAXPOOPSTACK = 60;
+    static constexpr data::percent_rate_t RATE_UNLUCK_BY_MORETHENMAXPOOPSTACK = 60;
     static constexpr data::luck_t UNLUCK_BY_MORETHENMAXPOOPSTACK = 5.0;
     static constexpr data::luck_t UNLUCK_BY_MAXPOOPSTACK = 5.0;
     static constexpr data::disc_t UNDISC_BY_MAXPOOPSTACK = 5.0;

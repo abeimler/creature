@@ -35,14 +35,12 @@ gamecomp::CreatureTrainingComponent
 CreatureEntityCreator::createCreatureTraining() {
     gamecomp::CreatureTrainingComponent ret;
 
-    earr::enum_array_fill(ret.trainingcounter, 0);
+    earr::enum_array_fill(ret.trainingcounter, 0u);
 
     earr::enum_array_fill(ret.trainattrs, false);
     earr::enum_array_fill(ret.lasttrainattrs, false);
     earr::enum_array_fill(ret.attrparam_befortrain, 0);
     earr::enum_array_fill(ret.attrparam_aftertrain, 0);
-
-    earr::enum_array_fill(ret.trainingcounter, 0);
 
     return ret;
 }
@@ -61,8 +59,7 @@ gamecomp::CreatureBodyComponent CreatureEntityCreator::createCreatureBody(
     ret.bodysize = creature_data.getMinBodySize();
 
     auto weight = creature_data.getEvolCondition().getWeight() * 1.3;
-    if (creature_data.getEvolCondition().getWeight() <= 0.0 ||
-        util::iszero(weight)) {
+    if (creature_data.getEvolCondition().getWeight() <= 0.0 || util::iszero(weight)) {
         weight = creature_data.getMinWeight() * 4.0;
     }
     ret.weight = weight;

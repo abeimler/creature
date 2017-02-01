@@ -77,19 +77,18 @@ bool CreatureTryToEvolveListener::haveEvolutionCondition(
     return canEvol;
 }
 
-void CreatureTryToEvolveListener::tryEvolve(gameentity::Entity entity, EventBus& events,
+bool CreatureTryToEvolveListener::tryEvolve(gameentity::Entity entity, EventBus& events,
     gamecomp::CreatureDataComponent& creature_data,
     gamecomp::CreatureBattlerComponent& creature_battler,
     gamecomp::CreatureTrainingComponent& training,
     gamecomp::CreaturePsycheComponent& psyche,
     gamecomp::CreatureBodyComponent& body,
     gamecomp::CreatureBodilyStateComponent& bodilystate,
-    bool& isEvol,
     size_t nextcreatures_index, size_t nextcreatures_size, const data::Creature& nextcreature, bool goodevolve) {
-
+    
     const auto& condition = nextcreature.getEvolCondition();
 
-    bool canEvol = hasNextCreatureEvolutionConditionTrainingTime(creature_data, training.mosttraintime);
+    auto canEvol = hasNextCreatureEvolutionConditionTrainingTime(creature_data, training.mosttraintime);
     if (canEvol) {
         canEvol = haveEvolutionCondition(creature_battler, training, psyche,
                                          body, bodilystate, condition);
@@ -108,14 +107,16 @@ void CreatureTryToEvolveListener::tryEvolve(gameentity::Entity entity, EventBus&
 
             if (canEvol && util::randomRate(rate)) {
                 emit_event<gameevent::CreatureEvolveEvent>(events, entity, goodevolve, nextcreature);
-                isEvol = true;
+                return true;
             }
         }
     }
+
+    return false;
 }
 
 
-void CreatureTryToEvolveListener::tryEvolveFromList(gameentity::Entity entity, EventBus& events,
+bool CreatureTryToEvolveListener::tryEvolveFromList(gameentity::Entity entity, EventBus& events,
     const std::vector<std::string>& nextcreatures,
     gamecomp::CreatureDataComponent& creature_data,
     gamecomp::CreatureBattlerComponent& creature_battler,
@@ -123,7 +124,7 @@ void CreatureTryToEvolveListener::tryEvolveFromList(gameentity::Entity entity, E
     gamecomp::CreaturePsycheComponent& psyche,
     gamecomp::CreatureBodyComponent& body,
     gamecomp::CreatureBodilyStateComponent& bodilystate,
-    bool& isEvol,
+    bool isEvol,
     bool goodevolve) {
     if (!isEvol && !nextcreatures.empty()) {
         auto nextcreatures_size = nextcreatures.size();
@@ -135,9 +136,9 @@ void CreatureTryToEvolveListener::tryEvolveFromList(gameentity::Entity entity, E
                 auto nextcreature = datamanager_.findCreature(nextcreature_name);
                 
                 if(nextcreature) {
-                    tryEvolve(entity, events,
+                    isEvol = tryEvolve(entity, events,
                         creature_data, creature_battler, training,
-                        psyche, body, bodilystate, isEvol,
+                        psyche, body, bodilystate, 
                         nextcreatures_index, nextcreatures_size, *nextcreature, goodevolve);
                 }
                 nextcreatures_index++;
@@ -145,6 +146,8 @@ void CreatureTryToEvolveListener::tryEvolveFromList(gameentity::Entity entity, E
             return isEvol;
         });
     }
+
+    return isEvol;
 }
 
 void CreatureTryToEvolveListener::tryToEvolve(gameentity::Entity entity, EventBus& events,
@@ -176,13 +179,13 @@ void CreatureTryToEvolveListener::tryToEvolve(gameentity::Entity entity, EventBu
 
     bool isEvol = false;
 
-    tryEvolveFromList(entity, events,
+    isEvol = tryEvolveFromList(entity, events,
         nextcreatures,
         creature_data, creature_battler,
         training, psyche, body, bodilystate,
         isEvol, true);
     
-    tryEvolveFromList(entity, events, 
+    isEvol = tryEvolveFromList(entity, events, 
         misscreatures,
         creature_data, creature_battler,
         training, psyche, body, bodilystate,

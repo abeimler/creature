@@ -12,7 +12,7 @@ find_package (Threads)
 
 #set(CMAKE_C_COMPILER "/usr/bin/clang")
 #set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
-    
+
 
 ## best practice by Jason Turner
 ## More Flags: https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
@@ -178,7 +178,7 @@ if(CLANG_FORMAT)
       DEPENDS clang-format_backend
         clang-format_backend_test
         clang-format_backend_benchmark
-        clang-format_makedata 
+        clang-format_makedata
 
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )

@@ -155,10 +155,10 @@ void CreatureSystem::updateLifeAttribute(
 
     life.lifetime = datetimer_util_.getTime(timers.lifetimer);
 
-    int64_t ageingtime_ms =
+    auto ageingtime_ms =
         std::chrono::duration_cast<std::chrono::milliseconds>(life.ageingtime)
             .count();
-    int64_t lifetime_ms =
+    auto lifetime_ms =
         std::chrono::duration_cast<std::chrono::milliseconds>(life.lifetime)
             .count();
 
@@ -292,36 +292,36 @@ void CreatureSystem::updateCreatureTimersFactor(
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureLifeComponent& life) {
     /*
-    bool isrunaway =
+    auto isrunaway =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway);
-    bool isinhospital =
+    auto isinhospital =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::InHospital);
     */
 
-    bool issleep =
+    auto issleep =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Sleep);
-    bool isrestinhospital = earr::enum_array_at(
+    auto isrestinhospital = earr::enum_array_at(
         life.hasstatus, +data::CreatureStatus::RestInHospital);
-    bool isrest =
+    auto isrest =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Rest);
 
-    bool istraining =
+    auto istraining =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Training);
 
-    bool ishungry =
+    auto ishungry =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Hungry);
-    bool isthirsty =
+    auto isthirsty =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Thirsty);
-    bool isreplete =
+    auto isreplete =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Replete);
 
-    bool isill =
+    auto isill =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Ill);
-    bool ishurt =
+    auto ishurt =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Hurt);
 
-    bool isasleep = issleep || isrestinhospital || isrest;
-    bool ishurtill = isill || ishurt;
+    auto isasleep = issleep || isrestinhospital || isrest;
+    auto ishurtill = isill || ishurt;
 
 
     auto& hungry_timer = earr::enum_array_at(

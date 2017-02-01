@@ -23,6 +23,10 @@ class InitData {
     std::vector<std::string> elements_;
     datamaker::DataCreatureMaker::resists_t elements_resists_;
     std::map<std::string, std::vector<std::string>> types_;
+    
+    static inline datamaker::DataCreatureMaker::resists_value_t make_resists_value(const std::vector<std::string>& a,const std::vector<std::string>& b) {
+        return datamaker::DataCreatureMaker::make_resists_value(a, b);
+    }
 
     void
     makeDataCreature(std::string name, std::string type, datamaker::DataCreatureEvol state,

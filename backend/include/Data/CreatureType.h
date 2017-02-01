@@ -86,7 +86,7 @@ class CreatureRootType {
     }
 
     CreatureType& addCreatureType(const CreatureType& type) {
-        // TODO c++17 push_back returns back value
+        // TODO C++17 push_back returns back value
         this->types_.push_back(type);
         auto& newtype = this->types_.back();
         newtype.setCreatureRootType(this->name_);

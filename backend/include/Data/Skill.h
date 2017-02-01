@@ -7,7 +7,7 @@
 namespace data {
 
 /// Skill Option
-BETTER_ENUM(SkillOption, ts::unsigned_t, Absorb,
+BETTER_ENUM(SkillOption, size_t, Absorb,
             BEGIN = Absorb,  ///< Absort
             IgnoreDefensive, ///< Ignore Defensive
             PhysicalAttack,  ///< Physical Attack
@@ -92,7 +92,7 @@ class Skill {
     }
 
     attr_t getMPCost() const { return this->mpcost_; }
-    atknumbers_t isMPCostInPercent() const { return this->inpercent_; }
+    option_t isMPCostInPercent() const { return this->inpercent_; }
 
     TargetOption getTarget() const { return this->target_; }
 

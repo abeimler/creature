@@ -9,11 +9,12 @@
 #include <random>
 #include <type_traits>
 
+#include <clamp.hpp>
+
 class util {
     public:
     template <typename T>
-    static typename std::enable_if<std::is_integral<T>::value, bool>::type
-    iszero(T a) {
+    static bool iszero(T a) {
         return a == 0;
     }
 
@@ -86,18 +87,26 @@ class util {
 
         static std::mt19937 gen(rdseed());
 
-        double probability = static_cast<double>(percent) / 100.0;
+        double_t percent_d = static_cast<double>(percent);
+        auto probability = percent_d / 100.0;
 
-        std::bernoulli_distribution dis(probability);
+        std::bernoulli_distribution dis (probability);
         return dis(gen);
     }
 
 
-    static int random(int lowest_number, int highest_number);
-    static int64_t random(int64_t lowest_number, int64_t highest_number);
-    static size_t random(size_t lowest_number, size_t highest_number);
-    static float random(float lowest_number, float highest_number);
-    static double random(double lowest_number, double highest_number);
+    static int random_int(int lowest_number, int highest_number);
+    static int64_t random_int64(int64_t lowest_number, int64_t highest_number);
+    static size_t random_uint(size_t lowest_number, size_t highest_number);
+    static float random_float(float lowest_number, float highest_number);
+    static double random_double(double lowest_number, double highest_number);
+
+    inline static int random(int lowest_number, int highest_number) { return random_int(lowest_number, highest_number); }
+    inline static int64_t random(int64_t lowest_number, int64_t highest_number) { return random_int64(lowest_number, highest_number); }
+    inline static size_t random(size_t lowest_number, size_t highest_number){ return random_uint(lowest_number, highest_number); }
+    inline static float random(float lowest_number, float highest_number){ return random_float(lowest_number, highest_number); }
+    inline static double random(double lowest_number, double highest_number){ return random_double(lowest_number, highest_number); }
+
     static bool randomOdds(int wins, int losses);
 
     static std::mt19937 genseed(std::string seedstr);

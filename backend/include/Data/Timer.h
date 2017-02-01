@@ -5,14 +5,16 @@
 
 #include "Data/BaseModel.h"
 
+#include "Data/Types.h"
+
 namespace data {
 
 /// Simple Timer
 class Timer {
 
     private:
-    option_t isstart_ = false;
-    option_t ispause_ = false;
+    boolean_t isstart_ = false;
+    boolean_t ispause_ = false;
 
     std::chrono::nanoseconds starttime_;
     std::chrono::nanoseconds pausetime_;
@@ -36,10 +38,10 @@ class Timer {
     void stop();    ///< stop Timer
 
     /// is Timer started
-    option_t isStarted() const { return this->isstart_; }
+    boolean_t isStarted() const { return this->isstart_; }
 
     /// is Timer paused
-    option_t isPaused() const { return this->ispause_; }
+    boolean_t isPaused() const { return this->ispause_; }
 
     /// get current Time in sec
     std::chrono::seconds getTime() const {

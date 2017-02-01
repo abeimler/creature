@@ -20,7 +20,7 @@ void CreatureBattlerSystem::updateCreatureBattlerAttribute(
         auto& baseattrs = earr::enum_array_at(creature_battler.attrparam, attr);
 
         if (creature_battler.lvl >= 0) {
-            size_t lvl_index = static_cast<size_t>(creature_battler.lvl);
+            auto lvl_index = static_cast<size_t>(creature_battler.lvl);
             if (lvl_index < baseattrs.size()) {
                 earr::enum_array_at(creature_battler.attrbase, attr) =
                     baseattrs[lvl_index];
@@ -36,19 +36,21 @@ void CreatureBattlerSystem::updateCreatureBattlerAttribute(
         auto status = this->datamanager_.findCreatureBattlerStatus(status_name);
         if (status) {
             for (auto attr : earr::Enum<data::Attribute>()) {
-                auto& battler_attr =
-                    earr::enum_array_at(creature_battler.attr, attr);
-                battler_attr = battler_attr * status->getAttr(attr);
+                auto& battler_attr = earr::enum_array_at(creature_battler.attr, attr);
+                auto new_battler_attr = static_cast<double>(battler_attr) * status->getAttrFactor(attr);
+                battler_attr = static_cast<data::attr_t>(new_battler_attr);
             }
         }
     }
 
+    const data::attr_t min_hp_mp_attr = 0;
+
     creature_battler.hp = clamp(
-        creature_battler.hp, 0,
+        creature_battler.hp, min_hp_mp_attr,
         earr::enum_array_at(creature_battler.attr, +data::Attribute::MaxHP));
 
     creature_battler.mp = clamp(
-        creature_battler.mp, 0,
+        creature_battler.mp, min_hp_mp_attr,
         earr::enum_array_at(creature_battler.attr, +data::Attribute::MaxMP));
 }
 
@@ -68,7 +70,10 @@ void CreatureBattlerSystem::updateCreatureHitRate(
     auto sum_battlerstatuses_hitrate_func = [&](
         const auto& init, const std::string& status_name) {
         auto status = this->datamanager_.findCreatureBattlerStatus(status_name);
-        return init * ((status) ? status->getHitRate() : 1.0);
+
+        // double -> int, don't care
+        auto new_rate = static_cast<double>(init) * static_cast<double>((status) ? status->getHitRate() : 1.0);
+        return static_cast<decltype(basehitrate)>(new_rate);
     };
 
     auto status_sum_hitrate =
@@ -76,7 +81,7 @@ void CreatureBattlerSystem::updateCreatureHitRate(
                         0, sum_battlerstatuses_hitrate_func);
 
     auto status_avg_hitrate = (!battlerstatuses.empty())
-                                  ? status_sum_hitrate / battlerstatuses.size()
+                                  ? status_sum_hitrate / static_cast<decltype(basehitrate)>(battlerstatuses.size())
                                   : basehitrate;
 
     creature_battler.hitrate = (basehitrate + status_avg_hitrate) / 2;
@@ -97,7 +102,10 @@ void CreatureBattlerSystem::updateCreatureCriticalHitRate(
     auto sum_battlerstatuses_critical_hitrate_func = [&](
         const auto& init, const std::string& status_name) {
         auto status = this->datamanager_.findCreatureBattlerStatus(status_name);
-        return init * ((status) ? status->getCriticalHitRate() : 1.0);
+
+        // double -> int, don't care
+        auto new_rate = static_cast<double>(init) * static_cast<double>((status) ? status->getCriticalHitRate() : 1.0);
+        return static_cast<decltype(basecritical_hitrate)>(new_rate);
     };
 
     auto status_sum_critical_hitrate =
@@ -106,7 +114,7 @@ void CreatureBattlerSystem::updateCreatureCriticalHitRate(
 
     auto status_avg_hitrate =
         (!battlerstatuses.empty())
-            ? status_sum_critical_hitrate / battlerstatuses.size()
+            ? status_sum_critical_hitrate / static_cast<decltype(basecritical_hitrate)>(battlerstatuses.size())
             : basecritical_hitrate;
 
     creature_battler.critical_hitrate =
@@ -128,7 +136,10 @@ void CreatureBattlerSystem::updateCreatureEvaRate(
     auto sum_battlerstatuses_evarate_func = [&](
         const auto& init, const std::string& status_name) {
         auto status = this->datamanager_.findCreatureBattlerStatus(status_name);
-        return init * ((status) ? status->getEvaRate() : 1.0);
+
+        // double -> int, don't care
+        auto new_rate = static_cast<double>(init) * ((status) ? status->getEvaRate() : 1.0);
+        return static_cast<decltype(baseevarate)>(new_rate);
     };
 
     auto status_sum_evarate =
@@ -136,7 +147,7 @@ void CreatureBattlerSystem::updateCreatureEvaRate(
                         0, sum_battlerstatuses_evarate_func);
 
     auto status_avg_evarate = (!battlerstatuses.empty())
-                                  ? status_sum_evarate / battlerstatuses.size()
+                                  ? status_sum_evarate / static_cast<decltype(baseevarate)>(battlerstatuses.size())
                                   : baseevarate;
 
     creature_battler.evarate = (baseevarate + status_avg_evarate) / 2;

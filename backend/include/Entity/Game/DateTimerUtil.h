@@ -2,6 +2,7 @@
 #define ENTITY_GAME_DATETIMERUTIL_HPP_
 
 #include "basic.h"
+#include "util.h"
 
 #include "Component/DateTimer.h"
 

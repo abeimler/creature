@@ -119,29 +119,29 @@ void InitData::initElements() {
 
     this->elements_resists_.clear();
 
-    this->elements_resists_["Nature Spirits"] = {{}, {}};
-    this->elements_resists_["Deep Savers"] = {{"Dragons Roar"},
-                                              {"Jungle Troopers"}};
-    this->elements_resists_["Nightmare Soldiers"] = {
-        {"Virus Busters"}, {"Metal Empire", "Nightmare Soldiers"}};
-    this->elements_resists_["Wind Guardians"] = {{"Jungle Troopers"},
-                                                 {"Metal Empire"}};
-    this->elements_resists_["Metal Empire"] = {
-        {"Wind Guardians", "Deep Savers"}, {"Dragons Roar"}};
-    this->elements_resists_["Unknown"] = {{}, {}};
-    this->elements_resists_["Dark Area"] = {{"Nightmare Soldiers"},
-                                            {"Metal Empire", "Virus Busters"}};
-    this->elements_resists_["Virus Busters"] = {
-        {"Dark Area"}, {"Metal Empire", "Nightmare Soldiers"}};
-    this->elements_resists_["Dragons Roar"] = {{"Jungle Troopers"},
-                                               {"Deep Savers"}};
-    this->elements_resists_["Jungle Troopers"] = {
-        {"Metal Empire"}, {"Wind Guardians", "Dragons Roar"}};
-    this->elements_resists_["X-Antibody"] = {
+    this->elements_resists_["Nature Spirits"] = make_resists_value({}, {});
+    this->elements_resists_["Deep Savers"] = make_resists_value({"Dragons Roar"},
+                                              {"Jungle Troopers"});
+    this->elements_resists_["Nightmare Soldiers"] = make_resists_value(
+        {"Virus Busters"}, {"Metal Empire", "Nightmare Soldiers"});
+    this->elements_resists_["Wind Guardians"] = make_resists_value({"Jungle Troopers"},
+                                                 {"Metal Empire"});
+    this->elements_resists_["Metal Empire"] = make_resists_value(
+        {"Wind Guardians", "Deep Savers"}, {"Dragons Roar"});
+    this->elements_resists_["Unknown"] = make_resists_value({}, {});
+    this->elements_resists_["Dark Area"] = make_resists_value({"Nightmare Soldiers"},
+                                            {"Metal Empire", "Virus Busters"});
+    this->elements_resists_["Virus Busters"] = make_resists_value(
+        {"Dark Area"}, {"Metal Empire", "Nightmare Soldiers"});
+    this->elements_resists_["Dragons Roar"] = make_resists_value({"Jungle Troopers"},
+                                               {"Deep Savers"});
+    this->elements_resists_["Jungle Troopers"] = make_resists_value(
+        {"Metal Empire"}, {"Wind Guardians", "Dragons Roar"});
+    this->elements_resists_["X-Antibody"] = make_resists_value(
         {"Nature Spirits", "Deep Savers", "Nightmare Soldiers",
          "Wind Guardians", "Metal Empire", "Dark Area", "Virus Busters",
          "Dragons Roar", "Jungle Troopers"},
-        {}};
+        {});
 }
 
 void InitData::initTypes() {

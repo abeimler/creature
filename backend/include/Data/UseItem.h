@@ -31,7 +31,7 @@ class UseItem : public Item {
     TargetOption target_ = TargetOption::OneEnemy;
 
     atknumbers_t atknumbers_ = 1;
-    earr::enum_array<UseItemOption, bool> option_;
+    earr::enum_array<UseItemOption, option_t> option_;
 
     earr::enum_array<Attribute, attr_t> attr_;
 
@@ -107,7 +107,7 @@ class UseItem : public Item {
     atknumbers_t getAtkNumbers() const { return this->atknumbers_; }
 
     /// UseItem Options
-    const earr::enum_array<UseItemOption, bool>& getOption() const {
+    const earr::enum_array<UseItemOption, option_t>& getOption() const {
         return this->option_;
     }
 
@@ -145,8 +145,8 @@ class UseItem : public Item {
         return this->removestatuses_;
     }
 
-    ts::bool_t canUseCreature(const Creature& creature) const {
-        if (this->getOption(UseItemOption::AllCanUseIt)) {
+    bool canUseCreature(const Creature& creature) const {
+        if (this->getOption(+UseItemOption::AllCanUseIt)) {
             return true;
         }
 
@@ -183,7 +183,7 @@ class UseItem : public Item {
                             this->removestatuses_.end(), find_byName);
     }
 
-    ts::bool_t isRemoveStatusFind(std::string name) {
+    bool isRemoveStatusFind(std::string name) {
         return getRemoveStatus(name) != std::end(this->removestatuses_);
     }
 

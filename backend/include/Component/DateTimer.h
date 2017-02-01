@@ -5,12 +5,6 @@
 
 namespace comp {
 
-using timertime_t = std::chrono::nanoseconds;
-using ticks_t = std::chrono::milliseconds;
-
-using option_t = data::option_t;
-using time_factor_t = ts::double_t;
-
 /// Simple Timer
 struct Timer {
     option_t isstart = false;

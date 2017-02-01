@@ -56,7 +56,7 @@ class CreatureBattlerCreator {
     * @param boni_factor bonus factor
     * @brief formula: <br>
     *       i = minlvl..maxlvl <br>
-    *       p = 1.3 + inflation / 120 <br>
+    *       p = inf_factor + inflation / mininf <br>
     *       n = basic * (i+4)^p / 5^p; <br>
     *       attr[i] = n
     */
@@ -64,10 +64,10 @@ class CreatureBattlerCreator {
     static std::vector<T> genAttrs(data::lvl_t minlvl, data::lvl_t maxlvl, 
                                    data::attr_t basic, data::attr_t inf,
                                    data::attr_t boni_inf, data::attr_factor_t boni_factor) {
-        size_t minlvli = static_cast<size_t>(std::max<int>(0, minlvl));
-        size_t maxlvli = static_cast<size_t>(std::max<int>(0, maxlvl));
-        size_t attrs_size =
-            static_cast<size_t>(std::max<int>(1, minlvl + maxlvl + 1));
+        auto minlvli = std::max<data::lvl_t>(0, minlvl);
+        auto maxlvli = std::max<data::lvl_t>(0, maxlvl);
+        auto attrs_size_lvl = minlvl + maxlvl + 1;
+        size_t attrs_size = static_cast<size_t>(std::max<data::lvl_t>(1, attrs_size_lvl));
 
         std::vector<T> attrs;
         attrs.resize(attrs_size);
@@ -77,14 +77,15 @@ class CreatureBattlerCreator {
         auto maxinf = getMaxInflation();
 
         auto powi = 1 + (mininf / maxinf) + (inf + boni_inf) / mininf;
-        double n = 0.0;
-        for (size_t i = minlvli; i <= maxlvli; i++) {
-            if (basic != 0 && inf != 0) {
-                n = (basic * boni_factor) * std::pow(i + 4, powi) /
-                    std::pow(5, powi);
-            } else {
-                n = 0.0;
-            }
+        for (auto i = minlvli; i <= maxlvli; i++) {
+            const auto powi_1_base = i + 4;
+            const auto powi_2_base = 5;
+
+            auto powi_1 = std::pow(powi_1_base, powi);
+            auto powi_2 = std::pow(powi_2_base, powi);
+
+            auto n = (basic != 0 && inf != 0 && !util::iszero(powi_2))? (basic * boni_factor) * powi_1 / powi_2 : 0.0;
+
             attrs[i] = static_cast<T>(n);
         }
 

@@ -24,7 +24,7 @@ set_property(TARGET ${PROJECT_NAME}_makedata PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(${PROJECT_NAME}_makedata PRIVATE creature_backend)
 
-target_include_directories(${PROJECT_NAME}_makedata PUBLIC ${TOOLS_MAKEDATA_LIB_PATH}/cxxopts/src)
+target_include_directories(${PROJECT_NAME}_makedata PUBLIC ${TOOLS_MAKEDATA_LIB_PATH}/cxxopts/include)
 
 target_include_directories(${PROJECT_NAME}_makedata PRIVATE ${TOOLS_MAKEDATA_INCLUDE_PATH})
 target_include_directories(${PROJECT_NAME}_makedata PRIVATE ${CREATURE_BACKEND_INCLUDE_PATH})

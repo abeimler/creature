@@ -24,14 +24,14 @@ class CreatureEvolveListener : public Listener<gameevent::CreatureEvolveEvent> {
 
     public:
 
-    static constexpr data::luck_t ADD_LUCK_BYGOODEVOLUTION = 5;
-    static constexpr data::disc_t ADD_DISC_BYGOODEVOLUTION = 5;
+    static constexpr data::luck_t ADD_LUCK_BYGOODEVOLUTION = 5.0;
+    static constexpr data::disc_t ADD_DISC_BYGOODEVOLUTION = 5.0;
 
-    static constexpr data::luck_t ADD_LUCK_BYBADEVOLUTION = -10;
-    static constexpr data::disc_t ADD_DISC_BYBADEVOLUTION = -5;
+    static constexpr data::luck_t ADD_LUCK_BYBADEVOLUTION = -10.0;
+    static constexpr data::disc_t ADD_DISC_BYBADEVOLUTION = -5.0;
     
-    static constexpr gamecomp::progresstimer_percent_t GROWING_PROGRESS_AFTER_GOOD_EVOLVE_PERCENT = 80;
-    static constexpr gamecomp::progresstimer_percent_t GROWING_PROGRESS_AFTER_BAD_EVOLVE_PERCENT = 60;
+    static constexpr gamecomp::progresstimer_percent_t GROWING_PROGRESS_AFTER_GOOD_EVOLVE_PERCENT = 80.0;
+    static constexpr gamecomp::progresstimer_percent_t GROWING_PROGRESS_AFTER_BAD_EVOLVE_PERCENT = 60.0;
 
     static constexpr gamecomp::lifetime_t ADD_MAXLIFETIME_BYGOODEVOLUTION = std::chrono::hours(24);
     static constexpr gamecomp::lifetime_t ADD_MAXLIFETIME_BYBADEVOLUTION = std::chrono::hours(12);

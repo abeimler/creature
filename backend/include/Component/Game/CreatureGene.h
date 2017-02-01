@@ -96,7 +96,7 @@ struct CreatureGeneComponent {
     data::CreatureGender gender = data::CreatureGender::None;
 
     /// Nummer der Generation
-    counter_t generationnr = 0;
+    counter_t generationnr = 0u;
 
     data::bmi_t min_bmi = 0.0;      ///< minimal BMI
     data::bmi_t ideal_bmi = 0.0;    ///< Ideal BMI
@@ -110,10 +110,10 @@ struct CreatureGeneComponent {
     progresstimer_percent_t cangosleep_at_tired = 0.0;
 
     /// maximale Haufen die es aufeinmal legen kann
-    counter_t max_poopstack = 0;
+    counter_t max_poopstack = 0u;
 
     data::percent_rate_t ill_by_max_poopstack_rate = 0;
-    progresstimer_percent_t poop_at_digestion_value = 0;
+    progresstimer_percent_t poop_at_digestion_value = 0.0;
 
 
     /// Mehr Eigenschaften pro CreatureLevel

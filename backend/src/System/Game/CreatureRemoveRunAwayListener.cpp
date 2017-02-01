@@ -10,7 +10,7 @@ void CreatureRemoveRunAwayListener::removeCreaturerRunAway(
     EventBus& events, Entity entity,
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureLifeComponent& life) {
-    bool isrunaway =
+    auto isrunaway =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway);
 
 

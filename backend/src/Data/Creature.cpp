@@ -1,5 +1,7 @@
 #include "Data/Creature.h"
 
+#include "util.h"
+
 namespace data {
 
 EvolutionCondition::EvolutionCondition() {
@@ -11,38 +13,32 @@ void EvolutionCondition::setTrainTimeEveryDay() {
     earr::enum_array_fill(this->traintime_, true);
 }
 
-Creature::Creature() {
+
+void Creature::initGenderDistribution() {
     for (size_t i = 0; i < this->genderdistribution_.size(); i++) {
-        this->genderdistribution_[i] = [&]() {
+        this->genderdistribution_[i] = [&]() -> int {
             auto index = CreatureGender::_from_integral_nothrow(i);
 
             if (index) {
                 if (*index != +CreatureGender::None &&
                     *index != +CreatureGender::Hermaphrodite) {
-                    return 100.0 / (this->genderdistribution_.size() - 2.0);
+                        const auto excluded_genderdistribution_size = (this->genderdistribution_.size() > 2)? this->genderdistribution_.size()-2 : this->genderdistribution_.size();
+                        
+                        return 100 / excluded_genderdistribution_size;
                 }
             }
 
-            return 0.0;
+            return 0;
         }();
     }
 }
 
+Creature::Creature() {
+    initGenderDistribution();
+}
+
 Creature::Creature(Battler battler) : Battler(std::move(battler)) {
-    for (size_t i = 0; i < this->genderdistribution_.size(); i++) {
-        this->genderdistribution_[i] = [&]() {
-            auto index = CreatureGender::_from_integral_nothrow(i);
-
-            if (index) {
-                if (*index != +CreatureGender::None &&
-                    *index != +CreatureGender::Hermaphrodite) {
-                    return 100.0 / (this->genderdistribution_.size() - 2.0);
-                }
-            }
-
-            return 0.0;
-        }();
-    }
+    initGenderDistribution();
 }
 
 CreatureStarter::CreatureStarter(const Creature& creature) {

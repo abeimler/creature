@@ -7,6 +7,9 @@
 
 #include "Data/Basic.h"
 
-namespace comp {}
+#include "Component/Types.h"
+
+namespace comp {
+}
 
 #endif // COMPONENT_BASIC_H_

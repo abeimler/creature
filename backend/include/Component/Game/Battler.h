@@ -15,19 +15,19 @@ namespace gamecomp {
 struct BattlerDamage {
     data::attr_t hpdamage = 0;            ///< damage of HP
     data::attr_t mpdamage = 0;            ///< damage of MP
-    option_t ismiss = false;         ///< is attack Miss
-    option_t iseva = false;          ///< is Enemy evade
-    option_t isimmune = false;       ///< is Enemy Immune (Elements)
-    option_t isimmunestatus = false; ///< is Enemy Immune (BattlerStatus)
-    option_t iscriticalhit = false;  ///< is Critical Hit
-    option_t isabsorbhp = false;     ///< is absorb HP effect
-    option_t isabsorbmp = false;     ///< is absorb MP effect
-    option_t iszerodamage = false;   ///< have no Damage
+    boolean_t ismiss = false;         ///< is attack Miss
+    boolean_t iseva = false;          ///< is Enemy evade
+    boolean_t isimmune = false;       ///< is Enemy Immune (Elements)
+    boolean_t isimmunestatus = false; ///< is Enemy Immune (BattlerStatus)
+    boolean_t iscriticalhit = false;  ///< is Critical Hit
+    boolean_t isabsorbhp = false;     ///< is absorb HP effect
+    boolean_t isabsorbmp = false;     ///< is absorb MP effect
+    boolean_t iszerodamage = false;   ///< have no Damage
 };
 
 struct BattlerStatusTurn {
     std::string battlerstatus_name;
-    data::turns_t turn = 0;
+    data::turns_t turn = 0u;
 
     BattlerStatusTurn() = default;
     explicit BattlerStatusTurn(std::string p_battlerstatus_name)
@@ -67,7 +67,7 @@ struct BattlerStatusesComponent {
 
 struct BattlerBattleStateComponent {
     /// current Battle turn to count turn for recover BattlerStatus after Turn
-    data::turns_t turn = 0;
+    data::turns_t turn = 0u;
 
     /// Battler Option
     earr::enum_array<data::BattlerOption, option_t> option;

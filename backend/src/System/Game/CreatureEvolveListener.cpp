@@ -123,7 +123,7 @@ void CreatureEvolveListener::evolution(
 
     auto& training_trainingcounter = earr::enum_array_at(training.trainingcounter, mosttrain);
     training_trainingcounter = mosttraincounter * 10 / 100;
-    training_trainingcounter = std::max(1, training_trainingcounter);
+    training_trainingcounter = std::max(1u, training_trainingcounter);
 
     gamecomp::EvolutionTrakingInfoDetail evolutiontrakinginfodetail;
     evolutiontrakinginfodetail.datetime = datetimer_util_.getRealTime(timers.lifetimer);

@@ -22,7 +22,7 @@
 namespace gamecomp {
 
 /// Grund des Todes
-BETTER_ENUM(CauseOfDeath, ts::unsigned_t, Alive,
+BETTER_ENUM(CauseOfDeath, size_t, Alive,
             BEGIN = Alive,     ///< Noch am leben
             Starved,           ///< Verhungert
             Thirst,            ///< Verdurstet
@@ -35,7 +35,7 @@ BETTER_ENUM(CauseOfDeath, ts::unsigned_t, Alive,
             END)
 
 /// Grund des Weglaufens
-BETTER_ENUM(CauseOfRunAway, ts::unsigned_t, NotRunAway,
+BETTER_ENUM(CauseOfRunAway, size_t, NotRunAway,
             BEGIN = NotRunAway, ///< Nicht weggelaufen
             Starved,            ///< Verhungert
             Unhappy,            ///< Unglücklich
@@ -45,7 +45,7 @@ BETTER_ENUM(CauseOfRunAway, ts::unsigned_t, NotRunAway,
 
 struct CreatureHungerComponent {
     StarvationPhase starvationphase = StarvationPhase::None; ///< Hungerphasen
-    counter_t poopstack = 0; ///< Anzahl der Haufen (nicht weggeräumt)
+    counter_t poopstack = 0u; ///< Anzahl der Haufen (nicht weggeräumt)
 };
 
 struct CreatureSleepComponent {
@@ -89,8 +89,8 @@ struct CreatureTrainingComponent {
 };
 
 struct CreatureBodilyStateComponent {
-    counter_t hurtcount = 0; ///< Anzahl der überstanden Verletzungen
-    counter_t illcount = 0;  ///< Anzahl der überstanden Krankheiten
+    counter_t hurtcount = 0u; ///< Anzahl der überstanden Verletzungen
+    counter_t illcount = 0u;  ///< Anzahl der überstanden Krankheiten
 };
 
 struct CreatureBodyComponent {
@@ -131,12 +131,12 @@ struct CreatureLifeComponent {
     CauseOfRunAway causeofrunaway = CauseOfRunAway::NotRunAway;
 
     /// true, es ist geboren/geschlüpft ist
-    option_t born = false;
+    boolean_t born = false;
 
     /// true, BattlerStatus ist Tot und die Creature vollkommen tot
-    option_t isdead = false;
+    boolean_t isdead = false;
 
-    option_t inbattle = false;
+    boolean_t inbattle = false;
 
     /// Maximale Lebensdauer (Lebenserwartung)
     lifetime_t maxlifetime;
@@ -161,25 +161,25 @@ struct CreatureLifeComponent {
     data::lvl_t oldlevel = 0;
 
     /// hat Creature bestimmten Status
-    earr::enum_array<data::CreatureStatus, option_t> hasstatus;
+    earr::enum_array<data::CreatureStatus, boolean_t> hasstatus;
 
     /// Creature ist beschaeftigt
-    option_t isbusy = false;
+    boolean_t isbusy = false;
 
     /// Gelangweilt
-    option_t bored = false;
+    boolean_t bored = false;
 
     /// Bereicht sich zu entwickeln
-    option_t readytoevolve = false;
+    boolean_t readytoevolve = false;
 
     /// is fähig etwas zu essen
-    option_t caneat = false;
+    boolean_t caneat = false;
 
     /// is fähig etwas zu trinken
-    option_t candrink = false;
+    boolean_t candrink = false;
 
     /// is fähig etwas zu trainieren
-    option_t cantrain = false;
+    boolean_t cantrain = false;
 };
 } // namespace gamecomp
 

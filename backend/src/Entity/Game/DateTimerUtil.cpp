@@ -6,7 +6,7 @@ constexpr std::chrono::system_clock::time_point DateTimerUtil::TIMEEPOCHE;
 
 void DateTimerUtil::setRealTime(comp::DateTimer& datetimer,
                                 std::chrono::system_clock::time_point datetime,
-                                double realtime_factor) {
+                                double_t realtime_factor) {
     auto realTime = datetime.time_since_epoch();
     datetimer.realtime =
         std::chrono::duration_cast<std::chrono::milliseconds>(realTime);

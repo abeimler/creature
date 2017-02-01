@@ -10,7 +10,7 @@
 namespace gamecomp {
 
 /// Rückgabewert von evolution
-BETTER_ENUM(EvolutionStatus, ts::unsigned_t, Succ,
+BETTER_ENUM(EvolutionStatus, size_t, Succ,
             BEGIN = Succ,      ///< Erfolgreich entwickelt
             DeadOrNotReady,    ///< Tot, nicht Bereit oder Beschäftigt
             NoneNextCreatures, ///< keine Entwicklungen vorhanden

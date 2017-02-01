@@ -10,7 +10,7 @@ BattlerStatus::BattlerStatus() {
     }
 
     earr::enum_array_fill(this->option_, false);
-    earr::enum_array_fill(this->attr_, 1.0);
+    earr::enum_array_fill(this->attr_factor_, 1.0);
 }
 
 BattlerStatus::BattlerStatus(std::string name) : BattlerStatus() {
