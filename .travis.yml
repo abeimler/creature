@@ -175,12 +175,15 @@ install:
       export LDFLAGS="-L ${LLVM_ROOT}/install/lib -lc++ -lc++abi"
       export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${LLVM_ROOT}/install/lib"
     fi
+    
   - cd "${TRAVIS_BUILD_DIR}"
   - echo ${PATH}
+  - chmod +x ./travis.sh
   - ./travis.sh
   - cmake --version
   - ${CXX} --version
   - ${CXX} -v
+  #- chmod +x ./install-deps.sh
   #- ./install-deps.sh # not needed use - addons apt packages
 
 
@@ -202,7 +205,7 @@ before_script:
 script: 
   - cd "${TRAVIS_BUILD_DIR}"
   - cd ./build/backend
-  - ctest -R ".*creature_backend.*" --output-on-failture
+  - ctest -R ".*creature_backend.*" --output-on-failture -j$JOBS
 
 notifications:
   email: false
