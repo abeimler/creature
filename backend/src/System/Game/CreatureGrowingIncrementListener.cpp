@@ -17,12 +17,14 @@ void CreatureGrowingIncrementListener::updateBodySize(
 void CreatureGrowingIncrementListener::update(const gameevent::ProgressTimerIncrementEvent& event, 
     EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
-    Component<gamecomp::CreatureGeneComponent> gene;
-    Component<gamecomp::CreatureBodyComponent> body;
 
-    for (auto entity : entities.entities_with_components(gene, body)) {
+    for(auto entity : entities.view<gamecomp::CreatureGeneComponent, gamecomp::CreatureBodyComponent>()) {
+        
+        auto& gene = entities.get<gamecomp::CreatureGeneComponent>(entity);
+        auto& body = entities.get<gamecomp::CreatureBodyComponent>(entity);
+        
         if (event.type == +gamecomp::CreatureProgressTimerIncrement::Growing) {
-            updateBodySize(event, *body.get(), *gene.get());
+            updateBodySize(event, body, gene);
         }
     }
 }

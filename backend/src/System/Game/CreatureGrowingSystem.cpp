@@ -23,10 +23,11 @@ void CreatureGrowingSystem::updateGrowingTimer(gamecomp::CreatureProgressTimersC
 
 
 void CreatureGrowingSystem::update(EntityManager& entities, EventBus& events, TimeDelta /*dt*/) {
-    Component<gamecomp::CreatureProgressTimersComponent> timers;
+    for(auto entity : entities.view<gamecomp::CreatureProgressTimersComponent>()) {
+        
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-    for (auto entity : entities.entities_with_components(timers)) {
-        updateGrowingTimer(*timers.get());
+        updateGrowingTimer(timers);
     }
 }
 

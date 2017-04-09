@@ -3,6 +3,8 @@
 
 #include "basic.h"
 
+#include <registry.hpp>
+
 #include "Data/Basic.h"
 
 #include "Component/DateTimer.h"
@@ -24,7 +26,7 @@
 namespace gameentity {
 
 // Convenience types for our entity system.
-using GameComponents = entityx::Components<
+using GameComponents = entt::ComponentPool<
     gamecomp::CreatureDataComponent, gamecomp::CreatureProgressTimersComponent,
 
     gamecomp::BattlerStatusesComponent, gamecomp::BattlerBattleStateComponent,
@@ -39,39 +41,18 @@ using GameComponents = entityx::Components<
     gamecomp::CreatureHungerComponent, gamecomp::CreatureEvolveComponent,
     gamecomp::CreatureSleepComponent, gamecomp::CreatureTrainingComponent,
     gamecomp::CreatureBodilyStateComponent, gamecomp::CreatureBodyComponent,
-    gamecomp::CreaturePsycheComponent, gamecomp::CreatureLifeComponent>;
+    gamecomp::CreaturePsycheComponent, gamecomp::CreatureLifeComponent
+>;
 
 
-constexpr size_t COLUMNSTORAGE_CAPACITY = 20480;
 
-using EntityManager =
-    entityx::EntityX<GameComponents, entityx::ColumnStorage<GameComponents, COLUMNSTORAGE_CAPACITY>>;
+using EntityManager = entt::Registry<GameComponents>;
+
 template <typename C>
-using Component = EntityManager::Component<C>;
-using Entity = EntityManager::Entity;
-using EntityId = entityx::Id;
+using Component = C;
 
-typedef std::uint64_t entity_id_t;
-
-inline EntityId to_EntityId(entity_id_t id) {
-    return EntityId(id);
-}
-
-inline entity_id_t to_EntityId(const EntityId& eid) {
-    return eid.id();
-}
+using Entity = EntityManager::entity_type;
 
 } // namespace gameentity
-
-namespace std {
-template <>
-struct hash<const gameentity::Entity> {
-    std::size_t operator()(const gameentity::Entity& entity) const {
-        return static_cast<std::size_t>(entity.id().index() ^
-                                        entity.id().version());
-    }
-};
-}
-
 
 #endif // ENTITY_GAME_ENTITYS_H_

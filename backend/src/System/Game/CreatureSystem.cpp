@@ -401,31 +401,34 @@ void CreatureSystem::updateCreatureTimersFactor(
 
 void CreatureSystem::update(EntityManager& entities, EventBus& events,
                             TimeDelta /*dt*/) {
+                                
+    for(auto entity : entities.view<gamecomp::CreatureProgressTimersComponent, 
+            gamecomp::CreaturePsycheComponent, gamecomp::CreatureLifeComponent, gamecomp::CreatureBodyComponent,
+            gamecomp::CreatureGeneComponent, gamecomp::CreatureSleepComponent, gamecomp::CreatureDataComponent,
+            gamecomp::CreatureBattlerComponent, gamecomp::BattlerStatusesComponent>()) {
+        
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        auto& psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        auto& body = entities.get<gamecomp::CreatureBodyComponent>(entity);
+        auto& gene = entities.get<gamecomp::CreatureGeneComponent>(entity);
+        auto& sleep = entities.get<gamecomp::CreatureSleepComponent>(entity);
+        auto& creature_data = entities.get<gamecomp::CreatureDataComponent>(entity);
+        auto& creature_battler = entities.get<gamecomp::CreatureBattlerComponent>(entity);
+        auto& battler_statuses = entities.get<gamecomp::BattlerStatusesComponent>(entity);
 
-    Component<gamecomp::CreatureProgressTimersComponent> timers;
-    Component<gamecomp::CreaturePsycheComponent> psyche;
-    Component<gamecomp::CreatureLifeComponent> life;
-    Component<gamecomp::CreatureBodyComponent> body;
-    Component<gamecomp::CreatureGeneComponent> gene;
-    Component<gamecomp::CreatureSleepComponent> sleep;
-    Component<gamecomp::CreatureDataComponent> creature_data;
-    Component<gamecomp::CreatureBattlerComponent> creature_battler;
-    Component<gamecomp::BattlerStatusesComponent> battler_statuses;
 
-    for (auto entity : entities.entities_with_components(
-             timers, psyche, life, body, gene, sleep, creature_data,
-             creature_battler, battler_statuses)) {
-        updateCreatureTimers(*timers.get(), *life.get());
-        updateCreatureTimersFactor(*timers.get(), *life.get());
+        updateCreatureTimers(timers, life);
+        updateCreatureTimersFactor(timers, life);
 
-        updateHasStatuses(*battler_statuses.get(), *life.get());
-        updateBMI(*body.get(), *gene.get(), *creature_data.get());
+        updateHasStatuses(battler_statuses, life);
+        updateBMI(body, gene, creature_data);
 
-        updatePsycheValues(*psyche.get());
-        updateCanGoSleep(*timers.get(), *life.get(), *gene.get(), *sleep.get());
-        updateLifeAttribute(events, entity, *timers.get(), *life.get(),
-                            *gene.get(), *creature_battler.get(),
-                            *creature_data.get());
+        updatePsycheValues(psyche);
+        updateCanGoSleep(timers, life, gene, sleep);
+        updateLifeAttribute(events, entity, timers, life,
+                            gene, creature_battler,
+                            creature_data);
     }
 }
 

@@ -198,60 +198,66 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
     return addValue;
 }
 
+
+void CreatureProgressTimerSystem::updateAllTimers(EventBus& events, Entity entity, gamecomp::CreatureProgressTimersComponent& creatureprogresstimers) {
+    data::CreatureLevel level = creatureprogresstimers.creaturelevel;
+
+    datetimer_util_.update(creatureprogresstimers.lifetimer);
+
+    for (auto& timer : creatureprogresstimers.timer) {
+        updateTimer(timer, level);
+    }
+
+    for (auto type :
+            earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
+        auto& timer =
+            earr::enum_array_at(creatureprogresstimers.callback, type);
+
+        updateCallbackTimer(events, entity, timer, level, type);
+    }
+
+    for (auto type :
+            earr::Enum<gamecomp::CreatureProgressTimerIncrement>()) {
+        auto& timer =
+            earr::enum_array_at(creatureprogresstimers.increment, type);
+
+        updateIncrementTimer(events, entity, timer, level, type);
+    }
+
+    for (auto type : earr::Enum<gamecomp::StarvationPhase>()) {
+        auto& timer =
+            earr::enum_array_at(creatureprogresstimers.starvation, type);
+
+        updateStarvationPhaseTimer(events, entity, timer, level, type);
+    }
+
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+        auto& shortterm_timer =
+            earr::enum_array_at(creatureprogresstimers.memory, activity)
+                .shortterm;
+
+        updateShortTermMemoryTimer(events, entity, shortterm_timer, level,
+                                    activity);
+
+
+        auto& mediumterm_timer =
+            earr::enum_array_at(creatureprogresstimers.memory, activity)
+                .mediumterm;
+
+        updateMediumTermMemoryTimer(events, entity, mediumterm_timer, level,
+                                    activity);
+    }
+
+}
+
 void CreatureProgressTimerSystem::update(EntityManager& entities,
                                          EventBus& events, TimeDelta /*dt*/) {
-    gameentity::Component<gamecomp::CreatureProgressTimersComponent>
-        creatureprogresstimers;
+    
+    for(auto entity : entities.view<gamecomp::CreatureProgressTimersComponent>()) {
+        
+        auto& creatureprogresstimers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-    for (auto entity :
-         entities.entities_with_components(creatureprogresstimers)) {
-        data::CreatureLevel level = creatureprogresstimers->creaturelevel;
-
-        datetimer_util_.update(creatureprogresstimers->lifetimer);
-
-        for (auto& timer : creatureprogresstimers->timer) {
-            updateTimer(timer, level);
-        }
-
-        for (auto type :
-             earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
-            auto& timer =
-                earr::enum_array_at(creatureprogresstimers->callback, type);
-
-            updateCallbackTimer(events, entity, timer, level, type);
-        }
-
-        for (auto type :
-             earr::Enum<gamecomp::CreatureProgressTimerIncrement>()) {
-            auto& timer =
-                earr::enum_array_at(creatureprogresstimers->increment, type);
-
-            updateIncrementTimer(events, entity, timer, level, type);
-        }
-
-        for (auto type : earr::Enum<gamecomp::StarvationPhase>()) {
-            auto& timer =
-                earr::enum_array_at(creatureprogresstimers->starvation, type);
-
-            updateStarvationPhaseTimer(events, entity, timer, level, type);
-        }
-
-        for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-            auto& shortterm_timer =
-                earr::enum_array_at(creatureprogresstimers->memory, activity)
-                    .shortterm;
-
-            updateShortTermMemoryTimer(events, entity, shortterm_timer, level,
-                                       activity);
-
-
-            auto& mediumterm_timer =
-                earr::enum_array_at(creatureprogresstimers->memory, activity)
-                    .mediumterm;
-
-            updateMediumTermMemoryTimer(events, entity, mediumterm_timer, level,
-                                        activity);
-        }
+        updateAllTimers(events, entity, creatureprogresstimers);
     }
 }
 } // namespace gamesystem

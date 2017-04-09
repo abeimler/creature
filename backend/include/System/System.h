@@ -1,11 +1,12 @@
 #ifndef SYSTEM_GAME_SYSTEM_H_
 #define SYSTEM_GAME_SYSTEM_H_
 
-#include <entityx/entityx.hh>
-
 #include "basic.h"
 
+#include "Entity/Game/Entitys.h"
+
 #include "System/Events.h"
+
 
 namespace gamesystem {
 
@@ -15,8 +16,6 @@ class System {
     public:
     using EntityManager = gameentity::EntityManager;
     using Entity = gameentity::Entity;
-    using EntityId = gameentity::EntityId;
-    using entity_id_t = gameentity::entity_id_t;
 
     template <typename C>
     using Component = gameentity::Component<C>;

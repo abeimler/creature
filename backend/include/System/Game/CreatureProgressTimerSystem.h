@@ -60,6 +60,9 @@ class CreatureProgressTimerSystem : public System {
     void setIgnoreTimer(bool ignortimer) { this->ignortimer_ = ignortimer; }
     bool isIgnoreTimer() const { return this->ignortimer_; }
 
+
+    void updateAllTimers(EventBus& events, Entity entity, gamecomp::CreatureProgressTimersComponent& creatureprogresstimers);
+
     void update(EntityManager& entities, EventBus& events,
                 TimeDelta dt) override;
 };

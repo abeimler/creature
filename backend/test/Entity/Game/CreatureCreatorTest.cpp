@@ -238,19 +238,15 @@ TEST_CASE("create empty Creature Entity") {
     gameentity::CreatureEntityCreator creaturecreator;
 
     auto entity = manager.create();
-    creaturecreator.create(entity);
+    creaturecreator.create(manager, entity);
 
     SUBCASE("get CreatureLife Component and check valid") {
-        auto creaturelife = entity.component<gamecomp::CreatureLifeComponent>();
-
-        CHECK(creaturelife.valid());
+        auto creaturelife = manager.get<gamecomp::CreatureLifeComponent>(entity);
     }
 
     SUBCASE("get CreatureProgressTimers Component and check valid") {
         auto creatureprogresstimers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
-
-        CHECK(creatureprogresstimers.valid());
+            manager.get<gamecomp::CreatureProgressTimersComponent>(entity);
     }
 }
 
@@ -266,45 +262,45 @@ TEST_CASE("create Creature Entity with Creatue Data") {
 
     auto entity = manager.create();
 
-    creaturecreator.create(entity, creature, time, 1.0f);
+    creaturecreator.create(manager, entity, creature, time, 1.0f);
 
     auto creaturebattler =
-        entity.component<gamecomp::CreatureBattlerComponent>();
+        manager.get<gamecomp::CreatureBattlerComponent>(entity);
 
 
     SUBCASE("CreatureBattler minimal level") {
-        CHECK(creaturebattler->lvl >= creature.getMinLvL());
+        CHECK(creaturebattler.lvl >= creature.getMinLvL());
     }
     SUBCASE("CreatureBattler has right Level") {
-        CHECK(1 == creaturebattler->lvl);
+        CHECK(1 == creaturebattler.lvl);
     }
     SUBCASE("CreatureBattler maximal level") {
-        CHECK(creaturebattler->lvl <= creature.getMaxLvL());
+        CHECK(creaturebattler.lvl <= creature.getMaxLvL());
     }
 
 
 
     SUBCASE("CreatureBattler has right base Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
-        CHECK(earr::enum_array_at(creaturebattler->attrbase, index) >=
+        CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
               creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right base Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
-        CHECK(earr::enum_array_at(creaturebattler->attrbase, index) >=
+        CHECK(earr::enum_array_at(creaturebattler.attrbase, index) >=
               creature.getAttrBasis(index));
     }
 
     SUBCASE("CreatureBattler has right inflation Attribute, front") {
         data::Attribute index = data::Attribute::MaxHP;
-        CHECK(earr::enum_array_at(creaturebattler->attrinf, index) >=
+        CHECK(earr::enum_array_at(creaturebattler.attrinf, index) >=
               creature.getAttrInflation(index));
     }
 
     SUBCASE("CreatureBattler has right inflation Attribute, back") {
         data::Attribute index = data::Attribute::Exp;
-        CHECK(earr::enum_array_at(creaturebattler->attrinf, index) >=
+        CHECK(earr::enum_array_at(creaturebattler.attrinf, index) >=
               creature.getAttrInflation(index));
     }
 
@@ -313,7 +309,7 @@ TEST_CASE("create Creature Entity with Creatue Data") {
     SUBCASE("CreatureBattler has right Attribute, minlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMinLvL() >= 0);
-        CHECK(earr::enum_array_at(creaturebattler->attrparam, index)
+        CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
                   .at(static_cast<size_t>(creature.getMinLvL())) >=
               creature.getAttrBasis(index));
     }
@@ -321,20 +317,20 @@ TEST_CASE("create Creature Entity with Creatue Data") {
     SUBCASE("CreatureBattler has right Attribute, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
         REQUIRE(creature.getMaxLvL() >= 0);
-        CHECK(earr::enum_array_at(creaturebattler->attrparam, index)
+        CHECK(earr::enum_array_at(creaturebattler.attrparam, index)
                   .at(static_cast<size_t>(creature.getMaxLvL())) >=
               creature.getAttrBasis(index));
     }
 
     SUBCASE("Attibutes has right size, minlevel") {
         data::Attribute index = data::Attribute::MaxHP;
-        CHECK(earr::enum_array_at(creaturebattler->attrparam, index).size() >=
+        CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
               static_cast<size_t>(creature.getMinLvL()));
     }
 
     SUBCASE("Attibutes has right size, maxlevel") {
         data::Attribute index = data::Attribute::MaxHP;
-        CHECK(earr::enum_array_at(creaturebattler->attrparam, index).size() >=
+        CHECK(earr::enum_array_at(creaturebattler.attrparam, index).size() >=
               static_cast<size_t>(creature.getMaxLvL()));
     }
 }

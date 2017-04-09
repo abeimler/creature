@@ -24,36 +24,43 @@ void CreatureBattlerAddBattlerStatusListener::sortBattlerStatuses(
     std::sort(std::begin(statuses_name), std::end(statuses_name), sort_func);
 }
 
+
+void CreatureBattlerAddBattlerStatusListener::addBattlerStatus(EntityManager& entities, EventBus& events, Entity entity,
+    gamecomp::BattlerStatusesComponent& battlerstatuses, const data::BattlerStatus& addstatus) {
+    std::string addstatus_name = addstatus.getName();
+
+    auto& battlerstatuses_statuses_name = battlerstatuses.statuses_name;
+    auto& battlerstatuses_startstatusturns = battlerstatuses.startstatusturns;
+
+    auto status_name_it =
+        std::find(std::begin(battlerstatuses_statuses_name),
+                    std::end(battlerstatuses_statuses_name), addstatus_name);
+
+    if (status_name_it == std::end(battlerstatuses_statuses_name)) {
+        battlerstatuses_statuses_name.push_back(addstatus_name);
+        battlerstatuses_startstatusturns.push_back(gamecomp::BattlerStatusTurn(addstatus_name));
+
+        for (auto removestatus_name : addstatus.getRemoveStatuses()) {
+            auto removestatus =
+                this->datamanager_.findCreatureBattlerStatus(removestatus_name);
+            if (removestatus) {
+                emit_event<gameevent::CreatureRemoveBattlerStatusEvent>(events, entity, *removestatus);
+            }
+        }
+
+        sortBattlerStatuses(battlerstatuses_statuses_name);
+    }
+}
+
 void CreatureBattlerAddBattlerStatusListener::update(
     const gameevent::CreatureAddBattlerStatusEvent& event,
     EntityManager& entities, EventBus& events, TimeDelta /*dt*/) {
-    Component<gamecomp::BattlerStatusesComponent> battlerstatuses;
 
-    for (auto entity : entities.entities_with_components(battlerstatuses)) {
+    for(auto entity : entities.view<gamecomp::BattlerStatusesComponent>()) {
+        auto& battlerstatuses = entities.get<gamecomp::BattlerStatusesComponent>(entity);
+
         const data::BattlerStatus& addstatus = event.addstatus;
-        std::string addstatus_name = addstatus.getName();
-
-        auto status_name_it =
-            std::find(std::begin(battlerstatuses->statuses_name),
-                      std::end(battlerstatuses->statuses_name), addstatus_name);
-
-        if (status_name_it == std::end(battlerstatuses->statuses_name)) {
-            battlerstatuses->statuses_name.push_back(addstatus_name);
-            battlerstatuses->startstatusturns.push_back(
-                gamecomp::BattlerStatusTurn(addstatus_name));
-
-            for (auto removestatus_name : addstatus.getRemoveStatuses()) {
-                auto removestatus =
-                    this->datamanager_.findCreatureBattlerStatus(
-                        removestatus_name);
-                if (removestatus) {
-                    emit_event<gameevent::CreatureRemoveBattlerStatusEvent>(
-                        events, entity, *removestatus);
-                }
-            }
-
-            sortBattlerStatuses(battlerstatuses->statuses_name);
-        }
+        addBattlerStatus(entities, events, entity, battlerstatuses, addstatus);
     }
 }
 } // namespace gamesystem

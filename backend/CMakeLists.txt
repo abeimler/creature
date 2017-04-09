@@ -49,7 +49,7 @@ set(CREATURE_BACKEND_BENCHMARK_HEADERS ${CREATURE_BACKEND_BENCHMARK_HEADERS} PAR
 ###
 set(CREATURE_BACKEND_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/entityx)
+add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/entt)
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/eventpp)
 
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/benchpress)
@@ -82,7 +82,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_constexpr
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambdas)
 
 # use SYSTEM to get rid of 3rd party libs warnings
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/entityx)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/entt/src)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/eventpp/src)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums/extra)

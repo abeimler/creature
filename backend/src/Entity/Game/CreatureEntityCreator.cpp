@@ -119,38 +119,38 @@ gamecomp::CreatureLifeComponent CreatureEntityCreator::createCreatureLife(
 
 
 
-void CreatureEntityCreator::create(Entity& entity) {
+void CreatureEntityCreator::create(EntityManager& entities, Entity& entity) {
     auto time = std::chrono::system_clock::now();
 
     auto timers = createCreatureProgressTimers(time);
     auto training = createCreatureTraining();
 
-    entity.assign<gamecomp::CreatureDataComponent>();
-    entity.assign<gamecomp::CreatureProgressTimersComponent>(timers);
+    entities.assign<gamecomp::CreatureDataComponent>(entity);
+    entities.assign<gamecomp::CreatureProgressTimersComponent>(entity, timers);
 
-    entity.assign<gamecomp::BattlerStatusesComponent>();
-    entity.assign<gamecomp::BattlerBattleStateComponent>();
-    entity.assign<gamecomp::BattlerResistsComponent>();
+    entities.assign<gamecomp::BattlerStatusesComponent>(entity);
+    entities.assign<gamecomp::BattlerBattleStateComponent>(entity);
+    entities.assign<gamecomp::BattlerResistsComponent>(entity);
 
-    entity.assign<gamecomp::CreatureBattlerComponent>();
+    entities.assign<gamecomp::CreatureBattlerComponent>(entity);
 
-    entity.assign<gamecomp::CreatureBattlerGeneComponent>();
-    entity.assign<gamecomp::CreatureGeneComponent>();
+    entities.assign<gamecomp::CreatureBattlerGeneComponent>(entity);
+    entities.assign<gamecomp::CreatureGeneComponent>(entity);
 
-    entity.assign<gamecomp::CreatureMemoryComponent>();
-    entity.assign<gamecomp::CreaturePersonalityComponent>();
+    entities.assign<gamecomp::CreatureMemoryComponent>(entity);
+    entities.assign<gamecomp::CreaturePersonalityComponent>(entity);
 
-    entity.assign<gamecomp::CreatureHungerComponent>();
-    entity.assign<gamecomp::CreatureEvolveComponent>();
-    entity.assign<gamecomp::CreatureSleepComponent>();
-    entity.assign<gamecomp::CreatureTrainingComponent>(training);
-    entity.assign<gamecomp::CreatureBodilyStateComponent>();
-    entity.assign<gamecomp::CreatureBodyComponent>();
-    entity.assign<gamecomp::CreaturePsycheComponent>();
-    entity.assign<gamecomp::CreatureLifeComponent>();
+    entities.assign<gamecomp::CreatureHungerComponent>(entity);
+    entities.assign<gamecomp::CreatureEvolveComponent>(entity);
+    entities.assign<gamecomp::CreatureSleepComponent>(entity);
+    entities.assign<gamecomp::CreatureTrainingComponent>(entity, training);
+    entities.assign<gamecomp::CreatureBodilyStateComponent>(entity);
+    entities.assign<gamecomp::CreatureBodyComponent>(entity);
+    entities.assign<gamecomp::CreaturePsycheComponent>(entity);
+    entities.assign<gamecomp::CreatureLifeComponent>(entity);
 }
 
-void CreatureEntityCreator::create(
+void CreatureEntityCreator::create(EntityManager& entities, 
     Entity& entity, const data::Creature& creature,
     std::chrono::system_clock::time_point realtime,
     gamecomp::progresstimer_factor_t realtime_factor) {
@@ -183,27 +183,28 @@ void CreatureEntityCreator::create(
     setupCreatureProgressTimers(timers, creaturedata, life, gene, body);
 
 
-    entity.assign<gamecomp::CreatureDataComponent>(creaturedata);
-    entity.assign<gamecomp::CreatureProgressTimersComponent>(timers);
+    entities.assign<gamecomp::CreatureDataComponent>(entity, creaturedata);
+    entities.assign<gamecomp::CreatureProgressTimersComponent>(entity, timers);
 
-    entity.assign<gamecomp::BattlerStatusesComponent>();
-    entity.assign<gamecomp::BattlerBattleStateComponent>(battlerstate);
-    entity.assign<gamecomp::BattlerResistsComponent>(battlerresists);
-    entity.assign<gamecomp::CreatureBattlerComponent>(creaturebattler);
+    entities.assign<gamecomp::BattlerStatusesComponent>(entity);
+    entities.assign<gamecomp::BattlerBattleStateComponent>(entity, battlerstate);
+    entities.assign<gamecomp::BattlerResistsComponent>(entity, battlerresists);
+    entities.assign<gamecomp::CreatureBattlerComponent>(entity, creaturebattler);
 
-    entity.assign<gamecomp::CreatureBattlerGeneComponent>(battlergene);
-    entity.assign<gamecomp::CreatureGeneComponent>(gene);
+    entities.assign<gamecomp::CreatureBattlerGeneComponent>(entity, battlergene);
+    entities.assign<gamecomp::CreatureGeneComponent>(entity, gene);
 
-    entity.assign<gamecomp::CreatureMemoryComponent>(memory);
-    entity.assign<gamecomp::CreaturePersonalityComponent>();
+    entities.assign<gamecomp::CreatureMemoryComponent>(entity, memory);
+    entities.assign<gamecomp::CreaturePersonalityComponent>(entity);
 
-    entity.assign<gamecomp::CreatureHungerComponent>();
-    entity.assign<gamecomp::CreatureEvolveComponent>();
-    entity.assign<gamecomp::CreatureSleepComponent>();
-    entity.assign<gamecomp::CreatureTrainingComponent>(training);
-    entity.assign<gamecomp::CreatureBodilyStateComponent>();
-    entity.assign<gamecomp::CreatureBodyComponent>(body);
-    entity.assign<gamecomp::CreaturePsycheComponent>(psyche);
-    entity.assign<gamecomp::CreatureLifeComponent>(life);
+    entities.assign<gamecomp::CreatureHungerComponent>(entity);
+    entities.assign<gamecomp::CreatureEvolveComponent>(entity);
+    entities.assign<gamecomp::CreatureSleepComponent>(entity);
+    entities.assign<gamecomp::CreatureTrainingComponent>(entity, training);
+    entities.assign<gamecomp::CreatureBodilyStateComponent>(entity);
+    entities.assign<gamecomp::CreatureBodyComponent>(entity, body);
+    entities.assign<gamecomp::CreaturePsycheComponent>(entity, psyche);
+    entities.assign<gamecomp::CreatureLifeComponent>(entity, life);
+
 }
 } // namespace gameentity

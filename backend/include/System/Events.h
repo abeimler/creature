@@ -1,8 +1,6 @@
 #ifndef SYSTEM_GAME_EVENTS_H_
 #define SYSTEM_GAME_EVENTS_H_
 
-#include <entityx/entityx.hh>
-
 #include <bus.hpp>
 #include <event.hpp>
 #include <signal.hpp>

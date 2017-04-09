@@ -26,22 +26,23 @@ void CreatureBattlerRemoveBattlerStatusListener::sortBattlerStatuses(
 
 void CreatureBattlerRemoveBattlerStatusListener::removeBattlerStatus(
     const gameevent::CreatureRemoveBattlerStatusEvent& event,
-    Component<gamecomp::BattlerStatusesComponent>& battlerstatuses) {
+    gamecomp::BattlerStatusesComponent& battlerstatuses) {
     const data::BattlerStatus& removestatus = event.removestatus;
     std::string removestatus_name = removestatus.getName();
 
     auto status_name_it =
-        std::find(std::begin(battlerstatuses->statuses_name),
-                  std::end(battlerstatuses->statuses_name), removestatus_name);
+        std::find(std::begin(battlerstatuses.statuses_name),
+                  std::end(battlerstatuses.statuses_name), removestatus_name);
 
-    if (status_name_it != std::end(battlerstatuses->statuses_name)) {
-        battlerstatuses->statuses_name.erase(status_name_it);
+    if (status_name_it != std::end(battlerstatuses.statuses_name)) {
+        battlerstatuses.statuses_name.erase(status_name_it);
     }
 }
 
 void CreatureBattlerRemoveBattlerStatusListener::removeStartBattlerStatusTurn(
     const gameevent::CreatureRemoveBattlerStatusEvent& event,
-    Component<gamecomp::BattlerStatusesComponent>& battlerstatuses) {
+    gamecomp::BattlerStatusesComponent& battlerstatuses) {
+
     const data::BattlerStatus& removestatus = event.removestatus;
     std::string removestatus_name = removestatus.getName();
 
@@ -51,24 +52,30 @@ void CreatureBattlerRemoveBattlerStatusListener::removeStartBattlerStatusTurn(
     };
 
 
-    battlerstatuses->startstatusturns.erase(
-        std::remove_if(std::begin(battlerstatuses->startstatusturns),
-                       std::end(battlerstatuses->startstatusturns),
+    battlerstatuses.startstatusturns.erase(
+        std::remove_if(std::begin(battlerstatuses.startstatusturns),
+                       std::end(battlerstatuses.startstatusturns),
                        remove_startstatusturn_func),
-        std::end(battlerstatuses->startstatusturns));
+        std::end(battlerstatuses.startstatusturns));
 }
+
+void CreatureBattlerRemoveBattlerStatusListener::sortBattlerStatuses(gamecomp::BattlerStatusesComponent& battlerstatuses) {
+    sortBattlerStatuses(battlerstatuses.statuses_name);
+}
+
 
 void CreatureBattlerRemoveBattlerStatusListener::update(
     const gameevent::CreatureRemoveBattlerStatusEvent& event,
     EntityManager& entities, EventBus& /*events*/, TimeDelta /*dt*/) {
-    Component<gamecomp::BattlerStatusesComponent> battlerstatuses;
-
-    for (auto entity : entities.entities_with_components(battlerstatuses)) {
+    
+    for(auto entity : entities.view<gamecomp::BattlerStatusesComponent>()) {
+        auto& battlerstatuses = entities.get<gamecomp::BattlerStatusesComponent>(entity);
 
         removeBattlerStatus(event, battlerstatuses);
         removeStartBattlerStatusTurn(event, battlerstatuses);
 
-        sortBattlerStatuses(battlerstatuses->statuses_name);
+        sortBattlerStatuses(battlerstatuses);
     }
 }
+
 } // namespace gamesystem

@@ -203,27 +203,25 @@ void CreatureTryToEvolveListener::update(const gameevent::CreatureTryToEvolveEve
 
     auto entity = event.entity;
     if (entity) {
-        //auto life = entity.component<gamecomp::CreatureLife>();
-        //model::data::CreatureLevel creaturelevel = life->creaturelevel;
 
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        if (life->readytoevolve) {
-            auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-            auto gene = entity.component<gamecomp::CreatureGeneComponent>();
-            auto psyche = entity.component<gamecomp::CreaturePsycheComponent>();
-            auto body = entity.component<gamecomp::CreatureBodyComponent>();
-            auto creature_data = entity.component<gamecomp::CreatureDataComponent>();
-            auto creature_battlergene = entity.component<gamecomp::CreatureBattlerGeneComponent>();
-            auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
-            auto training = entity.component<gamecomp::CreatureTrainingComponent>();
-            auto bodilystate = entity.component<gamecomp::CreatureBodilyStateComponent>();
-            auto evolve = entity.component<gamecomp::CreatureEvolveComponent>();
+        if (life.readytoevolve) {
+            auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+            auto& gene = entities.get<gamecomp::CreatureGeneComponent>(entity);
+            auto& psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
+            auto& body = entities.get<gamecomp::CreatureBodyComponent>(entity);
+            auto& creature_data = entities.get<gamecomp::CreatureDataComponent>(entity);
+            auto& creature_battlergene = entities.get<gamecomp::CreatureBattlerGeneComponent>(entity);
+            auto& creature_battler = entities.get<gamecomp::CreatureBattlerComponent>(entity);
+            auto& training = entities.get<gamecomp::CreatureTrainingComponent>(entity);
+            auto& bodilystate = entities.get<gamecomp::CreatureBodilyStateComponent>(entity);
+            auto& evolve = entities.get<gamecomp::CreatureEvolveComponent>(entity);
 
             tryToEvolve(entity, events, 
-                        *timers.get(), *creature_data.get(), *gene.get(),
-                        *creature_battlergene.get(), *creature_battler.get(), *training.get(), *body.get(),
-                        *bodilystate.get(), *psyche.get(), *life.get(), *evolve.get());
+                        timers, creature_data, gene,
+                        creature_battlergene, creature_battler, training, body,
+                        bodilystate, psyche, life, evolve);
         }
     }
 }

@@ -35,11 +35,14 @@ void CreatureMakeRunAwayListener::makeCreaturerRunAway(
 void CreatureMakeRunAwayListener::update(
     const gameevent::CreatureMakeRunAwayEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
-    Component<gamecomp::CreatureProgressTimersComponent> timers;
-    Component<gamecomp::CreatureLifeComponent> life;
 
-    for (auto entity : entities.entities_with_components(timers, life)) {
-        makeCreaturerRunAway(events, entity, *timers.get(), *life.get(),
+    for(auto entity : entities.view<gamecomp::CreatureProgressTimersComponent, 
+            gamecomp::CreatureLifeComponent>()) {
+        
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+
+        makeCreaturerRunAway(events, entity, timers, life,
                              event.causeofrunaway, event.waittime);
     }
 }

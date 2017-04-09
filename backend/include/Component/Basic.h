@@ -1,8 +1,6 @@
 #ifndef COMPONENT_BASIC_H_
 #define COMPONENT_BASIC_H_
 
-#include <entityx/entityx.hh>
-
 #include "basic.h"
 
 #include "Data/Basic.h"

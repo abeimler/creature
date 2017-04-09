@@ -197,31 +197,31 @@ void CreatureBattlerSystem::updateCreatureStatusRestriction(
 void CreatureBattlerSystem::update(EntityManager& entities,
                                    EventBus& /*events*/, TimeDelta /*dt*/) {
 
-    Component<gamecomp::CreatureDataComponent> creature_data;
-    Component<gamecomp::CreatureBattlerComponent> creature_battler;
-    Component<gamecomp::BattlerStatusesComponent> battler_statuses;
+    for(auto entity : entities.view<gamecomp::CreatureDataComponent, gamecomp::CreatureBattlerComponent, gamecomp::BattlerStatusesComponent>()) {
+        auto& creature_data = entities.get<gamecomp::CreatureDataComponent>(entity);
+        auto& creature_battler = entities.get<gamecomp::CreatureBattlerComponent>(entity);
+        auto& battler_statuses = entities.get<gamecomp::BattlerStatusesComponent>(entity);
 
-    for (auto entity : entities.entities_with_components(
-             creature_data, creature_battler, battler_statuses)) {
-        this->updateCreatureBattlerAttribute(*creature_battler.get(),
-                                             *battler_statuses.get(),
-                                             *creature_data.get());
 
-        this->updateCreatureHitRate(*creature_battler.get(),
-                                    *battler_statuses.get(),
-                                    *creature_data.get());
+        updateCreatureBattlerAttribute(creature_battler,
+                                        battler_statuses,
+                                        creature_data);
 
-        this->updateCreatureCriticalHitRate(*creature_battler.get(),
-                                            *battler_statuses.get(),
-                                            *creature_data.get());
+        updateCreatureHitRate(creature_battler,
+                                battler_statuses,
+                                creature_data);
 
-        this->updateCreatureEvaRate(*creature_battler.get(),
-                                    *battler_statuses.get(),
-                                    *creature_data.get());
+        updateCreatureCriticalHitRate(creature_battler,
+                                        battler_statuses,
+                                        creature_data);
 
-        this->updateCreatureStatusRestriction(*creature_battler.get(),
-                                              *battler_statuses.get(),
-                                              *creature_data.get());
+        updateCreatureEvaRate(creature_battler,
+                                battler_statuses,
+                                creature_data);
+
+        this->updateCreatureStatusRestriction(creature_battler,
+                                              battler_statuses,
+                                              creature_data);
     }
 }
 
