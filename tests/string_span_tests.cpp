@@ -17,6 +17,7 @@
 #include <UnitTest++/UnitTest++.h>
 #include <cstdlib>
 #include <gsl/string_span>
+#include <gsl/gsl> //owner
 #include <vector>
 #include <map>
 
@@ -125,7 +126,7 @@ SUITE(string_span_tests)
         CHECK(static_cast<cstring_span<>::index_type>(s2.length()) == v.length());
         CHECK(s2.length() == 5);
     }
-    
+
     TEST(EqualityAndImplicitConstructors)
     {
         {
@@ -134,7 +135,7 @@ SUITE(string_span_tests)
 
             // comparison to empty span
             CHECK(span1 != span);
-            CHECK(span != span1);      
+            CHECK(span != span1);
         }
 
         {
@@ -229,7 +230,7 @@ SUITE(string_span_tests)
             const char ar2[10] = "Hello";
             const std::string str = "Hello";
             const std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
-            gsl::span<const char> sp = ensure_z("Hello");
+            const gsl::span<const char> sp = ensure_z("Hello");
 
             cstring_span<> span = "Hello";
 
@@ -291,7 +292,7 @@ SUITE(string_span_tests)
             string_span<> _span{ _ptr, 5 };
 
             // non-const span, non-const other type
-            
+
             CHECK(_span == _ar);
             CHECK(_span == _ar1);
             CHECK(_span == _ar2);
@@ -441,7 +442,7 @@ SUITE(string_span_tests)
 
         // ensure z on c strings
         {
-            char* ptr = new char[3];
+            gsl::owner<char*> ptr = new char[3];
 
             ptr[0] = 'a';
             ptr[1] = 'b';
@@ -553,52 +554,52 @@ SUITE(string_span_tests)
         // from const string
         {
             const std::string str = "Hello";
-            cstring_span<> span = str;
+            const cstring_span<> span = str;
             CHECK(span.length() == 5);
         }
 
         // from non-const string
         {
             std::string str = "Hello";
-            cstring_span<> span = str;
+            const cstring_span<> span = str;
             CHECK(span.length() == 5);
         }
 
         // from const vector
         {
             const std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
-            cstring_span<> span = vec;
+            const cstring_span<> span = vec;
             CHECK(span.length() == 5);
         }
 
         // from non-const vector
         {
             std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
-            cstring_span<> span = vec;
+            const cstring_span<> span = vec;
             CHECK(span.length() == 5);
         }
 
         // from const span
         {
-            std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
+            const std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
             const span<const char> inner = vec;
-            cstring_span<> span = inner;
+            const cstring_span<> span = inner;
             CHECK(span.length() == 5);
         }
 
         // from non-const span
         {
             std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
-            span<char> inner = vec;
-            cstring_span<> span = inner;
+            const span<char> inner = vec;
+            const cstring_span<> span = inner;
             CHECK(span.length() == 5);
         }
 
         // from const string_span
         {
-            std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
-            cstring_span<> tmp = vec;
-            cstring_span<> span = tmp;
+            const std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
+            const cstring_span<> tmp = vec;
+            const cstring_span<> span = tmp;
             CHECK(span.length() == 5);
         }
 
@@ -725,8 +726,8 @@ SUITE(string_span_tests)
         // from non-const string_span
         {
             std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
-            string_span<> tmp = vec;
-            string_span<> span = tmp;
+            const string_span<> tmp = vec;
+            const string_span<> span = tmp;
             CHECK(span.length() == 5);
         }
 
@@ -744,7 +745,7 @@ SUITE(string_span_tests)
         {
             std::vector<char> vec = { 'H', 'e', 'l', 'l', 'o' };
             const string_span<> tmp = vec;
-            string_span<> span = tmp;
+            const string_span<> span = tmp;
             CHECK(span.length() == 5);
         }
     }
@@ -759,36 +760,36 @@ SUITE(string_span_tests)
     T create() { return T{}; }
 
     template <class T>
-    void use(basic_string_span<T, gsl::dynamic_extent> s) {}
+    void use(basic_string_span<T, gsl::dynamic_extent>) {}
 
     TEST(MoveConstructors)
     {
         // move string_span
         {
             cstring_span<> span = "Hello";
-            auto span1 = std::move(span);
+            const auto span1 = std::move(span);
             CHECK(span1.length() == 5);
         }
         {
             cstring_span<> span = "Hello";
-            auto span1 = move_wrapper(std::move(span));
+            const auto span1 = move_wrapper(std::move(span));
             CHECK(span1.length() == 5);
         }
         {
             cstring_span<> span = "Hello";
-            auto span1 = move_wrapper(std::move(span));
+            const auto span1 = move_wrapper(std::move(span));
             CHECK(span1.length() == 5);
         }
 
         // move span
         {
             span<const char> span = ensure_z("Hello");
-            cstring_span<> span1 = std::move(span);
+            const cstring_span<> span1 = std::move(span);
             CHECK(span1.length() == 5);
         }
         {
             span<const char> span = ensure_z("Hello");
-            cstring_span<> span2 = move_wrapper(std::move(span));
+            const cstring_span<> span2 = move_wrapper(std::move(span));
             CHECK(span2.length() == 5);
         }
 
@@ -939,7 +940,7 @@ SUITE(string_span_tests)
             wchar_t buf[1];
             buf[0] = L'a';
 
-            auto workaround_macro = [&]() { wzstring_span<> zspan({ buf, 1 }); };
+            const auto workaround_macro = [&]() { wzstring_span<> zspan({ buf, 1 }); };
             CHECK_THROW(workaround_macro(), fail_fast);
         }
 
@@ -947,7 +948,7 @@ SUITE(string_span_tests)
         {
             wchar_t buf[10];
 
-            auto name = CreateTempNameW({ buf, 10 });
+            const auto name = CreateTempNameW({ buf, 10 });
             if (!name.empty())
             {
                 cwzstring<> str = name.assume_z();

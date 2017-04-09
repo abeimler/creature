@@ -149,7 +149,7 @@ SUITE(span_tests)
 
         {
             auto workaround_macro = []() { span<int, 1> s{ nullptr, static_cast<span<int>::index_type>(0) }; };
-            CHECK_THROW(workaround_macro(), fail_fast); 
+            CHECK_THROW(workaround_macro(), fail_fast);
         }
 
         {
@@ -680,7 +680,7 @@ SUITE(span_tests)
         {
 #ifdef CONFIRM_COMPILATION_ERRORS
             span<char> s{cstr};
-#endif                                                          
+#endif
             span<const char> cs{cstr};
             CHECK(cs.size() == narrow_cast<std::ptrdiff_t>(cstr.size()) &&
                   cs.data() == cstr.data());
@@ -691,7 +691,7 @@ SUITE(span_tests)
             auto get_temp_vector = []() -> std::vector<int> { return {}; };
             auto use_span = [](span<int> s) { static_cast<void>(s); };
             use_span(get_temp_vector());
-#endif                      
+#endif
         }
 
         {
@@ -705,7 +705,7 @@ SUITE(span_tests)
             auto get_temp_string = []() -> std::string { return{}; };
             auto use_span = [](span<char> s) { static_cast<void>(s); };
             use_span(get_temp_string());
-#endif                         
+#endif
         }
 
         {
@@ -866,7 +866,7 @@ SUITE(span_tests)
             span<int, 5> av = arr;
 #ifdef CONFIRM_COMPILATION_ERRORS
             CHECK(av.last<6>().length() == 6);
-#endif    
+#endif
             CHECK_THROW(av.last(6).length(), fail_fast);
         }
 
@@ -930,7 +930,7 @@ SUITE(span_tests)
             CHECK(av.subspan(4).length() == 1);
             CHECK(av.subspan(5).length() == 0);
             CHECK_THROW(av.subspan(6).length(), fail_fast);
-            auto av2 = av.subspan(1);
+            const auto av2 = av.subspan(1);
             for (int i = 0; i < 4; ++i) CHECK(av2[i] == i + 2);
         }
 
@@ -941,7 +941,7 @@ SUITE(span_tests)
             CHECK(av.subspan(4).length() == 1);
             CHECK(av.subspan(5).length() == 0);
             CHECK_THROW(av.subspan(6).length(), fail_fast);
-            auto av2 = av.subspan(1);
+            const auto av2 = av.subspan(1);
             for (int i = 0; i < 4; ++i) CHECK(av2[i] == i + 2);
         }
     }
@@ -1098,7 +1098,7 @@ SUITE(span_tests)
             CHECK(beyond - first == 4);
             CHECK(first - first == 0);
             CHECK(beyond - beyond == 0);
-            
+
             ++it;
             CHECK(it - first == 1);
             CHECK(*it == 2);
@@ -1117,7 +1117,7 @@ SUITE(span_tests)
             CHECK(it == beyond);
             CHECK(it - beyond == 0);
 
-            for (auto& n : s)
+            for (const auto& n : s)
             {
                 CHECK(n == 5);
             }
@@ -1214,7 +1214,7 @@ SUITE(span_tests)
             CHECK(it == beyond);
             CHECK(it - beyond == 0);
 
-            for (auto& n : s)
+            for (const auto& n : s)
             {
                 CHECK(n == 5);
             }
@@ -1386,16 +1386,16 @@ SUITE(span_tests)
         int a[] = {1, 2, 3, 4};
 
         {
-            span<const int> s = a;
+            const span<const int> s = a;
             CHECK(s.length() == 4);
-            span<const byte> bs = as_bytes(s);
+            const span<const byte> bs = as_bytes(s);
             CHECK(static_cast<const void*>(bs.data()) == static_cast<const void*>(s.data()));
             CHECK(bs.length() == s.length_bytes());
         }
 
         {
             span<int> s;
-            auto bs = as_bytes(s);
+            const auto bs = as_bytes(s);
             CHECK(bs.length() == s.length());
             CHECK(bs.length() == 0);
             CHECK(bs.size_bytes() == 0);
@@ -1405,7 +1405,7 @@ SUITE(span_tests)
 
         {
             span<int> s = a;
-            auto bs = as_bytes(s);
+            const auto bs = as_bytes(s);
             CHECK(static_cast<const void*>(bs.data()) == static_cast<const void*>(s.data()));
             CHECK(bs.length() == s.length_bytes());
         }
@@ -1428,7 +1428,7 @@ SUITE(span_tests)
 
         {
             span<int> s;
-            auto bs = as_writeable_bytes(s);
+            const auto bs = as_writeable_bytes(s);
             CHECK(bs.length() == s.length());
             CHECK(bs.length() == 0);
             CHECK(bs.size_bytes() == 0);
@@ -1438,7 +1438,7 @@ SUITE(span_tests)
 
         {
             span<int> s = a;
-            auto bs = as_writeable_bytes(s);
+            const auto bs = as_writeable_bytes(s);
             CHECK(static_cast<void*>(bs.data()) == static_cast<void*>(s.data()));
             CHECK(bs.length() == s.length_bytes());
         }
@@ -1484,11 +1484,11 @@ SUITE(span_tests)
 
         // you can convert statically
         {
-            span<int, 2> s2 = {arr, 2};
+            const span<int, 2> s2 = {arr, 2};
             static_cast<void>(s2);
         }
         {
-            span<int, 1> s1 = s4.first<1>();
+            const span<int, 1> s1 = s4.first<1>();
             static_cast<void>(s1);
         }
 
@@ -1515,7 +1515,7 @@ SUITE(span_tests)
             auto f = [&]() {
                 span<int, 4> _s4 = {arr2, 2};
                 static_cast<void>(_s4);
-            };                     
+            };
             CHECK_THROW(f(), fail_fast);
         }
 
@@ -1523,7 +1523,7 @@ SUITE(span_tests)
         span<int> av = arr2;
         auto f = [&]() {
             span<int, 4> _s4 = av;
-            static_cast<void>(_s4);            
+            static_cast<void>(_s4);
         };
         CHECK_THROW(f(), fail_fast);
     }
@@ -1532,7 +1532,7 @@ SUITE(span_tests)
     {
         char lat[] = { '1', '2', '3', '4', '5', '6', 'E', 'F', 'G' };
         span<char> s = lat;
-        auto f_it = s.begin() + 7;
+        const auto f_it = s.begin() + 7;
 
         std::match_results<span<char>::iterator> match;
 
@@ -1556,6 +1556,13 @@ SUITE(span_tests)
         int arr[5] = {1, 2, 3, 4, 5};
         span<int> s{arr};
         CHECK(at(s,0) == 1 && at(s,1) == 2);
+    }
+
+    TEST(default_constructible)
+    {
+        CHECK((std::is_default_constructible<span<int>>::value));
+        CHECK((std::is_default_constructible<span<int, 0>>::value));
+        CHECK((!std::is_default_constructible<span<int, 42>>::value));
     }
 }
 

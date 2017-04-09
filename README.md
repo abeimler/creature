@@ -6,10 +6,10 @@ This repo contains Microsoft's implementation of GSL.
 
 The library includes types like `span<T>`, `string_span`, `owner<>` and others.
 
-The entire implementation is provided inline in the headers under the [gsl](./gsl) directory. The implementation generally assumes a platform that implements C++14 support. There are specific workarounds to support MSVC 2013 and 2015.
+The entire implementation is provided inline in the headers under the [gsl](./include/gsl) directory. The implementation generally assumes a platform that implements C++14 support. There are specific workarounds to support MSVC 2013 and 2015.
 
-While some types have been broken out into their own headers (e.g. [gsl/span](./gsl/span)),
-it is simplest to just include [gsl/gsl](./gsl/gsl) and gain access to the entire library.
+While some types have been broken out into their own headers (e.g. [gsl/span](./include/gsl/span)),
+it is simplest to just include [gsl/gsl](./include/gsl/gsl) and gain access to the entire library.
 
 > NOTE: We encourage contributions that improve or refine any of the types in this library as well as ports to
 other platforms. Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for more information about contributing.
@@ -21,7 +21,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## Supported Platforms
 The test suite that exercises GSL has been built and passes successfully on the following platforms:<sup>1)</sup>
 
-* Windows using Visual Studio 2013
 * Windows using Visual Studio 2015
 * Windows using Visual Studio 2017
 * Windows using Clang/LLVM 3.6
@@ -69,19 +68,22 @@ All tests should pass - indicating your platform is fully supported and you are 
 ## Using the libraries
 As the types are entirely implemented inline in headers, there are no linking requirements.
 
-You can copy the [gsl](./gsl) directory into your source tree so it is available
+You can copy the [gsl](./include/gsl) directory into your source tree so it is available
 to your compiler, then include the appropriate headers in your program.
 
-Alternatively set your compiler's *include path* flag to point to the GSL development folder (`c:\GSL` in the example above) or installation folder (after running the install). Eg.
+Alternatively set your compiler's *include path* flag to point to the GSL development folder (`c:\GSL\include` in the example above) or installation folder (after running the install). Eg.
 
 MSVC++
 
-    /I c:\GSL
+    /I c:\GSL\include
 
 GCC/clang
 
-    -I$HOME/dev/GSL
+    -I$HOME/dev/GSL/include
 
 Include the library using:
 
     #include <gsl/gsl>
+
+## Debugging visualization support
+For Visual Studio users, the file [GSL.natvis](./GSL.natvis) in the root directory of the repository can be added to your project if you would like more helpful visualization of GSL types in the Visual Studio debugger than would be offered by default.
