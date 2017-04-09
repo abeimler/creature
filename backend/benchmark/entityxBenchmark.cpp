@@ -7,6 +7,8 @@
 
 #include "entityx/entityx.hh"
 
+namespace entityx_benchmark {
+
 class EntityXBenchmark {
     public:
     struct PositionComponent {
@@ -377,3 +379,5 @@ BENCHMARK(
             app.update(EntityXBenchmark::fakeDeltaTime);
         }
     })
+
+} // namespace entityx_benchmark

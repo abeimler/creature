@@ -3,6 +3,8 @@
 #include "enum_array.h"
 #include "util.h"
 
+namespace enum_array_benchmark {
+
 BETTER_ENUM(TestKeys, size_t, BEGIN, Key1 = BEGIN, Key2, Key3, Key4, Key5, Key6,
             Key7, Key8, Key9, Key10, Key11, Key12, Key13, Key14, Key15, Key16,
             Key17, Key18, Key19, Key20, END)
@@ -94,3 +96,5 @@ BENCHMARK("earr::enum_array_fill", [](benchpress::context* ctx) {
         earr::enum_array_fill(arr, value);
     }
 })
+
+} //namespace enum_array_benchmark

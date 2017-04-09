@@ -129,6 +129,7 @@ install:
   - if [[ -n "$CLANG_VERSION" ]]; then export CXX=/usr/bin/clang++-$CLANG_VERSION CC=/usr/bin/clang-$CLANG_VERSION; fi
   - if [[ -n "$GCC_VERSION" ]]; then export CXX=/usr/bin/g++-$GCC_VERSION CC=/usr/bin/gcc-$GCC_VERSION; fi
   - if [[ -n "$ARM_GCC_VERSION" ]]; then export CXX=/usr/bin/$ARM_GCC_VERSION-g++ CC=/usr/bin/$ARM_GCC_VERSION-gcc; fi
+  - echo ${CXX}
   - export JOBS=2
   - export DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p "${DEPS_DIR}" && cd "${DEPS_DIR}"
@@ -174,27 +175,34 @@ install:
       export LDFLAGS="-L ${LLVM_ROOT}/install/lib -lc++ -lc++abi"
       export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${LLVM_ROOT}/install/lib"
     fi
+  - cd "${TRAVIS_BUILD_DIR}"
+  - echo ${PATH}
+  - ./travis.sh
+  - cmake --version
+  - ${CXX} --version
+  - ${CXX} -v
+  #- ./install-deps.sh # not needed use - addons apt packages
 
 
 
 before_script:
   - cd "${TRAVIS_BUILD_DIR}"
-  - cmake . -Bbuild
+  - cmake . -B./build
     -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-    -DBUILD_SHARED_LIBS=FALSE -DBUILD_TESTING=OFF -DBuildTests=OFF 
-    -DCXXOPTS_BUILD_EXAMPLES=OFF -DCXXOPTS_BUILD_TESTS=OFF 
-    -DENTITYX_BUILD_TESTING=OFF -DENTITYX_RUN_BENCHMARKS=OFF 
-    -DSKIP_PORTABILITY_TEST=ON -DTHREAD_SAFE=ON 
-    -Dgtest_build_samples=OFF -Dgtest_build_tests=OFF
-    -DUTPP_AMPLIFY_WARNINGS=OFF -DUTPP_INCLUDE_TESTS_IN_BUILD=OFF
-    -DENABLE_TESTS=OFF
+    -DSKIP_PORTABILITY_TEST:BOOL="1" 
+    -DBUILD_TESTING:BOOL="0" 
+    -DWITH_CPP11:BOOL="1" 
+    -DCXXOPTS_BUILD_EXAMPLES:BOOL="0" 
+    -DTHREAD_SAFE:BOOL="1" 
+    -DBuildTests:BOOL="0"
     -DBoost_USE_STATIC_LIBS=ON
-  - cmake --build build -- -j$JOBS
+  - cmake --build ./build --target creature_backend -- -j$JOBS
+  - cmake --build ./build --target creature_backend_test -- -j$JOBS
 
 script: 
   - cd "${TRAVIS_BUILD_DIR}"
-  - cd build/backend
-  - ctest --output-on-failure
+  - cd ./build/backend
+  - ctest -R ".*creature_backend.*" --output-on-failture
 
 notifications:
   email: false

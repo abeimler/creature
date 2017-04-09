@@ -9,6 +9,8 @@
 
 #include "Component/Game/CreatureMemory.h"
 
+namespace creaturememorydeepmemoryenumarray_benchmark {
+
 class CreatureMemoryDeepMemoryEnumArrayBenchmark {
     public:
     static void init_enum_array_CreatureMemoryDeepMemory(
@@ -72,3 +74,5 @@ BENCHMARK("gamecomp::CreatureMemory.deep_memory as enum_array",
                   benchpress::escape(&it);
               }
           })
+
+} // namespace creaturememorydeepmemoryenumarray_benchmark

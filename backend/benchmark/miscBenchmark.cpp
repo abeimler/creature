@@ -2,6 +2,7 @@
 
 #include "benchpress/benchpress.hpp"
 
+namespace misc_benchmark {
 
 void unused_variables_func(int a, double b, std::string c, int ua, double ub,
                            std::string uc) {
@@ -32,3 +33,5 @@ BENCHMARK("unused variables function without unused parameters",
                   unused_variables_func_opt(1, 2.0, "Hello", 42, 3.0, "Welt!");
               }
           })
+
+} // namespace misc

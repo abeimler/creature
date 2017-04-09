@@ -9,6 +9,8 @@
 
 #include "Component/Game/CreatureMemory.h"
 
+namespace creaturememorydeepmemoryvector_benchmark {
+
 class CreatureMemoryDeepMemoryVectorBenchmark {
     public:
     static void init_vector_CreatureMemoryDeepMemory(
@@ -49,3 +51,5 @@ BENCHMARK("gamecomp::CreatureMemory.deep_memory as vector",
                   benchpress::escape(&it);
               }
           })
+
+} // namespace creaturememorydeepmemoryvector_benchmark

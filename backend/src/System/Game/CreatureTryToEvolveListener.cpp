@@ -203,10 +203,8 @@ void CreatureTryToEvolveListener::update(const gameevent::CreatureTryToEvolveEve
 
     auto entity = event.entity;
     if (entity) {
-        /*
-        auto life = entity.component<gamecomp::CreatureLife>();
-        model::data::CreatureLevel creaturelevel = life->creaturelevel;
-        */
+        //auto life = entity.component<gamecomp::CreatureLife>();
+        //model::data::CreatureLevel creaturelevel = life->creaturelevel;
 
         auto life = entity.component<gamecomp::CreatureLifeComponent>();
 

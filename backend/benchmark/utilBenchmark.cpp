@@ -2,6 +2,7 @@
 
 #include "util.h"
 
+namespace util_benchmark {
 
 BENCHMARK("util::iszero 0", [](benchpress::context* ctx) {
     int value = 0;
@@ -74,3 +75,5 @@ BENCHMARK("util::randomOdds 1:1000", [](benchpress::context* ctx) {
         benchpress::escape(&ret);
     }
 })
+
+} // namespace util

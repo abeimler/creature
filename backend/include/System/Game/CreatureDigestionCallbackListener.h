@@ -35,7 +35,7 @@ class CreatureDigestionCallbackListener : public Listener<gameevent::ProgressTim
                     gamecomp::CreatureGeneComponent& gene, gamecomp::CreatureBodyComponent& body,
                     gamecomp::CreaturePsycheComponent& psyche, bool usetoilet);
 
-    void lostWeightbyStool(
+    void loseWeightbyStool(
         gamecomp::CreatureBodyComponent& body, gamecomp::CreatureGeneComponent& gene);
 
     void fullPoopStack(

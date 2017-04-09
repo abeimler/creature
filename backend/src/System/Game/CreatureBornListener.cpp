@@ -86,10 +86,8 @@ void CreatureBornListener::update(const gameevent::CreatureBornEvent& event,
 
     auto entity = event.entity;
     if (entity) {
-        /*
-        auto life = entity.component<gamecomp::CreatureLife>();
-        data::CreatureLevel creaturelevel = life->creaturelevel;
-        */
+        //auto life = entity.component<gamecomp::CreatureLife>();
+        //data::CreatureLevel creaturelevel = life->creaturelevel;
 
         auto life = entity.component<gamecomp::CreatureLifeComponent>();
         auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();

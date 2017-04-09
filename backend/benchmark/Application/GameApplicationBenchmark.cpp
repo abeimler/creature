@@ -4,7 +4,7 @@
 
 #include "Application/GameApplication.h"
 
-
+namespace gameapplication_benchmark {
 
 BENCHMARK("game application update", [](benchpress::context* ctx) {
     game::GameApplication app;
@@ -250,3 +250,5 @@ BENCHMARK("[20000] game application update with 20000 entitys",
                   app.update(fakeDelta);
               }
           })
+
+} // namespace gameapplication_benchmark

@@ -3,6 +3,7 @@
 #include "dateutil.h"
 #include "util.h"
 
+namespace dateutil_benchmark {
 
 BENCHMARK("dateutil::is_leap_year 4", [](benchpress::context* ctx) {
     int year = 4;
@@ -230,3 +231,5 @@ BENCHMARK("dateutil::ticks_to_datetime 9999-12-31T23:59:59",
                   benchpress::escape(&ret);
               }
           })
+
+} // namespace dateutil_benchmark

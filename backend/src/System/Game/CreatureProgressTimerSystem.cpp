@@ -189,7 +189,7 @@ CreatureProgressTimerSystem::updateTimer(gamecomp::ProgressTimer& timer,
             timer.overlayvalue += fullValue_percent * timer.factor;
         }
 
-        // double not zero
+        // (double) addValue not zero
         if (!util::iszero(addValue)) {
             datetimer_util_.restart(timer.timer);
         }

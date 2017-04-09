@@ -2,6 +2,7 @@
 
 #include "Entity/Game/CreatureEntityCreator.h"
 
+namespace creatureentitycreator_benchmark {
 
 BENCHMARK("CreatureEntityCreator create entity assign destory",
           [](benchpress::context* ctx) {
@@ -15,3 +16,5 @@ BENCHMARK("CreatureEntityCreator create entity assign destory",
                   entities.destroy(entity.id());
               }
           })
+
+} // namespace creatureentitycreator_benchmark

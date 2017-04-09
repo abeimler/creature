@@ -291,12 +291,11 @@ void CreatureSystem::updateCreatureTimers(
 void CreatureSystem::updateCreatureTimersFactor(
     gamecomp::CreatureProgressTimersComponent& timers,
     gamecomp::CreatureLifeComponent& life) {
-    /*
-    auto isrunaway =
-        earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway);
-    auto isinhospital =
-        earr::enum_array_at(life.hasstatus, +data::CreatureStatus::InHospital);
-    */
+
+    //auto isrunaway =
+    //    earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway);
+    //auto isinhospital =
+    //    earr::enum_array_at(life.hasstatus, +data::CreatureStatus::InHospital);
 
     auto issleep =
         earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Sleep);

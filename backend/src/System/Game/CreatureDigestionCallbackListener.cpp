@@ -66,7 +66,7 @@ void CreatureDigestionCallbackListener::makePoop(
 
         progresstimer_util_.restart(digestion_progresstimer);
 
-        lostWeightbyStool(body, gene);
+        loseWeightbyStool(body, gene);
         fullPoopStack(timers, hunger, gene, psyche);
     } else {
         emit_event<gameevent::CreatureDoActivityEvent>(
@@ -74,7 +74,7 @@ void CreatureDigestionCallbackListener::makePoop(
     }
 }
 
-void CreatureDigestionCallbackListener::lostWeightbyStool(
+void CreatureDigestionCallbackListener::loseWeightbyStool(
     gamecomp::CreatureBodyComponent& body,
     gamecomp::CreatureGeneComponent& gene) {
     auto ideal_bmi_percent =
