@@ -84,8 +84,8 @@
 
 #define DOCTEST_VERSION_MAJOR 1
 #define DOCTEST_VERSION_MINOR 1
-#define DOCTEST_VERSION_PATCH 3
-#define DOCTEST_VERSION_STR "1.1.3"
+#define DOCTEST_VERSION_PATCH 4
+#define DOCTEST_VERSION_STR "1.1.4"
 
 #define DOCTEST_VERSION                                                                            \
     (DOCTEST_VERSION_MAJOR * 10000 + DOCTEST_VERSION_MINOR * 100 + DOCTEST_VERSION_PATCH)
@@ -179,6 +179,12 @@
 // in MSVC _HAS_EXCEPTIONS is defined in a header instead of as a project define
 // so we can't do the automatic detection for MSVC without including some header
 #endif // DOCTEST_CONFIG_NO_EXCEPTIONS
+
+#ifdef DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS
+#ifndef DOCTEST_CONFIG_NO_EXCEPTIONS
+#define DOCTEST_CONFIG_NO_EXCEPTIONS
+#endif // DOCTEST_CONFIG_NO_EXCEPTIONS
+#endif // DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS
 
 #if defined(DOCTEST_CONFIG_NO_EXCEPTIONS) && !defined(DOCTEST_CONFIG_NO_TRY_CATCH_IN_ASSERTS)
 #define DOCTEST_CONFIG_NO_TRY_CATCH_IN_ASSERTS
@@ -945,6 +951,7 @@ namespace detail
     void logTestEnd();
 
     void logTestCrashed();
+    void logTestException(const char* what);
 
     void logAssert(bool passed, const char* decomposition, bool threw, const char* expr,
                    assertType::Enum assert_type, const char* file, int line);
@@ -1182,7 +1189,7 @@ public:
 #define DOCTEST_CREATE_AND_REGISTER_FUNCTION(f, name)                                              \
     static void f();                                                                               \
     DOCTEST_REGISTER_FUNCTION(f, name)                                                             \
-    inline void f()
+    static void f()
 
 // for registering tests
 #define DOCTEST_TEST_CASE(name)                                                                    \
@@ -1440,12 +1447,6 @@ public:
 #define DOCTEST_FAST_CHECK_UNARY_FALSE(v) DOCTEST_FAST_UNARY_ASSERT(DT_FAST_CHECK_UNARY_FALSE, v)
 #define DOCTEST_FAST_REQUIRE_UNARY_FALSE(v)                                                        \
     DOCTEST_FAST_UNARY_ASSERT(DT_FAST_REQUIRE_UNARY_FALSE, v)
-
-
-
-// OMGOMGOMG trqbva da napravq teq da sa no-op - a ne prosto da ne gi undef-vam
-
-
 
 #ifdef DOCTEST_CONFIG_NO_EXCEPTIONS
 
