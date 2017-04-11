@@ -38,12 +38,12 @@ class CreatureBattlerCreatureRecoverSystemApplication
     }
 
 
-    void init_Entity_withLowHPMP(gameentity::Entity entity) {
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
+    void init_Entity_withLowHPMP(gameentity::EntityManager& entities, gameentity::Entity entity) {
+        auto& creature_battler =
+            entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
-        creature_battler->hp = 1;
-        creature_battler->mp = 1;
+        creature_battler.hp = 1;
+        creature_battler.mp = 1;
     }
 
     static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
@@ -62,10 +62,11 @@ SCENARIO(
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_withLowHPMP(entity);
+        app.init_Entity_withLowHPMP(entities, entity);
 
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
+        auto& creature_battler =
+            entities.get<gamecomp::CreatureBattlerComponent>(entity);
+
 
         WHEN("emit recover-Event") {
             app.emit_event<gameevent::CreatureRecoverEvent>(entity);
@@ -76,11 +77,11 @@ SCENARIO(
                 REQUIRE(app.eventlistenermockup->emitevent);
 
                 THEN("hp is recover") {
-                    CHECK(creature_battler->hp == creatureTestData.MAXHP);
+                    CHECK(creature_battler.hp == creatureTestData.MAXHP);
                 }
 
                 THEN("mp is recover") {
-                    CHECK(creature_battler->mp == creatureTestData.MAXMP);
+                    CHECK(creature_battler.mp == creatureTestData.MAXMP);
                 }
             }
         }

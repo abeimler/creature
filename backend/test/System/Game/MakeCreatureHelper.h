@@ -385,33 +385,33 @@ class MakeCreatureHelper {
 
         auto entity = entities.create();
 
-        entity.assign<gamecomp::CreatureDataComponent>(make_CreatureData());
-        entity.assign<gamecomp::CreatureProgressTimersComponent>(
+        entities.assign<gamecomp::CreatureDataComponent>(entity, make_CreatureData());
+        entities.assign<gamecomp::CreatureProgressTimersComponent>(entity, 
             make_CreatureProgressTimers());
 
-        entity.assign<gamecomp::BattlerStatusesComponent>(make_BattlerStatuses());
-        entity.assign<gamecomp::BattlerBattleStateComponent>(
+        entities.assign<gamecomp::BattlerStatusesComponent>(entity, make_BattlerStatuses());
+        entities.assign<gamecomp::BattlerBattleStateComponent>(entity, 
             make_BattlerBattleState());
-        entity.assign<gamecomp::BattlerResistsComponent>(make_BattlerResists());
-        entity.assign<gamecomp::CreatureBattlerComponent>(make_CreatureBattler());
+        entities.assign<gamecomp::BattlerResistsComponent>(entity, make_BattlerResists());
+        entities.assign<gamecomp::CreatureBattlerComponent>(entity, make_CreatureBattler());
 
-        entity.assign<gamecomp::CreatureBattlerGeneComponent>(
+        entities.assign<gamecomp::CreatureBattlerGeneComponent>(entity, 
             make_CreatureBattlerGene());
-        entity.assign<gamecomp::CreatureGeneComponent>(make_CreatureGene());
+        entities.assign<gamecomp::CreatureGeneComponent>(entity, make_CreatureGene());
 
-        entity.assign<gamecomp::CreatureMemoryComponent>(make_CreatureMemory());
-        entity.assign<gamecomp::CreaturePersonalityComponent>(
+        entities.assign<gamecomp::CreatureMemoryComponent>(entity, make_CreatureMemory());
+        entities.assign<gamecomp::CreaturePersonalityComponent>(entity, 
             make_CreaturePersonality());
 
-        entity.assign<gamecomp::CreatureHungerComponent>(make_CreatureHunger());
-        entity.assign<gamecomp::CreatureEvolveComponent>(make_CreatureEvolve());
-        entity.assign<gamecomp::CreatureSleepComponent>(make_CreatureSleep());
-        entity.assign<gamecomp::CreatureTrainingComponent>(make_CreatureTraining());
-        entity.assign<gamecomp::CreatureBodilyStateComponent>(
+        entities.assign<gamecomp::CreatureHungerComponent>(entity, make_CreatureHunger());
+        entities.assign<gamecomp::CreatureEvolveComponent>(entity, make_CreatureEvolve());
+        entities.assign<gamecomp::CreatureSleepComponent>(entity, make_CreatureSleep());
+        entities.assign<gamecomp::CreatureTrainingComponent>(entity, make_CreatureTraining());
+        entities.assign<gamecomp::CreatureBodilyStateComponent>(entity, 
             make_CreatureBodilyState());
-        entity.assign<gamecomp::CreatureBodyComponent>(make_CreatureBody());
-        entity.assign<gamecomp::CreaturePsycheComponent>(make_CreaturePsyche());
-        entity.assign<gamecomp::CreatureLifeComponent>(make_CreatureLife());
+        entities.assign<gamecomp::CreatureBodyComponent>(entity, make_CreatureBody());
+        entities.assign<gamecomp::CreaturePsycheComponent>(entity, make_CreaturePsyche());
+        entities.assign<gamecomp::CreatureLifeComponent>(entity, make_CreatureLife());
 
         return entity;
     }
@@ -425,24 +425,24 @@ class MakeCreatureHelper {
         auto creaturelevel = creatureTestData.CREATURELEVEL;
 
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
         for (auto timertype : earr::Enum<gamecomp::CreatureProgressTimer>()) {
             earr::enum_array_at(
-                earr::enum_array_at(timers->timer, timertype).waittime,
+                earr::enum_array_at(timers.timer, timertype).waittime,
                 creaturelevel) = waittime;
         }
         for (auto timertype_callback :
             earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
             earr::enum_array_at(
-                earr::enum_array_at(timers->callback, timertype_callback)
+                earr::enum_array_at(timers.callback, timertype_callback)
                     .base.waittime,
                 creaturelevel) = waittime;
         }
         for (auto timertype_increment :
             earr::Enum<gamecomp::CreatureProgressTimerIncrement>()) {
             earr::enum_array_at(
-                earr::enum_array_at(timers->increment, timertype_increment)
+                earr::enum_array_at(timers.increment, timertype_increment)
                     .base.waittime,
                 creaturelevel) = waittime;
         }
@@ -460,30 +460,30 @@ class MakeCreatureHelper {
         auto creaturelevel = creatureTestData.CREATURELEVEL;
 
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
         for (auto timertype : earr::Enum<gamecomp::CreatureProgressTimer>()) {
             earr::enum_array_at(
-                earr::enum_array_at(timers->timer, timertype).waittime,
+                earr::enum_array_at(timers.timer, timertype).waittime,
                 creaturelevel) = waittime;
         }
         for (auto timertype_callback :
             earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
             earr::enum_array_at(
-                earr::enum_array_at(timers->callback, timertype_callback)
+                earr::enum_array_at(timers.callback, timertype_callback)
                     .base.waittime,
                 creaturelevel) = waittime;
         }
         for (auto timertype_increment :
             earr::Enum<gamecomp::CreatureProgressTimerIncrement>()) {
             earr::enum_array_at(
-                earr::enum_array_at(timers->increment, timertype_increment)
+                earr::enum_array_at(timers.increment, timertype_increment)
                     .base.waittime,
                 creaturelevel) = waittime;
         }
         for (auto starvationphase : earr::Enum<gamecomp::StarvationPhase>()) {
             earr::enum_array_at(
-                earr::enum_array_at(timers->starvation, starvationphase)
+                earr::enum_array_at(timers.starvation, starvationphase)
                     .base.waittime,
                 creaturelevel) = waittime;
         }

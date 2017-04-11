@@ -171,7 +171,7 @@ class CreatureProgressTimerSystemApplication : public gamesystem::Application {
                                 .mediumterm.base.waittime,
                             creaturelevel) = waittime;
 
-        entity.assign<gamecomp::CreatureProgressTimersComponent>(timers);
+        entities.assign<gamecomp::CreatureProgressTimersComponent>(entity, timers);
 
         return entity;
     }
@@ -208,7 +208,7 @@ class CreatureProgressTimerSystemApplication : public gamesystem::Application {
                 creaturelevel) = waittime;
         }
 
-        entity.assign<gamecomp::CreatureProgressTimersComponent>(timers);
+        entities.assign<gamecomp::CreatureProgressTimersComponent>(entity, timers);
 
         return entity;
     }
@@ -262,10 +262,10 @@ SCENARIO("Wait 100% of waitTime to fill Value to 100%") {
 
         auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& progtimer =
-            earr::enum_array_at(timers->timer, app.timertype);
+            earr::enum_array_at(timers.timer, app.timertype);
 
         WHEN("start timer and sleep waittime") {
             progresstimer_util.start(progtimer);

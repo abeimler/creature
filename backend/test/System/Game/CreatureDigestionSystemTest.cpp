@@ -36,15 +36,15 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
 
 
 
-    void init_Entity_withEmptyDigestionTimer(gameentity::Entity entity) {
+    void init_Entity_withEmptyDigestionTimer(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
         auto& digestion_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::Digestion);
         gamecomp::ProgressTimer& digestion_progresstimer = digestion_timer.base;
 
@@ -57,14 +57,15 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
         digestion_progresstimer.isfull = false;
     }
 
-    void init_Entity_withFullDigestionTimer(gameentity::Entity entity) {
+    void init_Entity_withFullDigestionTimer(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
         auto& digestion_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::Digestion);
         gamecomp::ProgressTimer& digestion_progresstimer = digestion_timer.base;
 
@@ -79,14 +80,15 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
     }
 
     void
-    init_Entity_withFullDigestionTimerWithOverlay(gameentity::Entity entity) {
+    init_Entity_withFullDigestionTimerWithOverlay(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
         auto& digestion_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::Digestion);
         gamecomp::ProgressTimer& digestion_progresstimer = digestion_timer.base;
 
@@ -101,14 +103,15 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
     }
 
 
-    void init_Entity_withFullHungerTimer(gameentity::Entity entity) {
+    void init_Entity_withFullHungerTimer(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
         auto& hungry_timer = earr::enum_array_at(
-            timers->timer, +gamecomp::CreatureProgressTimer::Hungry);
+            timers.timer, +gamecomp::CreatureProgressTimer::Hungry);
         gamecomp::ProgressTimer& hungry_progresstimer = hungry_timer;
 
         auto time = creatureTestData.make_time_point_01_01_2000();
@@ -121,14 +124,15 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
         hungry_progresstimer.overlayvalue = 0.0f;
     }
 
-    void init_Entity_withFullHungerTimerWithOverlay(gameentity::Entity entity) {
+    void init_Entity_withFullHungerTimerWithOverlay(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
         auto& hungry_timer = earr::enum_array_at(
-            timers->timer, +gamecomp::CreatureProgressTimer::Hungry);
+            timers.timer, +gamecomp::CreatureProgressTimer::Hungry);
         gamecomp::ProgressTimer& hungry_progresstimer = hungry_timer;
 
         auto time = creatureTestData.make_time_point_01_01_2000();
@@ -144,16 +148,17 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
     }
 
     void
-    init_Entity_withFullPauseDigestionHungryTimer(gameentity::Entity entity) {
+    init_Entity_withFullPauseDigestionHungryTimer(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        init_Entity_withFullHungerTimerWithOverlay(entity);
+        init_Entity_withFullHungerTimerWithOverlay(entities, entity);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
         auto& pause_digistation_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry);
         gamecomp::ProgressTimer& pause_digistation_progresstimer =
             pause_digistation_timer.base;
@@ -167,14 +172,14 @@ class CreatureDigestionSystemApplication : public gamesystem::Application {
         pause_digistation_progresstimer.isfull = true;
     }
 
-    void init_Entity_withFullPoopStack(gameentity::Entity entity) {
+    void init_Entity_withFullPoopStack(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         // gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
-        auto gene = entity.component<gamecomp::CreatureGeneComponent>();
+        auto& hunger = entities.get<gamecomp::CreatureHungerComponent>(entity);
+        auto& gene = entities.get<gamecomp::CreatureGeneComponent>(entity);
 
-        hunger->poopstack = gene->max_poopstack;
+        hunger.poopstack = gene.max_poopstack;
     }
 
     static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
@@ -191,25 +196,20 @@ SCENARIO("Entity with full digestion-timer poop once") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        auto oldbody = entity.component<gamecomp::CreatureBodyComponent>();
-        auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& oldbody = entities.get<gamecomp::CreatureBodyComponent>(entity);
+        auto& hunger = entities.get<gamecomp::CreatureHungerComponent>(entity);
 
-        app.init_Entity_withFullDigestionTimer(entity);
+        app.init_Entity_withFullDigestionTimer(entities, entity);
 
-        auto oldweight = oldbody->weight;
+        auto oldweight = oldbody.weight;
 
         WHEN("update manager") {
             app.update(app.FAKE_TIMEDELTA);
 
-            auto newbody = entity.component<gamecomp::CreatureBodyComponent>();
-            auto newweight = newbody->weight;
+            auto& newbody = entities.get<gamecomp::CreatureBodyComponent>(entity);
+            auto newweight = newbody.weight;
 
-            THEN("one poop") { CHECK(1 == hunger->poopstack); }
+            THEN("one poop") { CHECK(1 == hunger.poopstack); }
 
             THEN("lost weight") { CHECK(newweight < oldweight); }
         }
@@ -225,21 +225,16 @@ SCENARIO("Entity with empty digestion-timer and none poop") {
 
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+        
+        auto& hunger = entities.get<gamecomp::CreatureHungerComponent>(entity);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
 
-        app.init_Entity_withEmptyDigestionTimer(entity);
+        app.init_Entity_withEmptyDigestionTimer(entities, entity);
 
         WHEN("update manager") {
             app.update(app.FAKE_TIMEDELTA);
 
-            THEN("none poop") { CHECK(0 == hunger->poopstack); }
+            THEN("none poop") { CHECK(0 == hunger.poopstack); }
         }
     }
 }
@@ -254,20 +249,14 @@ SCENARIO("Entity with full digestion-timer with overlay to poop more then one "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& hunger = entities.get<gamecomp::CreatureHungerComponent>(entity);
 
-        app.init_Entity_withFullDigestionTimerWithOverlay(entity);
+        app.init_Entity_withFullDigestionTimerWithOverlay(entities, entity);
 
         WHEN("update manager") {
             app.update(app.FAKE_TIMEDELTA);
 
-            THEN("more then one poop") { CHECK(hunger->poopstack > 1); }
+            THEN("more then one poop") { CHECK(hunger.poopstack > 1); }
         }
     }
 }
@@ -284,20 +273,15 @@ SCENARIO("Entity with full digestion and hunger overlay then "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        // auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-        app.init_Entity_withFullDigestionTimer(entity);
-        app.init_Entity_withFullHungerTimerWithOverlay(entity);
+        app.init_Entity_withFullDigestionTimer(entities, entity);
+        app.init_Entity_withFullHungerTimerWithOverlay(entities, entity);
 
 
         auto& pause_digistation_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry);
         gamecomp::ProgressTimer& pause_digistation_progresstimer =
             pause_digistation_timer.base;
@@ -323,21 +307,16 @@ SCENARIO("Entity with full digestion pause hunger timer then "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        // auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-        app.init_Entity_withFullDigestionTimer(entity);
-        app.init_Entity_withFullHungerTimerWithOverlay(entity);
-        app.init_Entity_withFullPauseDigestionHungryTimer(entity);
+        app.init_Entity_withFullDigestionTimer(entities, entity);
+        app.init_Entity_withFullHungerTimerWithOverlay(entities, entity);
+        app.init_Entity_withFullPauseDigestionHungryTimer(entities, entity);
 
 
         auto& digestion_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::Digestion);
         gamecomp::ProgressTimer& digestion_progresstimer = digestion_timer.base;
 
@@ -363,20 +342,15 @@ SCENARIO("Entity with full digestion max poop stack then "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        // auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-        app.init_Entity_withFullDigestionTimer(entity);
-        app.init_Entity_withFullPoopStack(entity);
+        app.init_Entity_withFullDigestionTimer(entities, entity);
+        app.init_Entity_withFullPoopStack(entities, entity);
 
 
         auto& full_poop_stack_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::FullPoopStack);
         gamecomp::ProgressTimer& full_poop_stack_progresstimer =
             full_poop_stack_timer.base;
@@ -403,24 +377,19 @@ SCENARIO("Entity with pause digestion when no hunger then "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        // auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-        app.init_Entity_withFullDigestionTimer(entity);
-        app.init_Entity_withFullHungerTimerWithOverlay(entity);
-        app.init_Entity_withFullPauseDigestionHungryTimer(entity);
+        app.init_Entity_withFullDigestionTimer(entities, entity);
+        app.init_Entity_withFullHungerTimerWithOverlay(entities, entity);
+        app.init_Entity_withFullPauseDigestionHungryTimer(entities, entity);
 
         auto& hungry_timer = earr::enum_array_at(
-            timers->timer, +gamecomp::CreatureProgressTimer::Hungry);
+            timers.timer, +gamecomp::CreatureProgressTimer::Hungry);
         gamecomp::ProgressTimer& hungry_progresstimer = hungry_timer;
 
         auto& digestion_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::Digestion);
         gamecomp::ProgressTimer& digestion_progresstimer = digestion_timer.base;
 

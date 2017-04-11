@@ -53,11 +53,10 @@ SCENARIO("Creature Entity emit dead-Event to make creature dead and pause "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
+
+        auto& creature_battler =
+            entities.get<gamecomp::CreatureBattlerComponent>(entity);
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
         WHEN("emit dead-Event") {
             app.emit_event<gameevent::CreatureMakeDeadEvent>(
@@ -69,14 +68,14 @@ SCENARIO("Creature Entity emit dead-Event to make creature dead and pause "
                 REQUIRE(app.eventlistenermockup->emitevent);
 
                 THEN("has zero hp") {
-                    CHECK(util::iszero(creature_battler->hp));
+                    CHECK(util::iszero(creature_battler.hp));
                 }
 
                 THEN("has zero mp") {
-                    CHECK(util::iszero(creature_battler->mp));
+                    CHECK(util::iszero(creature_battler.mp));
                 }
 
-                THEN("is dead") { CHECK(life->isdead); }
+                THEN("is dead") { CHECK(life.isdead); }
             }
         }
     }
@@ -93,11 +92,9 @@ SCENARIO("Creature Entity emit dead-Event to pause lifetimer") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto creature_battler =
-        // entity.component<gamecomp::CreatureBattlerComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+            
 
         WHEN("emit dead-Event") {
             app.emit_event<gameevent::CreatureMakeDeadEvent>(
@@ -109,7 +106,7 @@ SCENARIO("Creature Entity emit dead-Event to pause lifetimer") {
                 REQUIRE(app.eventlistenermockup->emitevent);
 
                 THEN("lifetimer is paused") {
-                    CHECK(timers->lifetimer.ispause);
+                    CHECK(timers.lifetimer.ispause);
                 }
             }
         }

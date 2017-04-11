@@ -159,47 +159,46 @@ class CreatureAddRemoveStatusRunAwaySystemApplication
 
 
 
-    void init_Entity_withHungryStatus(gameentity::Entity entity) {
+    void init_Entity_withHungryStatus(gameentity::EntityManager& entities, gameentity::Entity entity) {
         // gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& hungry_timer = earr::enum_array_at(
-            timers->timer, +gamecomp::CreatureProgressTimer::Hungry);
+            timers.timer, +gamecomp::CreatureProgressTimer::Hungry);
 
         hungry_timer.value = 100.0f;
         hungry_timer.isfull = true;
 
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        earr::enum_array_at(life->hasstatus, +data::CreatureStatus::Hungry) =
-            true;
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Hungry) = true;
 
-        auto battlerstatuses =
-            entity.component<gamecomp::BattlerStatusesComponent>();
-        battlerstatuses->statuses_name.push_back(HUNGRY_STATUS_NAME);
+        auto& battlerstatuses =
+            entities.get<gamecomp::BattlerStatusesComponent>(entity);
+        battlerstatuses.statuses_name.push_back(HUNGRY_STATUS_NAME);
     }
 
-    void init_Entity_isBusy(gameentity::Entity entity) {
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
+    void init_Entity_isBusy(gameentity::EntityManager& entities, gameentity::Entity entity) {
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        life->isbusy = true;
+        life.isbusy = true;
     }
 
-    void init_Entity_isNotBusy(gameentity::Entity entity) {
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
+    void init_Entity_isNotBusy(gameentity::EntityManager& entities, gameentity::Entity entity) {
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        life->isbusy = false;
+        life.isbusy = false;
     }
 
-    void init_Entity_withStartedRunAwayTimer(gameentity::Entity entity,
+    void init_Entity_withStartedRunAwayTimer(gameentity::EntityManager& entities, gameentity::Entity entity,
                                              gamecomp::waittime_t waittime) {
         CreatureTestData creatureTestData;
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         auto& runawayunhappy_timer = earr::enum_array_at(
-            timers->callback,
+            timers.callback,
             +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy);
         gamecomp::ProgressTimer& runawayunhappy_progresstimer =
             runawayunhappy_timer.base;
@@ -209,44 +208,45 @@ class CreatureAddRemoveStatusRunAwaySystemApplication
         runawayunhappy_progresstimer.waittime.fill(waittime);
         progresstimer_util.start(runawayunhappy_progresstimer);
 
-        auto psyche = entity.component<gamecomp::CreaturePsycheComponent>();
-        psyche->luck = 0;
+        auto& psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
+        psyche.luck = 0;
 
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        life->causeofrunaway = gamecomp::CauseOfRunAway::Unhappy;
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        life.causeofrunaway = gamecomp::CauseOfRunAway::Unhappy;
     }
 
-    void init_Entity_withRunAwayStatus(gameentity::Entity entity,
+    void init_Entity_withRunAwayStatus(gameentity::EntityManager& entities, gameentity::Entity entity,
                                        gamecomp::waittime_t waittime) {
-        init_Entity_withStartedRunAwayTimer(entity, waittime);
+        init_Entity_withStartedRunAwayTimer(entities, entity, waittime);
 
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        earr::enum_array_at(life->hasstatus, +data::CreatureStatus::RunAway) =
-            true;
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        earr::enum_array_at(life.hasstatus, +data::CreatureStatus::RunAway) = true;
 
-        auto battlerstatuses =
-            entity.component<gamecomp::BattlerStatusesComponent>();
-        battlerstatuses->statuses_name.push_back(RUNAWAY_STATUS_NAME);
+        auto& battlerstatuses =
+            entities.get<gamecomp::BattlerStatusesComponent>(entity);
+        battlerstatuses.statuses_name.push_back(RUNAWAY_STATUS_NAME);
     }
 
-    void init_Entity_withCanGoSleepTired(gameentity::Entity entity) {
+    void init_Entity_withCanGoSleepTired(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
         gamecomp::ProgressTimer& tired_timer = earr::enum_array_at(
-            timers->timer, +gamecomp::CreatureProgressTimer::Tired);
+            timers.timer, +gamecomp::CreatureProgressTimer::Tired);
         gamecomp::ProgressTimer& tired_progresstimer = tired_timer;
+
         tired_progresstimer.value = creatureTestData.CANGOSLEEP_AT_TIRED;
     }
 
-    void init_Entity_withOneHPMP(gameentity::Entity entity) {
+    void init_Entity_withOneHPMP(gameentity::EntityManager& entities, gameentity::Entity entity) {
         // gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
+        auto& creature_battler =
+            entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
-        creature_battler->hp = 1;
-        creature_battler->mp = 1;
+        creature_battler.hp = 1;
+        creature_battler.mp = 1;
     }
 
     static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
@@ -264,17 +264,11 @@ SCENARIO("Creature Entity emit makeRunAway-Event then "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto bodlystate =
-        // entity.component<gamecomp::CreatureBodilyStateComponent>();
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
         auto runaway_waittime = std::chrono::milliseconds(1000);
 
-        REQUIRE_FALSE(earr::enum_array_at(life->hasstatus,
+        REQUIRE_FALSE(earr::enum_array_at(life.hasstatus,
                                           +data::CreatureStatus::RunAway));
 
         WHEN("emit makeRunAway Event") {
@@ -285,7 +279,7 @@ SCENARIO("Creature Entity emit makeRunAway-Event then "
                 app.update(app.FAKE_TIMEDELTA);
 
                 THEN("runAway is added") {
-                    CHECK(earr::enum_array_at(life->hasstatus,
+                    CHECK(earr::enum_array_at(life.hasstatus,
                                               +data::CreatureStatus::RunAway));
                 }
             }
@@ -304,18 +298,14 @@ SCENARIO("Creature Entity emit makeRunAway-Event then "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto bodlystate =
-        // entity.component<gamecomp::CreatureBodilyStateComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
 
         auto runaway_waittime = std::chrono::milliseconds(1000);
 
         auto& runaway_timer = earr::enum_array_at(
-            timers->timer, +gamecomp::CreatureProgressTimer::RunAway);
+            timers.timer, +gamecomp::CreatureProgressTimer::RunAway);
         gamecomp::ProgressTimer& runaway_progresstimer = runaway_timer;
 
         WHEN("emit makeRunAway Event") {
@@ -350,18 +340,13 @@ SCENARIO("Creature Entity with RunAway Status then "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto bodlystate =
-        // entity.component<gamecomp::CreatureBodilyStateComponent>();
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+
 
         auto runaway_waittime = std::chrono::milliseconds(1000);
 
 
-        app.init_Entity_withRunAwayStatus(entity, runaway_waittime);
+        app.init_Entity_withRunAwayStatus(entities, entity, runaway_waittime);
 
         WHEN("emit removeRunAway-Event") {
             app.emit_event<gameevent::CreatureRemoveRunAwayEvent>(entity);
@@ -371,7 +356,7 @@ SCENARIO("Creature Entity with RunAway Status then "
 
                 THEN("runAway is removed") {
                     CHECK_FALSE(earr::enum_array_at(
-                        life->hasstatus, +data::CreatureStatus::RunAway));
+                        life.hasstatus, +data::CreatureStatus::RunAway));
                 }
             }
         }
@@ -389,21 +374,17 @@ SCENARIO("Creature Entity with RunAway Status then "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto bodlystate =
-        // entity.component<gamecomp::CreatureBodilyStateComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
 
         auto runaway_waittime = std::chrono::milliseconds(1000);
 
         auto& runaway_timer = earr::enum_array_at(
-            timers->timer, +gamecomp::CreatureProgressTimer::RunAway);
+            timers.timer, +gamecomp::CreatureProgressTimer::RunAway);
         gamecomp::ProgressTimer& runaway_progresstimer = runaway_timer;
 
-        app.init_Entity_withRunAwayStatus(entity, runaway_waittime);
+        app.init_Entity_withRunAwayStatus(entities, entity, runaway_waittime);
 
         WHEN("emit removeRunAway-Event") {
             app.emit_event<gameevent::CreatureRemoveRunAwayEvent>(entity);
