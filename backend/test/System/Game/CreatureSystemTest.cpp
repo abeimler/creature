@@ -242,22 +242,39 @@ class CreatureSystemApplication : public gamesystem::Application {
     void init_Entity_withOneHPMP(gameentity::EntityManager& entities, gameentity::Entity entity) {
         // gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto creature_battler =
+        auto& creature_battler =
             entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
         creature_battler.hp = 1;
         creature_battler.mp = 1;
     }
 
-    void init_Entity_withNoneLife(gameentity::EntityManager& entities, gameentity::Entity entity,
-                                  gamecomp::waittime_t ageingtime) {
+    void init_Entity_withNoneLife(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         // gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
         life.creaturelevel = creatureTestData.OTHERCREATURELEVEL;
         life.oldlevel = 0;
+        life.ageingtime = std::chrono::milliseconds(1);
+        life.lifetime = std::chrono::milliseconds::zero();
+        life.age = 0;
+    }
+
+    void init_Entity_withLifeTimer(gameentity::EntityManager& entities, gameentity::Entity entity,
+                                  gamecomp::waittime_t ageingtime) {
+        CreatureTestData creatureTestData;
+        computil::DateTimerUtil datetimer_util;
+
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
+        auto time = creatureTestData.make_time_point_01_01_2000();
+        datetimer_util.init(timers.lifetimer, time, 1.0f);
+        datetimer_util.start(timers.lifetimer);
+
         life.ageingtime = ageingtime;
         life.lifetime = std::chrono::milliseconds::zero();
         life.age = 0;
@@ -281,14 +298,10 @@ SCENARIO("Creature Entity updateLifeAttribute") {
         auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
         
 
-        // ageingtime = 1 age
-        auto ageingtime = std::chrono::milliseconds(50);
-
-        app.init_Entity_withNoneLife(entities, entity, ageingtime);
+        app.init_Entity_withNoneLife(entities, entity);
 
 
         WHEN("update manager") {
-            std::this_thread::sleep_for(ageingtime);
             app.update(app.FAKE_TIMEDELTA);
 
             THEN("creaturelevel is right") {
@@ -299,17 +312,43 @@ SCENARIO("Creature Entity updateLifeAttribute") {
                 CHECK(life.oldlevel == creatureTestData.LVL);
             }
 
-            THEN("lifetime is set") {
-                CHECK(life.lifetime > std::chrono::milliseconds::zero());
-            }
-
-            THEN("age is set") { CHECK(life.age > 0); }
-
             THEN("can eat") { CHECK(life.caneat); }
 
             THEN("can drink") { CHECK(life.candrink); }
 
             THEN("can train") { CHECK(life.cantrain); }
+        }
+    }
+}
+
+SCENARIO("Creature Entity updateLifeAttribute with ageing") {
+    GIVEN("Creature Entity none updated Life Attributes and started lifetimer") {
+        CreatureTestData creatureTestData;
+        CreatureSystemApplication app;
+        auto& entities = app.getEntityManager();
+
+        // auto time = creatureTestData.make_time_point_01_01_2000();
+        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+
+
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        
+
+        // ageingtime = 1 age
+        auto ageingtime = std::chrono::milliseconds(50);
+
+        app.init_Entity_withLifeTimer(entities, entity, ageingtime);
+
+        WHEN("update manager") {
+            std::this_thread::sleep_for(ageingtime);
+            app.update(app.FAKE_TIMEDELTA);
+            
+
+            THEN("lifetime is set") {
+                CHECK(life.lifetime > std::chrono::milliseconds::zero());
+            }
+            
+            THEN("age is set") { CHECK(life.age > 0); }
         }
     }
 }
