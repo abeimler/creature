@@ -26,7 +26,8 @@
 namespace gameentity {
 
 // Convenience types for our entity system.
-using GameComponents = entt::ComponentPool<
+using GameComponents = entt::ComponentPool<std::uint32_t,
+
     gamecomp::CreatureDataComponent, gamecomp::CreatureProgressTimersComponent,
 
     gamecomp::BattlerStatusesComponent, gamecomp::BattlerBattleStateComponent,
