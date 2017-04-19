@@ -14,9 +14,11 @@ void CreatureBattlerCreatureRecoverListener::recover(
 void CreatureBattlerCreatureRecoverListener::update(
     const gameevent::CreatureRecoverEvent& /*event*/, EntityManager& entities,
     EventBus& /*events*/, TimeDelta /*dt*/) {
-    Component<gamecomp::CreatureBattlerComponent> creature_battler;
-    for (auto entity : entities.entities_with_components(creature_battler)) {
-        recover(*creature_battler.get());
+
+    for(auto entity : entities.view<gamecomp::CreatureBattlerComponent>()) {
+        auto& creature_battler = entities.get<gamecomp::CreatureBattlerComponent>(entity);
+
+        recover(creature_battler);
     }
 }
 

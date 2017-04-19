@@ -36,12 +36,13 @@ class CreatureGrowingSystemApplication : public gamesystem::Application {
 
 
 
-    void init_Entity_NotStartedGrowingTimer(gameentity::Entity entity) {
+    void init_Entity_NotStartedGrowingTimer(gameentity::EntityManager& entities, gameentity::Entity entity) {
         CreatureTestData creatureTestData;
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        auto& growing_timer = earr::enum_array_at(timers->increment, 
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
+        auto& growing_timer = earr::enum_array_at(timers.increment, 
             +gamecomp::CreatureProgressTimerIncrement::Growing);
 
         auto time = creatureTestData.make_time_point_01_01_2000();
@@ -49,11 +50,12 @@ class CreatureGrowingSystemApplication : public gamesystem::Application {
         progresstimer_util.init(growing_timer.base, time, 1.0f);
     }
 
-    void init_Entity_withFullGrowingTimer(gameentity::Entity entity) {
+    void init_Entity_withFullGrowingTimer(gameentity::EntityManager& entities, gameentity::Entity entity) {
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        auto& growing_timer = earr::enum_array_at(timers->increment, 
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
+        auto& growing_timer = earr::enum_array_at(timers.increment, 
             +gamecomp::CreatureProgressTimerIncrement::Growing);
 
         progresstimer_util.start(growing_timer.base);
@@ -62,11 +64,12 @@ class CreatureGrowingSystemApplication : public gamesystem::Application {
         growing_timer.base.isfull = true;
     }
 
-    void init_Entity_withHalfGrowingTimer(gameentity::Entity entity) {
+    void init_Entity_withHalfGrowingTimer(gameentity::EntityManager& entities, gameentity::Entity entity) {
         gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        auto& growing_timer = earr::enum_array_at(timers->increment, 
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+
+        auto& growing_timer = earr::enum_array_at(timers.increment, 
             +gamecomp::CreatureProgressTimerIncrement::Growing);
 
         progresstimer_util.start(growing_timer.base);
@@ -91,17 +94,13 @@ SCENARIO("Start growing-timer if its not started") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        //auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        //auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        
 
 
-        app.init_Entity_NotStartedGrowingTimer(entity);
+        app.init_Entity_NotStartedGrowingTimer(entities, entity);
 
-        gamecomp::ProgressTimerIncrement& growing_timer = earr::enum_array_at(timers->increment,
+        gamecomp::ProgressTimerIncrement& growing_timer = earr::enum_array_at(timers.increment,
             +gamecomp::CreatureProgressTimerIncrement::Growing);
 
         WHEN("update manager") {
@@ -124,17 +123,12 @@ SCENARIO("Pause growing-Timer by full Growing") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        //auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        //auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
 
-        app.init_Entity_withFullGrowingTimer(entity);
+        app.init_Entity_withFullGrowingTimer(entities, entity);
 
-        gamecomp::ProgressTimerIncrement& growing_timer = earr::enum_array_at(timers->increment,
+        gamecomp::ProgressTimerIncrement& growing_timer = earr::enum_array_at(timers.increment,
             +gamecomp::CreatureProgressTimerIncrement::Growing);
             
         WHEN("update manager") {
@@ -158,17 +152,13 @@ SCENARIO("Emit Increment-Growing-Event then the body size is reached") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        //auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        auto& body = entities.get<gamecomp::CreatureBodyComponent>(entity);
 
 
-        app.init_Entity_withFullGrowingTimer(entity);
+        app.init_Entity_withFullGrowingTimer(entities, entity);
 
-        gamecomp::ProgressTimerIncrement& growing_timer = earr::enum_array_at(timers->increment,
+        gamecomp::ProgressTimerIncrement& growing_timer = earr::enum_array_at(timers.increment,
             +gamecomp::CreatureProgressTimerIncrement::Growing);
 
 
@@ -184,7 +174,7 @@ SCENARIO("Emit Increment-Growing-Event then the body size is reached") {
                     CHECK(growing_timer.base.timer.ispause);
                 }
                 THEN("body size is reached") {
-                    CHECK(body->bodysize >
+                    CHECK(body.bodysize >
                           creatureTestData.MIN_BODYSIZE);
                 }
             }
@@ -204,17 +194,13 @@ SCENARIO("Emit Increment-Growing-Event with burst of growth then the body size "
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        // auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        //auto hunger = entity.component<gamecomp::CreatureHungerComponent>();
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        auto& body = entities.get<gamecomp::CreatureBodyComponent>(entity);
 
 
-        app.init_Entity_withFullGrowingTimer(entity);
+        app.init_Entity_withFullGrowingTimer(entities, entity);
 
-        gamecomp::ProgressTimerIncrement& growing_timer = earr::enum_array_at(timers->increment,
+        gamecomp::ProgressTimerIncrement& growing_timer = earr::enum_array_at(timers.increment,
             +gamecomp::CreatureProgressTimerIncrement::Growing);
 
 
@@ -230,12 +216,12 @@ SCENARIO("Emit Increment-Growing-Event with burst of growth then the body size "
                     CHECK(growing_timer.base.timer.ispause);
                 }
                 THEN("body size is reached") {
-                    CHECK(body->bodysize >
+                    CHECK(body.bodysize >
                           creatureTestData.MIN_BODYSIZE);
                 }
                 THEN("body has maximum bodysize") {
                     CHECK(creatureTestData.MAX_BODYSIZE_GENE ==
-                          doctest::Approx(body->bodysize).epsilon(0.01));
+                          doctest::Approx(body.bodysize).epsilon(0.01));
                 }
             }
         }

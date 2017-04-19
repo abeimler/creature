@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
+DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
 USER_PATH_DIR=~/bin
 TEMP_DIR=~/.cmake
 
 mkdir -p ${USER_PATH_DIR}
 mkdir -p ${TEMP_DIR}
-mkdir -p "${DEPS_DIR}"
+mkdir -p ${DEPS_DIR}
 
 cd "${DEPS_DIR}"
 

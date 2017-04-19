@@ -42,14 +42,16 @@ void CreatureMakeDeadListener::makeCreatureDead(
 void CreatureMakeDeadListener::update(
     const gameevent::CreatureMakeDeadEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
-    Component<gamecomp::CreatureProgressTimersComponent> timers;
-    Component<gamecomp::CreatureLifeComponent> life;
-    Component<gamecomp::CreatureBattlerComponent> creature_battler;
+        
+    for(auto entity : entities.view<gamecomp::CreatureProgressTimersComponent, 
+            gamecomp::CreatureLifeComponent, gamecomp::CreatureBattlerComponent>()) {
+        
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        auto& creature_battler = entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
-    for (auto entity :
-         entities.entities_with_components(timers, life, creature_battler)) {
-        makeCreatureDead(events, entity, *timers.get(), *life.get(),
-                         *creature_battler.get(), event.causeofdeath);
+        makeCreatureDead(events, entity, timers, life,
+                         creature_battler, event.causeofdeath);
     }
 }
 

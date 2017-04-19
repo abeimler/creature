@@ -31,7 +31,7 @@ I used CMake 3.2 for the build.
 
  1. change directory to this Folder
  2. `mkdir ./build`
- 3. `cmake -H. -B./build -DCMAKE_BUILD_TYPE=Release -DBuildTests:BOOL="0" -DCXXOPTS_BUILD_EXAMPLES:BOOL="0" -DTYPE_SAFE_ARITHMETIC_UB:BOOL="1" -DWITH_CPP11:BOOL="1" -DBUILD_TESTING:BOOL="0" -DTHREAD_SAFE:BOOL="1"`
+ 3. `cmake -H. -B./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBuildTests:BOOL="0" -DCXXOPTS_BUILD_EXAMPLES:BOOL="0" -DTYPE_SAFE_ARITHMETIC_UB:BOOL="1" -DWITH_CPP11:BOOL="1" -DBUILD_TESTING:BOOL="0" -DTHREAD_SAFE:BOOL="1"`
  4. `cmake --build ./build --target creature_backend`
 
 #### CTest

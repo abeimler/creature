@@ -56,15 +56,17 @@ void CreatureDigestionSystem::updateFullPoopStack(
 
 void CreatureDigestionSystem::update(EntityManager& entities, EventBus& events,
                                      TimeDelta /*dt*/) {
-    Component<gamecomp::CreatureProgressTimersComponent> timers;
-    Component<gamecomp::CreatureHungerComponent> hunger;
-    Component<gamecomp::CreatureGeneComponent> gene;
+                                         
+    for(auto entity : entities.view<gamecomp::CreatureProgressTimersComponent, 
+            gamecomp::CreatureHungerComponent, 
+            gamecomp::CreatureGeneComponent>()) {
+        
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        auto& hunger = entities.get<gamecomp::CreatureHungerComponent>(entity);
+        auto& gene = entities.get<gamecomp::CreatureGeneComponent>(entity);    
 
-    for (auto entity :
-         entities.entities_with_components(timers, hunger, gene)) {
-
-        updatePauseDigestionHungry(*timers.get());
-        updateFullPoopStack(*timers.get(), *hunger.get(), *gene.get());
+        updatePauseDigestionHungry(timers);
+        updateFullPoopStack(timers, hunger, gene);
     }
 }
 

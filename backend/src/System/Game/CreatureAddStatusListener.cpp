@@ -46,13 +46,14 @@ void CreatureAddStatusListener::addCreatureStatus(
 void CreatureAddStatusListener::update(
     const gameevent::CreatureAddStatusEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
-    Component<gamecomp::BattlerStatusesComponent> battlerstatuses;
-    Component<gamecomp::CreatureBodilyStateComponent> bodilystate;
 
-    for (auto entity :
-         entities.entities_with_components(battlerstatuses, bodilystate)) {
-        addCreatureStatus(events, entity, *battlerstatuses.get(),
-                          *bodilystate.get(), event.addstatus);
+    for(auto entity : entities.view<gamecomp::BattlerStatusesComponent, gamecomp::CreatureBodilyStateComponent>()) {
+        auto& battlerstatuses = entities.get<gamecomp::BattlerStatusesComponent>(entity);
+        auto& bodilystate = entities.get<gamecomp::CreatureBodilyStateComponent>(entity);
+
+        addCreatureStatus(events, entity, 
+                            battlerstatuses, bodilystate, 
+                            event.addstatus);
     }
 }
 

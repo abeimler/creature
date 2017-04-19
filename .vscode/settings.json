@@ -16,5 +16,11 @@
     "clang-format.language.cpp.enable": true,
 
     // The directory where CMake build files will go
-    "cmake.buildDirectory": "${workspaceRoot}/build"
+    "cmake.buildDirectory": "${workspaceRoot}/build",
+    "files.associations": {
+        "gsl": "cpp",
+        "multi_span": "cpp",
+        "functional": "cpp",
+        "future": "cpp"
+    }
 }

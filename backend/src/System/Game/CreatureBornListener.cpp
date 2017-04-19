@@ -86,24 +86,16 @@ void CreatureBornListener::update(const gameevent::CreatureBornEvent& event,
 
     auto entity = event.entity;
     if (entity) {
-        //auto life = entity.component<gamecomp::CreatureLife>();
-        //data::CreatureLevel creaturelevel = life->creaturelevel;
-
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
-        auto gene = entity.component<gamecomp::CreatureGeneComponent>();
-        //auto psyche = entity.component<gamecomp::CreaturePsycheComponent>();
-        auto body = entity.component<gamecomp::CreatureBodyComponent>();
-        //auto creature_data = entity.component<gamecomp::CreatureDataComponent>();
-        //auto creature_battlergene = entity.component<gamecomp::CreatureBattlerGeneComponent>();
-        //auto creature_battler = entity.component<gamecomp::CreatureBattlerComponent>();
-        auto training = entity.component<gamecomp::CreatureTrainingComponent>();
-        auto bodilystate = entity.component<gamecomp::CreatureBodilyStateComponent>();
-        //auto evolve = entity.component<gamecomp::CreatureEvolveComponent>();
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        auto& gene = entities.get<gamecomp::CreatureGeneComponent>(entity);
+        auto& body = entities.get<gamecomp::CreatureBodyComponent>(entity);
+        auto& training = entities.get<gamecomp::CreatureTrainingComponent>(entity);
+        auto& bodilystate = entities.get<gamecomp::CreatureBodilyStateComponent>(entity);
 
         born(entity, events,
-             *timers.get(), *training.get(), *gene.get(), *body.get(),
-             *bodilystate.get(), *life.get());
+             timers, training, gene, body,
+             bodilystate, life);
     }
 }
 

@@ -144,26 +144,28 @@ void CreatureDigestionCallbackListener::illByFullPoopStack(
 void CreatureDigestionCallbackListener::update(
     const gameevent::ProgressTimerCallbackEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
-    Component<gamecomp::CreatureProgressTimersComponent> timers;
-    Component<gamecomp::CreatureHungerComponent> hunger;
-    Component<gamecomp::CreatureGeneComponent> gene;
-    Component<gamecomp::CreaturePsycheComponent> psyche;
-    Component<gamecomp::CreatureBodyComponent> body;
-    Component<gamecomp::CreaturePersonalityComponent> personality;
 
-    for (auto entity : entities.entities_with_components(
-             timers, hunger, gene, psyche, body, personality)) {
+    for(auto entity : entities.view<gamecomp::CreatureProgressTimersComponent, 
+            gamecomp::CreatureHungerComponent, 
+            gamecomp::CreatureGeneComponent, gamecomp::CreaturePsycheComponent, gamecomp::CreaturePersonalityComponent>()) {
+        
+        auto& timers = entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+        auto& hunger = entities.get<gamecomp::CreatureHungerComponent>(entity);
+        auto& gene = entities.get<gamecomp::CreatureGeneComponent>(entity);    
+        auto& psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);   
+        auto& body = entities.get<gamecomp::CreatureBodyComponent>(entity);   
+        auto& personality = entities.get<gamecomp::CreaturePersonalityComponent>(entity);   
 
         if (event.type == +gamecomp::CreatureProgressTimerCallback::Digestion) {
-            makePoop(events, entity, *timers.get(), *hunger.get(), *gene.get(),
-                     *body.get(), *psyche.get(), personality->housebroken);
+            makePoop(events, entity, timers, hunger, gene,
+                     body, psyche, personality.housebroken);
         } else if (event.type ==
                    +gamecomp::CreatureProgressTimerCallback::
                        PauseDigestionHungry) {
-            pauseDigestionbyHunger(*timers.get());
+            pauseDigestionbyHunger(timers);
         } else if (event.type ==
                    +gamecomp::CreatureProgressTimerCallback::FullPoopStack) {
-            illByFullPoopStack(entity, events, *gene.get());
+            illByFullPoopStack(entity, events, gene);
         }
     }
 }

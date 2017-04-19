@@ -27,10 +27,12 @@ class CreatureBattlerRemoveBattlerStatusListener
 
     void removeBattlerStatus(
         const gameevent::CreatureRemoveBattlerStatusEvent& event,
-        Component<gamecomp::BattlerStatusesComponent>& battlerstatuses);
+        gamecomp::BattlerStatusesComponent& battlerstatuses);
     void removeStartBattlerStatusTurn(
         const gameevent::CreatureRemoveBattlerStatusEvent& event,
-        Component<gamecomp::BattlerStatusesComponent>& battlerstatuses);
+        gamecomp::BattlerStatusesComponent& battlerstatuses);
+
+    void sortBattlerStatuses(gamecomp::BattlerStatusesComponent& battlerstatuses);
         
     void update(const gameevent::CreatureRemoveBattlerStatusEvent& event,
                 EntityManager& entities, EventBus& events,

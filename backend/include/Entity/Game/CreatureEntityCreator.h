@@ -26,7 +26,7 @@
 
 namespace gameentity {
 
-class CreatureEntityCreator : public EntityCreator<Entity> {
+class CreatureEntityCreator : public EntityCreator<EntityManager, Entity> {
     private:
     computil::TimerUtil timer_util_;
     computil::DateTimerUtil datetimer_util_;
@@ -251,18 +251,17 @@ class CreatureEntityCreator : public EntityCreator<Entity> {
     }
 
 
-    void create(Entity& entity) override;
-
-    void create(Entity& entity, const data::Creature& creature,
+    void create(EntityManager& entities, Entity& entity) override;
+    void create(EntityManager& entities, Entity& entity, const data::Creature& creature,
                 std::chrono::system_clock::time_point realtime,
                 double realtime_factor);
-    inline void create(Entity& entity, const data::Creature& creature,
+    inline void create(EntityManager& entities, Entity& entity, const data::Creature& creature,
                        std::chrono::system_clock::time_point realtime) {
-        create(entity, creature, realtime, 1.0);
+        create(entities, entity, creature, realtime, 1.0);
     }
-    inline void create(Entity& entity, const data::Creature& creature) {
+    inline void create(EntityManager& entities, Entity& entity, const data::Creature& creature) {
         auto realtime = std::chrono::system_clock::now();
-        create(entity, creature, realtime);
+        create(entities, entity, creature, realtime);
     }
 
 

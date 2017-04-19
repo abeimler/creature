@@ -77,7 +77,7 @@ class util {
 
     template <typename T>
     static bool randomRate(T percent) {
-        if (percent >= 100.0) {
+        if (percent >= 100) {
             return true;
         }
 

@@ -26,13 +26,15 @@ void CreatureRemoveStatusListener::removeCreatureStatus(
 void CreatureRemoveStatusListener::update(
     const gameevent::CreatureRemoveStatusEvent& event, EntityManager& entities,
     EventBus& events, TimeDelta /*dt*/) {
-    Component<gamecomp::BattlerStatusesComponent> battlerstatuses;
-    Component<gamecomp::CreatureBodilyStateComponent> bodilystate;
+        
+    for(auto entity : entities.view<gamecomp::BattlerStatusesComponent, 
+            gamecomp::CreatureBodilyStateComponent>()) {
+        
+        auto& battlerstatuses = entities.get<gamecomp::BattlerStatusesComponent>(entity);
+        auto& bodilystate = entities.get<gamecomp::CreatureBodilyStateComponent>(entity);
 
-    for (auto entity :
-         entities.entities_with_components(battlerstatuses, bodilystate)) {
-        removeCreatureStatus(events, entity, *battlerstatuses.get(),
-                             *bodilystate.get(), event.removestatus);
+        removeCreatureStatus(events, entity, battlerstatuses,
+                             bodilystate, event.removestatus);
     }
 }
 } // namespace gamesystem

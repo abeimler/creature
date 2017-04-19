@@ -22,8 +22,11 @@ class CreatureBattlerAddBattlerStatusListener
 
     void sortBattlerStatuses(std::vector<std::string>& statuses_name);
 
+
     public:
     CreatureBattlerAddBattlerStatusListener(gameentity::DataManager& datamanager);
+
+    void addBattlerStatus(EntityManager& entities, EventBus& events, Entity entity, gamecomp::BattlerStatusesComponent& battlerstatuses, const data::BattlerStatus& addstatus);
 
     void update(const gameevent::CreatureAddBattlerStatusEvent& event,
                 EntityManager& entities, EventBus& events,

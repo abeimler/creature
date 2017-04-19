@@ -35,36 +35,36 @@ class CreatureDoNotingSystemApplication : public gamesystem::Application {
         this->addListener(this->eventlistenermockup);
     }
 
-    void init_Entity_withHungryStatus(gameentity::Entity entity) {
+    void init_Entity_withHungryStatus(gameentity::EntityManager& entities, gameentity::Entity entity) {
         // gamecomputil::ProgressTimerUtil progresstimer_util;
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& hungry_timer = earr::enum_array_at(
-            timers->timer, +gamecomp::CreatureProgressTimer::Hungry);
+            timers.timer, +gamecomp::CreatureProgressTimer::Hungry);
 
         hungry_timer.value = 100.0f;
         hungry_timer.isfull = true;
 
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        earr::enum_array_at(life->hasstatus, +data::CreatureStatus::Hungry) =
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Hungry) =
             true;
 
-        auto battlerstatuses =
-            entity.component<gamecomp::BattlerStatusesComponent>();
-        battlerstatuses->statuses_name.push_back(HUNGRY_STATUS_NAME);
+        auto& battlerstatuses =
+            entities.get<gamecomp::BattlerStatusesComponent>(entity);
+        battlerstatuses.statuses_name.push_back(HUNGRY_STATUS_NAME);
     }
 
-    void init_Entity_isBusy(gameentity::Entity entity) {
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
+    void init_Entity_isBusy(gameentity::EntityManager& entities, gameentity::Entity entity) {
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        life->isbusy = true;
+        life.isbusy = true;
     }
 
-    void init_Entity_isNotBusy(gameentity::Entity entity) {
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
+    void init_Entity_isNotBusy(gameentity::EntityManager& entities, gameentity::Entity entity) {
+        auto life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        life->isbusy = false;
+        life.isbusy = false;
     }
 
     static constexpr gamesystem::TimeDelta FAKE_TIMEDELTA = 1.0 / 60;
@@ -102,12 +102,12 @@ SCENARIO("Creature Entity update doNoting then creatire is not busy") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
         WHEN("update manager") {
             app.update(app.FAKE_TIMEDELTA);
 
-            THEN("is not busy") { CHECK_FALSE(life->isbusy); }
+            THEN("is not busy") { CHECK_FALSE(life.isbusy); }
         }
     }
 }
@@ -122,20 +122,15 @@ SCENARIO("Creature Entity without statuses then set isbusy to false") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_isBusy(entity);
+        app.init_Entity_isBusy(entities, entity);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto bodlystate =
-        // entity.component<gamecomp::CreatureBodilyStateComponent>();
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+        
 
         WHEN("update manager") {
             app.update(app.FAKE_TIMEDELTA);
 
-            THEN("busy is set") { CHECK_FALSE(life->isbusy); }
+            THEN("busy is set") { CHECK_FALSE(life.isbusy); }
         }
     }
 }
@@ -149,21 +144,16 @@ SCENARIO("Creature Entity with Hungry status is not busy") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_isBusy(entity);
-        app.init_Entity_withHungryStatus(entity);
+        app.init_Entity_isBusy(entities, entity);
+        app.init_Entity_withHungryStatus(entities, entity);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        auto life = entity.component<gamecomp::CreatureLifeComponent>();
-        // auto bodlystate =
-        // entity.component<gamecomp::CreatureBodilyStateComponent>();
+
+        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
         AND_WHEN("update manager") {
             app.update(app.FAKE_TIMEDELTA);
 
-            THEN("busy is not set") { CHECK_FALSE(life->isbusy); }
+            THEN("busy is not set") { CHECK_FALSE(life.isbusy); }
         }
     }
 }

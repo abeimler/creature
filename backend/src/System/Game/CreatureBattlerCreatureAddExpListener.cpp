@@ -41,13 +41,13 @@ void CreatureBattlerCreatureAddExpListener::addExp(
 void CreatureBattlerCreatureAddExpListener::update(
     const gameevent::CreatureAddExpEvent& event, EntityManager& entities,
     EventBus& /*events*/, TimeDelta /*dt*/) {
-    Component<gamecomp::CreatureDataComponent> creature_data;
-    Component<gamecomp::CreatureBattlerComponent> creature_battler;
 
-    for (auto entity :
-         entities.entities_with_components(creature_data, creature_battler)) {
+    for(auto entity : entities.view<gamecomp::CreatureDataComponent, gamecomp::CreatureBattlerComponent>()) {
+        auto& creature_data = entities.get<gamecomp::CreatureDataComponent>(entity);
+        auto& creature_battler = entities.get<gamecomp::CreatureBattlerComponent>(entity);
+
         auto add_exp = event.exp;
-        addExp(*creature_data.get(), *creature_battler.get(), add_exp);
+        addExp(creature_data, creature_battler, add_exp);
     }
 }
 

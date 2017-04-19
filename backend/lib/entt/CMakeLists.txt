@@ -99,18 +99,3 @@ find_package(GoogleTest)
 if(${GOOGLETEST_FOUND})
     add_subdirectory(${PROJECT_TEST_DIR})
 endif(${GOOGLETEST_FOUND})
-
-#
-# I use QtCreator and I need the lines below, so do not ask. :-)
-#
-
-file(
-    GLOB_RECURSE PROJECT_FILES FOLLOW_SYMLINKS
-    *.txt *.c *.cpp *.hpp *.h *.in *.cmake *.sh *.md AUTHORS LICENSE
-)
-
-add_custom_target(
-    QTCREATOR_FALLBACK ALL
-    COMMENT "Feel free to ignore this target, but please do not remove it."
-    SOURCES ${PROJECT_FILES}
-)

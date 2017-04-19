@@ -171,7 +171,7 @@ class CreatureProgressTimerSystemApplication : public gamesystem::Application {
                                 .mediumterm.base.waittime,
                             creaturelevel) = waittime;
 
-        entity.assign<gamecomp::CreatureProgressTimersComponent>(timers);
+        entities.assign<gamecomp::CreatureProgressTimersComponent>(entity, timers);
 
         return entity;
     }
@@ -208,7 +208,7 @@ class CreatureProgressTimerSystemApplication : public gamesystem::Application {
                 creaturelevel) = waittime;
         }
 
-        entity.assign<gamecomp::CreatureProgressTimersComponent>(timers);
+        entities.assign<gamecomp::CreatureProgressTimersComponent>(entity, timers);
 
         return entity;
     }
@@ -262,10 +262,10 @@ SCENARIO("Wait 100% of waitTime to fill Value to 100%") {
 
         auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& progtimer =
-            earr::enum_array_at(timers->timer, app.timertype);
+            earr::enum_array_at(timers.timer, app.timertype);
 
         WHEN("start timer and sleep waittime") {
             progresstimer_util.start(progtimer);
@@ -298,10 +298,10 @@ SCENARIO("Wait 200% of waitTime to fill Value to 100% with overlay") {
 
         auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& progtimer =
-            earr::enum_array_at(timers->timer, app.timertype);
+            earr::enum_array_at(timers.timer, app.timertype);
 
         WHEN("start timer and sleep 2 x waittime") {
             progresstimer_util.start(progtimer);
@@ -332,10 +332,10 @@ SCENARIO("Wait 50% of waitTime to fill Value to 50%") {
 
         auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& progtimer =
-            earr::enum_array_at(timers->timer, app.timertype);
+            earr::enum_array_at(timers.timer, app.timertype);
 
 
         WHEN("start timer and sleep waittime/2") {
@@ -370,10 +370,10 @@ SCENARIO("Wait 50% of waitTime with ValueFactor 2 to fill Value to 100%") {
 
         auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& progtimer =
-            earr::enum_array_at(timers->timer, app.timertype);
+            earr::enum_array_at(timers.timer, app.timertype);
 
         progtimer.factor = 2.0f;
 
@@ -384,7 +384,9 @@ SCENARIO("Wait 50% of waitTime with ValueFactor 2 to fill Value to 100%") {
             AND_WHEN("update manager") {
                 app.update(app.FAKE_TIMEDELTA);
 
-                THEN("value is 100%") { CHECK(progtimer.value >= 100.0f); }
+                THEN("value is 100%") { 
+                    CHECK(progtimer.value >= 100.0f); 
+                }
                 AND_THEN("overlayvalue may not 0%") {
                     CHECK(progtimer.overlayvalue >= 0.0f);
                     CHECK(progtimer.overlayvalue < 100.0f);
@@ -408,10 +410,10 @@ SCENARIO("Wait 50% of waitTime with ValueFactor 4 to fill Value to 100% with "
 
         auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& progtimer =
-            earr::enum_array_at(timers->timer, app.timertype);
+            earr::enum_array_at(timers.timer, app.timertype);
 
         progtimer.factor = 4.0f;
 
@@ -422,7 +424,9 @@ SCENARIO("Wait 50% of waitTime with ValueFactor 4 to fill Value to 100% with "
             AND_WHEN("update manager") {
                 app.update(app.FAKE_TIMEDELTA);
 
-                THEN("value is 100%") { CHECK(progtimer.value >= 100.0f); }
+                THEN("value is 100%") { 
+                    CHECK(progtimer.value >= 100.0f); 
+                }
                 THEN("with overlayvalue") {
                     CHECK(progtimer.overlayvalue >= 0.0f);
                 }
@@ -443,10 +447,10 @@ SCENARIO("Wait 100% of waitTime with ValueFactor 0.5 to fill Value to 50%") {
 
         auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-        auto timers =
-            entity.component<gamecomp::CreatureProgressTimersComponent>();
+        auto& timers =
+            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
         gamecomp::ProgressTimer& progtimer =
-            earr::enum_array_at(timers->timer, app.timertype);
+            earr::enum_array_at(timers.timer, app.timertype);
 
         progtimer.factor = 0.5f;
 
@@ -483,9 +487,10 @@ TEST_CASE("Wait 100% of waitTime with pause to fill Value to 100%") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimer& progtimer =
-        earr::enum_array_at(timers->timer, app.timertype);
+        earr::enum_array_at(timers.timer, app.timertype);
 
 
     progresstimer_util.start(progtimer);
@@ -518,9 +523,10 @@ TEST_CASE("Wait 2*50% of waitTime with pause unpause to fill Value to 100%") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimer& progtimer =
-        earr::enum_array_at(timers->timer, app.timertype);
+        earr::enum_array_at(timers.timer, app.timertype);
 
 
     progresstimer_util.start(progtimer);
@@ -556,9 +562,10 @@ TEST_CASE("Wait 2*100% of waitTime with restart to fill Value to 100%") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimer& progtimer =
-        earr::enum_array_at(timers->timer, app.timertype);
+        earr::enum_array_at(timers.timer, app.timertype);
 
 
 
@@ -593,9 +600,10 @@ TEST_CASE("Wait 2*100% of waitTime with stop to reset Value to 0%") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimer& progtimer =
-        earr::enum_array_at(timers->timer, app.timertype);
+        earr::enum_array_at(timers.timer, app.timertype);
 
 
     progresstimer_util.start(progtimer);
@@ -625,9 +633,10 @@ TEST_CASE("Wait 100% of waitTime to trigger Callback") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimerCallback& progtimer =
-        earr::enum_array_at(timers->callback, app.timertype_callback);
+        earr::enum_array_at(timers.callback, app.timertype_callback);
 
 
     auto listener = app.callback_eventlistenermockup;
@@ -662,9 +671,10 @@ TEST_CASE("Wait 50% of waitTime and trigger increment") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimerIncrement& progtimer =
-        earr::enum_array_at(timers->increment, app.timertype_increment);
+        earr::enum_array_at(timers.increment, app.timertype_increment);
 
 
     auto listener = app.increment_eventlistenermockup;
@@ -702,9 +712,10 @@ TEST_CASE("Wait 100% of waitTime and trigger increment") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimerIncrement& progtimer =
-        earr::enum_array_at(timers->increment, app.timertype_increment);
+        earr::enum_array_at(timers.increment, app.timertype_increment);
 
 
     auto listener = app.increment_eventlistenermockup;
@@ -743,9 +754,10 @@ TEST_CASE("Wait 50% of waitTime with factor 2 and trigger increment") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimerIncrement& progtimer =
-        earr::enum_array_at(timers->increment, app.timertype_increment);
+        earr::enum_array_at(timers.increment, app.timertype_increment);
 
 
     auto listener = app.increment_eventlistenermockup;
@@ -785,9 +797,10 @@ TEST_CASE("Wait 3*100% of waitTime to trigger Increment more times (endless)") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimerIncrement& progtimer =
-        earr::enum_array_at(timers->increment, app.timertype_increment);
+        earr::enum_array_at(timers.increment, app.timertype_increment);
 
 
     auto listener = app.increment_eventlistenermockup;
@@ -829,9 +842,10 @@ TEST_CASE("Wait 100% of waitTime to trigger Starvation Callback") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimerCallback& progtimer =
-        earr::enum_array_at(timers->starvation, app.starvationphase);
+        earr::enum_array_at(timers.starvation, app.starvationphase);
 
 
     auto listener = app.starvation_eventlistenermockup;
@@ -873,9 +887,10 @@ TEST_CASE("Wait 100% of waitTime to trigger ShortMemoryTerm Callback") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimerCallback& progtimer =
-        earr::enum_array_at(timers->memory, app.activity).shortterm;
+        earr::enum_array_at(timers.memory, app.activity).shortterm;
 
 
     auto listener = app.shortmemory_eventlistenermockup;
@@ -916,9 +931,10 @@ TEST_CASE("Wait 100% of waitTime to trigger MediumMemoryTerm Callback") {
 
     auto entity = app.create_Entity_ProgressTimers(entities, waittime);
 
-    auto timers = entity.component<gamecomp::CreatureProgressTimersComponent>();
+    auto& timers =
+        entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
     gamecomp::ProgressTimerCallback& progtimer =
-        earr::enum_array_at(timers->memory, app.activity).mediumterm;
+        earr::enum_array_at(timers.memory, app.activity).mediumterm;
 
 
     auto listener = app.mediummemory_eventlistenermockup;

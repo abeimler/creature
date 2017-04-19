@@ -52,8 +52,8 @@ SCENARIO("Creature Entity emit addExp-Event to gain exp") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
+        auto& creature_battler =
+            entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
         int add_exp = 1;
 
@@ -65,7 +65,7 @@ SCENARIO("Creature Entity emit addExp-Event to gain exp") {
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("has gain exp") { CHECK(creature_battler->exp > 0); }
+                THEN("has gain exp") { CHECK(creature_battler.exp > 0); }
             }
         }
     }
@@ -81,8 +81,8 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
+        auto& creature_battler =
+            entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
         int old_current_lvl = creatureTestData.LVL;
         int add_exp = creatureTestData.EXP;
@@ -95,10 +95,10 @@ SCENARIO("Creature Entity emit addExp-Event to level up") {
 
                 REQUIRE(app.eventlistenermockup->emitevent);
 
-                THEN("has gain exp") { CHECK(creature_battler->exp > 0); }
+                THEN("has gain exp") { CHECK(creature_battler.exp > 0); }
 
                 THEN("has level up") {
-                    CHECK(creature_battler->lvl > old_current_lvl);
+                    CHECK(creature_battler.lvl > old_current_lvl);
                 }
             }
         }
@@ -115,8 +115,8 @@ SCENARIO("Creature Entity emit addExp-Event to has Attributes go up") {
         // auto time = creatureTestData.make_time_point_01_01_2000();
         auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto creature_battler =
-            entity.component<gamecomp::CreatureBattlerComponent>();
+        auto& creature_battler =
+            entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
         // int old_current_lvl = creatureTestData.LVL;
         int old_current_maxhp = creatureTestData.MAXHP;
@@ -134,13 +134,13 @@ SCENARIO("Creature Entity emit addExp-Event to has Attributes go up") {
 
 
                 THEN("MaxHP Attributes has up") {
-                    CHECK(earr::enum_array_at(creature_battler->attr,
+                    CHECK(earr::enum_array_at(creature_battler.attr,
                                               +data::Attribute::MaxHP) >
                           old_current_maxhp);
                 }
 
                 THEN("MaxMP Attributes has up") {
-                    CHECK(earr::enum_array_at(creature_battler->attr,
+                    CHECK(earr::enum_array_at(creature_battler.attr,
                                               +data::Attribute::MaxMP) >
                           old_current_maxmp);
                 }
