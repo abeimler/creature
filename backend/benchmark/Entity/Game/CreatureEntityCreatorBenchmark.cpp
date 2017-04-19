@@ -14,7 +14,7 @@ BENCHMARK("CreatureEntityCreator create creature entity",
                 auto entity = entities.create();
 
                 ctx->start_timer();
-                creator.create(entity);
+                creator.create(entities, entity);
                 ctx->stop_timer();
 
                 entities.destroy(entity);

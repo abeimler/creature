@@ -17,12 +17,12 @@ SCENARIO("Creature GameApplication and create creature entity"
 
         WHEN("create creature entity") {
             auto entity = entities.create();
-            creaturecreator.create(entity);
+            creaturecreator.create(entities, entity);
 
             REQUIRE_FALSE(entities.empty());
 
-            THEN("entity is valid") {
-                CHECK(entity);
+            THEN("entity has some component") {
+                CHECK(entities.has<gamecomp::CreatureDataComponent>(entity));
             }
         }
     }
