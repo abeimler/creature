@@ -43,6 +43,24 @@
 #endif
 #endif
 
+#ifndef DEBUG_ASSERT_PURE_FUNCTION
+#ifdef __GNUC__
+#define DEBUG_ASSERT_PURE_FUNCTION __attribute__((pure))
+#else
+/// Hint to the compiler that a function is pure.
+/// Define it yourself prior to including the header to override it.
+#define DEBUG_ASSERT_PURE_FUNCTION
+#endif
+#endif
+
+// checking for clang must come first because clang also defines __GNUC__.
+#if !defined(DEBUG_ASSERT_ASSUME) && defined(__clang__)
+// __has_builtin may not work in other compilers.
+#if __has_builtin(__builtin_assume)
+#define DEBUG_ASSERT_ASSUME(Expr) __builtin_assume(Expr)
+#endif
+#endif
+
 #ifndef DEBUG_ASSERT_ASSUME
 #ifdef __GNUC__
 #define DEBUG_ASSERT_ASSUME(Expr)                                                                  \
@@ -106,6 +124,15 @@ namespace debug_assert
 
     template <unsigned Level>
     const unsigned     set_level<Level>::level;
+
+    /// Helper class that controls whether the handler can throw or not.
+    /// Inherit from it in your module handler.
+    /// If the module does not inherit from this class, it is assumed that
+    /// the handle does not throw.
+    struct allow_exception
+    {
+        static const bool throwing_exception_is_allowed = true;
+    };
 
     //=== handler ===//
     /// Does not do anything to handle a failed assertion (except calling
@@ -205,18 +232,36 @@ namespace debug_assert
         {
         };
 
+        //=== helper class to check if throw is allowed ===//
+        template <class Handler, typename = void>
+        struct allows_exception
+        {
+            static const bool value = false;
+        };
+
+        template <class Handler>
+        struct allows_exception<Handler,
+                                typename enable_if<Handler::throwing_exception_is_allowed>::type>
+        {
+            static const bool value = Handler::throwing_exception_is_allowed;
+        };
+
         //=== assert implementation ===//
         // use enable if instead of tag dispatching
         // this removes on additional function and encourage optimization
         template <class Expr, class Handler, unsigned Level, typename... Args>
-        auto do_assert(const Expr& expr, const source_location& loc, const char* expression,
-                       Handler, level<Level>, Args&&... args) noexcept ->
-            typename enable_if<Level <= Handler::level>::type
+        auto do_assert(
+            const Expr& expr, const source_location& loc, const char* expression, Handler,
+            level<Level>,
+            Args&&... args) noexcept(!allows_exception<Handler>::value
+                                     || noexcept(Handler::handle(loc, expression,
+                                                                 detail::forward<Args>(args)...)))
+            -> typename enable_if<Level <= Handler::level>::type
         {
             static_assert(Level > 0, "level of an assertion must not be 0");
             if (!expr())
             {
-                Handler::handle(loc, expression, forward<Args>(args)...);
+                Handler::handle(loc, expression, detail::forward<Args>(args)...);
                 std::abort();
             }
         }
@@ -231,13 +276,16 @@ namespace debug_assert
         }
 
         template <class Expr, class Handler, typename... Args>
-        auto do_assert(const Expr& expr, const source_location& loc, const char* expression,
-                       Handler, Args&&... args) noexcept ->
-            typename enable_if<Handler::level != 0>::type
+        auto do_assert(
+            const Expr& expr, const source_location& loc, const char* expression, Handler,
+            Args&&... args) noexcept(!allows_exception<Handler>::value
+                                     || noexcept(Handler::handle(loc, expression,
+                                                                 detail::forward<Args>(args)...)))
+            -> typename enable_if<Handler::level != 0>::type
         {
             if (!expr())
             {
-                Handler::handle(loc, expression, forward<Args>(args)...);
+                Handler::handle(loc, expression, detail::forward<Args>(args)...);
                 std::abort();
             }
         }
@@ -280,8 +328,8 @@ namespace debug_assert
 /// This should not be necessary, the regular version is optimized away
 /// completely.
 #define DEBUG_ASSERT(Expr, ...)                                                                    \
-    debug_assert::detail::do_assert([&] { return Expr; }, DEBUG_ASSERT_CUR_SOURCE_LOCATION, #Expr, \
-                                    __VA_ARGS__)
+    debug_assert::detail::do_assert([&]() DEBUG_ASSERT_PURE_FUNCTION noexcept { return Expr; },    \
+                                    DEBUG_ASSERT_CUR_SOURCE_LOCATION, #Expr, __VA_ARGS__)
 
 /// Marks a branch as unreachable.
 ///
@@ -304,8 +352,8 @@ namespace debug_assert
 /// This should not be necessary, the regular version is optimized away
 /// completely.
 #define DEBUG_UNREACHABLE(...)                                                                     \
-    debug_assert::detail::do_assert([&] { return false; }, DEBUG_ASSERT_CUR_SOURCE_LOCATION, "",   \
-                                    __VA_ARGS__)
+    debug_assert::detail::do_assert([&]() DEBUG_ASSERT_PURE_FUNCTION noexcept { return false; },   \
+                                    DEBUG_ASSERT_CUR_SOURCE_LOCATION, "", __VA_ARGS__)
 #else
 #define DEBUG_ASSERT(Expr, ...) DEBUG_ASSERT_ASSUME(Expr)
 
