@@ -13,6 +13,7 @@
 #include <type_safe/detail/assign_or_construct.hpp>
 #include <type_safe/detail/copy_move_control.hpp>
 #include <type_safe/detail/is_nothrow_swappable.hpp>
+#include <type_safe/detail/map_invoke.hpp>
 
 namespace type_safe
 {
@@ -81,39 +82,10 @@ namespace type_safe
 
         template <typename T>
         using is_optional = is_optional_impl<typename std::decay<T>::type>;
-
-        //=== unwrapping ===//
-        template <class Optional>
-        using need_unwrap_optional = is_optional<typename std::decay<Optional>::type::value_type>;
-
-        template <class Optional>
-        using unwrap_optional_impl =
-            typename std::conditional<is_optional<typename Optional::value_type>::value,
-                                      typename Optional::value_type, Optional>::type;
-
-        template <class Optional>
-        using unwrap_optional_t =
-            typename std::decay<unwrap_optional_impl<typename std::decay<Optional>::type>>::type;
-
-        template <class Optional>
-        unwrap_optional_t<Optional> unwrap_optional(std::true_type, Optional&& opt)
-        {
-            return opt.has_value() ? std::forward<Optional>(opt).value() :
-                                     unwrap_optional_t<Optional>{};
-        }
-
-        template <class Optional>
-        unwrap_optional_t<Optional> unwrap_optional(std::false_type, Optional&& opt)
-        {
-            return std::forward<Optional>(opt);
-        }
-
-        template <class Optional>
-        unwrap_optional_t<Optional> unwrap_optional(Optional&& opt)
-        {
-            return unwrap_optional(need_unwrap_optional<Optional>{}, std::forward<Optional>(opt));
-        }
     } // namespace detail
+
+    template <class StoragePolicy>
+    class basic_optional;
 
     //=== basic_optional ===//
     /// Tag type to mark a [ts::basic_optional]() without a value.
@@ -143,6 +115,40 @@ namespace type_safe
         using type = void;
     };
 
+    /// Specialization of [ts::optional_storage_policy_for]() for [ts::basic_optional]() itself.
+    ///
+    /// It will simply forward to the same policy, so `ts::optional_for<ts::optional<T>>` is simply `ts::optional<T>`,
+    /// not `ts::optional<ts::optional<T>>`.
+    /// \module optional
+    template <class StoragePolicy>
+    struct optional_storage_policy_for<basic_optional<StoragePolicy>>
+    {
+        using type = StoragePolicy;
+    };
+
+    template <typename T, bool XValue = false>
+    class reference_optional_storage;
+
+    /// Specialization of [ts::optional_storage_policy_for]() for lvalue references.
+    ///
+    /// It will use [ts::reference_optional_storage]() as policy.
+    /// \module optional
+    template <typename T>
+    struct optional_storage_policy_for<T&>
+    {
+        using type = reference_optional_storage<T>;
+    };
+
+    /// Specialization of [ts::optional_storage_policy_for]() for rvalue references.
+    ///
+    /// They are not supported.
+    /// \module optional
+    template <typename T>
+    struct optional_storage_policy_for<T&&>
+    {
+        static_assert(sizeof(T) != sizeof(T), "no optional for rvalue references supported");
+    };
+
     /// \exclude
     namespace detail
     {
@@ -150,6 +156,12 @@ namespace type_safe
         using select_optional_storage_policy =
             typename std::conditional<std::is_same<TraitsResult, void>::value, Fallback,
                                       TraitsResult>::type;
+
+        template <typename T, typename Fallback>
+        using rebind_optional = typename std::
+            conditional<std::is_void<T>::value, void,
+                        basic_optional<select_optional_storage_policy<
+                            typename optional_storage_policy_for<T>::type, Fallback>>>::type;
     }
 
     /// An optional type, i.e. a type that may or may not be there.
@@ -165,6 +177,7 @@ namespace type_safe
     /// * Template alias `rebind<U>` - the same policy for a different type
     /// * `StoragePolicy() noexcept` - a no-throw default constructor that initializes it in the "empty" state
     /// * `void create_value(Args&&... args)` - creates a value by forwarding the arguments to its constructor
+    /// * `void create_value_explicit(T&& obj)` - creates a value requiring an `explicit` constructor
     /// * `void create_value(const StoragePolicy&/StoragePolicy&&)` - creates a value by using the value stored in the other policy
     /// * `void copy_value(const StoragePolicy&/StoragePolicy&&)` - similar to above, but *this may contain a value already
     /// * `void swap_value(StoragePolicy&)` - swaps the stored value (if any) with the one in the other policy
@@ -186,11 +199,13 @@ namespace type_safe
         /// Rebinds the current optional to the type `U`.
         ///
         /// It will use [ts::optional_storage_policy_for]() to determine whether a change of storage policy is needed.
+        /// \notes If `U` is `void`, the result will be `void` as well.
+        /// \notes Due to a specialization of [ts::optional_storage_policy_for](),
+        /// if `U` is an optional itself, the result will be `U`,
+        /// not an optional of an optional.
         /// \exclude target
         template <typename U>
-        using rebind = basic_optional<detail::select_optional_storage_policy<
-            typename optional_storage_policy_for<U>::type,
-            typename StoragePolicy::template rebind<U>>>;
+        using rebind = detail::rebind_optional<U, typename StoragePolicy::template rebind<U>>;
 
     private:
         storage& get_storage() TYPE_SAFE_LVALUE_REF noexcept
@@ -240,6 +255,21 @@ namespace type_safe
                                 0) = 0)
         {
             get_storage().create_value(std::forward<T>(value));
+        }
+
+        /// \effects Creates it with a value by forwarding `value`.
+        /// \throws Anything thrown by the constructor of `value_type`.
+        /// \requires The `create_value_explicit()` function of the `StoragePolicy` must accept `value`.
+        /// \param 1
+        /// \exclude
+        template <typename T, typename std::enable_if<!std::is_same<typename std::decay<T>::type,
+                                                                    basic_optional<storage>>::value,
+                                                      int>::type = 0>
+        explicit basic_optional(
+            T&& value,
+            decltype(std::declval<storage>().create_value_explicit(std::forward<T>(value)), 0) = 0)
+        {
+            get_storage().create_value_explicit(std::forward<T>(value));
         }
 
         /// Copy constructor.
@@ -356,7 +386,9 @@ namespace type_safe
         /// \synopsis_return void
         template <typename Arg,
                   typename = typename std::
-                      enable_if<detail::is_direct_assignable<value_type, Arg&&>::value>::type>
+                      enable_if<detail::is_direct_assignable<decltype(std::declval<storage&>()
+                                                                          .get_value()),
+                                                             Arg&&>::value>::type>
         auto emplace(Arg&& arg) noexcept(std::is_nothrow_constructible<value_type, Arg>::value&&
                                              std::is_nothrow_assignable<value_type, Arg>::value)
             -> decltype(std::declval<basic_optional<storage>>().get_storage().create_value(
@@ -439,147 +471,82 @@ namespace type_safe
 #endif
 
         //=== factories ===//
-        /// \returns If `value_type` is a `basic_optional` itself, returns a copy of that optional (by moving in (2))
-        /// or a null optional of that type if `has_value()` is `false`.
-        /// Otherwise returns a copy of `*this`.
-        /// \requires `value_type` must be copy constructible.
-        /// \group unwrap -Factories
-        /// \param T
-        /// \exclude
-        /// \param 1
-        /// \exclude
-        template <typename T = value_type,
-                  typename std::enable_if<std::is_copy_constructible<T>::value, int>::type = 0>
-        detail::unwrap_optional_t<basic_optional<StoragePolicy>> unwrap() const TYPE_SAFE_LVALUE_REF
-        {
-            return detail::unwrap_optional(*this);
-        }
-
-#if TYPE_SAFE_USE_REF_QUALIFIERS
-        /// \group unwrap
-        /// \param T
-        /// \exclude
-        /// \param 1
-        /// \exclude
-        template <typename T = value_type,
-                  typename std::enable_if<std::is_move_constructible<T>::value, int>::type = 0>
-        detail::unwrap_optional_t<basic_optional<StoragePolicy>> unwrap() &&
-        {
-            return detail::unwrap_optional(*this);
-        }
-#endif
-
         /// Maps an optional.
-        /// \returns The return type is the `basic_optional` rebound to the return type of the function when called with `const value_type&` (1)/`value_type&&` (2).
-        /// If `has_value()` is `true`, returns the new optional with result of the value passed to the function.
-        /// otherwise returns an empty optional.
-        /// \requires `f` must be callable with `const value_type&` (1)/`value_type&&` (2).
+        /// \effects If the optional contains a value,
+        /// calls the function with the value followed by the additional arguments perfectly forwarded.
+        /// \returns A `basic_optional` rebound to the result type of the function,
+        /// that is empty if `*this` is empty and contains the result of the function otherwise.
+        /// \requires `f` must either be a function or function object of matching signature,
+        /// or a member function pointer of the stored type with compatible signature.
+        /// \notes Due to the way [ts::basic_optional::rebind]() works,
+        /// if the result of the function is `void`, `map()` will return `void` as well,
+        /// and if the result of the function is an optional itself,
+        /// `map()` will return the optional unchanged.
         /// \unique_name *map
         /// \group map
         /// \exclude return
-        template <typename Func>
-        auto map(Func&& f) const TYPE_SAFE_LVALUE_REF
-            -> rebind<decltype(std::forward<Func>(f)(this->value()))>
+        template <typename Func, typename... Args>
+        auto map(Func&& f, Args&&... args) TYPE_SAFE_LVALUE_REF
+            -> rebind<decltype(detail::map_invoke(std::forward<Func>(f), this->value(),
+                                                  std::forward<Args>(args)...))>
         {
+            using return_type = decltype(
+                detail::map_invoke(std::forward<Func>(f), value(), std::forward<Args>(args)...));
             if (has_value())
-                return std::forward<Func>(f)(value());
+                return rebind<return_type>(detail::map_invoke(std::forward<Func>(f), value(),
+                                                              std::forward<Args>(args)...));
             else
-                return nullopt;
+                return static_cast<rebind<return_type>>(nullopt);
+        }
+
+        /// \unique_name *map_const
+        /// \group map
+        /// \exclude return
+        template <typename Func, typename... Args>
+        auto map(Func&& f, Args&&... args) const TYPE_SAFE_LVALUE_REF
+            -> rebind<decltype(detail::map_invoke(std::forward<Func>(f), this->value(),
+                                                  std::forward<Args>(args)...))>
+        {
+            using return_type = decltype(
+                detail::map_invoke(std::forward<Func>(f), value(), std::forward<Args>(args)...));
+            if (has_value())
+                return rebind<return_type>(detail::map_invoke(std::forward<Func>(f), value(),
+                                                              std::forward<Args>(args)...));
+            else
+                return static_cast<rebind<return_type>>(nullopt);
         }
 
 #if TYPE_SAFE_USE_REF_QUALIFIERS
         /// \unique_name *map_rvalue
         /// \group map
         /// \exclude return
-        template <typename Func>
-        auto map(Func&& f) && -> rebind<decltype(std::forward<Func>(f)(std::move(this->value())))>
+        template <typename Func, typename... Args>
+        auto map(Func&& f, Args&&... args) && -> rebind<decltype(
+            detail::map_invoke(std::forward<Func>(f), this->value(), std::forward<Args>(args)...))>
         {
+            using return_type = decltype(
+                detail::map_invoke(std::forward<Func>(f), value(), std::forward<Args>(args)...));
             if (has_value())
-                return std::forward<Func>(f)(std::move(value()));
+                return rebind<return_type>(detail::map_invoke(std::forward<Func>(f), value(),
+                                                              std::forward<Args>(args)...));
             else
-                return nullopt;
-        }
-#endif
-
-        /// \returns The same as `map(std::forward<Func>(f)).unwrap()`.
-        /// \notes This is useful for functions that return an optional type itself,
-        /// the optional will be "flattened" properly.
-        /// \group bind
-        /// \exclude return
-        template <typename Func>
-        auto bind(Func&& f) const TYPE_SAFE_LVALUE_REF
-            -> decltype(this->map(std::forward<Func>(f)).unwrap())
-        {
-            return map(std::forward<Func>(f)).unwrap();
+                return static_cast<rebind<return_type>>(nullopt);
         }
 
-#if TYPE_SAFE_USE_REF_QUALIFIERS
-        /// \group bind
+        /// \unique_name *map_rvalue_const
+        /// \group map
         /// \exclude return
-        template <typename Func>
-        auto bind(Func&& f) && -> decltype(this->map(std::forward<Func>(f)).unwrap())
+        template <typename Func, typename... Args>
+        auto map(Func&& f, Args&&... args) const && -> rebind<decltype(
+            detail::map_invoke(std::forward<Func>(f), this->value(), std::forward<Args>(args)...))>
         {
-            return map(std::forward<Func>(f)).unwrap();
-        }
-#endif
-
-    private:
-        template <typename T>
-        using remove_cv_ref =
-            typename std::remove_cv<typename std::remove_reference<T>::type>::type;
-
-    public:
-        /// \returns If the optional is not empty, returns the result of the function called with its value converted to the type `T` without cv or references.
-        /// Otherwise returns `std::forward<T>(t)`.
-        /// \requires `f` must be callable with `const value_type&`.
-        /// \notes This is similar to `map()` but does not wrap the resulting type in an optional.
-        /// Hence a fallback value must be provided.
-        /// \exclude return
-        /// \group transform
-        template <typename T, typename Func>
-        auto transform(T&& t, Func&& f) const TYPE_SAFE_LVALUE_REF -> remove_cv_ref<T>
-        {
+            using return_type = decltype(
+                detail::map_invoke(std::forward<Func>(f), value(), std::forward<Args>(args)...));
             if (has_value())
-                return static_cast<remove_cv_ref<T>>(std::forward<Func>(f)(value()));
-            return std::forward<T>(t);
-        }
-
-#if TYPE_SAFE_USE_REF_QUALIFIERS
-        /// \exclude return
-        /// \group transform
-        template <typename T, typename Func>
-        auto transform(T&& t, Func&& f) && -> remove_cv_ref<T>
-        {
-            if (has_value())
-                return static_cast<remove_cv_ref<T>>(std::forward<Func>(f)(std::move(value())));
-            return std::forward<T>(t);
-        }
-#endif
-
-        /// \returns A `basic_optional` with the value of `std::forward<Func>(f)(*this)`.
-        /// If the result of `f` is a `basic_optional` itself, it will be returned instead,
-        /// i.e. it calls `unwrap()`.
-        /// \requires `f` must be callable with `decltype(*this)`,
-        /// i.e. a `const` lvalue reference to the type of this optional.
-        /// \group then
-        /// \exclude return
-        template <typename Func>
-        auto then(Func&& f) const TYPE_SAFE_LVALUE_REF
-            -> detail::unwrap_optional_t<rebind<decltype(std::forward<Func>(f)(*this))>>
-        {
-            using result_type = decltype(std::forward<Func>(f)(*this));
-            return rebind<result_type>(std::forward<Func>(f)(*this)).unwrap();
-        }
-
-#if TYPE_SAFE_USE_REF_QUALIFIERS
-        /// \group then
-        /// \exclude return
-        template <typename Func>
-        auto then(Func&& f) && -> detail::
-            unwrap_optional_t<rebind<decltype(std::forward<Func>(f)(std::move(*this)))>>
-        {
-            using result_type = decltype(std::forward<Func>(f)(std::move(*this)));
-            return rebind<result_type>(std::forward<Func>(f)(std::move(*this))).unwrap();
+                return rebind<return_type>(detail::map_invoke(std::forward<Func>(f), value(),
+                                                              std::forward<Args>(args)...));
+            else
+                return static_cast<rebind<return_type>>(nullopt);
         }
 #endif
     };
@@ -587,8 +554,6 @@ namespace type_safe
 /// \entity TYPE_SAFE_DETAIL_MAKE_OP
 /// \exclude
 #define TYPE_SAFE_DETAIL_MAKE_OP(Op, Expr, Expr2)                                                  \
-    /** \group optional_comp_null Optional null comparison
-      * \module optional */             \
     template <class StoragePolicy>                                                                 \
     bool operator Op(const basic_optional<StoragePolicy>& lhs, nullopt_t)                          \
     {                                                                                              \
@@ -600,86 +565,123 @@ namespace type_safe
         return (void)rhs, Expr2;                                                                   \
     }
 
-    // equal to nullopt when empty
+    /// Comparison of [ts::basic_optional]() with [ts::nullopt]().
+    ///
+    /// An optional is equal to [ts::nullopt]() if it does not have a value.
+    /// Nothing is less than [ts::nullopt](), it is only less than an optional,
+    /// A optional compares equal to `nullopt`, when it does not have a value.
+    /// A optional compares never less to `nullopt`, `nullopt` compares less only if the optional has a value.
+    /// The other comparisons behave accordingly.
+    /// \group optional_comp_null Optional null comparison
+    /// \module optional
     TYPE_SAFE_DETAIL_MAKE_OP(==, !lhs.has_value(), !rhs.has_value())
-    // unequal to nullopt when has a value
+    /// \group optional_comp_null
     TYPE_SAFE_DETAIL_MAKE_OP(!=, lhs.has_value(), rhs.has_value())
-    // nothing is less than nullopt, nullopt only less then rhs if rhs has a value
+    /// \group optional_comp_null
     TYPE_SAFE_DETAIL_MAKE_OP(<, false, rhs.has_value())
-    // lhs <= nullopt iff lhs empty, nullopt <= rhs is always true
+    /// \group optional_comp_null
     TYPE_SAFE_DETAIL_MAKE_OP(<=, !lhs.has_value(), true)
-    // lhs > nullopt iff lhs not empty, nullopt > rhs is always false
+    /// \group optional_comp_null
     TYPE_SAFE_DETAIL_MAKE_OP(>, lhs.has_value(), false)
-    // lhs >= nullopt is always true, nullopt >= rhs iff rhs empty
+    /// \group optional_comp_null
     TYPE_SAFE_DETAIL_MAKE_OP(>=, true, !rhs.has_value())
 
 #undef TYPE_SAFE_DETAIL_MAKE_OP
 
 /// \entity TYPE_SAFE_DETAIL_MAKE_OP
 /// \exclude
-#define TYPE_SAFE_DETAIL_MAKE_OP(Op, Expr, Expr2)                                                                      \
-    /** \group optional_comp_value Optional value comparison
-      * \synopsis_return bool
-      * \module optional */ \
-    template <class StoragePolicy>                                                                                     \
-    auto operator Op(const basic_optional<StoragePolicy>&      lhs,                                                    \
-                     const typename StoragePolicy::value_type& rhs)                                                    \
-        ->decltype(lhs.value() Op rhs)                                                                                 \
-    {                                                                                                                  \
-        return Expr;                                                                                                   \
-    }                                                                                                                  \
+#define TYPE_SAFE_DETAIL_MAKE_OP(Op, Expr, Expr2)                                                  \
+    template <class StoragePolicy, typename U>                                                     \
+    auto operator Op(const basic_optional<StoragePolicy>& lhs, const U& rhs)                       \
+        ->decltype(typename StoragePolicy::value_type(lhs.value()) Op rhs)                         \
+    {                                                                                              \
+        using value_type = typename StoragePolicy::value_type;                                     \
+        return Expr;                                                                               \
+    }                                                                                              \
     /** \synopsis_return bool
-      * \group optional_comp_value */                                                    \
-    template <class StoragePolicy>                                                                                     \
-    auto operator Op(const typename StoragePolicy::value_type& lhs,                                                    \
-                     const basic_optional<StoragePolicy>&      rhs)                                                    \
-        ->decltype(lhs Op rhs.value())                                                                                 \
-    {                                                                                                                  \
-        return Expr2;                                                                                                  \
+      * \group optional_comp_value */                                \
+    template <class StoragePolicy, typename U>                                                     \
+    auto operator Op(const U& lhs, const basic_optional<StoragePolicy>& rhs)                       \
+        ->decltype(lhs Op typename StoragePolicy::value_type(rhs.value()))                         \
+    {                                                                                              \
+        using value_type = typename StoragePolicy::value_type;                                     \
+        return Expr2;                                                                              \
     }
 
-    // equal iff optional has value and value matches
-    TYPE_SAFE_DETAIL_MAKE_OP(==, lhs.has_value() && lhs.value() == rhs,
-                             rhs.has_value() && lhs == rhs.value())
-    // unequal if optional does not have value or value does not match
-    TYPE_SAFE_DETAIL_MAKE_OP(!=, !lhs.has_value() || lhs.value() != rhs,
-                             !rhs.has_value() || lhs != rhs.value())
-    // opt < value if opt empty or opt.value() < value
-    // value < opt iff opt not empty and value < opt.value()
-    TYPE_SAFE_DETAIL_MAKE_OP(<, !lhs.has_value() || lhs.value() < rhs,
-                             rhs.has_value() && lhs < rhs.value())
-    // same as above but with <=
-    TYPE_SAFE_DETAIL_MAKE_OP(<=, !lhs.has_value() || lhs.value() <= rhs,
-                             rhs.has_value() && lhs <= rhs.value())
-    // opt > value iff opt not empty and opt.value() > value
-    // value > opt if opt empty or value > opt.value()
-    TYPE_SAFE_DETAIL_MAKE_OP(>, lhs.has_value() && lhs.value() > rhs,
-                             !rhs.has_value() || lhs > rhs.value())
-    // same as above but with >=
-    TYPE_SAFE_DETAIL_MAKE_OP(>=, lhs.has_value() && lhs.value() >= rhs,
-                             !rhs.has_value() || lhs >= rhs.value())
+    /// Compares a [ts::basic_optional]() with a value.
+    ///
+    /// An optional compares equal to a value if it has a value
+    /// and the value compares equal.
+    /// An optional compares less to a value if it does not have a value
+    /// or the value compares less.
+    /// A value compares less to an optional if the optional has a value
+    /// and the value compares less than the optional.
+    /// The other comparisons behave accordingly.
+    ///
+    /// Value comparison is done by the comparison operator of the `value_type`,
+    /// a function only participates in overload resolution if the `value_type`,
+    /// has that comparison function.
+    /// \synopsis_return bool
+    /// \group optional_comp_value Optional value comparison
+    /// \module optional
+    TYPE_SAFE_DETAIL_MAKE_OP(==, lhs.has_value() && value_type(lhs.value()) == rhs,
+                             rhs.has_value() && lhs == value_type(rhs.value()))
+    /// \synopsis_return bool
+    /// \group optional_comp_value
+    TYPE_SAFE_DETAIL_MAKE_OP(!=, !lhs.has_value() || value_type(lhs.value()) != rhs,
+                             !rhs.has_value() || lhs != value_type(rhs.value()))
+    /// \synopsis_return bool
+    /// \group optional_comp_value
+    TYPE_SAFE_DETAIL_MAKE_OP(<, !lhs.has_value() || value_type(lhs.value()) < rhs,
+                             rhs.has_value() && lhs < value_type(rhs.value()))
+    /// \synopsis_return bool
+    /// \group optional_comp_value
+    TYPE_SAFE_DETAIL_MAKE_OP(<=, !lhs.has_value() || value_type(lhs.value()) <= rhs,
+                             rhs.has_value() && lhs <= value_type(rhs.value()))
+    /// \synopsis_return bool
+    /// \group optional_comp_value
+    TYPE_SAFE_DETAIL_MAKE_OP(>, lhs.has_value() && value_type(lhs.value()) > rhs,
+                             !rhs.has_value() || lhs > value_type(rhs.value()))
+    /// \synopsis_return bool
+    /// \group optional_comp_value
+    TYPE_SAFE_DETAIL_MAKE_OP(>=, lhs.has_value() && value_type(lhs.value()) >= rhs,
+                             !rhs.has_value() || lhs >= value_type(rhs.value()))
 
 #undef TYPE_SAFE_DETAIL_MAKE_OP
 
 /// \entity TYPE_SAFE_DETAIL_MAKE_OP
 /// \exclude
-#define TYPE_SAFE_DETAIL_MAKE_OP(Op)                                                                       \
-    /** \group optional_comp Optional comparison
-      * \synopsis_return bool
-      * \module optional */ \
-    template <class StoragePolicy>                                                                         \
-    auto operator Op(const basic_optional<StoragePolicy>& lhs,                                             \
-                     const basic_optional<StoragePolicy>& rhs)                                             \
-        ->decltype(lhs.value() Op rhs.value())                                                             \
-    {                                                                                                      \
-        return lhs.has_value() ? lhs.value() Op rhs : nullopt Op rhs;                                      \
+#define TYPE_SAFE_DETAIL_MAKE_OP(Op)                                                               \
+    template <class StoragePolicy>                                                                 \
+    auto operator Op(const basic_optional<StoragePolicy>& lhs,                                     \
+                     const basic_optional<StoragePolicy>& rhs)                                     \
+        ->decltype(lhs.value() Op rhs.value())                                                     \
+    {                                                                                              \
+        return lhs.has_value() ? lhs.value() Op rhs : nullopt Op rhs;                              \
     }
 
+    /// Compares two [ts::basic_optional]() objects.
+    ///
+    /// If `lhs` has a value, forwards to `lhs.value() <op> rhs`.
+    /// Else forwards to `nullopt <op> rhs`.
+    /// \synopsis_return bool
+    /// \group optional_comp Optional comparison
+    /// \module optional
     TYPE_SAFE_DETAIL_MAKE_OP(==)
+    /// \synopsis_return bool
+    /// \group optional_comp
     TYPE_SAFE_DETAIL_MAKE_OP(!=)
+    /// \synopsis_return bool
+    /// \group optional_comp
     TYPE_SAFE_DETAIL_MAKE_OP(<)
+    /// \synopsis_return bool
+    /// \group optional_comp
     TYPE_SAFE_DETAIL_MAKE_OP(<=)
+    /// \synopsis_return bool
+    /// \group optional_comp
     TYPE_SAFE_DETAIL_MAKE_OP(>)
+    /// \synopsis_return bool
+    /// \group optional_comp
     TYPE_SAFE_DETAIL_MAKE_OP(>=)
 
 #undef TYPE_SAFE_DETAIL_MAKE_OP
@@ -756,6 +758,10 @@ namespace type_safe
         {
             if (other.has_value())
                 create_value(std::move(other).get_value());
+        }
+
+        void create_value_explicit()
+        {
         }
 
         /// \effects Copies the policy from `other`, by copy-constructing or assigning the stored value,
@@ -948,6 +954,14 @@ namespace type_safe
     /// \module optional
     template <typename T>
     using optional = basic_optional<direct_optional_storage<T>>;
+
+    /// Uses [ts::optional_storage_policy_for]() to select the appropriate [ts::basic_optional]().
+    ///
+    /// By default, it uses [ts::direct_optional_storage]().
+    /// \notes If `T` is `void`, `optional_for` will also be `void`.
+    /// \module optional
+    template <typename T>
+    using optional_for = basic_optional<direct_optional_storage<int>>::rebind<T>;
 
     /// \returns A new [ts::optional<T>]() storing a copy of `t`.
     /// \module optional

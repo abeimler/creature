@@ -15,8 +15,8 @@ TEST_CASE("strong_typedef")
     SECTION("equality_comparison")
     {
         struct type : strong_typedef<type, int>,
-                      strong_typedef_op::equality_comparison<type, bool>,
-                      strong_typedef_op::mixed_equality_comparison<type, int, bool>
+                      strong_typedef_op::equality_comparison<type>,
+                      strong_typedef_op::mixed_equality_comparison<type, int>
         {
             using strong_typedef::strong_typedef;
         };
@@ -37,8 +37,8 @@ TEST_CASE("strong_typedef")
     SECTION("relational_comparison")
     {
         struct type : strong_typedef<type, int>,
-                      strong_typedef_op::relational_comparison<type, bool>,
-                      strong_typedef_op::mixed_relational_comparison<type, int, bool>
+                      strong_typedef_op::relational_comparison<type>,
+                      strong_typedef_op::mixed_relational_comparison<type, int>
         {
             using strong_typedef::strong_typedef;
         };
@@ -204,6 +204,63 @@ TEST_CASE("strong_typedef")
         type a(2);
         REQUIRE(static_cast<int>(+a) == 2);
         REQUIRE(static_cast<int>(-a) == -2);
+    }
+    SECTION("complement")
+    {
+        struct type : strong_typedef<type, unsigned>, strong_typedef_op::complement<type>
+        {
+            using strong_typedef::strong_typedef;
+        };
+
+        type a(1u);
+        REQUIRE(static_cast<unsigned>(~a) == ~1u);
+
+        type b(42u);
+        REQUIRE(static_cast<unsigned>(~b) == ~42u);
+    }
+    SECTION("bitwise")
+    {
+        struct type : strong_typedef<type, unsigned>,
+                      strong_typedef_op::bitwise_or<type>,
+                      strong_typedef_op::bitwise_xor<type>,
+                      strong_typedef_op::bitwise_and<type>
+        {
+            using strong_typedef::strong_typedef;
+        };
+
+        type a(0u);
+
+        REQUIRE(static_cast<unsigned>(a | type(3u)) == 3u);
+        REQUIRE(static_cast<unsigned>(type(3u) | a) == 3u);
+        a |= type(3u);
+        REQUIRE(static_cast<unsigned>(a) == 3u);
+
+        REQUIRE(static_cast<unsigned>(a & type(2u)) == 2u);
+        REQUIRE(static_cast<unsigned>(type(2u) & a) == 2u);
+        a &= type(2u);
+        REQUIRE(static_cast<unsigned>(a) == 2u);
+
+        REQUIRE(static_cast<unsigned>(a ^ type(3u)) == 1u);
+        REQUIRE(static_cast<unsigned>(type(3u) ^ a) == 1u);
+        a ^= type(3u);
+        REQUIRE(static_cast<unsigned>(a) == 1u);
+    }
+    SECTION("bitshift")
+    {
+        struct type : strong_typedef<type, unsigned>, strong_typedef_op::bitshift<type, unsigned>
+        {
+            using strong_typedef::strong_typedef;
+        };
+
+        type a(1u);
+
+        REQUIRE(static_cast<unsigned>(a << 1u) == 2u);
+        a <<= 1u;
+        REQUIRE(static_cast<unsigned>(a) == 2u);
+
+        REQUIRE(static_cast<unsigned>(a >> 1u) == 1u);
+        a >>= 1u;
+        REQUIRE(static_cast<unsigned>(a) == 1u);
     }
     SECTION("dereference")
     {

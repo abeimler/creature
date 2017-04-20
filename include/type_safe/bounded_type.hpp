@@ -5,8 +5,10 @@
 #ifndef TYPE_SAFE_BOUNDED_TYPE_HPP_INCLUDED
 #define TYPE_SAFE_BOUNDED_TYPE_HPP_INCLUDED
 
+#include <limits>
 #include <type_traits>
 
+#include <type_safe/detail/constant_parser.hpp>
 #include <type_safe/constrained_type.hpp>
 
 namespace type_safe
@@ -22,7 +24,7 @@ namespace type_safe
         namespace detail
         {
             // Base to enable empty base optimization when Bound is not dynamic_bound.
-            // Neccessary when T is not a class.
+            // Necessary when T is not a class.
             template <typename T>
             struct wrapper
             {
@@ -47,15 +49,15 @@ namespace type_safe
             template <typename T, typename Bound>
             struct select_bound<false, T, Bound>
             {
-                static_assert(
-                    std::is_same<T, typename std::decay<decltype(Bound::value)>::type>::value,
-                    "static bound has wrong type");
+                static_assert(std::is_convertible<decltype(std::declval<const T&>() < Bound::value),
+                                                  bool>::value,
+                              "static bound has wrong type");
                 using type = Bound;
             };
 
             template <typename T, typename Bound>
             using base = typename select_bound<is_dynamic<Bound>::value, T, Bound>::type;
-        } // detail namespace
+        } // namespace detail
 
 // clang-format off
 /// \exclude
@@ -122,7 +124,8 @@ namespace type_safe
         }                                                                                          \
                                                                                                    \
         /** \returns The bound.*/                                                                  \
-        const T& get_bound() const noexcept                                                        \
+        auto get_bound() const noexcept                                                        \
+-> decltype(base::value) \
         {                                                                                          \
             return base::value;                                                                    \
         }                                                                                          \
@@ -248,13 +251,13 @@ namespace type_safe
             }
 
             /// \returns The value of the lower bound.
-            const T& get_lower_bound() const noexcept
+            auto get_lower_bound() const noexcept -> decltype(this->lower().get_bound())
             {
                 return lower().get_bound();
             }
 
             /// \returns The value of the upper bound.
-            const T& get_upper_bound() const noexcept
+            auto get_upper_bound() const noexcept -> decltype(this->upper().get_bound())
             {
                 return upper().get_bound();
             }
@@ -363,14 +366,62 @@ namespace type_safe
     /// \notes This is some type where the values must be in a certain interval.
     template <typename T, bool LowerInclusive, bool UpperInclusive,
               typename LowerBound = constraints::dynamic_bound,
-              typename UpperBound = constraints::dynamic_bound>
+              typename UpperBound = constraints::dynamic_bound,
+              typename Verifier   = assertion_verifier>
     using bounded_type = constrained_type<T, constraints::bounded<T, LowerInclusive, UpperInclusive,
                                                                   LowerBound, UpperBound>,
-                                          assertion_verifier>;
+                                          Verifier>;
+
+    inline namespace literals
+    {
+        /// \exclude
+        namespace lit_detail
+        {
+            template <typename T, T Value>
+            struct integer_bound
+            {
+                static constexpr auto value = Value;
+            };
+
+            template <typename T, T Value>
+            constexpr auto operator-(integer_bound<T, Value>) noexcept
+                -> integer_bound<T, Value * T(-1)>
+            {
+                static_assert(std::is_signed<T>::value, "must be a signed integer type");
+                return {};
+            }
+        } // namespace lit_detail
+
+        /// Creates a static bound for [ts::bounded_type]().
+        ///
+        /// This is a bound encapsulated in the type, so there is no overhead.
+        /// You can use it for example like this `ts::make_bounded(50, 0_bound, 100_bound)`,
+        /// to bound an integer between `0` and `100`.
+        /// \returns A type representing the given value,
+        /// the value has type `long long` (1)/`unsigned long long`(2).
+        /// \group bound_lit
+        template <char... Digits>
+        constexpr auto operator"" _bound()
+            -> lit_detail::integer_bound<long long, detail::parse<long long, Digits...>()>
+        {
+            return {};
+        }
+
+        /// \group bound_lit
+        template <char... Digits>
+        constexpr auto operator"" _boundu()
+            -> lit_detail::integer_bound<unsigned long long,
+                                         detail::parse<unsigned long long, Digits...>()>
+        {
+            return {};
+        }
+    } // namespace literals
 
     /// Creates a [ts::bounded_type]() to a specified [ts::constraints::closed_interval]().
     /// \returns A [ts::bounded_type]() with the given `value` and lower and upper bounds,
     /// where the bounds are valid values as well.
+    /// \requires As it uses [ts::assertion_verifier](),
+    /// the value must be valid.
     /// \notes If this function is passed in dynamic values of the same type as `value`,
     /// it will create a dynamic bound.
     /// Otherwise it must be passed static bounds.
@@ -384,9 +435,31 @@ namespace type_safe
                                                                       std::forward<U2>(upper)));
     }
 
+    /// Creates a [ts::bounded_type]() to a specified [ts::constraints::closed_interval]().
+    /// \returns A [ts::bounded_type]() with the given `value` and lower and upper bounds,
+    /// where the bounds are valid values as well.
+    /// \throws A [ts::constrain_error]() if the `value` isn't valid,
+    /// or anything else thrown by the constructor.
+    /// \notes This is meant for sanitizing user input,
+    /// using a recoverable error handling strategy.
+    /// \notes If this function is passed in dynamic values of the same type as `value`,
+    /// it will create a dynamic bound.
+    /// Otherwise it must be passed static bounds.
+    template <typename T, typename U1, typename U2>
+    auto sanitize_bounded(T&& value, U1&& lower, U2&& upper)
+        -> detail::make_bounded_type<throwing_verifier, true, true, T, U1, U2>
+    {
+        using result_type = detail::make_bounded_type<throwing_verifier, true, true, T, U1, U2>;
+        return result_type(std::forward<T>(value),
+                           typename result_type::constraint_predicate(std::forward<U1>(lower),
+                                                                      std::forward<U2>(upper)));
+    }
+
     /// Creates a [ts::bounded_type]() to a specified [ts::constraints::open_interval]().
     /// \returns A [ts::bounded_type]() with the given `value` and lower and upper bounds,
     /// where the bounds are not valid values.
+    /// \requires As it uses [ts::assertion_verifier](),
+    /// the value must be valid.
     /// \notes If this function is passed in dynamic values of the same type as `value`,
     /// it will create a dynamic bound.
     /// Otherwise it must be passed static bounds.
@@ -400,8 +473,30 @@ namespace type_safe
                                                                       std::forward<U2>(upper)));
     }
 
+    /// Creates a [ts::bounded_type]() to a specified [ts::constraints::open_interval](),
+    /// using [ts::throwing_verifier]().
+    /// \returns A [ts::bounded_type]() with the given `value` and lower and upper bounds,
+    /// where the bounds are not valid values.
+    /// \throws A [ts::constrain_error]() if the `value` isn't valid,
+    /// or anything else thrown by the constructor.
+    /// \notes This is meant for sanitizing user input,
+    /// using a recoverable error handling strategy.
+    /// \notes If this function is passed in dynamic values of the same type as `value`,
+    /// it will create a dynamic bound.
+    /// Otherwise it must be passed static bounds.
+    template <typename T, typename U1, typename U2>
+    auto sanitize_bounded_exclusive(T&& value, U1&& lower, U2&& upper)
+        -> detail::make_bounded_type<throwing_verifier, false, false, T, U1, U2>
+    {
+        using result_type = detail::make_bounded_type<throwing_verifier, false, false, T, U1, U2>;
+        return result_type(std::forward<T>(value),
+                           typename result_type::constraint_predicate(std::forward<U1>(lower),
+                                                                      std::forward<U2>(upper)));
+    }
+
     /// Changes `val` so that it is in the given [ts::constraints::closed_interval]().
     /// \effects If it is not in the interval, assigns the bound that is closer to the value.
+    /// \output_section clamped_type
     template <typename T, typename LowerBound, typename UpperBound, typename U>
     void clamp(const constraints::closed_interval<T, LowerBound, UpperBound>& interval, U& val)
     {

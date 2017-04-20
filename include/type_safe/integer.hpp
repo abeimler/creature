@@ -134,7 +134,7 @@ namespace type_safe
         constexpr integer(T) = delete;
 
         //=== assignment ===//
-        /// \effects Initializes it with the given value.
+        /// \effects Assigns it with the given value.
         /// \notes This function does not participate in overload resolution
         /// if `T` is not an integer type safely convertible to this type.
         /// \group assignment
@@ -457,7 +457,7 @@ namespace type_safe
      * \param 3
      * \exclude */                                         \
     template <typename A, typename B, class Policy,                                                \
-              typename = detail::enable_safe_integer_conversion<A, B>>                             \
+              typename = detail::enable_safe_integer_comparision<A, B>>                            \
     TYPE_SAFE_FORCE_INLINE constexpr bool operator Op(const A& a, const integer<B, Policy>& b)     \
     {                                                                                              \
         return integer<A, Policy>(a) Op b;                                                         \
@@ -466,7 +466,7 @@ namespace type_safe
      * \param 3
      * \exclude */                                         \
     template <typename A, class Policy, typename B,                                                \
-              typename = detail::enable_safe_integer_conversion<A, B>>                             \
+              typename = detail::enable_safe_integer_comparision<A, B>>                            \
     TYPE_SAFE_FORCE_INLINE constexpr bool operator Op(const integer<A, Policy>& a, const B& b)     \
     {                                                                                              \
         return a Op integer<B, Policy>(b);                                                         \
