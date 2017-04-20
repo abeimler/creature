@@ -31,9 +31,9 @@ class UseItem : public Item {
     TargetOption target_ = TargetOption::OneEnemy;
 
     atknumbers_t atknumbers_ = 1;
-    earr::enum_array<UseItemOption, option_t> option_;
+    earr::enum_array<UseItemOption, option_t> option_{};
 
-    earr::enum_array<Attribute, attr_t> attr_;
+    earr::enum_array<Attribute, attr_t> attr_{};
 
     attr_t rehp_ = 0;
     option_t rehp_inpercent_ = false;

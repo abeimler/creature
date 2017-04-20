@@ -33,7 +33,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with normal values") {
 
         SUBCASE("got body mass") { CHECK(ideal_mass > 0.0f); }
 
-        gamecomp::CreatureGeneComponent gene;
+        gamecomp::CreatureGeneComponent gene{};
         gene.bodymass = ideal_mass;
         gene.ideal_bmi = ideal_bmi;
         gene.max_bmi = max_bmi;
@@ -110,7 +110,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with big values") {
 
         SUBCASE("got body mass") { CHECK(ideal_mass > 0.0f); }
 
-        gamecomp::CreatureGeneComponent gene;
+        gamecomp::CreatureGeneComponent gene{};
         gene.bodymass = ideal_mass;
         gene.ideal_bmi = ideal_bmi;
         gene.max_bmi = max_bmi;
@@ -185,7 +185,7 @@ TEST_CASE("get BMI and Mass right from CreatureCreator with small values") {
 
         SUBCASE("got body mass") { CHECK(ideal_mass > 0.0f); }
 
-        gamecomp::CreatureGeneComponent gene;
+        gamecomp::CreatureGeneComponent gene{};
         gene.bodymass = ideal_mass;
         gene.ideal_bmi = ideal_bmi;
         gene.max_bmi = max_bmi;
@@ -253,23 +253,22 @@ TEST_CASE("create empty Creature Entity") {
 
 
 TEST_CASE("create Creature Entity with Creatue Data") {
-    CreatureTestData creatureTestData;
-    gameentity::EntityManager manager;
-    gameentity::CreatureEntityCreator creaturecreator;
+  CreatureTestData creatureTestData{};
+  gameentity::EntityManager manager;
+  gameentity::CreatureEntityCreator creaturecreator;
 
-    auto creature = creatureTestData.make_DataCreature();
-    auto time = creatureTestData.make_time_point_01_01_2000();
+  auto creature = creatureTestData.make_DataCreature();
+  auto time = creatureTestData.make_time_point_01_01_2000();
 
-    auto entity = manager.create();
+  auto entity = manager.create();
 
-    creaturecreator.create(manager, entity, creature, time, 1.0f);
+  creaturecreator.create(manager, entity, creature, time, 1.0f);
 
-    auto creaturebattler =
-        manager.get<gamecomp::CreatureBattlerComponent>(entity);
+  auto creaturebattler =
+      manager.get<gamecomp::CreatureBattlerComponent>(entity);
 
-
-    SUBCASE("CreatureBattler minimal level") {
-        CHECK(creaturebattler.lvl >= creature.getMinLvL());
+  SUBCASE("CreatureBattler minimal level") {
+    CHECK(creaturebattler.lvl >= creature.getMinLvL());
     }
     SUBCASE("CreatureBattler has right Level") {
         CHECK(1 == creaturebattler.lvl);

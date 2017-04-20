@@ -18,10 +18,10 @@ class CreatureAddStatusListener : public Listener<gameevent::CreatureAddStatusEv
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
     gameentity::DataManager& datamanager_;
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    computil::DateTimerUtil datetimer_util_;
+    gamecomputil::ProgressTimerUtil progresstimer_util_{};
+    computil::DateTimerUtil datetimer_util_{};
 
-    public:
+  public:
 
     CreatureAddStatusListener(gameentity::DataManager& datamanager);
 

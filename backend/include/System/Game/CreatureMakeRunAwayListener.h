@@ -17,10 +17,10 @@ class CreatureMakeRunAwayListener : public Listener<gameevent::CreatureMakeRunAw
     private:
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    computil::DateTimerUtil datetimer_util_;
+    gamecomputil::ProgressTimerUtil progresstimer_util_{};
+    computil::DateTimerUtil datetimer_util_{};
 
-    public:
+  public:
 
     CreatureMakeRunAwayListener();
 

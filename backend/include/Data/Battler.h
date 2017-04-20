@@ -82,28 +82,28 @@ class LearnSkill {
 /// DataBattler Class
 class Battler {
     private:
-    earr::enum_array<Attribute, attr_t> attrbasis_;
-    earr::enum_array<Attribute, attr_t> attrinflation_;
+      earr::enum_array<Attribute, attr_t> attrbasis_{};
+      earr::enum_array<Attribute, attr_t> attrinflation_{};
 
-    lvl_t startlvl_ = 0;
-    lvl_t minlvl_ = 0;
-    lvl_t maxlvl_ = 0;
+      lvl_t startlvl_ = 0;
+      lvl_t minlvl_ = 0;
+      lvl_t maxlvl_ = 0;
 
-    std::vector<LearnSkill> skills_;
+      std::vector<LearnSkill> skills_;
 
-    /// Resist of Element (key => Element Name, value = Resist)
-    std::unordered_map<std::string, Resist> statusresist_;
+      /// Resist of Element (key => Element Name, value = Resist)
+      std::unordered_map<std::string, Resist> statusresist_;
 
-    /// Resist of Element (key => Element Name, value = Resist)
-    std::unordered_map<std::string, Resist> elementresist_;
+      /// Resist of Element (key => Element Name, value = Resist)
+      std::unordered_map<std::string, Resist> elementresist_;
 
-    earr::enum_array<BattlerOption, option_t> option_;
+      earr::enum_array<BattlerOption, option_t> option_{};
 
-    std::string name_;
+      std::string name_;
 
-    percent_rate_t hitrate_ = 0;
-    percent_rate_t criticalhitrate_ = 0;
-    percent_rate_t evarate_ = 0;
+      percent_rate_t hitrate_ = 0;
+      percent_rate_t criticalhitrate_ = 0;
+      percent_rate_t evarate_ = 0;
 
     public:
     template <class Archive>

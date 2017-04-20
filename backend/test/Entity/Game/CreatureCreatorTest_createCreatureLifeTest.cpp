@@ -6,21 +6,21 @@
 
 
 TEST_CASE("create CreatureLife Component") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureEntityCreator creaturecreator;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureEntityCreator creaturecreator;
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creature = creatureTestData.make_DataCreature();
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto realtime = creatureTestData.make_time_point_01_01_2000();
-    auto battler = creaturebattler_creator.createCreatureBattler();
-    auto gene = creaturecreator.createCreatureGene(creature_data);
+  auto creature = creatureTestData.make_DataCreature();
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto realtime = creatureTestData.make_time_point_01_01_2000();
+  auto battler = creaturebattler_creator.createCreatureBattler();
+  auto gene = creaturecreator.createCreatureGene(creature_data);
 
-    auto life = creaturecreator.createCreatureLife(creature_data, realtime,
-                                                   battler, gene);
+  auto life = creaturecreator.createCreatureLife(creature_data, realtime,
+                                                 battler, gene);
 
-    SUBCASE("Creature name is set") {
-        CHECK(creatureTestData.CREATURENAME == life.name);
+  SUBCASE("Creature name is set") {
+    CHECK(creatureTestData.CREATURENAME == life.name);
     }
 
     SUBCASE("CreatureLevel is set") {

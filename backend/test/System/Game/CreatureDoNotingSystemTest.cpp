@@ -52,7 +52,7 @@ class CreatureDoNotingSystemApplication : public gamesystem::Application {
 
         auto& battlerstatuses =
             entities.get<gamecomp::BattlerStatusesComponent>(entity);
-        battlerstatuses.statuses_name.push_back(HUNGRY_STATUS_NAME);
+        battlerstatuses.statuses_name.emplace_back(HUNGRY_STATUS_NAME);
     }
 
     void init_Entity_isBusy(gameentity::EntityManager& entities, gameentity::Entity entity) {
@@ -74,40 +74,40 @@ class CreatureDoNotingSystemApplication : public gamesystem::Application {
 
 SCENARIO("Creature Entity update doNoting then emit doNoting-Event") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
+      CreatureTestData creatureTestData{};
 
-        CreatureDoNotingSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureDoNotingSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("doNoting-Event is emmited") {
-                CHECK(app.eventlistenermockup->emitevent);
-            }
+        THEN("doNoting-Event is emmited") {
+          CHECK(app.eventlistenermockup->emitevent);
+        }
         }
     }
 }
 
 SCENARIO("Creature Entity update doNoting then creatire is not busy") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
+      CreatureTestData creatureTestData{};
 
-        CreatureDoNotingSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureDoNotingSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("is not busy") { CHECK_FALSE(life.isbusy); }
+        THEN("is not busy") { CHECK_FALSE(life.isbusy); }
         }
     }
 }
@@ -115,45 +115,43 @@ SCENARIO("Creature Entity update doNoting then creatire is not busy") {
 
 SCENARIO("Creature Entity without statuses then set isbusy to false") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureDoNotingSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureDoNotingSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_isBusy(entities, entity);
+      app.init_Entity_isBusy(entities, entity);
 
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
-        
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("busy is set") { CHECK_FALSE(life.isbusy); }
+        THEN("busy is set") { CHECK_FALSE(life.isbusy); }
         }
     }
 }
 
 SCENARIO("Creature Entity with Hungry status is not busy") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureDoNotingSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureDoNotingSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_isBusy(entities, entity);
-        app.init_Entity_withHungryStatus(entities, entity);
+      app.init_Entity_isBusy(entities, entity);
+      app.init_Entity_withHungryStatus(entities, entity);
 
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      AND_WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-        AND_WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
-
-            THEN("busy is not set") { CHECK_FALSE(life.isbusy); }
+        THEN("busy is not set") { CHECK_FALSE(life.isbusy); }
         }
     }
 }

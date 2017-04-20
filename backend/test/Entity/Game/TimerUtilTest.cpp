@@ -12,7 +12,7 @@ void init_Timer(computil::TimerUtil& timer_util, comp::Timer& timer) {
 
 TEST_CASE("start Timer") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
 
     timer_util.start(timer);
 
@@ -25,7 +25,7 @@ TEST_CASE("start Timer") {
 
 TEST_CASE("pause Timer") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     timer_util.pause(timer);
@@ -39,7 +39,7 @@ TEST_CASE("pause Timer") {
 
 TEST_CASE("unpause Timer") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     timer_util.unpause(timer);
@@ -52,7 +52,7 @@ TEST_CASE("unpause Timer") {
 
 TEST_CASE("pause and unpause Timer") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     timer_util.pause(timer);
@@ -66,7 +66,7 @@ TEST_CASE("pause and unpause Timer") {
 
 TEST_CASE("restart Timer") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     timer_util.restart(timer);
@@ -80,7 +80,7 @@ TEST_CASE("restart Timer") {
 
 TEST_CASE("stop Timer") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     timer_util.stop(timer);
@@ -93,7 +93,7 @@ TEST_CASE("stop Timer") {
 
 TEST_CASE("getTime of Timer") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
@@ -109,7 +109,7 @@ TEST_CASE("getTime of Timer") {
 
 TEST_CASE("getTime of Timer with pause") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
@@ -127,7 +127,7 @@ TEST_CASE("getTime of Timer with pause") {
 
 TEST_CASE("getTime of Timer with pause and unpause") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
@@ -147,7 +147,7 @@ TEST_CASE("getTime of Timer with pause and unpause") {
 
 TEST_CASE("getTime of Timer with restart") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     std::chrono::milliseconds sleeptime_ms(10);
@@ -164,7 +164,7 @@ TEST_CASE("getTime of Timer with restart") {
 
 TEST_CASE("getTime of Timer with stop") {
     computil::TimerUtil timer_util;
-    comp::Timer timer;
+    comp::Timer timer{};
     init_Timer(timer_util, timer);
 
     std::chrono::milliseconds sleeptime_ms(10);

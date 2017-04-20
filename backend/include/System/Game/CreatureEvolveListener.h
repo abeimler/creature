@@ -14,12 +14,12 @@ namespace gamesystem {
 
 class CreatureEvolveListener : public Listener<gameevent::CreatureEvolveEvent> {
     private:
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    computil::DateTimerUtil datetimer_util_;
-    gameentity::CreatureEntityCreator creaturecreator_;
-    gameentity::CreatureBattlerCreator creaturebattler_creator_;
+      gamecomputil::ProgressTimerUtil progresstimer_util_{};
+      computil::DateTimerUtil datetimer_util_{};
+      gameentity::CreatureEntityCreator creaturecreator_;
+      gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
-    gameentity::DataManager& datamanager_;
+      gameentity::DataManager &datamanager_;
 
 
     public:

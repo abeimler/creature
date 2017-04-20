@@ -6,20 +6,18 @@
 
 
 TEST_CASE("create CreatureGene Component with DataCreature") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureEntityCreator creaturecreator;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureEntityCreator creaturecreator;
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creature = creatureTestData.make_DataCreature();
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto gene = creaturecreator.createCreatureGene(creature_data);
+  auto creature = creatureTestData.make_DataCreature();
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto gene = creaturecreator.createCreatureGene(creature_data);
 
+  SUBCASE("Generation Nr. is 1") { CHECK(1 == gene.generationnr); }
 
-    SUBCASE("Generation Nr. is 1") { CHECK(1 == gene.generationnr); }
-
-
-    SUBCASE("BodyMass is set") {
-        CHECK(gene.bodymass != doctest::Approx(0.0f).epsilon(0.01));
+  SUBCASE("BodyMass is set") {
+    CHECK(gene.bodymass != doctest::Approx(0.0f).epsilon(0.01));
     }
 
     SUBCASE("Max BodySize is set") {

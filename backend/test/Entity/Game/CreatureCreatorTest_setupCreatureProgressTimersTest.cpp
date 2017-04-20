@@ -6,33 +6,32 @@
 
 
 TEST_CASE("setup CreatureProgressTimers with Gene") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureEntityCreator creaturecreator;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureEntityCreator creaturecreator;
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto time = creatureTestData.make_time_point_01_01_2000();
+  auto time = creatureTestData.make_time_point_01_01_2000();
 
-    auto creature = creatureTestData.make_DataCreature();
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto creature_battler = creaturebattler_creator.createCreatureBattler();
-    auto gene = creaturecreator.createCreatureGene(creature_data);
-    auto life = creaturecreator.createCreatureLife(creature_data, time,
-                                                   creature_battler, gene);
-    auto body = creaturecreator.createCreatureBody(creature_data, gene);
+  auto creature = creatureTestData.make_DataCreature();
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto creature_battler = creaturebattler_creator.createCreatureBattler();
+  auto gene = creaturecreator.createCreatureGene(creature_data);
+  auto life = creaturecreator.createCreatureLife(creature_data, time,
+                                                 creature_battler, gene);
+  auto body = creaturecreator.createCreatureBody(creature_data, gene);
 
-    auto timers = creaturecreator.createCreatureProgressTimers(time, 1.0f);
+  auto timers = creaturecreator.createCreatureProgressTimers(time, 1.0f);
 
-    creaturecreator.setupCreatureProgressTimers(timers, creature_data, life,
-                                                gene, body);
+  creaturecreator.setupCreatureProgressTimers(timers, creature_data, life, gene,
+                                              body);
 
-    SUBCASE("Growing Timer is set") {
-        auto& growing_timer = earr::enum_array_at(
-            timers.increment,
-            +gamecomp::CreatureProgressTimerIncrement::Growing);
+  SUBCASE("Growing Timer is set") {
+    auto &growing_timer = earr::enum_array_at(
+        timers.increment, +gamecomp::CreatureProgressTimerIncrement::Growing);
 
-        SUBCASE("addvalue_per_percent is set") {
-            CHECK(growing_timer.addvalue_per_percent > 0.0f);
-        }
+    SUBCASE("addvalue_per_percent is set") {
+      CHECK(growing_timer.addvalue_per_percent > 0.0f);
+    }
     }
 
     SUBCASE("IllbyOverweight Timer is set") {

@@ -18,10 +18,10 @@ class CreatureRemoveStatusListener : public Listener<gameevent::CreatureRemoveSt
     gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
     gameentity::DataManager& datamanager_;
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    computil::DateTimerUtil datetimer_util_;
+    gamecomputil::ProgressTimerUtil progresstimer_util_{};
+    computil::DateTimerUtil datetimer_util_{};
 
-    public:
+  public:
 
     CreatureRemoveStatusListener(gameentity::DataManager& datamanager_);
 

@@ -6,12 +6,12 @@ gamecomp::CreatureProgressTimersComponent
 CreatureEntityCreator::createCreatureProgressTimers(
     std::chrono::system_clock::time_point time,
     gamecomp::progresstimer_factor_t realtime_factor) {
-    gamecomp::CreatureProgressTimersComponent ret;
+  gamecomp::CreatureProgressTimersComponent ret{};
 
-    datetimer_util_.init(ret.lifetimer, time, realtime_factor);
+  datetimer_util_.init(ret.lifetimer, time, realtime_factor);
 
-    for (auto& timer : ret.timer) {
-        progresstimer_util_.init(timer, time, realtime_factor);
+  for (auto &timer : ret.timer) {
+    progresstimer_util_.init(timer, time, realtime_factor);
     }
     for (auto& timer : ret.callback) {
         progresstimer_util_.init(timer, time, realtime_factor);

@@ -9,15 +9,14 @@
 
 
 TEST_CASE("start ProgressTimer") {
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    gamecomp::ProgressTimer progresstimer;
-    EntityGameTestHelper::init_ProgressTimer(progresstimer_util_,
-                                             progresstimer);
+  gamecomputil::ProgressTimerUtil progresstimer_util_{};
+  gamecomp::ProgressTimer progresstimer{};
+  EntityGameTestHelper::init_ProgressTimer(progresstimer_util_, progresstimer);
 
-    progresstimer_util_.start(progresstimer);
+  progresstimer_util_.start(progresstimer);
 
-    SUBCASE("DateProgressTimer is started") {
-        CHECK(progresstimer.timer.isstart);
+  SUBCASE("DateProgressTimer is started") {
+    CHECK(progresstimer.timer.isstart);
     }
 
     SUBCASE("DateProgressTimer is not paused") {
@@ -28,15 +27,14 @@ TEST_CASE("start ProgressTimer") {
 
 
 TEST_CASE("pause without start ProgressTimer") {
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    gamecomp::ProgressTimer progresstimer;
-    EntityGameTestHelper::init_ProgressTimer(progresstimer_util_,
-                                             progresstimer);
+  gamecomputil::ProgressTimerUtil progresstimer_util_{};
+  gamecomp::ProgressTimer progresstimer{};
+  EntityGameTestHelper::init_ProgressTimer(progresstimer_util_, progresstimer);
 
-    progresstimer_util_.pause(progresstimer);
+  progresstimer_util_.pause(progresstimer);
 
-    SUBCASE("ProgressTimer is started") {
-        CHECK_FALSE(progresstimer.timer.isstart);
+  SUBCASE("ProgressTimer is started") {
+    CHECK_FALSE(progresstimer.timer.isstart);
     }
 
     SUBCASE("ProgressTimer is paused") {
@@ -46,31 +44,29 @@ TEST_CASE("pause without start ProgressTimer") {
 
 
 TEST_CASE("start and pause ProgressTimer") {
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    gamecomp::ProgressTimer progresstimer;
-    EntityGameTestHelper::init_ProgressTimer(progresstimer_util_,
-                                             progresstimer);
+  gamecomputil::ProgressTimerUtil progresstimer_util_{};
+  gamecomp::ProgressTimer progresstimer{};
+  EntityGameTestHelper::init_ProgressTimer(progresstimer_util_, progresstimer);
 
-    progresstimer_util_.start(progresstimer);
-    progresstimer_util_.pause(progresstimer);
+  progresstimer_util_.start(progresstimer);
+  progresstimer_util_.pause(progresstimer);
 
-    SUBCASE("ProgressTimer is started") { CHECK(progresstimer.timer.isstart); }
+  SUBCASE("ProgressTimer is started") { CHECK(progresstimer.timer.isstart); }
 
-    SUBCASE("ProgressTimer is paused") { REQUIRE(progresstimer.timer.ispause); }
+  SUBCASE("ProgressTimer is paused") { REQUIRE(progresstimer.timer.ispause); }
 }
 
 
 
 TEST_CASE("unpause without pause ProgressTimer") {
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    gamecomp::ProgressTimer progresstimer;
-    EntityGameTestHelper::init_ProgressTimer(progresstimer_util_,
-                                             progresstimer);
+  gamecomputil::ProgressTimerUtil progresstimer_util_{};
+  gamecomp::ProgressTimer progresstimer{};
+  EntityGameTestHelper::init_ProgressTimer(progresstimer_util_, progresstimer);
 
-    progresstimer_util_.unpause(progresstimer);
+  progresstimer_util_.unpause(progresstimer);
 
-    SUBCASE("ProgressTimer is not started") {
-        CHECK_FALSE(progresstimer.timer.isstart);
+  SUBCASE("ProgressTimer is not started") {
+    CHECK_FALSE(progresstimer.timer.isstart);
     }
 
     SUBCASE("ProgressTimer is not paused") {
@@ -79,66 +75,62 @@ TEST_CASE("unpause without pause ProgressTimer") {
 }
 
 TEST_CASE("start unpause without paused ProgressTimer") {
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    gamecomp::ProgressTimer progresstimer;
-    EntityGameTestHelper::init_ProgressTimer(progresstimer_util_,
-                                             progresstimer);
+  gamecomputil::ProgressTimerUtil progresstimer_util_{};
+  gamecomp::ProgressTimer progresstimer{};
+  EntityGameTestHelper::init_ProgressTimer(progresstimer_util_, progresstimer);
 
-    progresstimer_util_.start(progresstimer);
-    progresstimer_util_.unpause(progresstimer);
+  progresstimer_util_.start(progresstimer);
+  progresstimer_util_.unpause(progresstimer);
 
-    SUBCASE("ProgressTimer is started") { CHECK(progresstimer.timer.isstart); }
+  SUBCASE("ProgressTimer is started") { CHECK(progresstimer.timer.isstart); }
 
-    SUBCASE("ProgressTimer is not paused") {
-        CHECK_FALSE(progresstimer.timer.ispause);
+  SUBCASE("ProgressTimer is not paused") {
+    CHECK_FALSE(progresstimer.timer.ispause);
     }
 }
 
 TEST_CASE("start pause and unpause ProgressTimer") {
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    gamecomp::ProgressTimer progresstimer;
-    EntityGameTestHelper::init_ProgressTimer(progresstimer_util_,
-                                             progresstimer);
+  gamecomputil::ProgressTimerUtil progresstimer_util_{};
+  gamecomp::ProgressTimer progresstimer{};
+  EntityGameTestHelper::init_ProgressTimer(progresstimer_util_, progresstimer);
 
-    progresstimer_util_.start(progresstimer);
-    progresstimer_util_.pause(progresstimer);
-    progresstimer_util_.unpause(progresstimer);
+  progresstimer_util_.start(progresstimer);
+  progresstimer_util_.pause(progresstimer);
+  progresstimer_util_.unpause(progresstimer);
 
-    SUBCASE("ProgressTimer is started") { CHECK(progresstimer.timer.isstart); }
+  SUBCASE("ProgressTimer is started") { CHECK(progresstimer.timer.isstart); }
 
-    SUBCASE("ProgressTimer is not paused") {
-        CHECK_FALSE(progresstimer.timer.ispause);
+  SUBCASE("ProgressTimer is not paused") {
+    CHECK_FALSE(progresstimer.timer.ispause);
     }
 }
 
 
 TEST_CASE("restart ProgressTimer") {
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    gamecomp::ProgressTimer progresstimer;
-    EntityGameTestHelper::init_ProgressTimer(progresstimer_util_,
-                                             progresstimer);
+  gamecomputil::ProgressTimerUtil progresstimer_util_{};
+  gamecomp::ProgressTimer progresstimer{};
+  EntityGameTestHelper::init_ProgressTimer(progresstimer_util_, progresstimer);
 
-    progresstimer_util_.restart(progresstimer);
+  progresstimer_util_.restart(progresstimer);
 
-    SUBCASE("ProgressTimer is started") { CHECK(progresstimer.timer.isstart); }
+  SUBCASE("ProgressTimer is started") { CHECK(progresstimer.timer.isstart); }
 
-    SUBCASE("ProgressTimer is not paused") {
-        CHECK_FALSE(progresstimer.timer.ispause);
+  SUBCASE("ProgressTimer is not paused") {
+    CHECK_FALSE(progresstimer.timer.ispause);
     }
 }
 
 
 
 TEST_CASE("stop ProgressTimer") {
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    gamecomp::ProgressTimer progresstimer;
-    EntityGameTestHelper::init_ProgressTimer(progresstimer_util_,
-                                             progresstimer);
+  gamecomputil::ProgressTimerUtil progresstimer_util_{};
+  gamecomp::ProgressTimer progresstimer{};
+  EntityGameTestHelper::init_ProgressTimer(progresstimer_util_, progresstimer);
 
-    progresstimer_util_.stop(progresstimer);
+  progresstimer_util_.stop(progresstimer);
 
-    SUBCASE("ProgressTimer is not started") {
-        CHECK_FALSE(progresstimer.timer.isstart);
+  SUBCASE("ProgressTimer is not started") {
+    CHECK_FALSE(progresstimer.timer.isstart);
     }
 
     SUBCASE("ProgressTimer is not paused") {
