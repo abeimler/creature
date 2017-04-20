@@ -132,7 +132,7 @@ long as it offers the expected interface.
 
 #### The Registry
 
-There are two options to instantiate your own registry:
+There are three options to instantiate your own registry:
 
 * By using the default one:
 
@@ -142,10 +142,18 @@ There are two options to instantiate your own registry:
 
   That is, you must provide the whole list of components to be registered with the default registry.
 
+* By using the standard one:
+
+    ```
+    auto registry = entt::StandardRegistry<std::uint16_t, Components...>{args...};
+    ```
+
+  That is, you must provide the whole list of components to be registered with the default registry **and** the desired type for the entities. Note that the default type is `std::uint32_t`, that is larger enough for almost all the games but also too big for the most of the games.
+
 * By using your own pool:
 
     ```
-    auto registry = entt::Registry<YourOwnPool<Components...>{args...};
+    auto registry = entt::Registry<DesiredEntityType, YourOwnPool<Components...>>{args...};
     ```
 
   Note that the registry expects a class template where the template parameters are the components to be managed.
@@ -164,7 +172,7 @@ Once you have created a registry, the followings are the exposed member function
 * `destroy`: destroys the entity and all its components.
 * `assign<Component>(entity, args...)`: assigns the given component to the entity and uses `args...` to initialize it.
 * `remove<Component>(entity)`: removes the given component from the entity.
-* `has<Component>(entity)`: returns `true` if the entity has the given component, `false` otherwise.
+* `has<Components...>(entity)`: returns `true` if the entity has the given components, `false` otherwise.
 * `get<Component>(entity)`: returns a reference to the given component for the entity (undefined behaviour if the entity has not the component).
 * `replace<Component>(entity, args...)`: replaces the given component for the entity, using `args...` to create the new component.
 * `clone(entity)`: clones an entity and all its components, then returns the new entity identifier.
@@ -233,10 +241,12 @@ In particular:
 
 ```
 template<>
-struct ComponentPool<MyComponent> final {
+struct ComponentPool<Entity, MyComponent> final {
     // ...
 };
 ```
+
+Where `Entity` is the desired type for the entities, `MyComponent` the type of the component to be stored.
 
 A custom pool should expose at least the following member functions:
 
@@ -262,10 +272,10 @@ In other terms, `entt::Registry` has a template template parameter that can be u
 components:
 
 ```
-auto registry = entt::Registry<MyCustomPool<Component1, Component2>>{};
+auto registry = entt::Registry<Entity, MyCustomPool<Component1, Component2>>{};
 ```
 
-Even thoug the underlying pool doesn't store the components separately, the registry must know them to be able to do
+Even though the underlying pool doesn't store the components separately, the registry must know them to be able to do
 specific actions (like `destroy` or `copy`). That's why they must be explicitly specified.<br/>
 A generic pool should expose at least the following memeber functions:
 

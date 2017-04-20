@@ -19,9 +19,9 @@ template<typename...>
 class View;
 
 
-template<template<typename...> class Pool, typename... Components, typename Type, typename... Types>
-class View<Pool<Components...>, Type, Types...> final {
-    using pool_type = Pool<Components...>;
+template<template<typename...> class Pool, typename Entity, typename... Components, typename Type, typename... Types>
+class View<Pool<Entity, Components...>, Type, Types...> final {
+    using pool_type = Pool<Entity, Components...>;
     using entity_type = typename pool_type::entity_type;
 
     class ViewIterator {
@@ -121,9 +121,9 @@ private:
 };
 
 
-template<template<typename...> class Pool, typename... Components, typename Type>
-class View<Pool<Components...>, Type> final {
-    using pool_type = Pool<Components...>;
+template<template<typename...> class Pool, typename Entity, typename... Components, typename Type>
+class View<Pool<Entity, Components...>, Type> final {
+    using pool_type = Pool<Entity, Components...>;
     using entity_type = typename pool_type::entity_type;
 
     struct ViewIterator {
@@ -188,19 +188,20 @@ private:
 
 
 template<typename>
-struct Registry;
+class Registry;
 
 
-template<template<typename...> class Pool, typename... Components>
-struct Registry<Pool<Components...>> final {
+template<template<typename...> class Pool, typename Entity, typename... Components>
+class Registry<Pool<Entity, Components...>> final {
+    using pool_type = Pool<Entity, Components...>;
+
+public:
     static_assert(sizeof...(Components) > 1, "!");
 
-    using entity_type = typename Pool<Components...>::entity_type;
+    using entity_type = typename pool_type::entity_type;
     using size_type = std::size_t;
 
 private:
-    using pool_type = Pool<Components...>;
-
     template<typename Comp>
     void destroy(entity_type entity) {
         if(pool.template has<Comp>(entity)) {
@@ -300,9 +301,13 @@ public:
         pool.template destroy<Comp>(entity);
     }
 
-    template<typename Comp>
+    template<typename... Comp>
     bool has(entity_type entity) const noexcept {
-        return pool.template has<Comp>(entity);
+        using accumulator_type = bool[];
+        bool all = true;
+        accumulator_type accumulator = { true, (all = all && pool.template has<Comp>(entity))... };
+        (void)accumulator;
+        return all;
     }
 
     template<typename Comp>
@@ -362,8 +367,12 @@ private:
 };
 
 
+template<typename Entity, typename... Components>
+using StandardRegistry = Registry<ComponentPool<Entity, Components...>>;
+
+
 template<typename... Components>
-using DefaultRegistry = Registry<ComponentPool<Components...>>;
+using DefaultRegistry = Registry<ComponentPool<std::uint32_t, Components...>>;
 
 
 }
