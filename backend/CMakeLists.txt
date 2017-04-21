@@ -52,14 +52,15 @@ set(CREATURE_BACKEND_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/entt)
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/eventpp)
 
+add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/cereal)
+add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/json)
+
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/benchpress)
 add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/doctest)
 
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/cereal)
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/GSL)
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/json)
-
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/type_safe)
+## not needed
+#add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/GSL)
+#add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/type_safe)
 
 # no cmake support
 #add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/better-enums)
@@ -82,16 +83,19 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_constexpr
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambdas)
 
 # use SYSTEM to get rid of 3rd party libs warnings
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/entt/src)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/eventpp/src)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums/extra)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/cereal/include)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/clamp)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/GSL)
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/json/src)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/type_safe/include)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/type_safe/external/debug_assert)
+
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/entt/src)
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/eventpp/src)
+
+## not needed
+#target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/type_safe/include)
+#target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/type_safe/external/debug_assert)
+#target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/GSL)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_INCLUDE_PATH})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CREATURE_BACKEND_SRC_PATH})
