@@ -34,4 +34,4 @@ BENCHMARK("unused variables function without unused parameters",
               }
           })
 
-} // namespace misc
+} // namespace misc_benchmark

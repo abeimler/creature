@@ -37,4 +37,4 @@ void GameApplication::initSystems() {
     this->makeListener<gamesystem::CreatureBornListener>(this->datamanager_);
 }
 
-} // namespace gamesystem
+} // namespace game
