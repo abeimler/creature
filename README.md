@@ -59,4 +59,4 @@ I used g++ 6.4.0, clang++ 3.8 should work, too.
  2. `cmake -H. -B./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBuildTests:BOOL="0" -DCXXOPTS_BUILD_EXAMPLES:BOOL="0" -DTYPE_SAFE_ARITHMETIC_UB:BOOL="1" -DWITH_CPP11:BOOL="1" -DBUILD_TESTING:BOOL="0" -DTHREAD_SAFE:BOOL="1"`
  3. `cp ./tools/run-clang-tidy.py ./build`
  4. `cd ./build`
- 5. `python2 run-clang-tidy.py -p . -header-filter='.*' -checks='-*,modernize-*,cppcoreguidelines-*,llvm-header-guard,llvm-include-order,llvm-namespace-comment' -fix -format`
+ 5. `python2 run-clang-tidy.py -p . -header-filter='^(.*\.h|.*(?!cereal|backend/lib).*)$' -checks='-*,modernize-*,cppcoreguidelines-*,llvm-header-guard,llvm-include-order,llvm-namespace-comment' -fix -format`
