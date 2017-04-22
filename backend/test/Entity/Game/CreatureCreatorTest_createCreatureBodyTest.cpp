@@ -8,7 +8,7 @@
 TEST_CASE("create CreatureBody Component with DataCreature") {
     gameentity::CreatureEntityCreator creaturecreator;
     gameentity::CreatureBattlerCreator creaturebattler_creator;
-    CreatureTestData creatureTestData;
+    CreatureTestData creatureTestData{};
 
     auto creature = creatureTestData.make_DataCreature();
     auto creature_data = creaturebattler_creator.createCreatureData(creature);

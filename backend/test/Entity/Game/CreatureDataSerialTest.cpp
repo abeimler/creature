@@ -17,51 +17,51 @@
 
 
 TEST_CASE("data::Creature serial json") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureEntityCreator creaturecreator;
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureEntityCreator creaturecreator;
 
-    auto creature = creatureTestData.make_DataCreature();
+  auto creature = creatureTestData.make_DataCreature();
 
-    auto& data = creature;
+  auto &data = creature;
 
-    SUBCASE("serial json") {
-        std::stringstream ss;
-        {
-            cereal::JSONOutputArchive outar(ss);
+  SUBCASE("serial json") {
+    std::stringstream ss;
+    {
+      cereal::JSONOutputArchive outar(ss);
 
-            CHECK_NOTHROW(outar(cereal::make_nvp("data", data)));
-        }
+      CHECK_NOTHROW(outar(cereal::make_nvp("data", data)));
+    }
 
-        std::string output = ss.str();
-        REQUIRE(!output.empty());
+    std::string output = ss.str();
+    REQUIRE(!output.empty());
 
-        SUBCASE("deserial json") {
-            {
-                cereal::JSONInputArchive inar(ss);
+    SUBCASE("deserial json") {
+      {
+        cereal::JSONInputArchive inar(ss);
 
-                CHECK_NOTHROW(inar(cereal::make_nvp("data", data)));
-            }
-        }
+        CHECK_NOTHROW(inar(cereal::make_nvp("data", data)));
+      }
+    }
     }
 }
 
 
 
 TEST_CASE("data::Creature serial json as file") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureEntityCreator creaturecreator;
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureEntityCreator creaturecreator;
 
-    auto creature = creatureTestData.make_DataCreature();
+  auto creature = creatureTestData.make_DataCreature();
 
-    auto& data = creature;
+  auto &data = creature;
 
-    SUBCASE("serial json") {
-        std::ofstream os("creature.json");
-        {
-            cereal::JSONOutputArchive outar(os);
+  SUBCASE("serial json") {
+    std::ofstream os("creature.json");
+    {
+      cereal::JSONOutputArchive outar(os);
 
-            CHECK_NOTHROW(outar(cereal::make_nvp("data", data)));
-        }
+      CHECK_NOTHROW(outar(cereal::make_nvp("data", data)));
+    }
     }
 }
 

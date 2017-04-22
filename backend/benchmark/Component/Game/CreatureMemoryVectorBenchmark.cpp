@@ -19,9 +19,9 @@ class CreatureMemoryDeepMemoryVectorBenchmark {
 
         deep_memory.reserve(enum_creatureactivity.count);
         for (auto index : enum_creatureactivity) {
-            gamecomp::CreatureMemoryDeepMemory memory;
-            memory.activity = index;
-            deep_memory.push_back(memory);
+          gamecomp::CreatureMemoryDeepMemory memory{};
+          memory.activity = index;
+          deep_memory.push_back(memory);
         }
     }
 };

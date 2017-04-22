@@ -54,36 +54,35 @@ class CreatureBattlerCreatureRecoverSystemApplication
 SCENARIO(
     "Creature Entity with low hp mp when emit recover-Event then heal hp mp") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
+      CreatureTestData creatureTestData{};
 
-        CreatureBattlerCreatureRecoverSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureBattlerCreatureRecoverSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_withLowHPMP(entities, entity);
+      app.init_Entity_withLowHPMP(entities, entity);
 
-        auto& creature_battler =
-            entities.get<gamecomp::CreatureBattlerComponent>(entity);
+      auto &creature_battler =
+          entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
+      WHEN("emit recover-Event") {
+        app.emit_event<gameevent::CreatureRecoverEvent>(entity);
 
-        WHEN("emit recover-Event") {
-            app.emit_event<gameevent::CreatureRecoverEvent>(entity);
+        AND_WHEN("update entities") {
+          app.update(app.FAKE_TIMEDELTA);
 
-            AND_WHEN("update entities") {
-                app.update(app.FAKE_TIMEDELTA);
+          REQUIRE(app.eventlistenermockup->emitevent);
 
-                REQUIRE(app.eventlistenermockup->emitevent);
+          THEN("hp is recover") {
+            CHECK(creature_battler.hp == creatureTestData.MAXHP);
+          }
 
-                THEN("hp is recover") {
-                    CHECK(creature_battler.hp == creatureTestData.MAXHP);
-                }
-
-                THEN("mp is recover") {
-                    CHECK(creature_battler.mp == creatureTestData.MAXMP);
-                }
-            }
+          THEN("mp is recover") {
+            CHECK(creature_battler.mp == creatureTestData.MAXMP);
+          }
+        }
         }
     }
 }

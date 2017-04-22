@@ -176,7 +176,7 @@ class CreatureAddRemoveStatusBattlerCreatureSystemApplication
 
         auto& battlerstatuses =
             entities.get<gamecomp::BattlerStatusesComponent>(entity);
-        battlerstatuses.statuses_name.push_back(HUNGRY_STATUS_NAME);
+        battlerstatuses.statuses_name.emplace_back(HUNGRY_STATUS_NAME);
     }
 
     void init_Entity_withSleepStatus(gameentity::EntityManager& entities, gameentity::Entity entity) {
@@ -196,7 +196,7 @@ class CreatureAddRemoveStatusBattlerCreatureSystemApplication
 
         auto& battlerstatuses =
             entities.get<gamecomp::BattlerStatusesComponent>(entity);
-        battlerstatuses.statuses_name.push_back(SLEEP_STATUS_NAME);
+        battlerstatuses.statuses_name.emplace_back(SLEEP_STATUS_NAME);
     }
 
     void init_Entity_isBusy(gameentity::EntityManager& entities, gameentity::Entity entity) {
@@ -213,40 +213,40 @@ class CreatureAddRemoveStatusBattlerCreatureSystemApplication
 
     void init_Entity_withStartedRunAwayTimer(gameentity::EntityManager& entities, gameentity::Entity entity,
                                              gamecomp::waittime_t waittime) {
-        CreatureTestData creatureTestData;
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+      CreatureTestData creatureTestData{};
+      gamecomputil::ProgressTimerUtil progresstimer_util{};
 
-        auto& timers =
-            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+      auto &timers =
+          entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-        auto& runawayunhappy_timer = earr::enum_array_at(
-            timers.callback,
-            +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy);
-        gamecomp::ProgressTimer& runawayunhappy_progresstimer =
-            runawayunhappy_timer.base;
+      auto &runawayunhappy_timer = earr::enum_array_at(
+          timers.callback,
+          +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy);
+      gamecomp::ProgressTimer &runawayunhappy_progresstimer =
+          runawayunhappy_timer.base;
 
-        auto time = creatureTestData.make_time_point_01_01_2000();
-        progresstimer_util.init(runawayunhappy_progresstimer, time, 1.0f);
-        runawayunhappy_progresstimer.waittime.fill(waittime);
-        progresstimer_util.start(runawayunhappy_progresstimer);
+      auto time = creatureTestData.make_time_point_01_01_2000();
+      progresstimer_util.init(runawayunhappy_progresstimer, time, 1.0f);
+      runawayunhappy_progresstimer.waittime.fill(waittime);
+      progresstimer_util.start(runawayunhappy_progresstimer);
 
-        auto& psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
-        psyche.luck = 0;
+      auto &psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
+      psyche.luck = 0;
 
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
-        life.causeofrunaway = gamecomp::CauseOfRunAway::Unhappy;
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      life.causeofrunaway = gamecomp::CauseOfRunAway::Unhappy;
     }
 
     void init_Entity_withCanGoSleepTired(gameentity::EntityManager& entities, gameentity::Entity entity) {
-        CreatureTestData creatureTestData;
+      CreatureTestData creatureTestData{};
 
-        auto& timers =
-            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+      auto &timers =
+          entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-        gamecomp::ProgressTimer& tired_timer = earr::enum_array_at(
-            timers.timer, +gamecomp::CreatureProgressTimer::Tired);
-        gamecomp::ProgressTimer& tired_progresstimer = tired_timer;
-        tired_progresstimer.value = creatureTestData.CANGOSLEEP_AT_TIRED;
+      gamecomp::ProgressTimer &tired_timer = earr::enum_array_at(
+          timers.timer, +gamecomp::CreatureProgressTimer::Tired);
+      gamecomp::ProgressTimer &tired_progresstimer = tired_timer;
+      tired_progresstimer.value = creatureTestData.CANGOSLEEP_AT_TIRED;
     }
 
     void init_Entity_withOneHPMP(gameentity::EntityManager& entities, gameentity::Entity entity) {
@@ -267,42 +267,40 @@ class CreatureAddRemoveStatusBattlerCreatureSystemApplication
 SCENARIO("Creature Entity emit addStatus-Event Hungry to set "
          "status Hungry") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
+      auto &battlerstatuses =
+          entities.get<gamecomp::BattlerStatusesComponent>(entity);
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        auto& battlerstatuses =
-            entities.get<gamecomp::BattlerStatusesComponent>(entity);
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      WHEN("emit addStatus-Event Hungry") {
+        app.emit_event<gameevent::CreatureAddStatusEvent>(
+            entity, +data::CreatureStatus::Hungry);
 
+        AND_WHEN("update manager") {
+          app.update(app.FAKE_TIMEDELTA);
+          // app.update(app.FAKE_TIMEDELTA);
 
-        WHEN("emit addStatus-Event Hungry") {
-            app.emit_event<gameevent::CreatureAddStatusEvent>(
-                entity, +data::CreatureStatus::Hungry);
+          THEN("has hungry status") {
+            CHECK(earr::enum_array_at(life.hasstatus,
+                                      +data::CreatureStatus::Hungry));
+          }
 
-            AND_WHEN("update manager") {
-                app.update(app.FAKE_TIMEDELTA);
-                // app.update(app.FAKE_TIMEDELTA);
+          THEN("battler statuses is not empty") {
+            REQUIRE_FALSE(battlerstatuses.statuses_name.empty());
 
-                THEN("has hungry status") {
-                    CHECK(earr::enum_array_at(life.hasstatus,
-                                              +data::CreatureStatus::Hungry));
-                }
+            auto &status_name = battlerstatuses.statuses_name.front();
 
-                THEN("battler statuses is not empty") {
-                    REQUIRE_FALSE(battlerstatuses.statuses_name.empty());
-
-                    auto& status_name = battlerstatuses.statuses_name.front();
-
-                    AND_THEN("battler status is hungry") {
-                        CHECK(app.HUNGRY_STATUS_NAME == status_name);
-                    }
-                }
+            AND_THEN("battler status is hungry") {
+              CHECK(app.HUNGRY_STATUS_NAME == status_name);
             }
+          }
+        }
         }
     }
 }
@@ -311,69 +309,65 @@ SCENARIO("Creature Entity emit addStatus-Event Hungry to set "
 SCENARIO("Creature Entity emit same addStatus-Event in wrong order then order "
          "statuses") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
+      auto &battlerstatuses =
+          entities.get<gamecomp::BattlerStatusesComponent>(entity);
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        auto& battlerstatuses =
-            entities.get<gamecomp::BattlerStatusesComponent>(entity);
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      WHEN("emit some addStatus-Events") {
+        app.emit_event<gameevent::CreatureAddStatusEvent>(
+            entity, data::CreatureStatus::Hungry);
+        app.emit_event<gameevent::CreatureAddStatusEvent>(
+            entity, data::CreatureStatus::Ill);
+        app.emit_event<gameevent::CreatureAddStatusEvent>(
+            entity, data::CreatureStatus::Sleep);
 
-        WHEN("emit some addStatus-Events") {
-            app.emit_event<gameevent::CreatureAddStatusEvent>(
-                entity, data::CreatureStatus::Hungry);
-            app.emit_event<gameevent::CreatureAddStatusEvent>(
-                entity, data::CreatureStatus::Ill);
-            app.emit_event<gameevent::CreatureAddStatusEvent>(
-                entity, data::CreatureStatus::Sleep);
+        AND_WHEN("update manager") {
+          app.update(app.FAKE_TIMEDELTA);
+          // app.update(app.FAKE_TIMEDELTA);
+          // app.update(app.FAKE_TIMEDELTA);
 
-            AND_WHEN("update manager") {
-                app.update(app.FAKE_TIMEDELTA);
-                // app.update(app.FAKE_TIMEDELTA);
-                // app.update(app.FAKE_TIMEDELTA);
+          THEN("has hungry status") {
+            CHECK(earr::enum_array_at(life.hasstatus,
+                                      +data::CreatureStatus::Hungry));
+          }
 
-                THEN("has hungry status") {
-                    CHECK(earr::enum_array_at(life.hasstatus,
-                                              +data::CreatureStatus::Hungry));
-                }
+          THEN("has sleep status") {
+            CHECK(earr::enum_array_at(life.hasstatus,
+                                      +data::CreatureStatus::Sleep));
+          }
 
-                THEN("has sleep status") {
-                    CHECK(earr::enum_array_at(life.hasstatus,
-                                              +data::CreatureStatus::Sleep));
-                }
+          THEN("has ill status") {
+            CHECK(earr::enum_array_at(life.hasstatus,
+                                      +data::CreatureStatus::Ill));
+          }
 
-                THEN("has ill status") {
-                    CHECK(earr::enum_array_at(life.hasstatus,
-                                              +data::CreatureStatus::Ill));
-                }
+          THEN("battler statuses is not empty") {
+            REQUIRE(battlerstatuses.statuses_name.size() >= 3);
 
-                THEN("battler statuses is not empty") {
-                    REQUIRE(battlerstatuses.statuses_name.size() >= 3);
+            auto &first_status_name = battlerstatuses.statuses_name.at(0);
+            auto &second_status_name = battlerstatuses.statuses_name.at(1);
+            auto &third_status_name = battlerstatuses.statuses_name.at(2);
 
-                    auto& first_status_name =
-                        battlerstatuses.statuses_name.at(0);
-                    auto& second_status_name =
-                        battlerstatuses.statuses_name.at(1);
-                    auto& third_status_name =
-                        battlerstatuses.statuses_name.at(2);
-
-                    AND_THEN("1. battler status is sleep") {
-                        CHECK(app.SLEEP_STATUS_NAME == first_status_name);
-                    }
-
-                    AND_THEN("2. battler status is ill") {
-                        CHECK(app.ILL_STATUS_NAME == second_status_name);
-                    }
-
-                    AND_THEN("3. battler status is hungry") {
-                        CHECK(app.HUNGRY_STATUS_NAME == third_status_name);
-                    }
-                }
+            AND_THEN("1. battler status is sleep") {
+              CHECK(app.SLEEP_STATUS_NAME == first_status_name);
             }
+
+            AND_THEN("2. battler status is ill") {
+              CHECK(app.ILL_STATUS_NAME == second_status_name);
+            }
+
+            AND_THEN("3. battler status is hungry") {
+              CHECK(app.HUNGRY_STATUS_NAME == third_status_name);
+            }
+          }
+        }
         }
     }
 }
@@ -384,32 +378,31 @@ SCENARIO("Creature Entity with Hungry status and emit removeStatus-Event "
          "Hungry to remove "
          "Hungry status") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_withHungryStatus(entities, entity);
+      app.init_Entity_withHungryStatus(entities, entity);
 
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      WHEN("emit removeStatus-Event Hungry") {
+        app.emit_event<gameevent::CreatureRemoveStatusEvent>(
+            entity, data::CreatureStatus::Hungry);
 
-        WHEN("emit removeStatus-Event Hungry") {
-            app.emit_event<gameevent::CreatureRemoveStatusEvent>(
-                entity, data::CreatureStatus::Hungry);
+        AND_WHEN("update manager") {
+          app.update(app.FAKE_TIMEDELTA);
+          // app.update(app.FAKE_TIMEDELTA);
+          // app.update(app.FAKE_TIMEDELTA);
 
-            AND_WHEN("update manager") {
-                app.update(app.FAKE_TIMEDELTA);
-                // app.update(app.FAKE_TIMEDELTA);
-                // app.update(app.FAKE_TIMEDELTA);
-
-                THEN("has not hungry status") {
-                    CHECK_FALSE(earr::enum_array_at(
-                        life.hasstatus, +data::CreatureStatus::Hungry));
-                }
-            }
+          THEN("has not hungry status") {
+            CHECK_FALSE(earr::enum_array_at(life.hasstatus,
+                                            +data::CreatureStatus::Hungry));
+          }
+        }
         }
     }
 }
@@ -417,26 +410,25 @@ SCENARIO("Creature Entity with Hungry status and emit removeStatus-Event "
 
 SCENARIO("Creature Entity emit addStatus-Event Ill to increment ill-Counter") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
-        
-        auto& bodlystate =
-            entities.get<gamecomp::CreatureBodilyStateComponent>(entity);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
+      auto &bodlystate =
+          entities.get<gamecomp::CreatureBodilyStateComponent>(entity);
 
-        WHEN("emit addStatus-Event Ill") {
-            app.emit_event<gameevent::CreatureAddStatusEvent>(
-                entity, data::CreatureStatus::Ill);
+      WHEN("emit addStatus-Event Ill") {
+        app.emit_event<gameevent::CreatureAddStatusEvent>(
+            entity, data::CreatureStatus::Ill);
 
-            AND_WHEN("update manager") {
-                app.update(app.FAKE_TIMEDELTA);
+        AND_WHEN("update manager") {
+          app.update(app.FAKE_TIMEDELTA);
 
-                THEN("ill-Counter is set") { CHECK(bodlystate.illcount > 0); }
-            }
+          THEN("ill-Counter is set") { CHECK(bodlystate.illcount > 0); }
+        }
         }
     }
 }
@@ -444,27 +436,25 @@ SCENARIO("Creature Entity emit addStatus-Event Ill to increment ill-Counter") {
 SCENARIO(
     "Creature Entity emit addStatus-Event Hurt to increment hurt-Counter") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
-        
-        auto& bodlystate =
-            entities.get<gamecomp::CreatureBodilyStateComponent>(entity);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        WHEN("emit addStatus-Event Hurt") {
-            app.emit_event<gameevent::CreatureAddStatusEvent>(
-                entity, data::CreatureStatus::Hurt);
+      auto &bodlystate =
+          entities.get<gamecomp::CreatureBodilyStateComponent>(entity);
 
-            AND_WHEN("update manager") {
-                app.update(app.FAKE_TIMEDELTA);
+      WHEN("emit addStatus-Event Hurt") {
+        app.emit_event<gameevent::CreatureAddStatusEvent>(
+            entity, data::CreatureStatus::Hurt);
 
-                THEN("hurt-Counter is set") {
-                    CHECK(bodlystate.hurtcount > 0);
-                }
-            }
+        AND_WHEN("update manager") {
+          app.update(app.FAKE_TIMEDELTA);
+
+          THEN("hurt-Counter is set") { CHECK(bodlystate.hurtcount > 0); }
+        }
         }
     }
 }
@@ -472,25 +462,24 @@ SCENARIO(
 
 SCENARIO("Creature Entity with tired to can go sleep") {
     GIVEN("Creature Entity with enough tired for sleep") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
+      auto &sleep = entities.get<gamecomp::CreatureSleepComponent>(entity);
 
-        auto& sleep = entities.get<gamecomp::CreatureSleepComponent>(entity);
+      app.init_Entity_isNotBusy(entities, entity);
+      app.init_Entity_withCanGoSleepTired(entities, entity);
 
-        app.init_Entity_isNotBusy(entities, entity);
-        app.init_Entity_withCanGoSleepTired(entities, entity);
+      sleep.cangosleep = false;
 
-        sleep.cangosleep = false;
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
-
-            THEN("can go sleep") { CHECK(sleep.cangosleep); }
+        THEN("can go sleep") { CHECK(sleep.cangosleep); }
         }
     }
 }
@@ -499,24 +488,24 @@ SCENARIO("Creature Entity with tired to can go sleep") {
 SCENARIO("Creature Entity with negative psyche values then clamp it with "
          "updatePsycheValues") {
     GIVEN("Creature Entity with negative psyche values") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
+      auto &psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
 
-        psyche.disc = -1;
-        psyche.luck = -1;
+      psyche.disc = -1;
+      psyche.luck = -1;
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("clamp disc to min 0") { CHECK(psyche.disc >= 0.0); }
+        THEN("clamp disc to min 0") { CHECK(psyche.disc >= 0.0); }
 
-            THEN("clamp luck to min 0") { CHECK(psyche.luck >= 0.0); }
+        THEN("clamp luck to min 0") { CHECK(psyche.luck >= 0.0); }
         }
     }
 }
@@ -525,24 +514,24 @@ SCENARIO("Creature Entity with negative psyche values then clamp it with "
 SCENARIO("Creature Entity with big psyche values then clamp it with "
          "updatePsycheValues") {
     GIVEN("Creature Entity with negative psyche values") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
+      auto &psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
 
-        psyche.disc = 101;
-        psyche.luck = 101;
+      psyche.disc = 101;
+      psyche.luck = 101;
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("clamp disc to max 100") { CHECK(psyche.disc <= 100); }
+        THEN("clamp disc to max 100") { CHECK(psyche.disc <= 100); }
 
-            THEN("clamp luck to max 100") { CHECK(psyche.luck <= 100); }
+        THEN("clamp luck to max 100") { CHECK(psyche.luck <= 100); }
         }
     }
 }
@@ -551,24 +540,24 @@ SCENARIO("Creature Entity with big psyche values then clamp it with "
 SCENARIO("Creature Entity with to big lvl then clamp it with "
          "updateCreatureBattlerAttribute") {
     GIVEN("Creature Entity with to big lvl") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& creature_battler =
-            entities.get<gamecomp::CreatureBattlerComponent>(entity);
+      auto &creature_battler =
+          entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
-        creature_battler.lvl = creatureTestData.MAXLEVEL + 1;
+      creature_battler.lvl = creatureTestData.MAXLEVEL + 1;
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("clamp lvl to max") {
-                REQUIRE(creature_battler.lvl == creatureTestData.MAXLEVEL);
-            }
+        THEN("clamp lvl to max") {
+          REQUIRE(creature_battler.lvl == creatureTestData.MAXLEVEL);
+        }
         }
     }
 }
@@ -578,24 +567,24 @@ SCENARIO("Creature Entity with to big lvl then clamp it with "
 SCENARIO("Creature Entity with to small lvl then clamp it with "
          "updateCreatureBattlerAttribute") {
     GIVEN("Creature Entity with to big lvl") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& creature_battler =
-            entities.get<gamecomp::CreatureBattlerComponent>(entity);
+      auto &creature_battler =
+          entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
-        creature_battler.lvl = creatureTestData.MINLEVEL - 1;
+      creature_battler.lvl = creatureTestData.MINLEVEL - 1;
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("clamp lvl to min") {
-                REQUIRE(creature_battler.lvl == creatureTestData.MINLEVEL);
-            }
+        THEN("clamp lvl to min") {
+          REQUIRE(creature_battler.lvl == creatureTestData.MINLEVEL);
+        }
         }
     }
 }
@@ -603,27 +592,27 @@ SCENARIO("Creature Entity with to small lvl then clamp it with "
 SCENARIO("Creature Entity with new attrplus value then update attr with "
          "updateCreatureBattlerAttribute") {
     GIVEN("Creature Entity with new attrplus value") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& creature_battler =
-            entities.get<gamecomp::CreatureBattlerComponent>(entity);
+      auto &creature_battler =
+          entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
-        earr::enum_array_at(creature_battler.attrplus,
-                            +data::Attribute::MaxHP) = 1;
+      earr::enum_array_at(creature_battler.attrplus, +data::Attribute::MaxHP) =
+          1;
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("new attr value is set") {
-                CHECK(earr::enum_array_at(creature_battler.attr,
-                                          +data::Attribute::MaxHP) >
-                      creatureTestData.MAXHP);
-            }
+        THEN("new attr value is set") {
+          CHECK(earr::enum_array_at(creature_battler.attr,
+                                    +data::Attribute::MaxHP) >
+                creatureTestData.MAXHP);
+        }
         }
     }
 }
@@ -632,29 +621,29 @@ SCENARIO("Creature Entity with new attrplus value then update attr with "
 SCENARIO("Creature Entity with overmax hp mp then clamp hp mp value with "
          "updateCreatureBattlerAttribute") {
     GIVEN("Creature Entity with new attrplus value") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& creature_battler =
-            entities.get<gamecomp::CreatureBattlerComponent>(entity);
+      auto &creature_battler =
+          entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
-        creature_battler.hp = creatureTestData.MAXHP + 1;
-        creature_battler.mp = creatureTestData.MAXMP + 1;
+      creature_battler.hp = creatureTestData.MAXHP + 1;
+      creature_battler.mp = creatureTestData.MAXMP + 1;
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("clamp hp to max") {
-                CHECK(creature_battler.hp == creatureTestData.MAXHP);
-            }
+        THEN("clamp hp to max") {
+          CHECK(creature_battler.hp == creatureTestData.MAXHP);
+        }
 
-            THEN("clamp mp to max") {
-                CHECK(creature_battler.mp == creatureTestData.MAXMP);
-            }
+        THEN("clamp mp to max") {
+          CHECK(creature_battler.mp == creatureTestData.MAXMP);
+        }
         }
     }
 }
@@ -662,25 +651,25 @@ SCENARIO("Creature Entity with overmax hp mp then clamp hp mp value with "
 SCENARIO("Creature Entity with negative hp mp then clamp hp mp value with "
          "updateCreatureBattlerAttribute") {
     GIVEN("Creature Entity with new attrplus value") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& creature_battler =
-            entities.get<gamecomp::CreatureBattlerComponent>(entity);
+      auto &creature_battler =
+          entities.get<gamecomp::CreatureBattlerComponent>(entity);
 
-        creature_battler.hp = -1;
-        creature_battler.mp = -1;
+      creature_battler.hp = -1;
+      creature_battler.mp = -1;
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("clamp hp to min") { CHECK(creature_battler.hp == 0); }
+        THEN("clamp hp to min") { CHECK(creature_battler.hp == 0); }
 
-            THEN("clamp mp to min") { CHECK(creature_battler.mp == 0); }
+        THEN("clamp mp to min") { CHECK(creature_battler.mp == 0); }
         }
     }
 }
@@ -688,25 +677,24 @@ SCENARIO("Creature Entity with negative hp mp then clamp hp mp value with "
 
 SCENARIO("Creature Entity update createlevel in timers") {
     GIVEN("Creature Entity with none updated creaturelevel") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& timers =
-            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
-            
-        timers.creaturelevel = data::CreatureLevel::Egg;
+      auto &timers =
+          entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      timers.creaturelevel = data::CreatureLevel::Egg;
 
-            THEN("timers.creaturelevel is set") {
-                REQUIRE(timers.creaturelevel ==
-                        creatureTestData.CREATURELEVEL);
-            }
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
+
+        THEN("timers.creaturelevel is set") {
+          REQUIRE(timers.creaturelevel == creatureTestData.CREATURELEVEL);
+        }
         }
     }
 }
@@ -714,27 +702,25 @@ SCENARIO("Creature Entity update createlevel in timers") {
 
 SCENARIO("Creature Entity update needrefreshin") {
     GIVEN("Creature Entity with none updated creaturelevel") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& timers =
-            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
-        
+      auto &timers =
+          entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
-        timers.creaturelevel = data::CreatureLevel::Egg;
+      timers.creaturelevel = data::CreatureLevel::Egg;
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-            THEN("needrefreshin is set") {
-                REQUIRE(life.needrefreshin >
-                        std::chrono::milliseconds::zero());
-            }
+        THEN("needrefreshin is set") {
+          REQUIRE(life.needrefreshin > std::chrono::milliseconds::zero());
+        }
         }
     }
 }
@@ -742,33 +728,32 @@ SCENARIO("Creature Entity update needrefreshin") {
 
 SCENARIO("Creature Entity with Sleep to set tired factor negative") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusBattlerCreatureSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        auto& timers =
-            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      auto &timers =
+          entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
 
+      auto &tired_timer = earr::enum_array_at(
+          timers.timer, +gamecomp::CreatureProgressTimer::Tired);
+      gamecomp::ProgressTimer &tired_progresstimer = tired_timer;
 
-        auto& tired_timer = earr::enum_array_at(
-            timers.timer, +gamecomp::CreatureProgressTimer::Tired);
-        gamecomp::ProgressTimer& tired_progresstimer = tired_timer;
+      app.init_Entity_withSleepStatus(entities, entity);
 
-        app.init_Entity_withSleepStatus(entities, entity);
+      WHEN("update manager") {
+        app.update(app.FAKE_TIMEDELTA);
 
-        WHEN("update manager") {
-            app.update(app.FAKE_TIMEDELTA);
+        REQUIRE(
+            earr::enum_array_at(life.hasstatus, +data::CreatureStatus::Sleep));
 
-            REQUIRE(earr::enum_array_at(life.hasstatus,
-                                        +data::CreatureStatus::Sleep));
-
-            THEN("tired factor is negative") {
-                REQUIRE(tired_progresstimer.factor < 0.0f);
-            }
+        THEN("tired factor is negative") {
+          REQUIRE(tired_progresstimer.factor < 0.0f);
+        }
         }
     }
 }

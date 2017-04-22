@@ -19,24 +19,24 @@ class CreatureMemoryDeepMemoryEnumArrayBenchmark {
         auto enum_creatureactivity = earr::Enum<gamecomp::CreatureActivity>();
 
         for (auto index : enum_creatureactivity) {
-            gamecomp::CreatureMemoryDeepMemory memory;
-            memory.activity = index;
-            earr::enum_array_set(deep_memory, index, memory);
+          gamecomp::CreatureMemoryDeepMemory memory{};
+          memory.activity = index;
+          earr::enum_array_set(deep_memory, index, memory);
         }
     }
 
     static earr::enum_array<gamecomp::CreatureActivity,
                             gamecomp::CreatureMemoryDeepMemory>
     make_enum_array_CreatureMemoryDeepMemory() {
-        earr::enum_array<gamecomp::CreatureActivity,
-                         gamecomp::CreatureMemoryDeepMemory>
-            deep_memory;
-        auto enum_creatureactivity = earr::Enum<gamecomp::CreatureActivity>();
+      earr::enum_array<gamecomp::CreatureActivity,
+                       gamecomp::CreatureMemoryDeepMemory>
+          deep_memory{};
+      auto enum_creatureactivity = earr::Enum<gamecomp::CreatureActivity>();
 
-        for (auto index : enum_creatureactivity) {
-            gamecomp::CreatureMemoryDeepMemory memory;
-            memory.activity = index;
-            earr::enum_array_set(deep_memory, index, memory);
+      for (auto index : enum_creatureactivity) {
+        gamecomp::CreatureMemoryDeepMemory memory{};
+        memory.activity = index;
+        earr::enum_array_set(deep_memory, index, memory);
         }
 
         return deep_memory;

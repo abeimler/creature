@@ -23,12 +23,12 @@ namespace gamesystem {
 
 class CreatureBattlerSystem : public System {
     private:
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    computil::DateTimerUtil datetimer_util_;
-    gameentity::CreatureEntityCreator creaturecreator_;
-    gameentity::CreatureBattlerCreator creaturebattler_creator_;
+      gamecomputil::ProgressTimerUtil progresstimer_util_{};
+      computil::DateTimerUtil datetimer_util_{};
+      gameentity::CreatureEntityCreator creaturecreator_;
+      gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
-    gameentity::DataManager& datamanager_;
+      gameentity::DataManager &datamanager_;
 
     public:
     static constexpr int DEFAULT_HITRATE = 90;

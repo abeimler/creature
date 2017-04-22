@@ -168,58 +168,46 @@ data::bodymass_t CreatureEntityCreator::getBodyMass(
 
 gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimer>
 CreatureEntityCreator::createTimerWaitTime(data::CreatureLevel creature_level) {
-    gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimer> ret;
+  gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimer> ret{};
 
-    switch (creature_level) {
-        case data::CreatureLevel::Egg:
-        case data::CreatureLevel::Baby:
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Hungry,
-                                    std::chrono::hours(3));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Thirsty,
-                                    std::chrono::hours(3));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Tired,
-                                    std::chrono::hours(6));
-            break;
-        case data::CreatureLevel::Baby2:
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Hungry,
-                                    std::chrono::hours(4));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Thirsty,
-                                    std::chrono::hours(4));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Tired,
-                                    std::chrono::hours(9));
-            break;
-        case data::CreatureLevel::Child:
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Hungry,
-                                    std::chrono::hours(6));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Thirsty,
-                                    std::chrono::hours(5));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Tired,
-                                    std::chrono::hours(12));
-            break;
-        case data::CreatureLevel::Adult:
-        case data::CreatureLevel::Perfect:
-        case data::CreatureLevel::Ultimate:
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Hungry,
-                                    std::chrono::hours(8));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Thirsty,
-                                    std::chrono::hours(7));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimer::Tired,
-                                    std::chrono::hours(18));
-            break;
-        case data::CreatureLevel::END:
-            break;
+  switch (creature_level) {
+  case data::CreatureLevel::Egg:
+  case data::CreatureLevel::Baby:
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Hungry,
+                            std::chrono::hours(3));
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Thirsty,
+                            std::chrono::hours(3));
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Tired,
+                            std::chrono::hours(6));
+    break;
+  case data::CreatureLevel::Baby2:
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Hungry,
+                            std::chrono::hours(4));
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Thirsty,
+                            std::chrono::hours(4));
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Tired,
+                            std::chrono::hours(9));
+    break;
+  case data::CreatureLevel::Child:
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Hungry,
+                            std::chrono::hours(6));
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Thirsty,
+                            std::chrono::hours(5));
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Tired,
+                            std::chrono::hours(12));
+    break;
+  case data::CreatureLevel::Adult:
+  case data::CreatureLevel::Perfect:
+  case data::CreatureLevel::Ultimate:
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Hungry,
+                            std::chrono::hours(8));
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Thirsty,
+                            std::chrono::hours(7));
+    setCreatureGeneWaitTime(ret, +gamecomp::CreatureProgressTimer::Tired,
+                            std::chrono::hours(18));
+    break;
+  case data::CreatureLevel::END:
+    break;
     }
 
     switch (creature_level) {
@@ -273,159 +261,155 @@ CreatureEntityCreator::createTimerWaitTime(data::CreatureLevel creature_level) {
 gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerCallback>
 CreatureEntityCreator::createCallbackWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerCallback> ret;
+  gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerCallback> ret{};
 
-    switch (creature_level) {
-        case data::CreatureLevel::Egg:
-        case data::CreatureLevel::Baby:
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Digestion,
-                std::chrono::hours(5));
-            setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
-                std::chrono::hours(8));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
-                std::chrono::hours(24 * 3));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
-                std::chrono::hours(24 * 30 * 6));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::GoSleep,
-                std::chrono::minutes(5));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Inhospital,
-                std::chrono::minutes(10));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::HurtToDead,
-                std::chrono::hours(24 * 10));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::IllToDead,
-                std::chrono::hours(24 * 20));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Unhappy,
-                std::chrono::hours(24 * 35));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy,
-                std::chrono::minutes(40));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Bored,
-                std::chrono::minutes(45));
-            break;
-        case data::CreatureLevel::Baby2:
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Digestion,
-                std::chrono::hours(7));
-            setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
-                std::chrono::hours(12));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
-                std::chrono::hours(24 * 5));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
-                std::chrono::hours(24 * 30 * 5));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::GoSleep,
-                std::chrono::minutes(10));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Inhospital,
-                std::chrono::minutes(10));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::HurtToDead,
-                std::chrono::hours(24 * 20));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::IllToDead,
-                std::chrono::hours(24 * 30));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Unhappy,
-                std::chrono::hours(24 * 60));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy,
-                std::chrono::hours(1));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Bored,
-                std::chrono::hours(1));
-            break;
-        case data::CreatureLevel::Child:
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Digestion,
-                std::chrono::hours(8));
-            setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
-                std::chrono::hours(20));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
-                std::chrono::hours(24 * 15));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
-                std::chrono::hours(24 * 30 * 5));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::GoSleep,
-                std::chrono::minutes(20));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Inhospital,
-                std::chrono::minutes(15));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::HurtToDead,
-                std::chrono::hours(24 * 30));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::IllToDead,
-                std::chrono::hours(24 * 40));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Unhappy,
-                std::chrono::hours(24 * 60));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Bored,
-                std::chrono::hours(3));
+  switch (creature_level) {
+  case data::CreatureLevel::Egg:
+  case data::CreatureLevel::Baby:
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Digestion,
+                            std::chrono::hours(5));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
+        std::chrono::hours(8));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
+        std::chrono::hours(24 * 3));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
+        std::chrono::hours(24 * 30 * 6));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::GoSleep,
+                            std::chrono::minutes(5));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::Inhospital,
+        std::chrono::minutes(10));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::HurtToDead,
+        std::chrono::hours(24 * 10));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::IllToDead,
+                            std::chrono::hours(24 * 20));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Unhappy,
+                            std::chrono::hours(24 * 35));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy,
+        std::chrono::minutes(40));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Bored,
+                            std::chrono::minutes(45));
+    break;
+  case data::CreatureLevel::Baby2:
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Digestion,
+                            std::chrono::hours(7));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
+        std::chrono::hours(12));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
+        std::chrono::hours(24 * 5));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
+        std::chrono::hours(24 * 30 * 5));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::GoSleep,
+                            std::chrono::minutes(10));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::Inhospital,
+        std::chrono::minutes(10));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::HurtToDead,
+        std::chrono::hours(24 * 20));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::IllToDead,
+                            std::chrono::hours(24 * 30));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Unhappy,
+                            std::chrono::hours(24 * 60));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy,
+        std::chrono::hours(1));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Bored,
+                            std::chrono::hours(1));
+    break;
+  case data::CreatureLevel::Child:
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Digestion,
+                            std::chrono::hours(8));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
+        std::chrono::hours(20));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
+        std::chrono::hours(24 * 15));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
+        std::chrono::hours(24 * 30 * 5));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::GoSleep,
+                            std::chrono::minutes(20));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::Inhospital,
+        std::chrono::minutes(15));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::HurtToDead,
+        std::chrono::hours(24 * 30));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::IllToDead,
+                            std::chrono::hours(24 * 40));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Unhappy,
+                            std::chrono::hours(24 * 60));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Bored,
+                            std::chrono::hours(3));
 
-            break;
-        case data::CreatureLevel::Adult:
-        case data::CreatureLevel::Perfect:
-        case data::CreatureLevel::Ultimate:
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Digestion,
-                std::chrono::hours(10));
-            setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
-                std::chrono::hours(28));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
-                std::chrono::hours(24 * 20));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
-                std::chrono::hours(24 * 30 * 4));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::GoSleep,
-                std::chrono::minutes(30));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Inhospital,
-                std::chrono::minutes(15));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::HurtToDead,
-                std::chrono::hours(24 * 40));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::IllToDead,
-                std::chrono::hours(24 * 50));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Unhappy,
-                std::chrono::hours(24 * 90));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy,
-                std::chrono::hours(24 * 2));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerCallback::Bored,
-                std::chrono::hours(2));
-            break;
-        case data::CreatureLevel::END:
-            break;
+    break;
+  case data::CreatureLevel::Adult:
+  case data::CreatureLevel::Perfect:
+  case data::CreatureLevel::Ultimate:
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Digestion,
+                            std::chrono::hours(10));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::PauseDigestionHungry,
+        std::chrono::hours(28));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::FullPoopStack,
+        std::chrono::hours(24 * 20));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::IllbyOverweight,
+        std::chrono::hours(24 * 30 * 4));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::GoSleep,
+                            std::chrono::minutes(30));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::Inhospital,
+        std::chrono::minutes(15));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::HurtToDead,
+        std::chrono::hours(24 * 40));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::IllToDead,
+                            std::chrono::hours(24 * 50));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Unhappy,
+                            std::chrono::hours(24 * 90));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy,
+        std::chrono::hours(24 * 2));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerCallback::Bored,
+                            std::chrono::hours(2));
+    break;
+  case data::CreatureLevel::END:
+    break;
     }
 
     return ret;
@@ -436,130 +420,118 @@ gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerIncrement>
 CreatureEntityCreator::createIncrementWaitTime(
     data::CreatureLevel creature_level) {
 
-    gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerIncrement> ret;
+  gamecomp::gene_waittime_t<gamecomp::CreatureProgressTimerIncrement> ret{};
 
-    switch (creature_level) {
-        case data::CreatureLevel::Egg:
-        case data::CreatureLevel::Baby:
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimerIncrement::
-                                        LostWeightTimerHungry,
-                                    std::chrono::hours(24 * 5));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimerIncrement::
-                                        LostWeightTimerThirsty,
-                                    std::chrono::hours(24 * 5));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::LostCalories,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerIncrement::GainWeightCalories,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::GoodSleep,
-                std::chrono::hours(12));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::BadSleep,
-                std::chrono::hours(13));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::RestHospital,
-                std::chrono::hours(3));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP,
-                std::chrono::hours(9 * 24));
-            break;
-        case data::CreatureLevel::Baby2:
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimerIncrement::
-                                        LostWeightTimerHungry,
-                                    std::chrono::hours(24 * 5));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimerIncrement::
-                                        LostWeightTimerThirsty,
-                                    std::chrono::hours(24 * 5));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::LostCalories,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerIncrement::GainWeightCalories,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::GoodSleep,
-                std::chrono::hours(10));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::BadSleep,
-                std::chrono::hours(11));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::RestHospital,
-                std::chrono::hours(2));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP,
-                std::chrono::hours(14 * 24));
-            break;
-        case data::CreatureLevel::Child:
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimerIncrement::
-                                        LostWeightTimerHungry,
-                                    std::chrono::hours(24 * 6));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimerIncrement::
-                                        LostWeightTimerThirsty,
-                                    std::chrono::hours(24 * 6));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::LostCalories,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerIncrement::GainWeightCalories,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::GoodSleep,
-                std::chrono::hours(8));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::BadSleep,
-                std::chrono::hours(10));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::RestHospital,
-                std::chrono::hours(1));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP,
-                std::chrono::hours(24 * 24));
-            break;
-        case data::CreatureLevel::Adult:
-        case data::CreatureLevel::Perfect:
-        case data::CreatureLevel::Ultimate:
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimerIncrement::
-                                        LostWeightTimerHungry,
-                                    std::chrono::hours(24 * 7));
-            setCreatureGeneWaitTime(ret,
-                                    +gamecomp::CreatureProgressTimerIncrement::
-                                        LostWeightTimerThirsty,
-                                    std::chrono::hours(24 * 7));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::LostCalories,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret,
-                +gamecomp::CreatureProgressTimerIncrement::GainWeightCalories,
-                std::chrono::hours(24));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::GoodSleep,
-                std::chrono::hours(7));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::BadSleep,
-                std::chrono::hours(9));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::RestHospital,
-                std::chrono::hours(2));
-            setCreatureGeneWaitTime(
-                ret, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP,
-                std::chrono::hours(35 * 24));
-            break;
-        case data::CreatureLevel::END:
-            break;
+  switch (creature_level) {
+  case data::CreatureLevel::Egg:
+  case data::CreatureLevel::Baby:
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerHungry,
+        std::chrono::hours(24 * 5));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerThirsty,
+        std::chrono::hours(24 * 5));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostCalories,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::GainWeightCalories,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::GoodSleep,
+        std::chrono::hours(12));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerIncrement::BadSleep,
+                            std::chrono::hours(13));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::RestHospital,
+        std::chrono::hours(3));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP,
+        std::chrono::hours(9 * 24));
+    break;
+  case data::CreatureLevel::Baby2:
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerHungry,
+        std::chrono::hours(24 * 5));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerThirsty,
+        std::chrono::hours(24 * 5));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostCalories,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::GainWeightCalories,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::GoodSleep,
+        std::chrono::hours(10));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerIncrement::BadSleep,
+                            std::chrono::hours(11));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::RestHospital,
+        std::chrono::hours(2));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP,
+        std::chrono::hours(14 * 24));
+    break;
+  case data::CreatureLevel::Child:
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerHungry,
+        std::chrono::hours(24 * 6));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerThirsty,
+        std::chrono::hours(24 * 6));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostCalories,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::GainWeightCalories,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::GoodSleep,
+        std::chrono::hours(8));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerIncrement::BadSleep,
+                            std::chrono::hours(10));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::RestHospital,
+        std::chrono::hours(1));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP,
+        std::chrono::hours(24 * 24));
+    break;
+  case data::CreatureLevel::Adult:
+  case data::CreatureLevel::Perfect:
+  case data::CreatureLevel::Ultimate:
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerHungry,
+        std::chrono::hours(24 * 7));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostWeightTimerThirsty,
+        std::chrono::hours(24 * 7));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::LostCalories,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::GainWeightCalories,
+        std::chrono::hours(24));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::GoodSleep,
+        std::chrono::hours(7));
+    setCreatureGeneWaitTime(ret,
+                            +gamecomp::CreatureProgressTimerIncrement::BadSleep,
+                            std::chrono::hours(9));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::RestHospital,
+        std::chrono::hours(2));
+    setCreatureGeneWaitTime(
+        ret, +gamecomp::CreatureProgressTimerIncrement::HurtLostHP,
+        std::chrono::hours(35 * 24));
+    break;
+  case data::CreatureLevel::END:
+    break;
     }
 
     switch (creature_level) {
@@ -613,70 +585,70 @@ CreatureEntityCreator::createIncrementWaitTime(
 gamecomp::gene_waittime_t<gamecomp::StarvationPhase>
 CreatureEntityCreator::createStarvationWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::gene_waittime_t<gamecomp::StarvationPhase> ret;
+  gamecomp::gene_waittime_t<gamecomp::StarvationPhase> ret{};
 
-    switch (creature_level) {
-        case data::CreatureLevel::Egg:
-        case data::CreatureLevel::Baby:
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase1,
-                                    std::chrono::hours(24 * 3));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase2,
-                                    std::chrono::hours(24 * 1));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase3,
-                                    std::chrono::minutes(10));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase4,
-                                    std::chrono::hours(24 * 2));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase5,
-                                    std::chrono::minutes(5));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase6,
-                                    std::chrono::hours(24 * 1));
-            break;
-        case data::CreatureLevel::Baby2:
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase1,
-                                    std::chrono::hours(24 * 5));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase2,
-                                    std::chrono::hours(24 * 2));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase3,
-                                    std::chrono::minutes(20));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase4,
-                                    std::chrono::hours(24 * 3));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase5,
-                                    std::chrono::minutes(10));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase6,
-                                    std::chrono::hours(24 * 3));
-            break;
-        case data::CreatureLevel::Child:
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase1,
-                                    std::chrono::hours(24 * 6));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase2,
-                                    std::chrono::hours(24 * 3));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase3,
-                                    std::chrono::hours(3));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase4,
-                                    std::chrono::hours(24 * 5));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase5,
-                                    std::chrono::hours(2));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase6,
-                                    std::chrono::hours(24 * 3));
-            break;
-        case data::CreatureLevel::Adult:
-        case data::CreatureLevel::Perfect:
-        case data::CreatureLevel::Ultimate:
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase1,
-                                    std::chrono::hours(24 * 3));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase2,
-                                    std::chrono::hours(24 * 1));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase3,
-                                    std::chrono::hours(8));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase4,
-                                    std::chrono::hours(24 * 7));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase5,
-                                    std::chrono::hours(5));
-            setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase6,
-                                    std::chrono::hours(24 * 4));
-            break;
-        case data::CreatureLevel::END:
-            break;
+  switch (creature_level) {
+  case data::CreatureLevel::Egg:
+  case data::CreatureLevel::Baby:
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase1,
+                            std::chrono::hours(24 * 3));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase2,
+                            std::chrono::hours(24 * 1));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase3,
+                            std::chrono::minutes(10));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase4,
+                            std::chrono::hours(24 * 2));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase5,
+                            std::chrono::minutes(5));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase6,
+                            std::chrono::hours(24 * 1));
+    break;
+  case data::CreatureLevel::Baby2:
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase1,
+                            std::chrono::hours(24 * 5));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase2,
+                            std::chrono::hours(24 * 2));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase3,
+                            std::chrono::minutes(20));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase4,
+                            std::chrono::hours(24 * 3));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase5,
+                            std::chrono::minutes(10));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase6,
+                            std::chrono::hours(24 * 3));
+    break;
+  case data::CreatureLevel::Child:
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase1,
+                            std::chrono::hours(24 * 6));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase2,
+                            std::chrono::hours(24 * 3));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase3,
+                            std::chrono::hours(3));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase4,
+                            std::chrono::hours(24 * 5));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase5,
+                            std::chrono::hours(2));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase6,
+                            std::chrono::hours(24 * 3));
+    break;
+  case data::CreatureLevel::Adult:
+  case data::CreatureLevel::Perfect:
+  case data::CreatureLevel::Ultimate:
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase1,
+                            std::chrono::hours(24 * 3));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase2,
+                            std::chrono::hours(24 * 1));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase3,
+                            std::chrono::hours(8));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase4,
+                            std::chrono::hours(24 * 7));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase5,
+                            std::chrono::hours(5));
+    setCreatureGeneWaitTime(ret, +gamecomp::StarvationPhase::Phase6,
+                            std::chrono::hours(24 * 4));
+    break;
+  case data::CreatureLevel::END:
+    break;
     }
 
     return ret;
@@ -685,38 +657,34 @@ CreatureEntityCreator::createStarvationWaitTime(
 gamecomp::gene_waittime_t<gamecomp::CreatureActivity>
 CreatureEntityCreator::createShortTermMemoryWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::gene_waittime_t<gamecomp::CreatureActivity> ret;
+  gamecomp::gene_waittime_t<gamecomp::CreatureActivity> ret{};
 
-    switch (creature_level) {
-        case data::CreatureLevel::Egg:
-        case data::CreatureLevel::Baby:
-            for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-                setCreatureGeneWaitTime(ret, activity,
-                                        std::chrono::minutes(10));
-            }
-            break;
-        case data::CreatureLevel::Baby2:
-            for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-                setCreatureGeneWaitTime(ret, activity,
-                                        std::chrono::minutes(20));
-            }
-            break;
-        case data::CreatureLevel::Child:
-            for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-                setCreatureGeneWaitTime(ret, activity,
-                                        std::chrono::minutes(45));
-            }
-            break;
-        case data::CreatureLevel::Adult:
-        case data::CreatureLevel::Perfect:
-        case data::CreatureLevel::Ultimate:
-            for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-                setCreatureGeneWaitTime(ret, activity,
-                                        std::chrono::minutes(30));
-            }
-            break;
-        case data::CreatureLevel::END:
-            break;
+  switch (creature_level) {
+  case data::CreatureLevel::Egg:
+  case data::CreatureLevel::Baby:
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+      setCreatureGeneWaitTime(ret, activity, std::chrono::minutes(10));
+    }
+    break;
+  case data::CreatureLevel::Baby2:
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+      setCreatureGeneWaitTime(ret, activity, std::chrono::minutes(20));
+    }
+    break;
+  case data::CreatureLevel::Child:
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+      setCreatureGeneWaitTime(ret, activity, std::chrono::minutes(45));
+    }
+    break;
+  case data::CreatureLevel::Adult:
+  case data::CreatureLevel::Perfect:
+  case data::CreatureLevel::Ultimate:
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+      setCreatureGeneWaitTime(ret, activity, std::chrono::minutes(30));
+    }
+    break;
+  case data::CreatureLevel::END:
+    break;
     }
 
 
@@ -726,36 +694,34 @@ CreatureEntityCreator::createShortTermMemoryWaitTime(
 gamecomp::gene_waittime_t<gamecomp::CreatureActivity>
 CreatureEntityCreator::createMediumTermMemoryWaitTime(
     data::CreatureLevel creature_level) {
-    gamecomp::gene_waittime_t<gamecomp::CreatureActivity> ret;
+  gamecomp::gene_waittime_t<gamecomp::CreatureActivity> ret{};
 
-    switch (creature_level) {
-        case data::CreatureLevel::Egg:
-        case data::CreatureLevel::Baby:
-            for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-                setCreatureGeneWaitTime(ret, activity, std::chrono::hours(10));
-            }
-            break;
-        case data::CreatureLevel::Baby2:
-            for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-                setCreatureGeneWaitTime(ret, activity, std::chrono::hours(20));
-            }
-            break;
-        case data::CreatureLevel::Child:
-            for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-                setCreatureGeneWaitTime(ret, activity,
-                                        std::chrono::hours(24 * 3));
-            }
-            break;
-        case data::CreatureLevel::Adult:
-        case data::CreatureLevel::Perfect:
-        case data::CreatureLevel::Ultimate:
-            for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
-                setCreatureGeneWaitTime(ret, activity,
-                                        std::chrono::hours(24 * 2));
-            }
-            break;
-        case data::CreatureLevel::END:
-            break;
+  switch (creature_level) {
+  case data::CreatureLevel::Egg:
+  case data::CreatureLevel::Baby:
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+      setCreatureGeneWaitTime(ret, activity, std::chrono::hours(10));
+    }
+    break;
+  case data::CreatureLevel::Baby2:
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+      setCreatureGeneWaitTime(ret, activity, std::chrono::hours(20));
+    }
+    break;
+  case data::CreatureLevel::Child:
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+      setCreatureGeneWaitTime(ret, activity, std::chrono::hours(24 * 3));
+    }
+    break;
+  case data::CreatureLevel::Adult:
+  case data::CreatureLevel::Perfect:
+  case data::CreatureLevel::Ultimate:
+    for (auto activity : earr::Enum<gamecomp::CreatureActivity>()) {
+      setCreatureGeneWaitTime(ret, activity, std::chrono::hours(24 * 2));
+    }
+    break;
+  case data::CreatureLevel::END:
+    break;
     }
 
     return ret;
@@ -764,29 +730,27 @@ CreatureEntityCreator::createMediumTermMemoryWaitTime(
 
 gamecomp::CreatureGeneComponent
 CreatureEntityCreator::createCreatureGene(const data::Creature& creature) {
-    gamecomp::CreatureGeneComponent ret;
+  gamecomp::CreatureGeneComponent ret{};
 
-    ret.gender = data::CreatureGender::None;
-    ret.generationnr = 1;
+  ret.gender = data::CreatureGender::None;
+  ret.generationnr = 1;
 
+  ret.max_bodysize = creature.getMaxBodySize();
+  ret.min_weight = creature.getMinWeight();
+  ret.max_weight = creature.getMaxWeight();
 
-    ret.max_bodysize = creature.getMaxBodySize();
-    ret.min_weight = creature.getMinWeight();
-    ret.max_weight = creature.getMaxWeight();
+  auto ideal_weight = ret.min_weight * 2.5;
+  auto ideal_bodysize = creature.getMinBodySize() * 1.43;
 
-    auto ideal_weight = ret.min_weight * 2.5;
-    auto ideal_bodysize = creature.getMinBodySize() * 1.43;
+  auto pseudomass_dif = -(ret.min_weight * (MIN_BMI / 2.0 / MAX_BMI));
+  auto pseudomass =
+      (std::sqrt(ideal_bodysize * ideal_weight + ret.min_weight) - IDEAL_BMI) /
+      pseudomass_dif;
 
-    auto pseudomass_dif = -(ret.min_weight * (MIN_BMI / 2.0 / MAX_BMI));
-    auto pseudomass =
-        (std::sqrt(ideal_bodysize * ideal_weight + ret.min_weight) -
-         IDEAL_BMI) /
-        pseudomass_dif;
-
-    if (pseudomass < 0) {
-        ret.min_bmi = HIGH_MIN_BMI;
-        ret.ideal_bmi = HIGH_IDEAL_BMI;
-        ret.max_bmi = HIGH_MAX_BMI;
+  if (pseudomass < 0) {
+    ret.min_bmi = HIGH_MIN_BMI;
+    ret.ideal_bmi = HIGH_IDEAL_BMI;
+    ret.max_bmi = HIGH_MAX_BMI;
     } else if (pseudomass > 50) {
         ret.min_bmi = LOW_MIN_BMI;
         ret.ideal_bmi = LOW_IDEAL_BMI;

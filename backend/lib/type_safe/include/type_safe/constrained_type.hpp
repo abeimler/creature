@@ -5,6 +5,8 @@
 #ifndef TYPE_SAFE_CONSTRAINED_TYPE_HPP_INCLUDED
 #define TYPE_SAFE_CONSTRAINED_TYPE_HPP_INCLUDED
 
+#include <iterator>
+#include <stdexcept>
 #include <type_traits>
 #include <utility>
 
@@ -16,6 +18,9 @@ namespace type_safe
 {
     //=== constrained_type ===//
     /// A `Verifier` for [ts::constrained_type]() that `DEBUG_ASSERT`s the constraint.
+    ///
+    /// \notes It asserts only if [TYPE_SAFE_ENABLE_PRECONDITION_CHECKS]() is `true`,
+    /// else it is undefined behavior.
     /// \output_section Constrained type
     struct assertion_verifier
     {
@@ -24,6 +29,35 @@ namespace type_safe
         {
             DEBUG_ASSERT(p(val), detail::precondition_error_handler{},
                          "value does not fulfill constraint");
+        }
+    };
+
+    /// The exception class thrown by the [ts::throwing_verifier]().
+    class constrain_error : public std::logic_error
+    {
+    public:
+        constrain_error()
+        : std::logic_error("Constraint of type_safe::constrained_type wasn't fulfilled")
+        {
+        }
+    };
+
+    /// A `Verifier` for [ts::constrained_type]() that throws an exception in case of failure.
+    ///
+    /// Unlike [ts::assertion_verifier](), it will *always* check the constrain.
+    /// If it is not fulfilled, it throws an exception of type [ts::constrain_error]().
+    /// \notes [ts::assertion_verifier]() is the default,
+    /// because a constrain violation is a logic error,
+    /// usually done by a programmer.
+    /// Use this one only if you want to use [ts::constrained_type]()
+    /// with unsanitized user input, for example.
+    struct throwing_verifier
+    {
+        template <typename Value, typename Predicate>
+        static void verify(const Value& val, const Predicate& p)
+        {
+            if (!p(val))
+                TYPE_SAFE_THROW(constrain_error{});
         }
     };
 
@@ -42,25 +76,26 @@ namespace type_safe
         };
     } // namespace detail
 
+    template <typename T, class Constraint, class Verifier>
+    class constrained_modifier;
+
     /// A value of type `T` that always fulfills the predicate `Constraint`.
     ///
     /// The `Constraint` is checked by the `Verifier`.
     /// The `Constraint` can also provide a nested template `is_valid<T>` to statically check types.
     /// Those will be checked regardless of the `Verifier`.
+    ///
+    /// If `T` is `const`, the `modify()` function will not be available,
+    /// you can only modify the type by assigning a completely new value to it.
     /// \requires `T` must not be a reference, `Constraint` must be a moveable, non-final class where no operation throws,
     /// and `Verifier` must provide a `static` function `void verify([const] T&, const Predicate&)`.
+    /// It also requires that no `const` operation on `T` may modify it in a way that the predicate isn't fulfilled anymore.
     /// \notes Additional requirements of the `Constraint` depend on the `Verifier` used.
     /// If not stated otherwise, a `Verifier` in this library requires
     /// that the `Constraint` is a `Predicate` for `T`.
-    template <typename T, typename Constraint, typename Verifier = assertion_verifier>
+    template <typename T, typename Constraint, class Verifier = assertion_verifier>
     class constrained_type : Constraint
     {
-        static_assert(!std::is_reference<T>::value, "T must not be a reference");
-
-        using nothrow_verifier =
-            std::integral_constant<bool, noexcept(Verifier::verify(std::declval<T&>(),
-                                                                   std::declval<Constraint&>()))>;
-
     public:
         using value_type           = typename std::remove_cv<T>::type;
         using constraint_predicate = Constraint;
@@ -78,7 +113,8 @@ namespace type_safe
 
         /// \group value_ctor
         explicit constrained_type(value_type&& value, constraint_predicate predicate = {}) noexcept(
-            std::is_nothrow_constructible<value_type>::value&& nothrow_verifier::value)
+            std::is_nothrow_constructible<value_type>::value&& noexcept(
+                Verifier::verify(std::move(value), std::move(predicate))))
         : Constraint(std::move(predicate)), value_(std::move(value))
         {
             verify();
@@ -92,6 +128,7 @@ namespace type_safe
 
         /// \effects Copies the value and predicate of `other`.
         /// \throws Anything thrown by the copy constructor of `value_type`.
+        /// \requires `Constraint` must be copyable.
         constrained_type(const constrained_type& other) : Constraint(other), value_(other.value_)
         {
             debug_verify();
@@ -100,24 +137,27 @@ namespace type_safe
         /// \effects Destroys the value.
         ~constrained_type() noexcept = default;
 
-        /// \effects Copy(1)/move(2) assigns the stored value to the valid value `other`.
-        /// It will also verify the new value prior to assigning.
-        /// \throws Anything thrown by the copy(1)/move(2) assignment operator of `value_type`,
+        /// \effects Same as assigning `constrained_type(other, get_constraint()).release()` to the stored value.
+        /// It will invoke copy(1)/move(2) constructor followed by move assignment operator.
+        /// \throws Anything thrown by the copy(1)/move(2) constructor or move assignment operator of `value_type`,
         /// or the `Verifier` if the `value` is invalid.
+        /// If the `value` is invalid, nothing will be changed.
+        /// \requires `Constraint` must be copyable.
         /// \group assign_value
         constrained_type& operator=(const value_type& other)
         {
-            Verifier::verify(other, get_constraint());
-            value_ = other;
+            constrained_type tmp(other, get_constraint());
+            value_ = std::move(tmp).release();
             return *this;
         }
 
         /// \group assign_value
         constrained_type& operator=(value_type&& other) noexcept(
-            std::is_nothrow_move_assignable<value_type>::value&& nothrow_verifier::value)
+            std::is_nothrow_move_assignable<value_type>::value&& noexcept(
+                Verifier::verify(std::move(other), std::declval<Constraint&>())))
         {
-            Verifier::verify(other, get_constraint());
-            value_ = std::move(other);
+            constrained_type tmp(std::move(other), get_constraint());
+            value_ = std::move(tmp).release();
             return *this;
         }
 
@@ -151,57 +191,14 @@ namespace type_safe
             swap(static_cast<Constraint&>(a), static_cast<Constraint&>(b));
         }
 
-        /// A proxy class to provide write access to the stored value.
-        ///
-        /// The destructor will verify the value again.
-        class modifier
-        {
-        public:
-            /// \effects Move constructs it.
-            /// `other` will not verify any value afterwards.
-            modifier(modifier&& other) noexcept : value_(other.value_)
-            {
-                other.value_ = nullptr;
-            }
-
-            /// \effects Verifies the value, if there is any.
-            ~modifier() noexcept(false)
-            {
-                if (value_)
-                    value_->verify();
-            }
-
-            /// \effects Move assigns it.
-            /// `other` will not verify any value afterwards.
-            modifier& operator=(modifier&& other) noexcept
-            {
-                value_       = other.value_;
-                other.value_ = nullptr;
-                return *this;
-            }
-
-            /// \returns A reference to the stored value.
-            /// \requires It must not be in the moved-from state.
-            value_type& get() noexcept
-            {
-                DEBUG_ASSERT(value_, detail::precondition_error_handler{});
-                return value_->value_;
-            }
-
-        private:
-            modifier(constrained_type& value) noexcept : value_(&value)
-            {
-            }
-
-            constrained_type* value_;
-            friend constrained_type;
-        };
-
         /// \returns A proxy object to provide verified write-access to the stored value.
-        modifier modify() noexcept
+        /// \notes This function does not participate in overload resolution if `T` is `const`.
+        template <typename Dummy = T,
+                  typename       = typename std::enable_if<!std::is_const<Dummy>::value>::type>
+        constrained_modifier<T, Constraint, Verifier> modify() noexcept
         {
             debug_verify();
-            return modifier(*this);
+            return constrained_modifier<T, Constraint, Verifier>(*this);
         }
 
         /// \effects Moves the stored value out of the `constrained_type`,
@@ -215,8 +212,21 @@ namespace type_safe
             return std::move(value_);
         }
 
+        /// Dereference operator.
         /// \returns A `const` reference to the stored value.
-        /// \requires Any `const` operations on the `value_type` must not affect the validity of the value.
+        const value_type& operator*() const noexcept
+        {
+            return value_;
+        }
+
+        /// Member access operator.
+        /// \returns A `const` pointer to the stored value.
+        const value_type* operator->() const noexcept
+        {
+            return std::addressof(value_);
+        }
+
+        /// \returns A `const` reference to the stored value.
         const value_type& get_value() const noexcept
         {
             return value_;
@@ -229,7 +239,7 @@ namespace type_safe
         }
 
     private:
-        void verify() noexcept(nothrow_verifier::value)
+        void verify()
         {
             Verifier::verify(value_, get_constraint());
         }
@@ -241,7 +251,160 @@ namespace type_safe
 #endif
         }
 
+        value_type& get_non_const() noexcept
+        {
+            return value_;
+        }
+
         value_type value_;
+        friend constrained_modifier<T, Constraint, Verifier>;
+    };
+
+    /// Specialization of [ts::constrained_type]() for references.
+    ///
+    /// It models a reference to a value that always fulfills the given constraint.
+    /// The value must not be changed by other means, it is thus perfect for function parameters.
+    /// \unique_name constrained_type_ref
+    template <typename T, class Constraint, class Verifier>
+    class constrained_type<T&, Constraint, Verifier> : Constraint
+    {
+    public:
+        using value_type           = T;
+        using constraint_predicate = Constraint;
+
+        /// \effects Binds the reference to the given object.
+        explicit constrained_type(T& value, constraint_predicate predicate = {})
+        : Constraint(std::move(predicate)), ref_(&value)
+        {
+            verify();
+        }
+
+        /// \exclude
+        template <typename U,
+                  typename = typename std::enable_if<!detail::is_valid<constraint_predicate,
+                                                                       U>::value>::type>
+        constrained_type(U) = delete;
+
+        /// \returns A proxy object to provide verified write-access to the referred value.
+        /// \notes This function does not participate in overload resolution if `T` is `const`.
+        template <typename Dummy = T,
+                  typename       = typename std::enable_if<!std::is_const<Dummy>::value>::type>
+        constrained_modifier<T&, Constraint, Verifier> modify() noexcept
+        {
+            DEBUG_ASSERT(ref_, detail::assert_handler{});
+            return constrained_modifier<T&, Constraint, Verifier>(*this);
+        }
+
+        /// Dereference operator.
+        /// \returns A `const` reference to the referred value.
+        const value_type& operator*() const noexcept
+        {
+            return get_value();
+        }
+
+        /// Member access operator.
+        /// \returns A `const` pointer to the referred value.
+        const value_type* operator->() const noexcept
+        {
+            return &get_value();
+        }
+
+        /// \returns A `const` reference to the referred value.
+        const value_type& get_value() const noexcept
+        {
+            DEBUG_ASSERT(ref_, detail::assert_handler{}, "should have used object_ref");
+            return *ref_;
+        }
+
+        /// \returns The predicate that determines validity.
+        const constraint_predicate& get_constraint() const noexcept
+        {
+            return *this;
+        }
+
+    private:
+        void verify()
+        {
+            Verifier::verify(get_value(), get_constraint());
+        }
+
+        value_type& get_non_const() noexcept
+        {
+            return *ref_;
+        }
+
+        T* ref_;
+        friend constrained_modifier<T&, Constraint, Verifier>;
+    };
+
+    /// Alias for [ts::constrained_type<T&>](standardese://ts::constrained_type_ref/).
+    template <typename T, class Constraint, class Verifier = assertion_verifier>
+    using constrained_ref = constrained_type<T&, Constraint, Verifier>;
+
+    /// A proxy class to provide write access to the stored value of a [ts::constrained_type]().
+    ///
+    /// The destructor will verify the value again.
+    template <typename T, class Constraint, class Verifier>
+    class constrained_modifier
+    {
+    public:
+        using value_type = typename constrained_type<T, Constraint, Verifier>::value_type;
+
+        /// \effects Move constructs it.
+        /// `other` will not verify any value afterwards.
+        constrained_modifier(constrained_modifier&& other) noexcept : value_(other.value_)
+        {
+            other.value_ = nullptr;
+        }
+
+        /// \effects Verifies the value, if there is any.
+        ~constrained_modifier() noexcept(false)
+        {
+            if (value_)
+                value_->verify();
+        }
+
+        /// \effects Move assigns it.
+        /// `other` will not verify any value afterwards.
+        constrained_modifier& operator=(constrained_modifier&& other) noexcept
+        {
+            value_       = other.value_;
+            other.value_ = nullptr;
+            return *this;
+        }
+
+        /// Dereference operator.
+        /// \returns A reference to the stored value.
+        /// \requires It must not be in the moved-from state.
+        value_type& operator*() noexcept
+        {
+            return get();
+        }
+
+        /// Member access operator.
+        /// \returns A pointer to the stored value.
+        /// \requires It must not be in the moved-from state.
+        value_type* operator->() noexcept
+        {
+            return &get();
+        }
+
+        /// \returns A reference to the stored value.
+        /// \requires It must not be in the moved-from state.
+        value_type& get() noexcept
+        {
+            DEBUG_ASSERT(value_, detail::precondition_error_handler{});
+            return value_->get_non_const();
+        }
+
+    private:
+        constrained_modifier(constrained_type<T, Constraint, Verifier>& value) noexcept
+        : value_(&value)
+        {
+        }
+
+        constrained_type<T, Constraint, Verifier>* value_;
+        friend constrained_type<T, Constraint, Verifier>;
     };
 
 /// \exclude
@@ -281,17 +444,6 @@ namespace type_safe
 #undef TYPE_SAFE_DETAIL_MAKE_OP
 
     /// Creates a [ts::constrained_type]().
-    /// \returns A [ts::constrained_type]() with the given `value` and `Constraint`.
-    /// \unique_name constrain
-    template <typename T, typename Constraint>
-    auto constrain(T&& value, Constraint c)
-        -> constrained_type<typename std::decay<T>::type, Constraint>
-    {
-        return constrained_type<typename std::decay<T>::type, Constraint>(std::forward<T>(value),
-                                                                          std::move(c));
-    }
-
-    /// Creates a [ts::constrained_type]().
     /// \returns A [ts::constrained_type]() with the given `value`,  `Constraint` and `Verifier`.
     /// \unique_name constrain_verifier
     template <class Verifier, typename T, typename Constraint>
@@ -301,6 +453,33 @@ namespace type_safe
         return constrained_type<typename std::decay<T>::type, Constraint, Verifier>(std::forward<T>(
                                                                                         value),
                                                                                     std::move(c));
+    }
+
+    /// Creates a [ts::constrained_type]() with the default verifier, [ts::assertion_verifier]().
+    /// \returns A [ts::constrained_type]() with the given `value` and `Constraint`.
+    /// \requires As it uses a `DEBUG_ASSERT` to check constrain,
+    /// the value must be valid.
+    /// \unique_name constrain
+    template <typename T, typename Constraint>
+    auto constrain(T&& value, Constraint c)
+        -> constrained_type<typename std::decay<T>::type, Constraint>
+    {
+        return constrained_type<typename std::decay<T>::type, Constraint>(std::forward<T>(value),
+                                                                          std::move(c));
+    }
+
+    /// Creates a [ts::constrained_type]() using the [ts::throwing_verifier]().
+    /// \returns A [ts::constrained_type]() with the given `value` and `Constraint`.
+    /// \throws A [ts::constrain_error]() if the `value` isn't valid,
+    /// or anything else thrown by the constructor.
+    /// \notes This is meant for sanitizing user input,
+    /// using a recoverable error handling strategy.
+    template <typename T, typename Constraint>
+    auto sanitize(T&& value, Constraint c)
+        -> constrained_type<typename std::decay<T>::type, Constraint, throwing_verifier>
+    {
+        return constrained_type<typename std::decay<T>::type, Constraint,
+                                throwing_verifier>(std::forward<T>(value), std::move(c));
     }
 
     /// With operation for [ts::constrained_type]().
@@ -332,11 +511,15 @@ namespace type_safe
     /// The `Constraint` - which does not need to be a predicate anymore - is a "tag" to differentiate a type in different states.
     /// For example, you could have a "sanitized" value and a "non-sanitized" value
     /// that have different types, so you cannot accidentally mix them.
-    /// \notes It is only intended if the `Constrained` cannot be formalized easily and/or is expensive.
+    /// \notes It is only intended if the `Constraint` cannot be formalized easily and/or is expensive.
     /// Otherwise [ts::constrained_type]() is recommended
     /// as it does additional runtime checks in debug mode.
-    template <typename T, typename Constraint>
+    template <typename T, class Constraint>
     using tagged_type = constrained_type<T, Constraint, null_verifier>;
+
+    /// An alias for [ts::tagged_type]() with reference.
+    template <typename T, class Constraint>
+    using tagged_ref = constrained_ref<T, Constraint, null_verifier>;
 
     /// Creates a new [ts::tagged_type]().
     /// \returns A [ts::tagged_type]() with the given `value` and `Constraint`.

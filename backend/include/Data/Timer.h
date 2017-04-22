@@ -16,10 +16,10 @@ class Timer {
     boolean_t isstart_ = false;
     boolean_t ispause_ = false;
 
-    std::chrono::nanoseconds starttime_;
-    std::chrono::nanoseconds pausetime_;
+    std::chrono::nanoseconds starttime_{};
+    std::chrono::nanoseconds pausetime_{};
 
-    public:
+  public:
     template <class Archive>
     void serialize(Archive& ar) {
         ar(cereal::make_nvp("isstart", isstart_));

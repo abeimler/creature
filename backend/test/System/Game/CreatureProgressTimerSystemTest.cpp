@@ -215,11 +215,11 @@ class CreatureProgressTimerSystemApplication : public gamesystem::Application {
 
     void
     init_StartAllProgTimers(gamecomp::CreatureProgressTimersComponent& timers) {
-        gamecomputil::ProgressTimerUtil progtimer_util;
-        // data::CreatureLevel creaturelevel = timers.creaturelevel;
+      gamecomputil::ProgressTimerUtil progtimer_util{};
+      // data::CreatureLevel creaturelevel = timers.creaturelevel;
 
-        for (auto timertype : earr::Enum<gamecomp::CreatureProgressTimer>()) {
-            progtimer_util.start(earr::enum_array_at(timers.timer, timertype));
+      for (auto timertype : earr::Enum<gamecomp::CreatureProgressTimer>()) {
+        progtimer_util.start(earr::enum_array_at(timers.timer, timertype));
         }
         for (auto timertype_callback :
              earr::Enum<gamecomp::CreatureProgressTimerCallback>()) {
@@ -254,7 +254,7 @@ class CreatureProgressTimerSystemApplication : public gamesystem::Application {
 SCENARIO("Wait 100% of waitTime to fill Value to 100%") {
     GIVEN("ProgressTimer with 100 ms waittime") {
         // computil::DateTimerUtil datetimer_util;
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+        gamecomputil::ProgressTimerUtil progresstimer_util{};
         std::chrono::milliseconds waittime = std::chrono::milliseconds(100);
 
         CreatureProgressTimerSystemApplication app;
@@ -290,7 +290,7 @@ SCENARIO("Wait 100% of waitTime to fill Value to 100%") {
 SCENARIO("Wait 200% of waitTime to fill Value to 100% with overlay") {
     GIVEN("ProgressTimer with 100 ms waittime") {
         // computil::DateTimerUtil datetimer_util;
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+        gamecomputil::ProgressTimerUtil progresstimer_util{};
         std::chrono::milliseconds waittime = std::chrono::milliseconds(100);
 
         CreatureProgressTimerSystemApplication app;
@@ -324,7 +324,7 @@ SCENARIO("Wait 200% of waitTime to fill Value to 100% with overlay") {
 SCENARIO("Wait 50% of waitTime to fill Value to 50%") {
     GIVEN("ProgressTimer with 100 ms waittime") {
         // computil::DateTimerUtil datetimer_util;
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+        gamecomputil::ProgressTimerUtil progresstimer_util{};
         std::chrono::milliseconds waittime = std::chrono::milliseconds(100);
 
         CreatureProgressTimerSystemApplication app;
@@ -362,7 +362,7 @@ SCENARIO("Wait 50% of waitTime to fill Value to 50%") {
 SCENARIO("Wait 50% of waitTime with ValueFactor 2 to fill Value to 100%") {
     GIVEN("ProgressTimer with 100 ms waittime and factor 2") {
         // computil::DateTimerUtil datetimer_util;
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+        gamecomputil::ProgressTimerUtil progresstimer_util{};
         std::chrono::milliseconds waittime = std::chrono::milliseconds(100);
 
         CreatureProgressTimerSystemApplication app;
@@ -402,7 +402,7 @@ SCENARIO("Wait 50% of waitTime with ValueFactor 4 to fill Value to 100% with "
          "overlay") {
     GIVEN("ProgressTimer with 100 ms waittime and factor 4") {
         // computil::DateTimerUtil datetimer_util;
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+        gamecomputil::ProgressTimerUtil progresstimer_util{};
         std::chrono::milliseconds waittime = std::chrono::milliseconds(100);
 
         CreatureProgressTimerSystemApplication app;
@@ -439,7 +439,7 @@ SCENARIO("Wait 50% of waitTime with ValueFactor 4 to fill Value to 100% with "
 SCENARIO("Wait 100% of waitTime with ValueFactor 0.5 to fill Value to 50%") {
     GIVEN("ProgressTimer with 100 ms waittime and factor 0.5") {
         // computil::DateTimerUtil datetimer_util;
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+        gamecomputil::ProgressTimerUtil progresstimer_util{};
         std::chrono::milliseconds waittime = std::chrono::milliseconds(100);
 
         CreatureProgressTimerSystemApplication app;
@@ -480,7 +480,7 @@ TEST_CASE("Wait 100% of waitTime with pause to fill Value to 100%") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -516,7 +516,7 @@ TEST_CASE("Wait 2*50% of waitTime with pause unpause to fill Value to 100%") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(50);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -555,7 +555,7 @@ TEST_CASE("Wait 2*100% of waitTime with restart to fill Value to 100%") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -593,7 +593,7 @@ TEST_CASE("Wait 2*100% of waitTime with stop to reset Value to 0%") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -626,7 +626,7 @@ TEST_CASE("Wait 100% of waitTime to trigger Callback") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -664,7 +664,7 @@ TEST_CASE("Wait 50% of waitTime and trigger increment") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(50);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -705,7 +705,7 @@ TEST_CASE("Wait 100% of waitTime and trigger increment") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -747,7 +747,7 @@ TEST_CASE("Wait 50% of waitTime with factor 2 and trigger increment") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(50);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -790,7 +790,7 @@ TEST_CASE("Wait 3*100% of waitTime to trigger Increment more times (endless)") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -835,7 +835,7 @@ TEST_CASE("Wait 100% of waitTime to trigger Starvation Callback") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -880,7 +880,7 @@ TEST_CASE("Wait 100% of waitTime to trigger ShortMemoryTerm Callback") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();
@@ -924,7 +924,7 @@ TEST_CASE("Wait 100% of waitTime to trigger MediumMemoryTerm Callback") {
     std::chrono::milliseconds sleeptime = std::chrono::milliseconds(100);
 
     // computil::DateTimerUtil datetimer_util;
-    gamecomputil::ProgressTimerUtil progresstimer_util;
+    gamecomputil::ProgressTimerUtil progresstimer_util{};
 
     CreatureProgressTimerSystemApplication app;
     auto& entities = app.getEntityManager();

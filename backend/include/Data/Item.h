@@ -30,9 +30,9 @@ class Item {
     ItemType itype_;
 
     explicit Item(ItemType itype);
-    explicit Item(const Item& baseitem, ItemType itype_);
+    explicit Item(Item baseitem, ItemType itype_);
 
-    public:
+  public:
     Item();
 
     virtual ~Item() = default;

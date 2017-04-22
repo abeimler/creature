@@ -82,16 +82,16 @@ TEST_CASE("load better-enum serial json") {
 
 
 TEST_CASE("enum_array serial json as file") {
-    earr::enum_array<TestEnum, bool> arr;
+  earr::enum_array<TestEnum, bool> arr{};
 
-    earr::enum_array_fill(arr, false);
+  earr::enum_array_fill(arr, false);
 
-    SUBCASE("serial json") {
-        std::ofstream os("enum_array.json");
-        {
-            cereal::JSONOutputArchive outar(os);
+  SUBCASE("serial json") {
+    std::ofstream os("enum_array.json");
+    {
+      cereal::JSONOutputArchive outar(os);
 
-            CHECK_NOTHROW(outar(cereal::make_nvp("arr", arr)));
-        }
+      CHECK_NOTHROW(outar(cereal::make_nvp("arr", arr)));
+    }
     }
 }

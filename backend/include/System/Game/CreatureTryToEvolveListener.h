@@ -14,46 +14,45 @@ namespace gamesystem {
 
 class CreatureTryToEvolveListener : public Listener<gameevent::CreatureTryToEvolveEvent> {
     private:
-    gamecomputil::ProgressTimerUtil progresstimer_util_;
-    computil::DateTimerUtil datetimer_util_;
-    gameentity::CreatureEntityCreator creaturecreator_;
-    gameentity::CreatureBattlerCreator creaturebattler_creator_;
+      gamecomputil::ProgressTimerUtil progresstimer_util_{};
+      computil::DateTimerUtil datetimer_util_{};
+      gameentity::CreatureEntityCreator creaturecreator_;
+      gameentity::CreatureBattlerCreator creaturebattler_creator_;
 
-    gameentity::DataManager& datamanager_;
+      gameentity::DataManager &datamanager_;
 
+      bool hasNextCreatureEvolutionConditionTrainingTime(
+          const gamecomp::CreatureDataComponent &creature_data,
+          data::CreatureTrainTime trainin);
 
-    bool hasNextCreatureEvolutionConditionTrainingTime(const gamecomp::CreatureDataComponent& creature_data,
-                                                       data::CreatureTrainTime trainin);
-    
+      bool haveEvolutionCondition(
+          const gamecomp::CreatureBattlerComponent &creature_battler,
+          const gamecomp::CreatureTrainingComponent &training,
+          const gamecomp::CreaturePsycheComponent &psyche,
+          const gamecomp::CreatureBodyComponent &body,
+          const gamecomp::CreatureBodilyStateComponent &bodilystate,
+          const data::EvolutionCondition &condition);
 
-    bool haveEvolutionCondition(const gamecomp::CreatureBattlerComponent& creature_battler,
-                                const gamecomp::CreatureTrainingComponent& training,
-                                const gamecomp::CreaturePsycheComponent& psyche,
-                                const gamecomp::CreatureBodyComponent& body,
-                                const gamecomp::CreatureBodilyStateComponent& bodilystate,
-                                const data::EvolutionCondition& condition);
+      bool tryEvolve(gameentity::Entity entity, EventBus &events,
+                     gamecomp::CreatureDataComponent &creature_data,
+                     gamecomp::CreatureBattlerComponent &creature_battler,
+                     gamecomp::CreatureTrainingComponent &training,
+                     gamecomp::CreaturePsycheComponent &psyche,
+                     gamecomp::CreatureBodyComponent &body,
+                     gamecomp::CreatureBodilyStateComponent &bodilystate,
+                     size_t nextcreatures_index, size_t nextcreatures_size,
+                     const data::Creature &nextcreature, bool goodevolve);
 
-    bool tryEvolve(gameentity::Entity entity, EventBus& events,
-                    gamecomp::CreatureDataComponent& creature_data,
-                    gamecomp::CreatureBattlerComponent& creature_battler,
-                    gamecomp::CreatureTrainingComponent& training,
-                    gamecomp::CreaturePsycheComponent& psyche,
-                    gamecomp::CreatureBodyComponent& body,
-                    gamecomp::CreatureBodilyStateComponent& bodilystate,
-                    size_t nextcreatures_index, size_t nextcreatures_size, const data::Creature& nextcreature, 
-                    bool goodevolve);
-
-    
-    bool tryEvolveFromList(gameentity::Entity entity, EventBus& events,
-                            const std::vector<std::string>& nextcreatures,
-                            gamecomp::CreatureDataComponent& creature_data,
-                            gamecomp::CreatureBattlerComponent& creature_battler,
-                            gamecomp::CreatureTrainingComponent& training,
-                            gamecomp::CreaturePsycheComponent& psyche,
-                            gamecomp::CreatureBodyComponent& body,
-                            gamecomp::CreatureBodilyStateComponent& bodilystate,
-                            bool isEvol,
-                            bool goodevolve);
+      bool
+      tryEvolveFromList(gameentity::Entity entity, EventBus &events,
+                        const std::vector<std::string> &nextcreatures,
+                        gamecomp::CreatureDataComponent &creature_data,
+                        gamecomp::CreatureBattlerComponent &creature_battler,
+                        gamecomp::CreatureTrainingComponent &training,
+                        gamecomp::CreaturePsycheComponent &psyche,
+                        gamecomp::CreatureBodyComponent &body,
+                        gamecomp::CreatureBodilyStateComponent &bodilystate,
+                        bool isEvol, bool goodevolve);
 
     public:
 

@@ -6,7 +6,6 @@ if(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/catch.hpp)
     file(DOWNLOAD
          https://raw.githubusercontent.com/philsquared/Catch/master/single_include/catch.hpp
          ${CMAKE_CURRENT_BINARY_DIR}/catch.hpp
-         SHOW_PROGESS
          STATUS status
          LOG log)
 
@@ -25,8 +24,11 @@ set(source_files test.cpp
                  bounded_type.cpp
                  compact_optional.cpp
                  constrained_type.cpp
+                 constant_parser.cpp
                  deferred_construction.cpp
+                 downcast.cpp
                  flag.cpp
+                 flag_set.cpp
                  floating_point.cpp
                  index.cpp
                  integer.cpp
@@ -34,14 +36,15 @@ set(source_files test.cpp
                  optional.cpp
                  optional_ref.cpp
                  output_parameter.cpp
+                 reference.cpp
                  strong_typedef.cpp
                  tagged_union.cpp
-                 types.cpp
                  variant.cpp
                  visitor.cpp)
 add_executable(type_safe_test debugger_type.hpp ${source_files})
 target_link_libraries(type_safe_test PUBLIC type_safe)
 target_include_directories(type_safe_test PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+set_property(TARGET type_safe_test PROPERTY CXX_STANDARD 11)
 
 if(MSVC)
     target_compile_definitions(type_safe_test PRIVATE TYPE_SAFE_TEST_NO_STATIC_ASSERT)
@@ -49,5 +52,4 @@ elseif(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0)
     target_compile_definitions(type_safe_test PRIVATE TYPE_SAFE_TEST_NO_STATIC_ASSERT)
 endif()
 
-enable_testing()
 add_test(NAME test COMMAND type_safe_test)

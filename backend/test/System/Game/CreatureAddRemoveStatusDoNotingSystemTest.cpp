@@ -167,7 +167,7 @@ class CreatureAddRemoveStatusDoNotingSystemApplication
 
         auto& battlerstatuses =
             entities.get<gamecomp::BattlerStatusesComponent>(entity);
-        battlerstatuses.statuses_name.push_back(HUNGRY_STATUS_NAME);
+        battlerstatuses.statuses_name.emplace_back(HUNGRY_STATUS_NAME);
     }
 
     void init_Entity_isBusy(gameentity::EntityManager& entities, gameentity::Entity entity) {
@@ -184,38 +184,38 @@ class CreatureAddRemoveStatusDoNotingSystemApplication
 
     void init_Entity_withStartedRunAwayTimer(gameentity::EntityManager& entities, gameentity::Entity entity,
                                              gamecomp::waittime_t waittime) {
-        CreatureTestData creatureTestData;
-        gamecomputil::ProgressTimerUtil progresstimer_util;
+      CreatureTestData creatureTestData{};
+      gamecomputil::ProgressTimerUtil progresstimer_util{};
 
-        auto& timers =
-            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
-        auto& runawayunhappy_timer = earr::enum_array_at(
-            timers.callback,
-            +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy);
-        gamecomp::ProgressTimer& runawayunhappy_progresstimer =
-            runawayunhappy_timer.base;
+      auto &timers =
+          entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+      auto &runawayunhappy_timer = earr::enum_array_at(
+          timers.callback,
+          +gamecomp::CreatureProgressTimerCallback::RunAwayUnhappy);
+      gamecomp::ProgressTimer &runawayunhappy_progresstimer =
+          runawayunhappy_timer.base;
 
-        auto time = creatureTestData.make_time_point_01_01_2000();
-        progresstimer_util.init(runawayunhappy_progresstimer, time, 1.0f);
-        runawayunhappy_progresstimer.waittime.fill(waittime);
-        progresstimer_util.start(runawayunhappy_progresstimer);
+      auto time = creatureTestData.make_time_point_01_01_2000();
+      progresstimer_util.init(runawayunhappy_progresstimer, time, 1.0f);
+      runawayunhappy_progresstimer.waittime.fill(waittime);
+      progresstimer_util.start(runawayunhappy_progresstimer);
 
-        auto& psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
-        psyche.luck = 0;
+      auto &psyche = entities.get<gamecomp::CreaturePsycheComponent>(entity);
+      psyche.luck = 0;
 
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
-        life.causeofrunaway = gamecomp::CauseOfRunAway::Unhappy;
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      life.causeofrunaway = gamecomp::CauseOfRunAway::Unhappy;
     }
 
     void init_Entity_withCanGoSleepTired(gameentity::EntityManager& entities, gameentity::Entity entity) {
-        CreatureTestData creatureTestData;
-        auto& timers =
-            entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
+      CreatureTestData creatureTestData{};
+      auto &timers =
+          entities.get<gamecomp::CreatureProgressTimersComponent>(entity);
 
-        gamecomp::ProgressTimer& tired_timer = earr::enum_array_at(
-            timers.timer, +gamecomp::CreatureProgressTimer::Tired);
-        gamecomp::ProgressTimer& tired_progresstimer = tired_timer;
-        tired_progresstimer.value = creatureTestData.CANGOSLEEP_AT_TIRED;
+      gamecomp::ProgressTimer &tired_timer = earr::enum_array_at(
+          timers.timer, +gamecomp::CreatureProgressTimer::Tired);
+      gamecomp::ProgressTimer &tired_progresstimer = tired_timer;
+      tired_progresstimer.value = creatureTestData.CANGOSLEEP_AT_TIRED;
     }
 
     void init_Entity_withOneHPMP(gameentity::EntityManager& entities, gameentity::Entity entity) {
@@ -235,32 +235,32 @@ class CreatureAddRemoveStatusDoNotingSystemApplication
 
 SCENARIO("Creature Entity with Hungry status is not busy") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusDoNotingSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusDoNotingSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_isBusy(entities, entity);
+      app.init_Entity_isBusy(entities, entity);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
-        // auto bodlystate =
-        // entity.component<gamecomp::CreatureBodilyStateComponent>();
+      // auto timers =
+      // entity.component<gamecomp::CreatureProgressTimersComponent>();
+      // auto battlerstatuses =
+      // entity.component<gamecomp::BattlerStatusesComponent>();
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      // auto bodlystate =
+      // entity.component<gamecomp::CreatureBodilyStateComponent>();
 
-        WHEN("emit addStatus-Event Hungry") {
-            app.emit_event<gameevent::CreatureAddStatusEvent>(
-                entity, data::CreatureStatus::Hungry);
+      WHEN("emit addStatus-Event Hungry") {
+        app.emit_event<gameevent::CreatureAddStatusEvent>(
+            entity, data::CreatureStatus::Hungry);
 
-            AND_WHEN("update manager") {
-                app.update(app.FAKE_TIMEDELTA);
+        AND_WHEN("update manager") {
+          app.update(app.FAKE_TIMEDELTA);
 
-                THEN("busy is not set") { CHECK_FALSE(life.isbusy); }
-            }
+          THEN("busy is not set") { CHECK_FALSE(life.isbusy); }
+        }
         }
     }
 }
@@ -268,33 +268,32 @@ SCENARIO("Creature Entity with Hungry status is not busy") {
 
 SCENARIO("Creature Entity with dome statuses then set isbusy to true") {
     GIVEN("Creature Entity") {
-        CreatureTestData creatureTestData;
-        CreatureAddRemoveStatusDoNotingSystemApplication app;
-        auto& entities = app.getEntityManager();
+      CreatureTestData creatureTestData{};
+      CreatureAddRemoveStatusDoNotingSystemApplication app;
+      auto &entities = app.getEntityManager();
 
-        // auto time = creatureTestData.make_time_point_01_01_2000();
-        auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
+      // auto time = creatureTestData.make_time_point_01_01_2000();
+      auto entity = MakeCreatureHelper::create_Entity_Creature(entities);
 
-        app.init_Entity_isNotBusy(entities, entity);
+      app.init_Entity_isNotBusy(entities, entity);
 
-        // auto timers =
-        // entity.component<gamecomp::CreatureProgressTimersComponent>();
-        // auto battlerstatuses =
-        // entity.component<gamecomp::BattlerStatusesComponent>();
-        auto& life = entities.get<gamecomp::CreatureLifeComponent>(entity);
-        // auto bodlystate =
-        // entity.component<gamecomp::CreatureBodilyStateComponent>();
+      // auto timers =
+      // entity.component<gamecomp::CreatureProgressTimersComponent>();
+      // auto battlerstatuses =
+      // entity.component<gamecomp::BattlerStatusesComponent>();
+      auto &life = entities.get<gamecomp::CreatureLifeComponent>(entity);
+      // auto bodlystate =
+      // entity.component<gamecomp::CreatureBodilyStateComponent>();
 
+      WHEN("emit addStatus-Event RunAway") {
+        app.emit_event<gameevent::CreatureAddStatusEvent>(
+            entity, data::CreatureStatus::RunAway);
 
-        WHEN("emit addStatus-Event RunAway") {
-            app.emit_event<gameevent::CreatureAddStatusEvent>(
-                entity, data::CreatureStatus::RunAway);
+        AND_WHEN("update manager") {
+          app.update(app.FAKE_TIMEDELTA);
 
-            AND_WHEN("update manager") {
-                app.update(app.FAKE_TIMEDELTA);
-
-                THEN("busy is set") { CHECK(life.isbusy); }
-            }
+          THEN("busy is set") { CHECK(life.isbusy); }
+        }
         }
 
         WHEN("emit addStatus-Event Sleep") {

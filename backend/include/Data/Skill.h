@@ -28,7 +28,7 @@ class Skill {
     std::string name_;
 
     std::string description_;
-    earr::enum_array<SkillOption, option_t> option_;
+    earr::enum_array<SkillOption, option_t> option_{};
 
     attr_t mpcost_ = 0;
     option_t inpercent_ = false;

@@ -52,57 +52,118 @@ TEST_CASE("visit optional")
 
 TEST_CASE("visit variant")
 {
-    struct visitor
+    SECTION("optional variant")
     {
-        using incomplete_visitor = void;
-
-        int value;
-
-        void operator()(nullvar_t) const
+        struct visitor
         {
-            REQUIRE(value == -1);
-        }
+            int value;
 
-        void operator()(int i) const
+            void operator()(nullvar_t) const
+            {
+                REQUIRE(value == -1);
+            }
+
+            void operator()(int i) const
+            {
+                REQUIRE(value == i);
+            }
+
+            void operator()(float f) const
+            {
+                REQUIRE(f == 3.14f);
+            }
+
+            void operator()(nullvar_t, nullvar_t) const
+            {
+                REQUIRE(false);
+            }
+            void operator()(nullvar_t, int) const
+            {
+                REQUIRE(false);
+            }
+
+            void operator()(int, nullvar_t) const
+            {
+                REQUIRE(value == -1);
+            }
+            void operator()(int, int b) const
+            {
+                REQUIRE(value == b);
+            }
+
+            void operator()(float, nullvar_t) const
+            {
+                REQUIRE(false);
+            }
+            void operator()(float a, int b) const
+            {
+                REQUIRE(value == b);
+                REQUIRE(a == 3.14f);
+            }
+        };
+
+        variant<nullvar_t, int, float> a;
+        visit(visitor{-1}, a);
+
+        a = 42;
+        visit(visitor{42}, a);
+
+        variant<nullvar_t, int> b;
+        visit(visitor{-1}, a, b);
+
+        b = 32;
+        visit(visitor{32}, a, b);
+
+        a = 3.14f;
+        visit(visitor{-1}, a);
+        visit(visitor{32}, a, b);
+    }
+    SECTION("rarely empty variant")
+    {
+        struct visitor
         {
-            REQUIRE(value == i);
-        }
+            int value;
 
-        void operator()(float f) const
-        {
-            REQUIRE(f == 3.14f);
-        }
+            void operator()(int a)
+            {
+                REQUIRE(a == value);
+            }
 
-        void operator()(int, nullvar_t) const
-        {
-            REQUIRE(value == -1);
-        }
+            void operator()(float b)
+            {
+                REQUIRE(b == 3.14f);
+                REQUIRE(value == -1);
+            }
 
-        void operator()(int, int b) const
-        {
-            REQUIRE(value == b);
-        }
+            void operator()(int, int)
+            {
+                REQUIRE(false);
+            }
 
-        void operator()(float a, int b) const
-        {
-            REQUIRE(value == b);
-            REQUIRE(a == 3.14f);
-        }
-    };
+            void operator()(int, float)
+            {
+                REQUIRE(false);
+            }
 
-    variant<nullvar_t, int, float> a;
-    visit(visitor{-1}, a);
+            void operator()(float a, int b)
+            {
+                REQUIRE(a == 3.14f);
+                REQUIRE(b == value);
+            }
 
-    a = 42;
-    visit(visitor{42}, a);
+            void operator()(float, float)
+            {
+                REQUIRE(false);
+            }
+        };
 
-    variant<nullvar_t, int> b;
-    visit(visitor{-1}, a, b);
+        variant<int, float> a(0);
+        visit(visitor{0}, a);
 
-    b = 32;
-    visit(visitor{32}, a, b);
+        a = 3.14f;
+        visit(visitor{-1}, a);
 
-    a = 3.14f;
-    visit(visitor{}, a);
-    visit(visitor{32}, a, b);
+        variant<int, float> b(0);
+        visit(visitor{0}, a, b);
+    }
 }

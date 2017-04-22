@@ -49,18 +49,18 @@ CreatureEntityCreator::createCreatureTraining() {
 gamecomp::CreatureBodyComponent CreatureEntityCreator::createCreatureBody(
     const data::Creature& creature_data,
     const gamecomp::CreatureGeneComponent& gene) {
-    gamecomp::CreatureBodyComponent ret;
+  gamecomp::CreatureBodyComponent ret{};
 
-    // ret.weight = 5.0;
-    // ret.bodysize = 0.3;
-    // ret.bmi = getBMI(gene, 2, 40, ret.weight, ret.bodysize);
+  // ret.weight = 5.0;
+  // ret.bodysize = 0.3;
+  // ret.bmi = getBMI(gene, 2, 40, ret.weight, ret.bodysize);
 
+  ret.bodysize = creature_data.getMinBodySize();
 
-    ret.bodysize = creature_data.getMinBodySize();
-
-    auto weight = creature_data.getEvolCondition().getWeight() * 1.3;
-    if (creature_data.getEvolCondition().getWeight() <= 0.0 || util::iszero(weight)) {
-        weight = creature_data.getMinWeight() * 4.0;
+  auto weight = creature_data.getEvolCondition().getWeight() * 1.3;
+  if (creature_data.getEvolCondition().getWeight() <= 0.0 ||
+      util::iszero(weight)) {
+    weight = creature_data.getMinWeight() * 4.0;
     }
     ret.weight = weight;
 
@@ -75,12 +75,12 @@ gamecomp::CreatureBodyComponent CreatureEntityCreator::createCreatureBody(
 
 gamecomp::CreaturePsycheComponent
 CreatureEntityCreator::createCreaturePsyche() {
-    gamecomp::CreaturePsycheComponent ret;
+  gamecomp::CreaturePsycheComponent ret{};
 
-    ret.luck = 100.0;
-    ret.disc = 100.0;
+  ret.luck = 100.0;
+  ret.disc = 100.0;
 
-    return ret;
+  return ret;
 }
 
 gamecomp::CreatureLifeComponent CreatureEntityCreator::createCreatureLife(

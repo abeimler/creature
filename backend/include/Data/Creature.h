@@ -120,11 +120,11 @@ class EvolutionCondition {
 
     lvl_t mustevolveatlevel_ = MUSTEVOLVEATLEVEL_NONE;
 
-    earr::enum_array<Attribute, attr_t> attr_;
+    earr::enum_array<Attribute, attr_t> attr_{};
 
-    earr::enum_array<CreatureTrainTime, option_t> traintime_;
+    earr::enum_array<CreatureTrainTime, option_t> traintime_{};
 
-    public:
+  public:
     template <class Archive>
     void serialize(Archive& ar) {
         ar(cereal::make_nvp("weight", weight_));
@@ -255,7 +255,8 @@ class Creature : public Battler {
 
     EvolutionCondition evolcondition_;
 
-    earr::enum_array<CreatureGender, distribution_percent_t> genderdistribution_;
+    earr::enum_array<CreatureGender, distribution_percent_t>
+        genderdistribution_{};
 
     void initGenderDistribution();
 

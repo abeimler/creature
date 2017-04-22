@@ -182,31 +182,31 @@ CreatureBattlerCreator::createCreatureBattler() {
 
 gamecomp::CreatureBattlerGeneComponent
 CreatureBattlerCreator::createCreatureBattlerGene() {
-    gamecomp::CreatureBattlerGeneComponent ret;
+  gamecomp::CreatureBattlerGeneComponent ret{};
 
-    ret.boniattrfactor.fill(1.0);
-    ret.boniattrinflation.fill(1.0);
+  ret.boniattrfactor.fill(1.0);
+  ret.boniattrinflation.fill(1.0);
 
-    return ret;
+  return ret;
 }
 
 gamecomp::BattlerBattleStateComponent
 CreatureBattlerCreator::createBattlerBattleState() {
-    gamecomp::BattlerBattleStateComponent ret;
+  gamecomp::BattlerBattleStateComponent ret{};
 
-    ret.option.fill(false);
+  ret.option.fill(false);
 
-    return ret;
+  return ret;
 }
 
 gamecomp::BattlerBattleStateComponent
 CreatureBattlerCreator::createBattlerBattleState(
     const data::Creature& creature) {
-    gamecomp::BattlerBattleStateComponent ret;
+  gamecomp::BattlerBattleStateComponent ret{};
 
-    ret.option = creature.getOption();
+  ret.option = creature.getOption();
 
-    return ret;
+  return ret;
 }
 
 gamecomp::BattlerResistsComponent

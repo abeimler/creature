@@ -100,9 +100,9 @@ class BattlerStatus {
     std::string name_;
     priority_t priority_ = 0;
 
-    earr::enum_array<Attribute, attr_factor_t> attr_factor_;
+    earr::enum_array<Attribute, attr_factor_t> attr_factor_{};
 
-    StatusExtent extent_;
+    StatusExtent extent_{};
 
     /// Resist of Element (index => Element Name)
     /// @todo element_id als index machen
@@ -121,14 +121,13 @@ class BattlerStatus {
     factor_rate_t critical_hitrate_ = 1.0;
     factor_rate_t evarate_ = 1.0;
 
-    StatusDamage hpdamage_;
-    StatusDamage mpdamage_;
+    StatusDamage hpdamage_{};
+    StatusDamage mpdamage_{};
     StatusRestrictionOption restriction_ = StatusRestrictionOption::None;
-    earr::enum_array<StatusOption, option_t> option_;
-    earr::enum_array<Resist, sensitivity_t> sensitivity_;
+    earr::enum_array<StatusOption, option_t> option_{};
+    earr::enum_array<Resist, sensitivity_t> sensitivity_{};
 
-
-    public:
+  public:
     template <class Archive>
     void serialize(Archive& ar) {
         ar(cereal::make_nvp("name", name_));

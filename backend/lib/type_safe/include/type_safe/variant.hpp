@@ -408,7 +408,7 @@ namespace type_safe
         /// If the variant is not empty, returns a null reference.
         optional_ref<const nullvar_t> optional_value(variant_type<nullvar_t>) const noexcept
         {
-            return has_value() ? nullptr : type_safe::ref(nullvar);
+            return has_value() ? nullptr : type_safe::opt_ref(&nullvar);
         }
 
         /// \returns A (`const`) [ts::optional_ref]() (1, 2)/[ts::optional_xvalue_ref]() to the stored value of given type.
@@ -417,7 +417,8 @@ namespace type_safe
         template <typename T>
         optional_ref<T> optional_value(variant_type<T> type) TYPE_SAFE_LVALUE_REF noexcept
         {
-            return has_value(type) ? type_safe::ref(storage_.get_union().value(type)) : nullptr;
+            return has_value(type) ? type_safe::opt_ref(&storage_.get_union().value(type)) :
+                                     nullptr;
         }
 
         /// \group optional_value
@@ -425,7 +426,8 @@ namespace type_safe
         optional_ref<const T> optional_value(variant_type<T> type) const TYPE_SAFE_LVALUE_REF
             noexcept
         {
-            return has_value(type) ? type_safe::ref(storage_.get_union().value(type)) : nullptr;
+            return has_value(type) ? type_safe::opt_ref(&storage_.get_union().value(type)) :
+                                     nullptr;
         }
 
 #if TYPE_SAFE_USE_REF_QUALIFIERS
@@ -433,14 +435,16 @@ namespace type_safe
         template <typename T>
             optional_xvalue_ref<T> optional_value(variant_type<T> type) && noexcept
         {
-            return has_value(type) ? type_safe::xref(storage_.get_union().value(type)) : nullptr;
+            return has_value(type) ? type_safe::opt_xref(&storage_.get_union().value(type)) :
+                                     nullptr;
         }
 
         /// \group optional_value
         template <typename T>
         optional_xvalue_ref<const T> optional_value(variant_type<T> type) const && noexcept
         {
-            return has_value(type) ? type_safe::xref(storage_.get_union().value(type)) : nullptr;
+            return has_value(type) ? type_safe::opt_xref(&storage_.get_union().value(type)) :
+                                     nullptr;
         }
 #endif
 
@@ -479,18 +483,18 @@ namespace type_safe
 #endif
 
         /// Maps a variant with a function.
+        /// \effects If the variant is not empty,
+        /// calls the function using either `std::forward<Functor>(f)(current-value, std::forward<Args>(args)...)`
+        /// or member call syntax `(current-value.*std::forward<Functor>(f))(std::forward<Args>(args)...)`.
+        /// If those two expressions are both ill-formed, does nothing.
         /// \returns A new variant of the same type.
-        /// If the variant is empty, the result will be empty as well.
-        /// Otherwise let the variant contain an object of type `T`.
-        /// If the expression `std::forward<Functor>(value(variant_type<T>{}))` is well-formed,
-        /// the result will contain the result returned by the function.
-        /// If the type of the result cannot be stored in the variant,
-        /// the program is ill-formed.
-        /// If the expression is not well-formed,
-        /// will contain a copy of the object.
+        /// It contains nothing, if `*this` contains nothing.
+        /// Otherwise, if the function was called, it contains the result of the function.
+        /// Otherwise, it is a copy of the current variant.
         /// \throws Anything thrown by the function or copy/move constructor,
         /// in which case the variant will be left unchanged,
         /// unless the object was already moved into the function and modified there.
+        /// \requires The result of the function - if it is called - can be stored in the variant.
         /// \notes (1) will use the copy constructor, (2) will use the move constructor.
         /// The function does not participate in overload resolution,
         /// if copy (1)/move (2) constructors are not available for all types.
@@ -500,16 +504,17 @@ namespace type_safe
         /// \param 2
         /// \exclude
         template <
-            typename Functor, typename Dummy = void,
+            typename Functor, typename... Args, typename Dummy = void,
             typename = typename std::enable_if<traits::copy_constructible::value, Dummy>::type>
-        basic_variant map(Functor&& f) const TYPE_SAFE_LVALUE_REF
+        basic_variant map(Functor&& f, Args&&... args) const TYPE_SAFE_LVALUE_REF
         {
             basic_variant result(force_empty{});
             if (!has_value())
                 return result;
             detail::map_union<Functor&&, union_t>::map(result.storage_.get_union(),
                                                        storage_.get_union(),
-                                                       std::forward<Functor>(f));
+                                                       std::forward<Functor>(f),
+                                                       std::forward<Args>(args)...);
             DEBUG_ASSERT(result.has_value(), detail::assert_handler{});
             return result;
         }
@@ -521,16 +526,17 @@ namespace type_safe
         /// \param 2
         /// \exclude
         template <
-            typename Functor, typename Dummy = void,
+            typename Functor, typename... Args, typename Dummy = void,
             typename = typename std::enable_if<traits::move_constructible::value, Dummy>::type>
-        basic_variant map(Functor&& f) &&
+        basic_variant map(Functor&& f, Args&&... args) &&
         {
             basic_variant result(force_empty{});
             if (!has_value())
                 return result;
             detail::map_union<Functor&&, union_t>::map(result.storage_.get_union(),
                                                        std::move(storage_.get_union()),
-                                                       std::forward<Functor>(f));
+                                                       std::forward<Functor>(f),
+                                                       std::forward<Args>(args)...);
             DEBUG_ASSERT(result.has_value(), detail::assert_handler{});
             return result;
         }

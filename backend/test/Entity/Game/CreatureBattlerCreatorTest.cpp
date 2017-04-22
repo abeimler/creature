@@ -109,34 +109,33 @@ TEST_CASE("create empty CreatureBattler") {
 
 
 TEST_CASE("create BattlerBattleState with DataCreature") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creature = creatureTestData.make_DataCreature();
+  auto creature = creatureTestData.make_DataCreature();
 
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto creaturebattlestate =
-        creaturebattler_creator.createBattlerBattleState(creature);
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto creaturebattlestate =
+      creaturebattler_creator.createBattlerBattleState(creature);
 
-    SUBCASE("CreatureBattler has options of Creature") {
-        CHECK(creature.getOption() == creaturebattlestate.option);
+  SUBCASE("CreatureBattler has options of Creature") {
+    CHECK(creature.getOption() == creaturebattlestate.option);
     }
 }
 
 
 
 TEST_CASE("create BattlerResists with DataCreature") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
 
-    auto creature = creatureTestData.make_DataCreature();
+  auto creature = creatureTestData.make_DataCreature();
 
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto battlerresists =
-        creaturebattler_creator.createBattlerResists(creature);
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto battlerresists = creaturebattler_creator.createBattlerResists(creature);
 
-    SUBCASE("CreatureBattler has right elements (size)") {
-        CHECK(creature.getElements() == battlerresists.atk_elements_name);
+  SUBCASE("CreatureBattler has right elements (size)") {
+    CHECK(creature.getElements() == battlerresists.atk_elements_name);
     }
 
     SUBCASE("CreatureBattler has right elements resists (size)") {
@@ -153,21 +152,21 @@ TEST_CASE("create BattlerResists with DataCreature") {
 
 
 TEST_CASE("create and load CreatureBattler with start Level") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = creatureTestData.make_DataCreature();
-    auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
+  auto creature = creatureTestData.make_DataCreature();
+  auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
-    int lvl = creature.getStartLvL();
+  int lvl = creature.getStartLvL();
 
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto creaturebattler = creaturebattler_creator.createCreatureBattler();
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto creaturebattler = creaturebattler_creator.createCreatureBattler();
 
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
-                                                lvl);
+  creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                              lvl);
 
-    SUBCASE("CreatureBattler minimal level") {
-        CHECK(creaturebattler.lvl >= creature.getMinLvL());
+  SUBCASE("CreatureBattler minimal level") {
+    CHECK(creaturebattler.lvl >= creature.getMinLvL());
     }
     SUBCASE("CreatureBattler has right Level (Start Level)") {
         CHECK(creaturebattler.lvl == lvl);
@@ -242,21 +241,21 @@ TEST_CASE("create and load CreatureBattler with start Level") {
 
 
 TEST_CASE("create and load CreatureBattler with Level 5") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = creatureTestData.make_DataCreature();
-    auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
+  auto creature = creatureTestData.make_DataCreature();
+  auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
-    int lvl = 5;
+  int lvl = 5;
 
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto creaturebattler = creaturebattler_creator.createCreatureBattler();
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto creaturebattler = creaturebattler_creator.createCreatureBattler();
 
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
-                                                lvl);
+  creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                              lvl);
 
-    SUBCASE("CreatureBattler minimal level") {
-        CHECK(creaturebattler.lvl >= creature.getMinLvL());
+  SUBCASE("CreatureBattler minimal level") {
+    CHECK(creaturebattler.lvl >= creature.getMinLvL());
     }
     SUBCASE("CreatureBattler has right Level") {
         CHECK(lvl == creaturebattler.lvl);
@@ -315,20 +314,20 @@ TEST_CASE("create and load CreatureBattler with Level 5") {
 
 
 TEST_CASE("load CreatureBattler with Max Level") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = creatureTestData.make_DataCreature();
-    auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
+  auto creature = creatureTestData.make_DataCreature();
+  auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
-    int lvl = creature.getMaxLvL();
+  int lvl = creature.getMaxLvL();
 
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto creaturebattler = creaturebattler_creator.createCreatureBattler();
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
-                                                lvl);
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto creaturebattler = creaturebattler_creator.createCreatureBattler();
+  creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                              lvl);
 
-    SUBCASE("CreatureBattler minimal level") {
-        CHECK(creaturebattler.lvl >= creature.getMinLvL());
+  SUBCASE("CreatureBattler minimal level") {
+    CHECK(creaturebattler.lvl >= creature.getMinLvL());
     }
     SUBCASE("CreatureBattler has right Level") {
         CHECK(lvl == creaturebattler.lvl);
@@ -388,23 +387,23 @@ TEST_CASE("load CreatureBattler with Max Level") {
 
 
 TEST_CASE("create load and transform CreatureBattler with Level 5") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = creatureTestData.make_DataCreature();
-    auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
+  auto creature = creatureTestData.make_DataCreature();
+  auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
-    int lvl = 5;
+  int lvl = 5;
 
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto creaturebattler = creaturebattler_creator.createCreatureBattler();
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
-                                                lvl);
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto creaturebattler = creaturebattler_creator.createCreatureBattler();
+  creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                              lvl);
 
-    creaturebattler_creator.transformCreatureBattler(creaturebattler, creature,
-                                                     gene);
+  creaturebattler_creator.transformCreatureBattler(creaturebattler, creature,
+                                                   gene);
 
-    SUBCASE("CreatureBattler minimal level") {
-        CHECK(creaturebattler.lvl >= creature.getMinLvL());
+  SUBCASE("CreatureBattler minimal level") {
+    CHECK(creaturebattler.lvl >= creature.getMinLvL());
     }
     SUBCASE("after transform CreatureBattler level is the same") {
         CHECK(lvl == creaturebattler.lvl);
@@ -464,25 +463,24 @@ TEST_CASE("create load and transform CreatureBattler with Level 5") {
 
 
 TEST_CASE("create load and (re)load again CreatureBattler with Level 5") {
-    CreatureTestData creatureTestData;
-    gameentity::CreatureBattlerCreator creaturebattler_creator;
-    auto creature = creatureTestData.make_DataCreature();
-    auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
+  CreatureTestData creatureTestData{};
+  gameentity::CreatureBattlerCreator creaturebattler_creator;
+  auto creature = creatureTestData.make_DataCreature();
+  auto gene = EntityGameTestHelper::make_CreatureBattlerGene_withValues();
 
-    int start_lvl = creature.getStartLvL();
-    int lvl = 5;
+  int start_lvl = creature.getStartLvL();
+  int lvl = 5;
 
+  auto creature_data = creaturebattler_creator.createCreatureData(creature);
+  auto creaturebattler = creaturebattler_creator.createCreatureBattler();
+  creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                              start_lvl);
 
-    auto creature_data = creaturebattler_creator.createCreatureData(creature);
-    auto creaturebattler = creaturebattler_creator.createCreatureBattler();
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
-                                                start_lvl);
+  creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
+                                              lvl);
 
-    creaturebattler_creator.loadCreatureBattler(creaturebattler, creature, gene,
-                                                lvl);
-
-    SUBCASE("CreatureBattler minimal level") {
-        CHECK(creaturebattler.lvl >= creature.getMinLvL());
+  SUBCASE("CreatureBattler minimal level") {
+    CHECK(creaturebattler.lvl >= creature.getMinLvL());
     }
     SUBCASE("CreatureBattler has right Level") {
         CHECK(lvl == creaturebattler.lvl);

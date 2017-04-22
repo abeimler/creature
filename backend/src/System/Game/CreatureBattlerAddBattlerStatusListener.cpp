@@ -38,7 +38,7 @@ void CreatureBattlerAddBattlerStatusListener::addBattlerStatus(EntityManager& en
 
     if (status_name_it == std::end(battlerstatuses_statuses_name)) {
         battlerstatuses_statuses_name.push_back(addstatus_name);
-        battlerstatuses_startstatusturns.push_back(gamecomp::BattlerStatusTurn(addstatus_name));
+        battlerstatuses_startstatusturns.emplace_back(addstatus_name);
 
         for (auto removestatus_name : addstatus.getRemoveStatuses()) {
             auto removestatus =

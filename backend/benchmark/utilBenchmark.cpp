@@ -76,4 +76,4 @@ BENCHMARK("util::randomOdds 1:1000", [](benchpress::context* ctx) {
     }
 })
 
-} // namespace util
+} // namespace util_benchmark
