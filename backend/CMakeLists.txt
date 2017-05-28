@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
-project (creature_backend VERSION 0.1.0 LANGUAGES CXX)
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION ver)
+project (creature_backend VERSION ${ver} LANGUAGES CXX)
 
 ###
 ## Source/Header Files
