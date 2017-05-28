@@ -21,6 +21,9 @@
         "gsl": "cpp",
         "multi_span": "cpp",
         "functional": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "*.ipp": "cpp",
+        "string_span": "cpp",
+        "array": "cpp"
     }
 }
