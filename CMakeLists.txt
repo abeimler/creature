@@ -154,7 +154,7 @@ endif()
 
 
 
-
+set(CREATURE_WITH_TESTS ON CACHE BOOL "Enable Tests")
 
 ###
 ## 3rd libs

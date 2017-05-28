@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  build:
+    build: .
+    container_name: creature_build
+    volumes:
+      - .:/project
+    environment:
+      - WITH_TESTS=0
+      - BUILD_TYPE=Release
+      - BUILD_PATH=/build
+  test:
+    build: .
+    container_name: creature_test
+    volumes:
+      - .:/project
+    environment:
+      - WITH_TESTS=1
+      - BUILD_TYPE=Release
+      - BUILD_PATH=/build
+  build-gcc:
+    build: .
+    container_name: creature_build-gcc
+    volumes:
+      - .:/project
+    environment:
+      - CC=gcc
+      - CXX=g++
+      - BUILD_TYPE=Release
+      - WITH_TESTS=0
+      - BUILD_PATH=/build
+  test-gcc:
+    build: .
+    container_name: creature_test-gcc
+    volumes:
+      - .:/project
+    environment:
+      - CC=gcc
+      - CXX=g++
+      - BUILD_TYPE=Release
+      - WITH_TESTS=1
+      - BUILD_PATH=/build
+  build-clang:
+    build: .
+    container_name: creature_build-clang
+    volumes:
+      - .:/project
+    environment:
+      - CC=clang
+      - CXX=clang++
+      - BUILD_TYPE=Release
+      - WITH_TESTS=0
+      - BUILD_PATH=/build
+  test-clang:
+    build: .
+    container_name: creature_test-clang
+    volumes:
+      - .:/project
+    environment:
+      - CC=clang
+      - CXX=clang++
+      - BUILD_TYPE=Release
+      - WITH_TESTS=1
+      - BUILD_PATH=/build

@@ -1,164 +1,47 @@
-# Based on https://github.com/Microsoft/GSL/blob/master/.travis.yml
-
+sudo: required
 language: cpp
-sudo: false
 
+services:
+  - docker
 
-cache:
-  directories:
-    - ${TRAVIS_BUILD_DIR}/deps/cmake
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.5.2/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.6.2/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.7.1/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.8.1/install
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.9.0/install
-
+install:
+  - sudo apt-get install -y linux-image-virtual kernel linux-image-extra-virtual
+  - curl -sSL https://get.docker.com/ | sudo sh
+  - sudo pip install docker-compose
 
 matrix:
   include:
-    - env: BUILD_TYPE=Debug
-      os: osx
-      osx_image: xcode8
-      compiler: clang
-    - env: BUILD_TYPE=Release
-      os: osx
-      osx_image: xcode8
-      compiler: clang
-    - env: CLANG_VERSION=3.6 BUILD_TYPE=Debug
-      os: linux
-      addons: &clang36
-        apt:
-          packages:
-            - clang-3.6
-            - g++-5
-          sources: &sources
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-    - env: CLANG_VERSION=3.6 BUILD_TYPE=Release
-      os: linux
-      addons: *clang36
-    - env: CLANG_VERSION=3.7 BUILD_TYPE=Debug
-      os: linux
-      addons: &clang37
-        apt:
-          packages:
-            - clang-3.7
-            - g++-5
-          sources: &sources
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-    - env: CLANG_VERSION=3.7 BUILD_TYPE=Release
-      os: linux
-      addons: *clang37
-    - env: CLANG_VERSION=3.8 BUILD_TYPE=Debug
-      os: linux
-      addons: &clang38
-        apt:
-          packages:
-            - clang-3.8
-            - g++-5
-          sources: &sources
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-    - env: CLANG_VERSION=3.8 BUILD_TYPE=Release
-      os: linux
-      addons: *clang38
-    - env: GCC_VERSION=5 BUILD_TYPE=Debug
-      os: linux
-      addons: &gcc5
-        apt:
-          packages: g++-5
-          sources: *sources
-    - env: GCC_VERSION=5 BUILD_TYPE=Release
-      os: linux
-      addons: *gcc5
-    - env: GCC_VERSION=6 BUILD_TYPE=Debug
-      os: linux
-      addons: &gcc6
-        apt:
-          packages: g++-6
-          sources: *sources
-    - env: GCC_VERSION=6 BUILD_TYPE=Release
-      os: linux
-      addons: *gcc6
-    - env: ARM_GCC_VERSION=arm-linux-gnueabihf BUILD_TYPE=Debug
-      os: linux
-      addons: &gccarm-linux-gnueabihf
-        apt:
-          packages: 
-            - build-essential
-            - g++-arm-linux-gnueabihf
-            - gcc-arm-linux-gnueabihf
-            - gdb-multiarch
-            - lib32ncurses5 
-            - lib32z1
-          sources: *sources
-    - env: ARM_GCC_VERSION=arm-linux-gnueabihf BUILD_TYPE=Release
-      os: linux
-      addons: *gccarm-linux-gnueabihf
-
-
-addons:
-  apt:
-    packages:
-    - python-pip 
-    - python-dev 
-    - build-essential 
-    - libopencv-dev
-    - git
-    #- doxygen
-    - binutils 
-    - libgtest-dev
-    - libunittest++-dev 
-    - libicu-dev
-    #- libboost-all-dev 
-    - libboost-serialization-dev 
-    - libssl-dev 
-    - libboost-system-dev 
-    - libboost-iostreams-dev
-    - libboost-test-dev 
-
-
-before_install:
-  #- pip install --upgrade pip
-  #- pip install cpp-coveralls
-
-install:
-  - if [[ -n "$CLANG_VERSION" ]]; then export CXX=clang++-$CLANG_VERSION CC=clang-$CLANG_VERSION; fi
-  - if [[ -n "$GCC_VERSION" ]]; then export CXX=g++-$GCC_VERSION CC=gcc-$GCC_VERSION; fi
-  - if [[ -n "$ARM_GCC_VERSION" ]]; then export CXX=$ARM_GCC_VERSION-g++ CC=$ARM_GCC_VERSION-gcc; fi
-  - export JOBS=2
-  
-  - cd "${TRAVIS_BUILD_DIR}" && chmod +x ./travis.sh && ./travis.sh
-
-  - echo ${PATH}
-  - cmake --version
-  - echo ${CXX}
-  - ${CXX} --version
-  - ${CXX} -v
-  #- chmod +x ./install-deps.sh
-  #- ./install-deps.sh # not needed use - addons apt packages
-
-
+   - compiler: gcc 
+     os: linux
+     env:
+       - CC=gcc
+       - CXX=g++
+       - WITH_TESTS=0
+       - CONTAINER_NAME=build
+   - compiler: gcc
+     os: linux
+     env:
+       - CC=gcc
+       - CXX=g++
+       - WITH_TESTS=1
+       - CONTAINER_NAME=test
+   - compiler: clang 
+     os: linux
+     env:
+       - CC=clang
+       - CXX=clang++
+       - WITH_TESTS=0
+       - CONTAINER_NAME=build
+   - compiler: clang
+     os: linux
+     env:
+       - CC=clang
+       - CXX=clang++
+       - WITH_TESTS=1
+       - CONTAINER_NAME=test
 
 before_script:
-  - cd "${TRAVIS_BUILD_DIR}"
-  - cmake . -B./build
-    -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_C_COMPILER="$CC" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-    -DSKIP_PORTABILITY_TEST:BOOL="1" 
-    -DBUILD_TESTING:BOOL="0" 
-    -DWITH_CPP11:BOOL="1" 
-    -DCXXOPTS_BUILD_EXAMPLES:BOOL="0" 
-    -DTHREAD_SAFE:BOOL="1" 
-    -DBuildTests:BOOL="0"
-    -DBoost_USE_STATIC_LIBS=ON
-  - cmake --build ./build --target creature_backend -- -j$JOBS
-  - cmake --build ./build --target creature_backend_test -- -j$JOBS
+  - . ./scripts/travis.prebuild.sh
 
-script: 
-  - cd "${TRAVIS_BUILD_DIR}"
-  - cd ./build/backend
-  - ctest -R ".*creature_backend.*" --output-on-failture -j$JOBS
-
-notifications:
-  email: false
+script:
+  - . ./scripts/travis.build.sh
