@@ -51,7 +51,7 @@ TEST(DefaultRegistry, Functionalities) {
     ASSERT_NE(&registry.get<int>(e1), &registry.get<int>(e3));
     ASSERT_NE(&registry.get<char>(e1), &registry.get<char>(e3));
 
-    ASSERT_NO_THROW(registry.copy(e1, e2));
+    ASSERT_NO_THROW(registry.copy(e2, e1));
     ASSERT_TRUE(registry.has<int>(e2));
     ASSERT_TRUE(registry.has<char>(e2));
     ASSERT_EQ(registry.get<int>(e1), 42);
@@ -63,9 +63,15 @@ TEST(DefaultRegistry, Functionalities) {
 
     ASSERT_NO_THROW(registry.replace<int>(e1, 0));
     ASSERT_EQ(registry.get<int>(e1), 0);
-    ASSERT_NO_THROW(registry.copy<int>(e1, e2));
+    ASSERT_NO_THROW(registry.copy<int>(e2, e1));
     ASSERT_EQ(registry.get<int>(e2), 0);
     ASSERT_NE(&registry.get<int>(e1), &registry.get<int>(e2));
+
+    ASSERT_NO_THROW(registry.remove<int>(e2));
+    ASSERT_NO_THROW(registry.accomodate<int>(e1, 1));
+    ASSERT_NO_THROW(registry.accomodate<int>(e2, 1));
+    ASSERT_EQ(registry.get<int>(e1), 1);
+    ASSERT_EQ(registry.get<int>(e2), 1);
 
     ASSERT_EQ(registry.size(), registry_type::size_type{3});
     ASSERT_EQ(registry.capacity(), registry_type::size_type{3});
@@ -97,6 +103,12 @@ TEST(DefaultRegistry, Functionalities) {
 
     ASSERT_TRUE(registry.empty<int>());
     ASSERT_TRUE(registry.empty<char>());
+
+    e1 = registry.create<int>();
+
+    ASSERT_NO_THROW(registry.reset<int>(e1));
+    ASSERT_NO_THROW(registry.reset<int>(e2));
+    ASSERT_TRUE(registry.empty<int>());
 }
 
 TEST(DefaultRegistry, ViewSingleComponent) {
