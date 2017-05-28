@@ -9,3 +9,9 @@
 - commit in master and push
 - create github release with the same semver tag as the changelog
 - merge master in dev
+- update packages
+    - vcpkg https://github.com/Microsoft/vcpkg/tree/master/ports/doctest
+    - hunter
+        - https://github.com/ruslo/hunter/blob/master/cmake/configs/default.cmake
+        - https://github.com/ruslo/hunter/blob/master/cmake/projects/doctest/hunter.cmake
+    - conan
