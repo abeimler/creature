@@ -112,6 +112,7 @@ set_property(TARGET ${PROJECT_NAME}_test_main PROPERTY CXX_STANDARD 14)
 set_property(TARGET ${PROJECT_NAME}_test_main PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(${PROJECT_NAME}_test_main PRIVATE ${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}_test_main PUBLIC doctest)
 
 target_include_directories(${PROJECT_NAME}_test_main SYSTEM PRIVATE ${CREATURE_BACKEND_LIB_PATH}/doctest/doctest)
 target_include_directories(${PROJECT_NAME}_test_main PRIVATE ${CREATURE_BACKEND_TEST_PATH})
