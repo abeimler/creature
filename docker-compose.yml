@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/project
     environment:
-      - WITH_TESTS=0
+      - BUILD_ONLY=1
       - BUILD_TYPE=Release
       - BUILD_PATH=/build
   test:
@@ -16,7 +16,6 @@ services:
     volumes:
       - .:/project
     environment:
-      - WITH_TESTS=1
       - BUILD_TYPE=Release
       - BUILD_PATH=/build
   build-gcc:
@@ -27,8 +26,9 @@ services:
     environment:
       - CC=gcc
       - CXX=g++
+      - GCOV=gcov
+      - BUILD_ONLY=1
       - BUILD_TYPE=Release
-      - WITH_TESTS=0
       - BUILD_PATH=/build
   test-gcc:
     build: .
@@ -38,8 +38,8 @@ services:
     environment:
       - CC=gcc
       - CXX=g++
+      - GCOV=gcov
       - BUILD_TYPE=Release
-      - WITH_TESTS=1
       - BUILD_PATH=/build
   build-clang:
     build: .
@@ -49,8 +49,8 @@ services:
     environment:
       - CC=clang
       - CXX=clang++
+      - BUILD_ONLY=1
       - BUILD_TYPE=Release
-      - WITH_TESTS=0
       - BUILD_PATH=/build
   test-clang:
     build: .
@@ -61,5 +61,4 @@ services:
       - CC=clang
       - CXX=clang++
       - BUILD_TYPE=Release
-      - WITH_TESTS=1
       - BUILD_PATH=/build

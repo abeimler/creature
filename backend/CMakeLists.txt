@@ -1,6 +1,12 @@
-cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.0.2 FATAL_ERROR)
+if(NOT ${CMAKE_VERSION} VERSION_LESS "3.1")
+  cmake_policy(SET CMP0054 NEW)
+endif()
+
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION ver)
-project (creature_backend VERSION ${ver} LANGUAGES CXX)
+project(creature_backend VERSION ${ver} LANGUAGES CXX)
+
+
 
 ###
 ## Source/Header Files
@@ -22,8 +28,6 @@ file(GLOB_RECURSE CREATURE_BACKEND_BENCHMARK_SRC ${CREATURE_BACKEND_BENCHMARK_PA
 file(GLOB_RECURSE CREATURE_BACKEND_BENCHMARK_HEADERS ${CREATURE_BACKEND_BENCHMARK_PATH}/*.h ${CREATURE_BACKEND_BENCHMARK_PATH}/*.hpp ${CREATURE_BACKEND_BENCHMARK_PATH}/*.hxx)
 
 
-
-set(CREATURE_BACKEND_WITH_TESTS ${CREATURE_WITH_TESTS})
 
 set(CREATURE_BACKEND_SRC_PATH ${CREATURE_BACKEND_SRC_PATH} PARENT_SCOPE)
 set(CREATURE_BACKEND_INCLUDE_PATH ${CREATURE_BACKEND_INCLUDE_PATH} PARENT_SCOPE)
@@ -108,7 +112,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE -fno-exceptions)
 ###
 ## Test Application build
 ###
-if(CREATURE_BACKEND_WITH_TESTS)
+if(BUILD_TESTING)
   add_library(${PROJECT_NAME}_test_main STATIC ${CREATURE_BACKEND_TEST_SRC_MAIN_CPP})
   set_property(TARGET ${PROJECT_NAME}_test_main PROPERTY CXX_STANDARD 14)
   set_property(TARGET ${PROJECT_NAME}_test_main PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -163,21 +167,22 @@ endif()
 ###
 ## Benchmark Application build
 ###
-add_executable(${PROJECT_NAME}_benchmark ${CREATURE_BACKEND_BENCHMARK_SRC})
-if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
-    target_link_libraries(${PROJECT_NAME}_benchmark c++abi)
+if(RUN_PERFORMANCE_TESTS)
+  add_executable(${PROJECT_NAME}_benchmark ${CREATURE_BACKEND_BENCHMARK_SRC})
+  if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
+      target_link_libraries(${PROJECT_NAME}_benchmark c++abi)
+  endif()
+
+  set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD 14)
+  set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD_REQUIRED ON)
+
+  target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME})
+
+  target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${CREATURE_BACKEND_LIB_PATH}/benchpress/src)
+  target_include_directories(${PROJECT_NAME}_benchmark SYSTEM PRIVATE ${CREATURE_BACKEND_BENCHMARK_PATH})
+
+  target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
+  target_link_libraries (${PROJECT_NAME}_benchmark PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 endif()
-
-set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD 14)
-set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD_REQUIRED ON)
-
-target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME})
-
-target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${CREATURE_BACKEND_LIB_PATH}/benchpress/src)
-target_include_directories(${PROJECT_NAME}_benchmark SYSTEM PRIVATE ${CREATURE_BACKEND_BENCHMARK_PATH})
-
-target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
-target_link_libraries (${PROJECT_NAME}_benchmark PRIVATE ${CMAKE_THREAD_LIBS_INIT})
-
 
 

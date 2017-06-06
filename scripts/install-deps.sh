@@ -11,3 +11,7 @@ apt-get install -y \
   libboost-serialization-dev \
   libssl-dev libboost-system-dev libboost-iostreams-dev \
   libboost-test-dev 
+
+apt-get install -y python-pip
+
+pip install --user cpp-coveralls
