@@ -128,7 +128,14 @@ if(BUILD_TESTING)
 
 
   enable_testing ()
-  add_custom_target(${PROJECT_NAME}_test)
+  add_custom_target(
+    ${PROJECT_NAME}_build_test
+    # Workaround for printing the COMMENT, it does not work without a NOOP
+    # COMMAND.
+    COMMAND ${CMAKE_COMMAND} -E echo
+    COMMENT "Building tests..."
+    VERBATIM
+  )
   foreach(CREATURE_BACKEND_TEST_SRC_FILE ${CREATURE_BACKEND_TEST_SRC})
 
     get_filename_component(CREATURE_BACKEND_TEST_NAME_BASE "${CREATURE_BACKEND_TEST_SRC_FILE}" NAME)
@@ -154,8 +161,19 @@ if(BUILD_TESTING)
 
 
     add_test (NAME ${CREATURE_BACKEND_TEST_NAME} COMMAND ${CREATURE_BACKEND_TEST_NAME})
-    add_dependencies(${PROJECT_NAME}_test ${CREATURE_BACKEND_TEST_NAME})
+    add_dependencies(${PROJECT_NAME}_build_test ${CREATURE_BACKEND_TEST_NAME})
   endforeach()
+  # The "check" target is used to build AND run all test executables.
+  add_custom_target(
+    ${PROJECT_NAME}_check
+    # Either invoke the test(s) indirectly via "CTest" (commented) or directly.
+#   COMMAND ${CMAKE_CTEST_COMMAND}
+    COMMAND ctest ARGS --output-on-failure
+    COMMENT "Building and running test..."
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    VERBATIM
+  )
+  #add_dependencies(check ${PROJECT_NAME}_build_test)
 endif()
 
 
