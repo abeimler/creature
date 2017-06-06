@@ -16,7 +16,7 @@ ENV CC gcc
 ENV CXX g++
 ENV BUILD_TYPE Release
 ENV GCOV gcov
-ENV CMAKE_OPTIONS
+ENV CMAKE_OPTIONS ""
 
 RUN $CC --version
 RUN $CXX --version
