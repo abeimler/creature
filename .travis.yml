@@ -9,34 +9,32 @@ matrix:
    - compiler: gcc 
      os: linux
      env:
-       - DOCKER_COMPOSE_VERSION=1.13.0
+       - DOCKER_COMPOSE_VERSION=1.8.1
        - CC=gcc
        - CXX=g++
-       - WITH_TESTS=0
+       - BUILD_ONLY=1
        - CONTAINER_NAME=build
    - compiler: gcc
      os: linux
      env:
-       - DOCKER_COMPOSE_VERSION=1.13.0
+       - DOCKER_COMPOSE_VERSION=1.8.1
        - CC=gcc
        - CXX=g++
-       - WITH_TESTS=1
        - CONTAINER_NAME=test
    - compiler: clang 
      os: linux
      env:
-       - DOCKER_COMPOSE_VERSION=1.13.0
+       - DOCKER_COMPOSE_VERSION=1.8.1
        - CC=clang
        - CXX=clang++
-       - WITH_TESTS=0
+       - BUILD_ONLY=1
        - CONTAINER_NAME=build
    - compiler: clang
      os: linux
      env:
-       - DOCKER_COMPOSE_VERSION=1.13.0
+       - DOCKER_COMPOSE_VERSION=1.8.1
        - CC=clang
        - CXX=clang++
-       - WITH_TESTS=1
        - CONTAINER_NAME=test
 
 

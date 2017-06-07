@@ -1,0 +1,31 @@
+image: gcc:latest
+
+variables:
+  BUILD_PATH: ./build/
+  BUILD_TYPE: Release
+  CMAKE_OPTIONS: ""
+  CC: gcc
+  CXX: g++
+  GCOV: gcov
+  #COVERAGE: "1"
+
+
+before_script:
+  - apt-get -qq update && apt-get -qq install -y gcc g++ clang cmake make binutils
+  - ./scripts/install-deps.sh
+
+cache:
+  paths:
+    - build/
+
+build:
+  stage: build
+  before_script:
+    - ./scripts/prebuild.sh
+  script:
+    - ./scripts/build.sh
+
+test:
+  stage: test
+  script:
+    - ./scripts/test.sh
