@@ -28,4 +28,4 @@ build:
 test:
   stage: test
   script:
-    - ./scripts/test.sh
+    - ./scripts/run-tests.sh
