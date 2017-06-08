@@ -8,11 +8,13 @@ project(CreatureBackend VERSION ${ver} LANGUAGES CXX)
 ## 3rd libs
 ###
 
-add_subdirectory(lib/entt)
-add_subdirectory(lib/eventpp)
+## header-only
+#add_subdirectory(lib/entt)
+#add_subdirectory(lib/eventpp)
 
-add_subdirectory(lib/cereal)
-add_subdirectory(lib/json)
+#add_subdirectory(lib/cereal)
+#add_subdirectory(lib/json)
+
 
 
 ###
@@ -26,14 +28,11 @@ add_subdirectory(src)
 ###
 ## Test Application build
 ###
-include(CTest)
-
-enable_testing()
 if(BUILD_TESTING)
-  add_subdirectory(lib/doctest)
+  ## heady-only
+  #add_subdirectory(lib/doctest)
 
   add_subdirectory(test)
-
 endif()
 
 
@@ -45,12 +44,11 @@ endif()
 ###
 ## Benchmark Application build
 ###
-option(BUILD_BENCHMARKING "Build Benchmarks" OFF)
 if(BUILD_BENCHMARKING)
-  add_subdirectory(lib/benchpress)
+  ## heady-only
+  #add_subdirectory(lib/benchpress)
   
   add_subdirectory(benchmark)
-
 endif()
 
 

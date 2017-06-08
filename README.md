@@ -32,7 +32,7 @@ I used CMake 3.2 for the build.
 
  1. change directory to this Folder
  2. `mkdir ./build`
- 3. `cmake -H. -B./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DWITH_WERROR:BOOL="0" -DBuildTests:BOOL="0" -DSKIP_PORTABILITY_TEST:BOOL="1" -DDOCTEST_WITH_TESTS:BOOL="0" -DJUST_INSTALL_CEREAL:BOOL="1" -DTHREAD_SAFE:BOOL="1"`
+ 3. `cmake -H. -B./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DWITH_WERROR:BOOL="0" -DBuildTests:BOOL="0" -DJUST_INSTALL_CEREAL:BOOL="1" -DTHREAD_SAFE:BOOL="1"`
  4. `cmake --build ./build --target creature_backend`
     - OR for Tests `cmake --build ./build --target creature_backend_test`
 
