@@ -1,179 +1,39 @@
-cmake_minimum_required (VERSION 3.0.2 FATAL_ERROR)
-if(NOT ${CMAKE_VERSION} VERSION_LESS "3.1")
-  cmake_policy(SET CMP0054 NEW)
-endif()
+cmake_minimum_required (VERSION 3.3 FATAL_ERROR)
 
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION ver)
-project(creature_backend VERSION ${ver} LANGUAGES CXX)
-
-
-
-###
-## Source/Header Files
-###
-set(CREATURE_BACKEND_SRC_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(CREATURE_BACKEND_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(CREATURE_BACKEND_TEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test)
-set(CREATURE_BACKEND_BENCHMARK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/benchmark)
-
-file(GLOB_RECURSE CREATURE_BACKEND_SRC ${CREATURE_BACKEND_SRC_PATH}/*.cpp ${CREATURE_BACKEND_SRC_PATH}/*.cxx ${CREATURE_BACKEND_SRC_PATH}/*.cc)
-file(GLOB_RECURSE CREATURE_BACKEND_HEADERS ${CREATURE_BACKEND_INCLUDE_PATH}/*.h ${CREATURE_BACKEND_INCLUDE_PATH}/*.hpp ${CREATURE_BACKEND_INCLUDE_PATH}/*.hxx)
-
-file(GLOB_RECURSE CREATURE_BACKEND_TEST_SRC ${CREATURE_BACKEND_TEST_PATH}/*.cpp ${CREATURE_BACKEND_TEST_PATH}/*.cxx ${CREATURE_BACKEND_TEST_PATH}/*.cc)
-file(GLOB_RECURSE CREATURE_BACKEND_TEST_HEADERS ${CREATURE_BACKEND_TEST_PATH}/*.h ${CREATURE_BACKEND_TEST_PATH}/*.hpp ${CREATURE_BACKEND_TEST_PATH}/*.hxx)
-set(CREATURE_BACKEND_TEST_SRC_MAIN_CPP ${CREATURE_BACKEND_TEST_PATH}/mainTest.cpp)
-list(REMOVE_ITEM CREATURE_BACKEND_TEST_SRC "${CREATURE_BACKEND_TEST_SRC_MAIN_CPP}")
-
-file(GLOB_RECURSE CREATURE_BACKEND_BENCHMARK_SRC ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cpp ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cxx ${CREATURE_BACKEND_BENCHMARK_PATH}/*.cc)
-file(GLOB_RECURSE CREATURE_BACKEND_BENCHMARK_HEADERS ${CREATURE_BACKEND_BENCHMARK_PATH}/*.h ${CREATURE_BACKEND_BENCHMARK_PATH}/*.hpp ${CREATURE_BACKEND_BENCHMARK_PATH}/*.hxx)
-
-
-
-set(CREATURE_BACKEND_SRC_PATH ${CREATURE_BACKEND_SRC_PATH} PARENT_SCOPE)
-set(CREATURE_BACKEND_INCLUDE_PATH ${CREATURE_BACKEND_INCLUDE_PATH} PARENT_SCOPE)
-set(CREATURE_BACKEND_TEST_PATH ${CREATURE_BACKEND_TEST_PATH} PARENT_SCOPE)
-set(CREATURE_BACKEND_BENCHMARK_PATH ${CREATURE_BACKEND_BENCHMARK_PATH} PARENT_SCOPE)
-
-set(CREATURE_BACKEND_SRC ${CREATURE_BACKEND_SRC} PARENT_SCOPE)
-set(CREATURE_BACKEND_HEADERS ${CREATURE_BACKEND_HEADERS} PARENT_SCOPE)
-
-set(CREATURE_BACKEND_SRC ${CREATURE_BACKEND_SRC} PARENT_SCOPE)
-set(CREATURE_BACKEND_HEADERS ${CREATURE_BACKEND_HEADERS} PARENT_SCOPE)
-set(CREATURE_BACKEND_TEST_SRC_MAIN_CPP ${CREATURE_BACKEND_TEST_SRC_MAIN_CPP} PARENT_SCOPE)
-
-set(CREATURE_BACKEND_TEST_SRC ${CREATURE_BACKEND_TEST_SRC} PARENT_SCOPE)
-set(CREATURE_BACKEND_TEST_HEADERS ${CREATURE_BACKEND_TEST_HEADERS} PARENT_SCOPE)
-
-set(CREATURE_BACKEND_BENCHMARK_SRC ${CREATURE_BACKEND_BENCHMARK_SRC} PARENT_SCOPE)
-set(CREATURE_BACKEND_BENCHMARK_HEADERS ${CREATURE_BACKEND_BENCHMARK_HEADERS} PARENT_SCOPE)
-
-
+project(CreatureBackend VERSION ${ver} LANGUAGES CXX)
 
 
 ###
 ## 3rd libs
 ###
-set(CREATURE_BACKEND_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/entt)
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/eventpp)
+add_subdirectory(lib/entt)
+add_subdirectory(lib/eventpp)
 
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/cereal)
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/json)
-
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/benchpress)
-add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/doctest)
-
-## not needed
-#add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/GSL)
-#add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/type_safe)
-
-# no cmake support
-#add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/better-enums)
-#add_subdirectory(${CREATURE_BACKEND_LIB_PATH}/clamp)
+add_subdirectory(lib/cereal)
+add_subdirectory(lib/json)
 
 
 ###
 ## Application Build
 ###
-add_library(${PROJECT_NAME} STATIC ${CREATURE_BACKEND_SRC})
+add_subdirectory(src)
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_constexpr 
-                                                cxx_aggregate_default_initializers
-                                                cxx_auto_type 
-                                                cxx_range_for 
-                                                cxx_decltype_auto 
-                                                cxx_nullptr)
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambdas)
 
-# use SYSTEM to get rid of 3rd party libs warnings
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/better-enums/extra)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/cereal/include)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/clamp)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/json/src)
-
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/entt/src)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/eventpp/src)
-
-## not needed
-#target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/type_safe/include)
-#target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/type_safe/external/debug_assert)
-#target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${CREATURE_BACKEND_LIB_PATH}/GSL)
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${CREATURE_BACKEND_INCLUDE_PATH})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CREATURE_BACKEND_SRC_PATH})
-
-target_compile_options(${PROJECT_NAME} PRIVATE -fno-exceptions)
 
 
 ###
 ## Test Application build
 ###
+include(CTest)
+
+enable_testing()
 if(BUILD_TESTING)
-  add_library(${PROJECT_NAME}_test_main STATIC ${CREATURE_BACKEND_TEST_SRC_MAIN_CPP})
-  set_property(TARGET ${PROJECT_NAME}_test_main PROPERTY CXX_STANDARD 14)
-  set_property(TARGET ${PROJECT_NAME}_test_main PROPERTY CXX_STANDARD_REQUIRED ON)
+  add_subdirectory(lib/doctest)
 
-  target_link_libraries(${PROJECT_NAME}_test_main PRIVATE ${PROJECT_NAME})
-  target_link_libraries(${PROJECT_NAME}_test_main PUBLIC doctest)
+  add_subdirectory(test)
 
-  target_include_directories(${PROJECT_NAME}_test_main SYSTEM PRIVATE ${CREATURE_BACKEND_LIB_PATH}/doctest/doctest)
-  target_include_directories(${PROJECT_NAME}_test_main PRIVATE ${CREATURE_BACKEND_TEST_PATH})
-
-  target_compile_options(${PROJECT_NAME}_test_main PRIVATE -fexceptions)
-  target_link_libraries (${PROJECT_NAME}_test_main PRIVATE ${CMAKE_THREAD_LIBS_INIT})
-
-
-  enable_testing ()
-  add_custom_target(
-    ${PROJECT_NAME}_build_test
-    # Workaround for printing the COMMENT, it does not work without a NOOP
-    # COMMAND.
-    COMMAND ${CMAKE_COMMAND} -E echo
-    COMMENT "Building tests..."
-    VERBATIM
-  )
-  foreach(CREATURE_BACKEND_TEST_SRC_FILE ${CREATURE_BACKEND_TEST_SRC})
-
-    get_filename_component(CREATURE_BACKEND_TEST_NAME_BASE "${CREATURE_BACKEND_TEST_SRC_FILE}" NAME)
-    string(REPLACE ".cpp" "" CREATURE_BACKEND_TEST_NAME_BASE ${CREATURE_BACKEND_TEST_NAME_BASE})
-    string(REPLACE ".cxx" "" CREATURE_BACKEND_TEST_NAME_BASE ${CREATURE_BACKEND_TEST_NAME_BASE})
-    string(REPLACE ".cc" "" CREATURE_BACKEND_TEST_NAME_BASE ${CREATURE_BACKEND_TEST_NAME_BASE})
-    set(CREATURE_BACKEND_TEST_NAME "${PROJECT_NAME}_${CREATURE_BACKEND_TEST_NAME_BASE}_test")
-
-
-
-    add_executable(${CREATURE_BACKEND_TEST_NAME} ${CREATURE_BACKEND_TEST_SRC_FILE})
-    set_property(TARGET ${CREATURE_BACKEND_TEST_NAME} PROPERTY CXX_STANDARD 14)
-    set_property(TARGET ${CREATURE_BACKEND_TEST_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
-
-    target_link_libraries(${CREATURE_BACKEND_TEST_NAME} PRIVATE ${PROJECT_NAME})
-
-    target_include_directories(${CREATURE_BACKEND_TEST_NAME} SYSTEM PRIVATE ${CREATURE_BACKEND_LIB_PATH}/doctest/doctest)
-    target_include_directories(${CREATURE_BACKEND_TEST_NAME} PRIVATE ${CREATURE_BACKEND_TEST_PATH})
-
-    target_compile_options(${CREATURE_BACKEND_TEST_NAME} PRIVATE -fexceptions)
-    target_link_libraries (${CREATURE_BACKEND_TEST_NAME} PRIVATE ${CMAKE_THREAD_LIBS_INIT})
-    target_link_libraries (${CREATURE_BACKEND_TEST_NAME} PRIVATE ${PROJECT_NAME}_test_main)
-
-
-    add_test (NAME ${CREATURE_BACKEND_TEST_NAME} COMMAND ${CREATURE_BACKEND_TEST_NAME})
-    add_dependencies(${PROJECT_NAME}_build_test ${CREATURE_BACKEND_TEST_NAME})
-  endforeach()
-  # The "check" target is used to build AND run all test executables.
-  add_custom_target(
-    ${PROJECT_NAME}_check
-    # Either invoke the test(s) indirectly via "CTest" (commented) or directly.
-#   COMMAND ${CMAKE_CTEST_COMMAND}
-    COMMAND ctest ARGS --output-on-failure
-    COMMENT "Building and running test..."
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    VERBATIM
-  )
-  #add_dependencies(check ${PROJECT_NAME}_build_test)
 endif()
 
 
@@ -185,22 +45,12 @@ endif()
 ###
 ## Benchmark Application build
 ###
-if(RUN_PERFORMANCE_TESTS)
-  add_executable(${PROJECT_NAME}_benchmark ${CREATURE_BACKEND_BENCHMARK_SRC})
-  if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") AND (UNIX))
-      target_link_libraries(${PROJECT_NAME}_benchmark c++abi)
-  endif()
+option(BUILD_BENCHMARKING "Build Benchmarks" OFF)
+if(BUILD_BENCHMARKING)
+  add_subdirectory(lib/benchpress)
+  
+  add_subdirectory(benchmark)
 
-  set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD 14)
-  set_property(TARGET ${PROJECT_NAME}_benchmark PROPERTY CXX_STANDARD_REQUIRED ON)
-
-  target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME})
-
-  target_include_directories(${PROJECT_NAME}_benchmark PRIVATE ${CREATURE_BACKEND_LIB_PATH}/benchpress/src)
-  target_include_directories(${PROJECT_NAME}_benchmark SYSTEM PRIVATE ${CREATURE_BACKEND_BENCHMARK_PATH})
-
-  target_compile_options(${PROJECT_NAME}_benchmark PRIVATE -fexceptions)
-  target_link_libraries (${PROJECT_NAME}_benchmark PRIVATE ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 

@@ -1,64 +1,12 @@
 version: '2'
 
 services:
-  build:
-    build: .
-    container_name: creature_build
+  build-gcc-5:
+    build:
+      content: ./docker/gcc-5
+    container_name: build-gcc-5
     volumes:
-      - .:/project
-    environment:
-      - BUILD_ONLY=1
-      - BUILD_TYPE=Release
-      - BUILD_PATH=/build
-  test:
-    build: .
-    container_name: creature_test
-    volumes:
-      - .:/project
+      - .:/source
     environment:
       - BUILD_TYPE=Release
-      - BUILD_PATH=/build
-  build-gcc:
-    build: .
-    container_name: creature_build-gcc
-    volumes:
-      - .:/project
-    environment:
-      - CC=gcc
-      - CXX=g++
-      - GCOV=gcov
-      - BUILD_ONLY=1
-      - BUILD_TYPE=Release
-      - BUILD_PATH=/build
-  test-gcc:
-    build: .
-    container_name: creature_test-gcc
-    volumes:
-      - .:/project
-    environment:
-      - CC=gcc
-      - CXX=g++
-      - GCOV=gcov
-      - BUILD_TYPE=Release
-      - BUILD_PATH=/build
-  build-clang:
-    build: .
-    container_name: creature_build-clang
-    volumes:
-      - .:/project
-    environment:
-      - CC=clang
-      - CXX=clang++
-      - BUILD_ONLY=1
-      - BUILD_TYPE=Release
-      - BUILD_PATH=/build
-  test-clang:
-    build: .
-    container_name: creature_test-clang
-    volumes:
-      - .:/project
-    environment:
-      - CC=clang
-      - CXX=clang++
-      - BUILD_TYPE=Release
-      - BUILD_PATH=/build
+      - BUILD_PATH=/binary
